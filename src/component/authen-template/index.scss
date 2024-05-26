@@ -1,5 +1,5 @@
 .authen-template {
-  padding: 0 24px;
+  padding: 36px 48px;
   display: flex;
   justify-content: center;
   min-height: 100vh;
@@ -16,6 +16,9 @@
       align-items: center;
       .wrapper {
         width: 100%;
+        & > img {
+          margin-bottom: 48px;
+        }
       }
     }
     &__background {
