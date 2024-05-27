@@ -20,7 +20,24 @@ export default function ForgotPass() {
                 <p>Please enter your email address to search for your account.</p>
             </div>
             <div className="form">
-                
+                <Form labelCol={{
+                    span:24
+                }}>
+                    <Form.Item label="Email" type='email' name="email" rules={[{
+                        required: true,
+                        message :'Please enter your email address'
+                    }]}>
+                        <Input placeholder="Email Address"/>
+                    </Form.Item>
+                    <div className="button-reset">
+                        <ButtonPrimary
+                            title="Search"
+                            Onclick={() => {
+                                navigate("/login");
+                            }}
+                        />
+                    </div>
+                </Form>
             </div>
         </div>
 
