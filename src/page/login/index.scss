@@ -50,49 +50,40 @@ display: flex;
         border-radius: 12px;
         box-sizing: border-box;
       }
-      .check-box {
-        justify-content: center;
-  
-        input {
-          width: 30px;
-        }
-        label {
-          font-size: 13px;
-        }
-      }
+      
     }
     .button-login {
       display: flex;
       flex-direction: column;
       width: 450px;
-      gap: 12px;
+    
       button {
         padding: 5px;
       }
       span {
         text-align: center;
       }
-      .Login-google-facebook {
+      .Login-google {
         display: flex;
         justify-content: space-around;
-        gap: 10px;
+      padding: 5px;
         img {
           width: 15px;
           object-fit: cover;
           justify-content: end;
         }
       }
-      .Login-google-facebook button {
+      .Login-google button {
         background-color: #ffffff00;
-        padding: 3px;
-        width: 50%;
+        padding: 10px;
+        width: 90%;
         display: flex;
         justify-content: center;
-        border-radius: 5px;
+        border-radius: 10px;
         border: 1px solid #ebd1c39f;
         align-items: center;
       }
-      .Login-google-facebook button:hover {
+      .Login-google button:hover {
         cursor: pointer;
         background-color: #3b22222c;
       }

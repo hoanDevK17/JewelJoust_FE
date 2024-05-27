@@ -46,7 +46,7 @@ const navigate = useNavigate();
             </Form.Item>
           </Form>
          
-          <a href="../forgotPass" class="forgot-password-link">
+          <a href="../forgotpassword" class="forgot-password-link">
               Forgot password
             </a>
         </div>
@@ -59,9 +59,9 @@ const navigate = useNavigate();
             }}
           />
           <span>or</span>
-          <div className="Login-google-facebook">
+          <div className="Login-google">
             <button><img src="./IconGoogle.svg" alt=""title="" />Sign in with Google</button>
-            <button><img src="./Facebook.jpg" alt="" />Sign in with Facebook</button>
+
           </div>
         </div>
         <div className="sign-up">
