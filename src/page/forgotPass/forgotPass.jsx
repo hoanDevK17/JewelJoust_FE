@@ -40,6 +40,5 @@ export default function ForgotPass() {
                 </Form>
             </div>
         </div>
-
     </AuthenTemplate>)
 }

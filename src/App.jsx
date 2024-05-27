@@ -14,7 +14,7 @@ export default function App() {
       element: <Registration/>,
     },
     {
-      path:'/forgotPs',
+      path:'/forgotpassword',
       element:<ForgotPass/>
     },
   ]);
