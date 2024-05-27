@@ -1,0 +1,110 @@
+@import url(https://fonts.googleapis.com);
+@import url(https://fonts.gstatic.com);
+@import url(https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap);
+.Login-page {
+    font-family: 'Poppins';
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    // overflow: hidden;
+    
+    p {
+      font-size: 18px;
+    }
+    .sign-up {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 450px;
+    }
+    .sign-up-link {
+      text-decoration: none;
+      margin-left: 5px;
+    }
+    .forgot-password {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+    }
+    .forgot-password-link {
+      text-decoration: none;
+      font-size: 10px;
+    }
+    .Login-page-input {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 450px;
+      padding-bottom: 10px;
+      input {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 12px;
+        box-sizing: border-box;
+      }
+      .check-box {
+        justify-content: center;
+  
+        input {
+          width: 30px;
+        }
+        label {
+          font-size: 13px;
+        }
+      }
+    }
+    .button-login {
+      display: flex;
+      flex-direction: column;
+      width: 450px;
+      gap: 10px;
+      button {
+        padding: 5px;
+      }
+      span {
+        text-align: center;
+      }
+      .Login-google-facebook {
+        display: flex;
+        justify-content: space-around;
+        gap: 10px;
+        img {
+          width: 15px;
+          object-fit: cover;
+          justify-content: end;
+        }
+      }
+      .Login-google-facebook button {
+        background-color: #ffffff00;
+        padding: 3px;
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        border-radius: 5px;
+        border: 1px solid #ebd1c39f;
+        align-items: center;
+      }
+      .Login-google-facebook button:hover {
+        cursor: pointer;
+        background-color: #3b22222c;
+      }
+      .login {
+        background-color: #ffbe98;
+        border: none;
+        border-radius: 4px;
+        color: #fff;
+        font-size: 15px;
+        font-weight: 550;
+        height: 35px;
+        border-radius: 10px;
+      }
+      .login:hover {
+        cursor: pointer;
+        background-color: #f1a87e;
+      }
+    }
+  }
+  
