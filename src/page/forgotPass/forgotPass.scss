@@ -1,0 +1,41 @@
+@import url(https://fonts.googleapis.com);
+@import url(https://fonts.gstatic.com);
+@import url(https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap);
+
+.content {
+    display: flex;
+    gap: 40px;
+    flex-direction: column;
+    font-family: Poppins;
+
+    .button-reset {
+        width: 80%;
+        height: 69px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        gap: 100px;
+    }
+
+    .message {
+        margin-top: 100px;
+        justify-content: center ;
+    }
+
+    .form {
+        .input-email {
+            .input-mail {
+                width: 80%;
+                height: 20%;
+                font-family: Poppins;
+                font-size: 16px;
+                font-style: normal;
+                line-height: normal;
+                background-color: #fff9e8;
+                border-radius: 6px;
+                border: 1.2px solid #d2d2d2;
+                padding: 4px 8px;
+            }
+        }
+    }
+}
