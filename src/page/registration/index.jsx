@@ -29,8 +29,8 @@ export default function Registration() {
               }
             ]}>
               <Input className="conten-mess"
-              type="password"
-              placeholder=" Enter your Password" />
+              type="text"
+              placeholder=" Enter your username" />
             </Form.Item>
             <Form.Item className="conten-name" label="password" name="password" rules={[
               {
