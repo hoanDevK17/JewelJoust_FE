@@ -1,3 +1,4 @@
+import { Form, Input } from "antd";
 import AuthenTemplate from "../../component/authen-template";
 import ButtonPrimary from "../../component/button-primary/ButtonPrimary";
 import "./index.scss";
@@ -18,61 +19,76 @@ export default function Registration() {
           <p className="regis-google-text">Continue With Google</p>
         </button>
         <div className="boxs-conten">
-          <div className="input-details">
-            <p className="conten-name">Username</p>
-            <input
-              className="conten-mess"
-              type="text"
-              placeholder=" Enter your Username"
-            />
-          </div>
-          <div className="input-details">
-            <p className="conten-name">Password</p>
-
-            <input
-              className="conten-mess"
+          <Form className="boxs-conten" labelCol={{
+            span: 24
+          }}>
+            <Form.Item className="conten-name" label="Username" name="Username" rules={[
+              {
+                required: true,
+                message: 'This box cannot be left blank'
+              }
+            ]}>
+              <Input className="conten-mess"
               type="password"
-              placeholder=" Enter your Password"
-            />
-          </div>
-          <div className="input-details">
-            <p className="conten-name">Confirm password</p>
-            <input
-              className="conten-mess"
+              placeholder=" Enter your Password" />
+            </Form.Item>
+            <Form.Item className="conten-name" label="password" name="password" rules={[
+              {
+                required: true,
+                message: 'This box cannot be left blank'
+              }
+            ]}>
+              <Input className="conten-mess"
               type="password"
-              placeholder=" Enter your Password"
-            />
-          </div>
-          <div className="input-details">
-            <p className="conten-name">Full Name</p>
-            <input
-              className="conten-mess"
+              placeholder=" Enter your Password"/>
+            </Form.Item>
+            <Form.Item className="conten-name" label="Confirm password" name="Confirm-password" rules={[
+              {
+                required: true,
+                message: 'This box cannot be left blank'
+              }
+            ]}>
+              <Input className="conten-mess"
+              type="password"
+              placeholder=" Enter your Password"/>
+            </Form.Item>
+            <Form.Item className="conten-name" label="Full Name" name="Full-Name" rules={[
+              {
+                required: true,
+                message: 'This box cannot be left blank'
+              }
+            ]}>
+              <Input className="conten-mess"
               type="text"
-              placeholder=" Enter your Full Name"
-            />
-          </div>
-          <div className="input-details">
-            <p className="conten-name">Email address</p>
-            <input
-              className="conten-mess"
+              placeholder=" Enter your Full Name"/>
+            </Form.Item>
+            <Form.Item className="conten-name" label="Email address" name="email" rules={[
+              {
+                required: true,
+                message: 'This box cannot be left blank'
+              }
+            ]}>
+              <Input className="conten-mess"
               type="text"
-              placeholder=" Enter your Email address"
-            />
-          </div>
-          <div className="input-details">
-            <p className="conten-name">PhoneNumber</p>
-            <input
-              className="conten-mess"
-              type="text"
-              placeholder="Enter your PhoneNumber"
-            />
-          </div>
+              placeholder=" Enter your Email address"/>
+            </Form.Item>
+            <Form.Item className="conten-name" label="Phone Number" name="phone" rules={[
+              {
+                required: true,
+                message: 'This box cannot be left blank, just enter number'
+              }
+            ]}>
+              <Input className="conten-mess"
+              type="number"
+              placeholder="Enter your PhoneNumber"/>
+            </Form.Item>
+          </Form>
         </div>
         <div className="button-regis">
           {/* <button className="button-star-regis">Register</button>
            */}
           <ButtonPrimary
-            title="ABCD"
+            title="Register"
             Onclick={() => {
               navigate("/login");
             }}
