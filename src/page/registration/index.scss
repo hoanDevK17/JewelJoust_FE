@@ -30,19 +30,12 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
-    gap: 14px;
+    gap: 5px;
     width: 400px;
   }
-  .input-details {
-    width: 400px;
-    height: 59px;
-  }
-  .input-pass {
-    width: 400px;
-    height: 59px;
-  }
-
   .conten-name {
+    width: 400px;
+    height: 59px;
     color: #000;
     font-family: Poppins;
     font-size: 14px;
