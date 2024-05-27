@@ -5,7 +5,6 @@ import ButtonPrimary from "../../component/button-primary/ButtonPrimary";
 import './forgotPass.scss'
 import { Form, Input } from "antd";
 export default function ForgotPass() {
-    const [email, setEmail] = useState('');
     const navigate = useNavigate();
 
     const handleEmailChange = (e) => {
