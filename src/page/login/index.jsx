@@ -4,8 +4,25 @@ import { Form, Input } from "antd";
 import ButtonPrimary from "../../component/button-primary/ButtonPrimary";
 import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { api } from "../../config/axios";
 export default function Login() {
   const navigate = useNavigate();
+  const [emailAddress, setEmailAddress] = useState("");
+  const [passWord, setPassWord] = useState("");
+
+  const login = async () => {
+    try {
+      const user = await api.post("login", {
+        username: emailAddress,
+        password: passWord
+      });
+      console.log(user);
+    } catch (error) {
+      console.error("Error logging in:", error);
+      // Handle the error here, such as displaying an error message to the user
+    }
+  };
 
   return (
     <AuthenTemplate>
@@ -35,6 +52,9 @@ export default function Login() {
                 className="button-Email-address"
                 type="text"
                 placeholder=" Enter your Email"
+                onChange={(e) => {
+                  setEmailAddress(e.target.value);
+                }}
               />
             </Form.Item>
           </Form>
@@ -60,6 +80,9 @@ export default function Login() {
                 className="button-Password"
                 type="password"
                 placeholder=" Enter your Password"
+                onChange={(e) => {
+                  setPassWord(e.target.value);
+                }}
               />
             </Form.Item>
           </Form>
@@ -78,7 +101,8 @@ export default function Login() {
           <ButtonPrimary
             title="Login"
             Onclick={() => {
-              navigate("/");
+              // navigate("/");
+              login();
             }}
           />
           <span>or</span>
