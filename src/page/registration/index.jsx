@@ -3,8 +3,13 @@ import AuthenTemplate from "../../component/authen-template";
 import ButtonPrimary from "../../component/button-primary/ButtonPrimary";
 import "./index.scss";
 import { useNavigate } from "react-router-dom";
+import { api } from "../../config/axios";
+
 export default function Registration() {
   const navigate = useNavigate();
+  const [emailAddress, setEmailAddress] = useState("");
+  const [passWord, setPassWord] = useState("");
+
   return (
     <AuthenTemplate>
       <div className="big">
@@ -20,7 +25,7 @@ export default function Registration() {
         </button>
         <div className="boxs-conten">
           <Form className="boxs-conten" labelCol={{
-            span: 24
+            span: 24 
           }}>
             <Form.Item className="conten-name" label="Username" name="Username" rules={[
               {
@@ -87,12 +92,12 @@ export default function Registration() {
         <div className="button-regis">
           {/* <button className="button-star-regis">Register</button>
            */}
-          <ButtonPrimary
+          {/* <ButtonPrimary
             title="Register"
             Onclick={() => {
               navigate("/login");
             }}
-          />
+          /> */}
           <div className="login">
             <p className="login-text">Already have an account?</p>
             <span
