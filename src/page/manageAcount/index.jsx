@@ -55,9 +55,9 @@ export default function ManageAcount() {
             </div>
             <div className="title-">
                 <p>Delete</p>
-            </div>
-            
+            </div>   
         </div>
+        
     </div>
   );
 }

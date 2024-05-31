@@ -6,8 +6,12 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { api } from "../../config/axios";
 import { APIlogin } from "../../api/api";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/features/counterSlice";
 export default function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -23,12 +27,13 @@ export default function Login() {
   //     // Handle the error here, such as displaying an error message to the user
   //   }
   // };
-  const login =(user)=> {
+  const onFinish =(user)=> {
     console.log(user)
     setIsLoading(true)
     APIlogin(user.email, user.password).then((rs)=>{
-      console.log(rs)
+      console.log(rs.data)
       if(rs.status === 200){
+        dispatch(login(rs.data))
         navigate("/homepage")
       }
     }).catch((error)=>{
@@ -52,7 +57,7 @@ export default function Login() {
             labelCol={{
               span: 24,
             }}
-            onFinish={login}
+            onFinish={onFinish}
           >
             <Form.Item
               label="Email address:"

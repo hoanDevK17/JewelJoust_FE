@@ -2,6 +2,7 @@ import { Button, Form, Input, Spin } from "antd";
 import AuthenTemplate from "../../component/authen-template";
 import ButtonPrimary from "../../component/button-primary/ButtonPrimary";
 import "./index.scss";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../config/axios";
 import { APIregis } from "../../api/api";
@@ -18,7 +19,7 @@ export default function Registration() {
     APIregis(user.username, user.password, user.fullname, user.email, user.phone).then((rs) => {
       console.log(rs)
       if(rs.status === 200){
-        navigate("/homepage")
+        navigate("/login")
       }
     }).catch((error) => {
       console.error("Error logging in:", error);
