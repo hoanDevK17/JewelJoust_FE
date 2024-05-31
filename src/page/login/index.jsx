@@ -1,7 +1,6 @@
 import AuthenTemplate from "../../component/authen-template";
 import "./index.scss";
 import { Button, Form, Input, Spin } from "antd";
-import ButtonPrimary from "../../component/button-primary/ButtonPrimary";
 import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -149,7 +148,5 @@ export default function Login() {
       </div>
     </AuthenTemplate>)}
     </>
-
-    
   );
 }

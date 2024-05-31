@@ -3,18 +3,18 @@ import Login from "./page/login";
 import Registration from "./page/registration";
 import ForgotPass from "./page/forgotPass/forgotPass";
 import ManageAcount from "./page/manageAcount/index";
-import { HomePage } from "./page/homepage/homePage";
+import HomePage from "./page/homepage/homePage";
 
 
 export default function App() {
   const router = createBrowserRouter([
     {
       path: "/login",
-      element: <Login/>,
+      element: <Login/>
     },
     {
       path: "/registration",
-      element: <Registration/>,
+      element: <Registration/>
     },
     {
       path:'/forgotpassword',
