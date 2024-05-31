@@ -44,43 +44,12 @@
   }
   .home-page-body {
     min-height: 100vh;
-    background-color: red;
+    margin-top: 60px;
+    // background-color: red;
   }
 }
 
-.footer {
-  background-color: #957461;
-  color: #fff;
-  display: flex;
-  margin-bottom: -40px;
-  align-items: start;
-  width: calc(100% + 80px);
-  margin-left: -40px;
-  margin-bottom: -40px;
-  padding: 40px;
-  gap: 150px;
 
-  .footer-content {
-    width: 40%;
-    gap: 20px;
-    display: flex;
-    margin-left: 100px;
-    // align-items: start;
-    flex-direction: column;
-    text-align: start;
-    .footer-logo {
-      display: flex;
-      justify-content: space-between;
-    }
-    h4 {
-      font-size: 20px;
-    }
-    span,
-    p {
-      font-size: 15px;
-    }
-  }
-}
 span:hover {
   cursor: pointer;
 }
