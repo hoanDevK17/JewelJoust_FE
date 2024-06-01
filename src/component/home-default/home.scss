@@ -1,0 +1,55 @@
+@import url(https://fonts.googleapis.com);
+@import url(https://fonts.gstatic.com);
+@import url(https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap);
+
+.home-default {
+  font-family: "Poppins";
+  padding: 20px 40px;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #fff9e8;
+  align-items: center;
+  //   margin-bottom: -50px;
+  .home-page-header {
+    background-color: #fff9e8;
+    display: flex;
+    width: calc(100% + 80px);
+    margin-left: -100px;
+    justify-content: space-around;
+    position: fixed;
+  padding: 20px 20px;
+  top: 0;
+
+  }
+  .home-page-logo {
+    width: 15%;
+    align-items: start;
+    img {
+      object-fit: cover;
+      width: 100%;
+      display: flex;
+      margin-left: -0px;
+    }
+  }
+  .home-page-title {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 20px;
+  }
+  .home-page-login {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .home-page-body {
+    min-height: 100vh;
+    margin-top: 60px;
+    // background-color: red;
+  }
+}
+
+
+span:hover {
+  cursor: pointer;
+}

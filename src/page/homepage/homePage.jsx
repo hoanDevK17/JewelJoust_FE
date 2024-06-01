@@ -1,13 +1,22 @@
-import { useSelector } from "react-redux";
-import { selectUser } from "../../redux/features/counterSlice";
 
-export default function HomePage() {
+// import HomePage from "../../component/home-default/home.jsx";
 
-  const user = useSelector(selectUser);
+import Footer from "../../component/footer/footer.jsx";
+import HomePage from "../../component/home-default/home.jsx";
+
+export default function Home() {
   return (
     <>
-    <div>homePage</div>
-    <h1>{user?.fullname}</h1>
+      <HomePage>
+   {/* Sang code chỗ này nha */}
+
+
+
+
+    </HomePage>
+      <Footer />
     </>
+    
+
   );
 }
