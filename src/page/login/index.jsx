@@ -26,13 +26,14 @@ export default function Login() {
   //   }
   // };
 
-  const login = (user) => {
-    console.log(user);
+  const Handlelogin = (user) => {
+    // console.log(user);
     setIsLoading(true);
     APIlogin(user.email, user.password)
       .then((rs) => {
-        console.log(rs);
+        // console.log(rs);
         if (rs.status === 200) {
+          dispatch(login(user));
           navigate("/homepage");
         }
       })
@@ -55,7 +56,7 @@ export default function Login() {
             paddingTop: "50vh",
           }}
         ></Spin>
-      ) : (
+     ) : (
         <AuthenTemplate>
           <div className="Login-page">
             <div className="Login-page-welcome">
@@ -68,7 +69,7 @@ export default function Login() {
                 labelCol={{
                   span: 24,
                 }}
-                onFinish={login}
+                onFinish={Handlelogin}
               >
                 <Form.Item
                   label="Email address:"
@@ -108,7 +109,7 @@ export default function Login() {
                     color: "red",
                   }}
                 >
-                  {errorMessage ? errorMessage : ""}
+                  {errorMessage && errorMessage }
                 </p>
                 <Form.Item>
                   <Button
@@ -128,11 +129,10 @@ export default function Login() {
                       textAlign: "center",
                     }}
                   >
-                    login
+                    Login
                   </Button>
                 </Form.Item>
               </Form>
-
 
               <span
                 className="forgot-password-link"

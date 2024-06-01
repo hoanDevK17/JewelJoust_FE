@@ -12,6 +12,10 @@ import CreateBidRequest from "./page/createBidRequest/createBidRequest"
 export default function App() {
   const router = createBrowserRouter([
     {
+      path: "/",
+      element: <HomePage/>
+    },
+    {
       path: "/login",
       element: <Login/>
     },

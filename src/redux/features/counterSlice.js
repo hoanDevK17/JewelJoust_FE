@@ -6,10 +6,13 @@ export const counterSlice = createSlice({
   reducers: {
     // nhận vào stay hien tai va update bang payload
     login: (state, actions) => {
+      // console.log("oke")
       state = actions.payload;
+      // console.log(actions.payload);
       return state;
     },
-    logout: () => {
+    logout: () => {console.log('oke')
+   
       return null;
     },
   },

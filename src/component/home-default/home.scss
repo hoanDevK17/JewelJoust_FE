@@ -11,11 +11,14 @@
   align-items: center;
   //   margin-bottom: -50px;
   .home-page-header {
+    max-width:1140px ;
+    width: calc(100% - 48px);
+    margin: auto;
     background-color: #fff9e8;
     display: flex;
-    width: calc(100% + 80px);
-    margin-left: -100px;
-    justify-content: space-around;
+    // width: calc(100% + 80px);
+    // margin-left: -100px;
+    justify-content: space-between;
     position: fixed;
   padding: 20px 20px;
   top: 0;
@@ -40,6 +43,7 @@
   .home-page-login {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 20px;
   }
   .home-page-body {
