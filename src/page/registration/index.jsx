@@ -1,4 +1,4 @@
-import { Button, Form, Input, Spin } from "antd";
+import { Button, Form, Input, Spin, DatePicker } from "antd";
 import AuthenTemplate from "../../component/authen-template";
 import ButtonPrimary from "../../component/button-primary/ButtonPrimary";
 import "./index.scss";
@@ -9,6 +9,9 @@ import { APIregis } from "../../api/api";
 
 export default function Registration() {
   const navigate = useNavigate();
+  const onChangeDate = (date, dateString) => {
+    console.log(date, dateString);
+  };
 
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -16,7 +19,7 @@ export default function Registration() {
   const regis =(user) => {
     console.log(user)
     setIsLoading(true)
-    APIregis(user.username, user.password, user.fullname, user.email, user.phone).then((rs) => {
+    APIregis(user.username, user.password, user.fullname, user.email, user.phone, user.address, user.birthday).then((rs) => {
       console.log(rs)
       if(rs.status === 200){
         navigate("/login")
@@ -111,13 +114,34 @@ export default function Registration() {
                 type="number"
                 placeholder="Enter your PhoneNumber"/>
               </Form.Item>
+              <Form.Item className="conten-name" label="Address" name="address" rules={[
+                {
+                  required: true,
+                  message: 'This box cannot be left blank'
+                }
+              ]}>
+                <Input className="conten-mess"
+                type="text"
+                placeholder="Enter your Address"/>
+              </Form.Item>
+              <Form.Item className="conten-name" label="Birth Day" name="birthday" rules={[
+                {
+                  required: true,
+                  message: 'This box cannot be left blank, just enter date'
+                }
+              ]}>
+                <DatePicker 
+                className="conten-mess"
+                type="date"
+                placeholder="Enter your Birth Day" onChange={onChangeDate} needConfirm />
+              </Form.Item>
               <p style={{
                   color:'red'
                 }}>{
                   errorMessage ? errorMessage : ''
                 }</p>
-              <Form.Item>
-              <Button className="button-regis" type="primary" htmlType="submit" style={{
+              <Form.Item className="button-regis">
+              <Button className="button-regis-in" type="primary" htmlType="submit" style={{
                 backgroundColor: '#ffbe98',
                 border: 'solid 4px #ffbe98',
                 color: '#ffffff',
@@ -128,7 +152,9 @@ export default function Registration() {
                 fontWeight: '600',
                 lineHeight: 'normal',
                 width:'100%',
-                textAlign:'center'
+                textAlign:'center',
+                width: '400px',
+                height: '69px'
               }}> 
                   Register 
                 </Button>

@@ -1,31 +1,66 @@
 import AuthenTemplate from "../../component/authen-template";
+import HomePage from "../../component/home-default/home";
 import './createBidRequest.scss'
 import { Button, Form, Input, Spin } from "antd";
 import { useState } from "react";
-
+import React from 'react';
+import { UploadOutlined } from '@ant-design/icons';
+import { message, Upload } from 'antd';
 
 export default function CreateBidRequest () {
+    const { TextArea } = Input;
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const props = {
+        name: 'file',
+        action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
+        headers: {
+          authorization: 'authorization-text',
+          accept: 'image/png, image/jpeg, .doc, .docx, .xml, .pdf'
+        },
+        onChange(info) {
+          if (info.file.status !== 'uploading') {
+            console.log(info.file, info.fileList);
+          }
+          if (info.file.status === 'done') {
+            message.success(`${info.file.name} file uploaded successfully`);
+          } else if (info.file.status === 'error') {
+            message.error(`${info.file.name} file upload failed.`);
+          }
+        },
+      };
+      const submit =(cbr) => {
+        console.log(cbr)
+        setIsLoading(true)
+        APIcbr(cbr.jewerlyname, cbr.describe, cbr.jewelryinitialprice, cbr.imgjewerly, cbr.filejewerly).then((rs) => {
+          console.log(rs)
+          if(rs.status === 200){
+            navigate("/login")
+          }
+        }).catch((error) => {
+          console.error("Error logging in:", error);
+          setErrorMessage(error.response.data)
+        }).finally(() => {
+          setIsLoading(false)
+        })
+    
+      }
   return (
     <>
         {isLoading?(<Spin style={{height:"100vh",width:"100%", backgroundColor:"#fff9e8",paddingTop:'50vh'}}></Spin>):(
-            <AuthenTemplate>
+            <HomePage>
                 <div className="createBidRequest">
                     <div className="heard">
                         
                     </div>
-                    <div className="body">
+                    <div className="body-creat-bid-request">
                         <div className="content">
-                            <div className="title">
-
-                            </div>
                             <Form
                                 className="form-creat-bid"
                                 labelCol={{
                                 span: 24,
                                 }}
-                                // onFinish={onFinish}
+                                onFinish={submit}
                                 >
                                 <Form.Item
                                     className="input-conten"
@@ -55,15 +90,15 @@ export default function CreateBidRequest () {
                                         },
                                     ]}
                                     >
-                                    <Input
+                                    <TextArea rows={4} 
                                         className="input-box"
                                         type="text"
-                                        placeholder=" Enter Describe"
-                                        />
+                                        placeholder=" Enter Describe" 
+                                    />
                                 </Form.Item>
                                 <Form.Item
                                     className="input-conten"
-                                    label="jewelryInitialPrice:"
+                                    label="Jewelry Initial Price:"
                                     name="jewelryinitialprice"
                                     rules={[
                                         {
@@ -77,16 +112,30 @@ export default function CreateBidRequest () {
                                         type="number"
                                         placeholder=" Enter your jewelry initial price"
                                         />
+                                </Form.Item>          
+                                <Form.Item
+                                    className="input-conten"
+                                    label="Upload image of your jewelry"
+                                    name="imgjewerly"
+                                    >
+                                    <Upload {...props}>
+                                        <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                                    </Upload>
                                 </Form.Item>
-                                    
-                                <Form.Item>
-
+                                <Form.Item
+                                    className="input-conten"
+                                    label="Upload the certificate files of your jewelry"
+                                    name="filejewerly"
+                                    >
+                                    <Upload {...props}>
+                                        <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                                    </Upload>
                                 </Form.Item>
-                                {/* <p style={{
-                                color:'red'
-                                }}>{
-                                    errorMessage ? errorMessage : ''
-                                }</p> */}
+                                    <p style={{
+                                    color:'red'
+                                    }}>{
+                                        errorMessage ? errorMessage : ''
+                                    }</p>
                                 <Form.Item>
                                     <Button type="primary" htmlType="submit" style={{
                                         backgroundColor: '#ffbe98',
@@ -108,7 +157,7 @@ export default function CreateBidRequest () {
                         </div>
                     </div>
                 </div> 
-            </AuthenTemplate>
+            </HomePage>
         )}
     </>    
   );
