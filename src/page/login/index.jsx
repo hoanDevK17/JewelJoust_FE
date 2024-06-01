@@ -1,15 +1,16 @@
 import AuthenTemplate from "../../component/authen-template";
 import "./index.scss";
 import { Button, Form, Input, Spin } from "antd";
-import ButtonPrimary from "../../component/button-primary/ButtonPrimary";
 import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { api } from "../../config/axios";
 import { APIlogin } from "../../api/api";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/features/counterSlice";
 export default function Login() {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   // const login = async () => {
@@ -24,6 +25,7 @@ export default function Login() {
   //     // Handle the error here, such as displaying an error message to the user
   //   }
   // };
+
   const login = (user) => {
     console.log(user);
     setIsLoading(true);
@@ -130,6 +132,7 @@ export default function Login() {
                   </Button>
                 </Form.Item>
               </Form>
+
 
               <span
                 className="forgot-password-link"

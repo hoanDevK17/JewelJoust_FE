@@ -1,3 +1,4 @@
+
 // import HomePage from "../../component/home-default/home.jsx";
 
 import Footer from "../../component/footer/footer.jsx";
@@ -16,5 +17,6 @@ export default function Home() {
       <Footer />
     </>
     
+
   );
 }
