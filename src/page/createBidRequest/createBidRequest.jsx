@@ -1,4 +1,4 @@
-import AuthenTemplate from "../../component/authen-template";
+import Footer from "../../component/footer/footer.jsx";
 import HomePage from "../../component/home-default/home";
 import './createBidRequest.scss'
 import { Button, Form, Input, Spin } from "antd";
@@ -18,7 +18,7 @@ export default function CreateBidRequest () {
           authorization: 'authorization-text',
           accept: 'image/png, image/jpeg, .doc, .docx, .xml, .pdf'
         },
-        onChange(info) {
+        onChange(info) {``
           if (info.file.status !== 'uploading') {
             console.log(info.file, info.fileList);
           }
@@ -50,9 +50,6 @@ export default function CreateBidRequest () {
         {isLoading?(<Spin style={{height:"100vh",width:"100%", backgroundColor:"#fff9e8",paddingTop:'50vh'}}></Spin>):(
             <HomePage>
                 <div className="createBidRequest">
-                    <div className="heard">
-                        
-                    </div>
                     <div className="body-creat-bid-request">
                         <div className="content">
                             <Form
@@ -156,6 +153,7 @@ export default function CreateBidRequest () {
                             </Form>
                         </div>
                     </div>
+                    <Footer/>
                 </div> 
             </HomePage>
         )}
