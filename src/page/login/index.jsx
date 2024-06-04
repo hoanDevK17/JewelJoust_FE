@@ -8,6 +8,8 @@ import { api } from "../../config/axios";
 import { APIlogin } from "../../api/api";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/features/counterSlice";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../../config/firebase";
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -44,6 +46,42 @@ export default function Login() {
         setIsLoading(false);
       });
   };
+  const handleLoginGoogle = () =>{
+    setIsLoading(true);
+    signInWithPopup(auth, provider)
+  .then(async (result) => {
+    // This gives you a Google Access Token. You can use it to access the Google API.
+    
+    const token = result.user.accessToken;
+    console.log(token)
+    // The signed-in user info.
+    const user = result.user;
+    const response =  await api.post("/login-google",{token: token})
+    console.log(response)
+    // save redux
+    
+    // save token local storage. 
+
+    // navigate 
+    if(response.status === 200){
+      navigate("/homepage");
+    }
+
+  }).catch((error) => {
+    // Handle Errors here.
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // The email of the user's account used.
+    const email = error.customData.email;
+    // The AuthCredential type that was used.
+    const credential = GoogleAuthProvider.credentialFromError(error);
+    // ...
+  })
+  .finally(() => {
+    setIsLoading(false);
+  });
+
+  }
   return (
     <>
       {isLoading ? (
@@ -146,7 +184,7 @@ export default function Login() {
 
             <div className="button-login">
               <span>or</span>
-              <div className="Login-google">
+              <div className="Login-google" onClick={handleLoginGoogle}> 
                 <button>
                   <img src="./IconGoogle.svg" alt="" title="" />
                   Sign in with Google
