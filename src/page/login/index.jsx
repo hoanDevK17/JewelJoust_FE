@@ -1,15 +1,16 @@
 import AuthenTemplate from "../../component/authen-template";
 import "./index.scss";
 import { Button, Form, Input, Spin } from "antd";
-import ButtonPrimary from "../../component/button-primary/ButtonPrimary";
 import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { api } from "../../config/axios";
 import { APIlogin } from "../../api/api";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/features/counterSlice";
 export default function Login() {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   // const login = async () => {
@@ -24,13 +25,16 @@ export default function Login() {
   //     // Handle the error here, such as displaying an error message to the user
   //   }
   // };
-  const login = (user) => {
-    console.log(user);
+
+  const Handlelogin = (user) => {
+    // console.log(user);
     setIsLoading(true);
     APIlogin(user.email, user.password)
       .then((rs) => {
-        console.log(rs);
+        // console.log(rs);
         if (rs.status === 200) {
+          dispatch(login(rs.data));
+          
           navigate("/homepage");
         }
       })
@@ -53,7 +57,7 @@ export default function Login() {
             paddingTop: "50vh",
           }}
         ></Spin>
-      ) : (
+     ) : (
         <AuthenTemplate>
           <div className="Login-page">
             <div className="Login-page-welcome">
@@ -66,7 +70,7 @@ export default function Login() {
                 labelCol={{
                   span: 24,
                 }}
-                onFinish={login}
+                onFinish={Handlelogin}
               >
                 <Form.Item
                   label="Email address:"
@@ -106,7 +110,7 @@ export default function Login() {
                     color: "red",
                   }}
                 >
-                  {errorMessage ? errorMessage : ""}
+                  {errorMessage && errorMessage }
                 </p>
                 <Form.Item>
                   <Button
@@ -126,7 +130,7 @@ export default function Login() {
                       textAlign: "center",
                     }}
                   >
-                    login
+                    Login
                   </Button>
                 </Form.Item>
               </Form>

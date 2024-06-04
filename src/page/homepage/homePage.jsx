@@ -1,5 +1,6 @@
 
 
+
 import Footer from "../../component/footer/footer.jsx";
 import HomePage from "../../component/home-default/home.jsx";
 import React from 'react';
@@ -108,9 +109,11 @@ export default function Home() {
     console.log('params', pagination, filters, sorter, extra);
   };
 
+
   return (
     <>
       <HomePage>
+
         {/* Sang code chỗ này nha */}
         <HeadCarousel />
         <Content title="Aunction Sessions" btnContent="View all auction" linkURL="/login" />
