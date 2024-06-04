@@ -8,6 +8,8 @@ import { api } from "../../config/axios";
 import { APIlogin } from "../../api/api";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/features/counterSlice";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../../config/firebase";
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -26,13 +28,15 @@ export default function Login() {
   //   }
   // };
 
-  const login = (user) => {
-    console.log(user);
+  const Handlelogin = (user) => {
+    // console.log(user);
     setIsLoading(true);
     APIlogin(user.email, user.password)
       .then((rs) => {
-        console.log(rs);
+        // console.log(rs);
         if (rs.status === 200) {
+          dispatch(login(rs.data));
+          
           navigate("/homepage");
         }
       })
@@ -44,6 +48,42 @@ export default function Login() {
         setIsLoading(false);
       });
   };
+  const handleLoginGoogle = () =>{
+    setIsLoading(true);
+    signInWithPopup(auth, provider)
+  .then(async (result) => {
+    // This gives you a Google Access Token. You can use it to access the Google API.
+    
+    const token = result.user.accessToken;
+    console.log(token)
+    // The signed-in user info.
+    const user = result.user;
+    const response =  await api.post("/login-google",{token: token})
+    console.log(response)
+    // save redux
+    
+    // save token local storage. 
+
+    // navigate 
+    if(response.status === 200){
+      navigate("/homepage");
+    }
+
+  }).catch((error) => {
+    // Handle Errors here.
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // The email of the user's account used.
+    const email = error.customData.email;
+    // The AuthCredential type that was used.
+    const credential = GoogleAuthProvider.credentialFromError(error);
+    // ...
+  })
+  .finally(() => {
+    setIsLoading(false);
+  });
+
+  }
   return (
     <>
       {isLoading ? (
@@ -55,7 +95,7 @@ export default function Login() {
             paddingTop: "50vh",
           }}
         ></Spin>
-      ) : (
+     ) : (
         <AuthenTemplate>
           <div className="Login-page">
             <div className="Login-page-welcome">
@@ -68,7 +108,7 @@ export default function Login() {
                 labelCol={{
                   span: 24,
                 }}
-                onFinish={login}
+                onFinish={Handlelogin}
               >
                 <Form.Item
                   label="Email address:"
@@ -108,7 +148,7 @@ export default function Login() {
                     color: "red",
                   }}
                 >
-                  {errorMessage ? errorMessage : ""}
+                  {errorMessage && errorMessage }
                 </p>
                 <Form.Item>
                   <Button
@@ -128,11 +168,10 @@ export default function Login() {
                       textAlign: "center",
                     }}
                   >
-                    login
+                    Login
                   </Button>
                 </Form.Item>
               </Form>
-
 
               <span
                 className="forgot-password-link"
@@ -146,7 +185,7 @@ export default function Login() {
 
             <div className="button-login">
               <span>or</span>
-              <div className="Login-google">
+              <div className="Login-google" onClick={handleLoginGoogle}> 
                 <button>
                   <img src="./IconGoogle.svg" alt="" title="" />
                   Sign in with Google

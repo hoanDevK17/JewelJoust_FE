@@ -1,0 +1,49 @@
+.carousel {
+    .slick-dots li button:before {
+        font-size: 0px;
+    }
+
+    .slick-track {
+        .slick-slide {
+
+            img {
+                width: 100%;
+                // height: fit-content;
+                height: 300px !important;
+                object-fit: cover;
+            }
+        }
+
+        .annouce {
+            padding-left: 70px;
+            padding-bottom: 30px;
+        }
+
+        .inside-item {
+            display: flex;
+
+            .button-num1 {
+                margin-left: 70px;
+                width: 40%;
+                height: 35px;
+                color: white;
+                background-color: gray;
+                font-size: 20px;
+                border-radius: 5px;
+                border: none;
+            }
+
+            .button-num1:hover {
+                 background-color: gainsboro;
+                 border-radius: 5px;
+                 animation-duration: 5s;
+            }
+        }
+    }
+
+    h1 {
+        font-size: 30px;
+        color: grey;
+    }
+
+}
