@@ -153,7 +153,6 @@ export default function Registration() {
                 lineHeight: 'normal',
                 width:'100%',
                 textAlign:'center',
-                width: '400px',
                 height: '69px'
               }}> 
                   Register 

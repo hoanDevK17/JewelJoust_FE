@@ -18,7 +18,14 @@ const navigate = useNavigate();
           </div>
         </div>
         <div className="authen-template__content__background">
-          <img src="/image.svg" alt="" />
+        <span
+            className="button-link"
+            onClick={() => {
+              navigate("/homepage");
+            }}
+          >
+           <img src="./Logo.svg" alt="" />
+          </span>
         </div>
       </div>
     </div>
