@@ -5,40 +5,44 @@ import ForgotPass from "./page/forgotPass/forgotPass";
 import ManageAcount from "./page/manageAcount/index";
 
 import HomePage from "./page/homepage/homePage";
-import CreateBidRequest from "./page/createBidRequest/createBidRequest"
-
-
+import CreateBidRequest from "./page/createBidRequest/createBidRequest";
+import  Profile  from "./page/profile/profile";
 
 export default function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <HomePage/>
+      element: <HomePage />,
     },
     {
       path: "/login",
-      element: <Login/>
+      element: <Login />,
     },
+
     {
       path: "/registration",
-      element: <Registration/>
+      element: <Registration />,
     },
     {
-      path:'/forgotpassword',
-      element:<ForgotPass/>
+      path: "/forgotpassword",
+      element: <ForgotPass />,
     },
     {
-      path:'/manageAcount',
-      element:<ManageAcount/>
+      path: "/manageAcount",
+      element: <ManageAcount />,
     },
     {
-      path:'/homepage',
-      element:<HomePage/>
+      path: "/homepage",
+      element: <HomePage />,
     },
     {
-      path:'/createBidRequest',
-      element:<CreateBidRequest/>
+      path: "/createBidRequest",
+      element: <CreateBidRequest />,
+    },
+    {
+      path: "/profile",
+      element: <Profile />,
     },
   ]);
-  return <RouterProvider router={router} />
+  return <RouterProvider router={router} />;
 }

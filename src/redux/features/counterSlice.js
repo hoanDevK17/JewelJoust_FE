@@ -2,16 +2,16 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const counterSlice = createSlice({
   name: "user",
-  initialState: null,
+  initialState:null,
   reducers: {
     // nhận vào stay hien tai va update bang payload
     login: (state, actions) => {
       // console.log("oke")
       state = actions.payload;
-      // console.log(actions.payload);
+      console.log(actions.payload);
       return state;
     },
-    logout: () => {console.log('oke')
+    logout: () => {
    
       return null;
     },

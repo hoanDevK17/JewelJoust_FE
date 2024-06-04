@@ -33,7 +33,8 @@ export default function Login() {
       .then((rs) => {
         // console.log(rs);
         if (rs.status === 200) {
-          dispatch(login(user));
+          dispatch(login(rs.data));
+          
           navigate("/homepage");
         }
       })
