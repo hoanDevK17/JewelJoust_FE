@@ -22,10 +22,9 @@
 
     "react-slick": "^0.30.2",
     "sass": "^1.77.2",
-    "slick-carousel": "^1.8.1"
+    "slick-carousel": "^1.8.1",
+    "redux-persist": "^6.0.0"
 
-    "redux-persist": "^6.0.0",
-    "sass": "^1.77.2"
 
   },
   "devDependencies": {
