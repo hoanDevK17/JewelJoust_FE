@@ -3,7 +3,9 @@ import { Button, Modal, Form, Input, Table, DatePicker } from 'antd';
 import axios from "axios";
 import { useForm } from "antd/es/form/Form";
 
+
 export default function Acount() {
+
 
     // id >= 0
     const [currentId, setCurrentId] = useState(-1)
@@ -210,7 +212,7 @@ return (
         },
     ]}
     >
-    <Input />
+    <DatePicker onChangeSetDate={onChangeSetDate} needConfirm />
     </Form.Item>
 
     <Form.Item
@@ -223,7 +225,7 @@ return (
         },
     ]}
     >
-    <Input />
+    <Input/>
     </Form.Item>
 
     <Form.Item
@@ -262,7 +264,7 @@ return (
         },
     ]}
     >
-    <DatePicker onChangeSetDate={onChangeSetDate} needConfirm />
+     <Input type="number"/>
     </Form.Item>
 
     <Form.Item

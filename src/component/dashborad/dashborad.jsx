@@ -7,6 +7,7 @@ import {
   CheckCircleOutlined,
   TeamOutlined,
   AppstoreAddOutlined,
+  ProductOutlined,
 } from "@ant-design/icons";
 import { Avatar, Breadcrumb, Layout, Menu, Space, theme } from "antd";
 import { Footer } from "antd/es/layout/layout";
