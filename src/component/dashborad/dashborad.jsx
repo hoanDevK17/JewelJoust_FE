@@ -7,6 +7,7 @@ import {
   CheckCircleOutlined,
   TeamOutlined,
   AppstoreAddOutlined,
+  ProductOutlined,
 } from "@ant-design/icons";
 import { Avatar, Breadcrumb, Layout, Menu, Space, theme } from "antd";
 import { Footer } from "antd/es/layout/layout";
@@ -82,7 +83,7 @@ const Dashboard = () => {
     if (role === "Admin") {
       setItems([
         getItem("Category", "category", <AppstoreAddOutlined />),
-        getItem("Hồ sơ", "profile", <ProfileOutlined />),
+        getItem("Acount", "acount", <ProfileOutlined />),
         getItem("Quản lý Clubs", "clubs", <HeartOutlined />, [
           getItem("Club 1", "club1"),
           getItem("Club 2", "club2"),

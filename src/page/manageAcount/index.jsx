@@ -1,17 +1,31 @@
 import { useEffect, useState } from "react";
-import { Button, Modal, Form, Input, Table, DatePicker } from 'antd';
+import { Button, Modal, Form, Input, Table, DatePicker, Select } from 'antd';
 import axios from "axios";
 import { useForm } from "antd/es/form/Form";
+import dayjs from "dayjs";
+import moment from "moment";
+
 
 export default function Acount() {
 
+    // const dateFormat = 'YYYY/MM/DD';
+    
+    /** Manually entering any of the following formats will perform date parsing */
+    // const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
+    // const customFormat = (value) => `custom format: ${value.format(dateFormat)}`;
+    // const customWeekStartEndFormat = (value) =>
+    //   `${dayjs(value).startOf('week').format(weekFormat)} ~ ${dayjs(value)
+    //     .endOf('week')
+    //     .format(weekFormat)}`;
+    
     // id >= 0
     const [currentId, setCurrentId] = useState(-1)
     const [form] = useForm()
 
     const onFinish = async (values) => {
         console.log('Success:', values);
-        const response = await axios.post("https://665d6f09e88051d604068e77.mockapi.io/category", values);
+        values.birthday = dayjs(values.birthday).format(`YYYY-MM-DD`);
+        const response = await axios.post("http://jeweljoust.online:8080/api/register-have-role", values);
             setData([...data, response.data]);
             setCurrentId(-1);
             console.log(response);
@@ -28,7 +42,7 @@ export default function Acount() {
                 password: 'test',
                 fullname: 'a',
                 address: 'w',
-                birthday: "e",
+                birthday: moment('04-06-2024'),
                 email: 'r',
                 phone: '999',
                 role: 'q',
@@ -96,7 +110,7 @@ export default function Acount() {
 const [data, setData] = useState ([]);
 
 const fetchData = async () => {
-    const response = await axios.get("https://665d6f09e88051d604068e77.mockapi.io/category");
+    const response = await axios.get("http://jeweljoust.online:8080/api/accounts");
     console.log(response.data); 
     setData(response.data);
 };
@@ -110,12 +124,10 @@ const handleDelate = (value) =>{
     const response = axios.delete(
         `https://665d6f09e88051d604068e77.mockapi.io/category/${value.id}`
     );
+    console.log(response.data); 
     // lọc ra tất cả data loại bỏ data vừa bị xoá
     setData(data.filter((data) => data.id != value.id));
 };
-const onChangeSetDate = (date, dateString) => {
-    console.log(date, dateString);
-  };
 
 
 return (
@@ -146,133 +158,150 @@ return (
     }}
     onFinish={onFinish}
     onFinishFailed={onFinishFailed}
-    autoComplete="off"
->
-    <Form.Item
-    label="User Name"
-    name="username"
-    rules={[
-        {
-        required: true,
-        message: 'Please input user name!',
-        },
-    ]}
+    autoComplete="off"  
     >
-    <Input />
-    </Form.Item>
+        <Form.Item
+        label="User Name"
+        name="username"
+        rules={[
+            {
+            required: true,
+            message: 'Please input user name!',
+            },
+            {whitespace: true},
+        ]}
+        >
+        <Input />
+        </Form.Item>
 
-    <Form.Item
-    label="Password"
-    name="password"
-    rules={[
-        {
-        required: true,
-        message: 'Please input password !',
-        },
-    ]}
-    >
-    <Input type="password"/>
-    </Form.Item>
+        <Form.Item
+        label="Password"
+        name="password"
+        rules={[
+            {
+            required: true,
+            message: 'Please input password !',
+            },
+            {whitespace: true},
+        ]}
+        hasFeedback
+        >
+        <Input type="password"/>
+        </Form.Item>
 
-    <Form.Item
-    label="Full Name"
-    name="fullname"
-    rules={[
-        {
-        required: true,
-        message: 'Please input full name!',
-        },
-    ]}
-    >
-    <Input />
-    </Form.Item>
+        <Form.Item
+        label="Full Name"
+        name="fullname"
+        rules={[
+            {
+            required: true,
+            message: 'Please input full name!',
+            },
+            {whitespace: true},
+        ]}
+        >
+        <Input />
+        </Form.Item>
 
-    <Form.Item
-    label="Address"
-    name="address"
-    rules={[
-        {
-        required: true,
-        message: 'Please input address!',
-        },
-    ]}
-    >
-    <Input />
-    </Form.Item>
+        <Form.Item
+        label="Address"
+        name="address"
+        rules={[
+            {
+            required: true,
+            message: 'Please input address!',
+            },
+            {whitespace: true},
+        ]}
+        >
+        <Input />
+        </Form.Item>
 
-    <Form.Item
-    label="Birthday"
-    name="birthday"
-    rules={[
-        {
-        required: true,
-        message: 'Please input birthday!',
-        },
-    ]}
-    >
-    <Input />
-    </Form.Item>
+        <Form.Item
+        label="Birthday"
+        name="birthday"
+        rules={[
+            {
+            required: true,
+            message: 'Please input birthday!',
+            },
+        ]}   
+        getValueFromEvent={(onChange) => moment(onChange).format('YYYY-MM-DD')}
+        getValueProps={(i) => moment(i)}
+        >
+        <DatePicker format='YYYY-MM-DD' style={{ width: '100%' }}/>
+        </Form.Item>
 
-    <Form.Item
-    label="Role"
-    name="role"
-    rules={[
+        <Form.Item
+        label="Role"
+        name="role"
+        rules={[
+            {
+            required: true,
+            message: 'Please input role!',
+            },
+        ]}
+        >
+            <Select placeholder = "Select Role" requiredMark="optional">
+                <Select.Option value='MENBER'>Menber</Select.Option>
+                <Select.Option value='STAFF'>Staff</Select.Option>
+                <Select.Option value='MANAGE'>Manage</Select.Option>
+            </Select>
+        </Form.Item>
         {
-        required: true,
-        message: 'Please input role!',
-        },
-    ]}
-    >
-    <Input />
-    </Form.Item>
+            currentId == 0 ? <></> : <Form.Item
+            label="State"
+            name="locked"
+            rules={[
+                {
+                required: true,
+                message: 'Please input state!',
+                },
+            ]}
+            >
+            <Select placeholder = "Select State">
+                <Select.Option value='ATIVE'>Active</Select.Option>
+                <Select.Option value='LOCKED'>Locked</Select.Option>
+            </Select>
+            </Form.Item>
+        }
 
-    <Form.Item
-    label="State"
-    name="locked"
-    rules={[
-        {
-        required: true,
-        message: 'Please input state!',
-        },
-    ]}
-    >
-    <Input />
-    </Form.Item>
+        <Form.Item
+        label="Email"
+        name="email"
+        rules={[
+            {
+            required: true,
+            message: 'Please input email!',
+            },
+            {whitespace: true},
+        ]}
+        >
+        <Input />
+        </Form.Item>
 
-    <Form.Item
-    label="Email"
-    name="email"
-    rules={[
-        {
-        required: true,
-        message: 'Please input email!',
-        },
-    ]}
-    >
-    <Input />
-    </Form.Item>
+        <Form.Item
+        label="Phone Number"
+        name="phone"
+        rules={[
+            {
+            required: true,
+            message: 'Please input phone number!',
+            },
+            {whitespace: true},
+        ]}
+        >
+        <Input type="number"/>
+        </Form.Item>
 
-    <Form.Item
-    label="Phone Number"
-    name="phone"
-    rules={[
-        {
-        required: true,
-        message: 'Please input phone number!',
-        },
-    ]}
-    >
-    <DatePicker onChangeSetDate={onChangeSetDate} needConfirm />
-    </Form.Item>
-
-    <Form.Item
-    wrapperCol={{
-        offset: 8,
-        span: 16,
-    }}
-    >
-    </Form.Item>
-</Form>
+        <Form.Item
+        wrapperCol={{
+            offset: 8,
+            span: 16,
+        }}
+        >
+        </Form.Item>
+    </Form>
 
 
   </Modal>
