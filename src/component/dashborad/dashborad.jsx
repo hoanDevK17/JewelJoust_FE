@@ -9,7 +9,7 @@ import {
   AppstoreAddOutlined,
   ProductOutlined,
 } from "@ant-design/icons";
-import { Avatar, Breadcrumb, Layout, Menu, Space, theme } from "antd";
+import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { Footer } from "antd/es/layout/layout";
 import { Link, Outlet, useLocation } from "react-router-dom";
 
@@ -90,12 +90,7 @@ const Dashboard = () => {
           getItem("Club 3", "club3"),
           getItem("All Promotion", "all-promotion"),
         ]),
-        getItem("Quản lý Accounts", "accounts", <TeamOutlined />, [
-          getItem("Club 1", "account-club-1"),
-          getItem("Club 2", "account-club-2"),
-          getItem("Club 3", "account-club-3"),
-          getItem("All Staffs", "all-staffs"),
-        ]),
+        getItem("Request", "request", <TeamOutlined />),
         getItem("Thống kê", "statistics", <BarChartOutlined />, [
           getItem("Club 1", "stats-club-1"),
           getItem("Club 2", "stats-club-2"),
@@ -166,7 +161,7 @@ const Dashboard = () => {
           style={{ margin: "0 16px", display: "flex", flexDirection: "column" }}
         >
           <Breadcrumb>
-            {location.pathname.split("/").map((path, index, array) => (
+            {location.pathname.split("/").map((path, index) => (
               <Breadcrumb.Item key={path}>
                 {index === 0 ? path : <Link to={`/${path}`}>{path}</Link>}
               </Breadcrumb.Item>
