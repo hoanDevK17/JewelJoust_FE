@@ -10,6 +10,8 @@ import Acount from "./page/manageAcount/index"
 import HomePage from "./page/homepage/homePage";
 import CreateBidRequest from "./page/createBidRequest/createBidRequest";
 import  Profile  from "./page/profile/profile";
+import ManageRequest from "./page/manageRequest/index";
+
 
 export default function App() {
   const router = createBrowserRouter([
@@ -63,7 +65,11 @@ export default function App() {
        {
         path:"/dashboard/acount",
         element: <Acount />,
-       }
+       },
+       {
+        path:"/dashboard/request",
+        element: <ManageRequest />,
+       },
       ],
     }
   ]);
