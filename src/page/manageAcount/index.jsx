@@ -1,15 +1,21 @@
 import { useEffect, useState } from "react";
-import { Button, Modal, Form, Input, Table, DatePicker, Select } from 'antd';
+import { Button, Modal, Form, Input, Table, Select, Tag, message } from 'antd';
 import axios from "axios";
 import { useForm } from "antd/es/form/Form";
 import dayjs from "dayjs";
 import moment from "moment";
+import { APIgetallacount, APIregishaverole } from "../../api/api";
+import useSelection from "antd/es/table/hooks/useSelection";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { selectUser } from "../../redux/features/counterSlice";
 
 
 export default function Acount() {
 
+    const token = useSelector(selectUser).token;
+    // console.log(user)
     // const dateFormat = 'YYYY/MM/DD';
-    
     /** Manually entering any of the following formats will perform date parsing */
     // const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
     // const customFormat = (value) => `custom format: ${value.format(dateFormat)}`;
@@ -17,36 +23,57 @@ export default function Acount() {
     //   `${dayjs(value).startOf('week').format(weekFormat)} ~ ${dayjs(value)
     //     .endOf('week')
     //     .format(weekFormat)}`;
-    
+
     // id >= 0
+
     const [currentId, setCurrentId] = useState(-1)
+    const [currentIdDate, setCurrentIdDate] = useState(0);
     const [form] = useForm()
 
     const onFinish = async (values) => {
+        if (setCurrentIdDate === 0 && values.date) {
+            const date = moment(values.date, 'YYYY-MM-DD').format('YYYY-MM-DD');
+            message.success(`Date submitted: ${date}`);
+          } else {
+            message.error('Please enter a valid date');
+          }
         console.log('Success:', values);
-        values.birthday = dayjs(values.birthday).format(`YYYY-MM-DD`);
-        const response = await axios.post("http://jeweljoust.online:8080/api/register-have-role", values);
-            setData([...data, response.data]);
-            setCurrentId(-1);
-            console.log(response);
+        APIregishaverole(values.userName, values.passWord, values.fullName, values.email, values.phone, values.address, values.birthday, values.role, token).then((response) => {
+            console.log(response)
+        }).catch((error) => {
+            console.error("Error logging in:", error);
+          }).finally(() => {
+          })
+        // values.birthday = dayjs(values.birthday).format(`YYYY-MM-DD`);
+        // const response = await axios.post("http://jeweljoust.online:8080/api/register", values).then((response) => {
+        //     console.log(response)
+        // });
+        //     setData([...data, response.data]);
+        //     setCurrentId(-1);
+        //     console.log(response);
       };
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
       };
-
+    
       useEffect(() => {
         console.log(currentId);
+        const currentUser = data.find((item)=> {console.log(item)
+            if (item.id == currentId) return item
+           })
+           
         if(currentId > 0){
+            console.log(JSON.stringify(currentUser.status));
             form.setFieldsValue({
-                username: 'test',
-                password: 'test',
-                fullname: 'a',
-                address: 'w',
-                birthday: moment('04-06-2024'),
-                email: 'r',
-                phone: '999',
-                role: 'q',
-                locked: 'o'
+                username: currentUser.username,
+                password: currentUser.password,
+                fullname: currentUser.fullname,
+                address: currentUser.address,
+                birthday: currentUser.birthday,
+                email: currentUser.email,
+                phone: currentUser.phone,
+                role: currentUser.role,
+                status: currentUser.status,
             })
         }else{
             form.resetFields()
@@ -56,8 +83,8 @@ export default function Acount() {
     const columns = [
         {
           title: 'ID',
-          dataIndex: 'userid',
-          key: 'userid',
+          dataIndex: 'id',
+          key: 'id',
         },
         {
           title: 'User Name',
@@ -76,8 +103,14 @@ export default function Acount() {
           },
           {
             title: 'State',
-            dataIndex: 'locked',
-            key: 'locked',
+            dataIndex: 'status',
+            key: 'status',
+            render: (status ) => {
+                return <Tag color={status=="ACTIVE"?'green' :'red' } key={status}>
+                {status}
+              </Tag>
+            }
+                
           },
           {
             title: 'Email',
@@ -110,9 +143,10 @@ export default function Acount() {
 const [data, setData] = useState ([]);
 
 const fetchData = async () => {
-    const response = await axios.get("http://jeweljoust.online:8080/api/accounts");
-    console.log(response.data); 
-    setData(response.data);
+    await APIgetallacount(token).then((response) => {
+        console.log(response.data); 
+        setData((response.data));
+    })
 };
 
     useEffect(() => {
@@ -129,6 +163,13 @@ const handleDelate = (value) =>{
     setData(data.filter((data) => data.id != value.id));
 };
 
+    const getValueProps = (value) => {
+        if (currentIdDate === 0) {
+        return { value: value ? value : '' };
+        }
+        return { value: '' };
+  };
+  const today = moment().format('YYYY-MM-DD');
 
 return (
 <div>
@@ -174,20 +215,22 @@ return (
         <Input />
         </Form.Item>
 
-        <Form.Item
-        label="Password"
-        name="password"
-        rules={[
-            {
-            required: true,
-            message: 'Please input password !',
-            },
-            {whitespace: true},
-        ]}
-        hasFeedback
-        >
-        <Input type="password"/>
-        </Form.Item>
+        { currentId > 0 ? <></> : 
+            <Form.Item
+            label="Password"
+            name="password"
+            rules={[
+                {
+                required: true,
+                message: 'Please input password !',
+                },
+                {whitespace: true},
+            ]}
+            hasFeedback
+            >
+            <Input type="password"/>
+            </Form.Item>
+        }
 
         <Form.Item
         label="Full Name"
@@ -225,11 +268,13 @@ return (
             required: true,
             message: 'Please input birthday!',
             },
-        ]}   
-        getValueFromEvent={(onChange) => moment(onChange).format('YYYY-MM-DD')}
-        getValueProps={(i) => moment(i)}
+        ]}
+        getValueProps={getValueProps}
         >
-        <DatePicker format='YYYY-MM-DD' style={{ width: '100%' }}/>
+            <Input 
+            type="date" 
+            max={today}
+            />
         </Form.Item>
 
         <Form.Item
@@ -245,13 +290,14 @@ return (
             <Select placeholder = "Select Role" requiredMark="optional">
                 <Select.Option value='MENBER'>Menber</Select.Option>
                 <Select.Option value='STAFF'>Staff</Select.Option>
-                <Select.Option value='MANAGE'>Manage</Select.Option>
+                <Select.Option value='MANAGER'>Manage</Select.Option>
             </Select>
         </Form.Item>
-        {
-            currentId == 0 ? <></> : <Form.Item
+      { 
+            currentId == 0 ? <></> :  
+            <Form.Item
             label="State"
-            name="locked"
+            name="status"
             rules={[
                 {
                 required: true,
@@ -259,12 +305,12 @@ return (
                 },
             ]}
             >
-            <Select placeholder = "Select State">
-                <Select.Option value='ATIVE'>Active</Select.Option>
-                <Select.Option value='LOCKED'>Locked</Select.Option>
-            </Select>
+                <Select placeholder = "Select State" requiredMark="optional">
+                    <Select.Option value='ACTIVE'>Active</Select.Option>
+                    <Select.Option value='LOCKED'>Locked</Select.Option>
+                </Select>
             </Form.Item>
-        }
+      } 
 
         <Form.Item
         label="Email"
@@ -288,10 +334,13 @@ return (
             required: true,
             message: 'Please input phone number!',
             },
-            {whitespace: true},
+            {whitespace: true,message:"Phone don't have space"},
+            {pattern: "[0-9]{10}",min:9,max:11,message:"Phone must contain between 9 to 11 number"}
+            
+
         ]}
         >
-        <Input type="number"/>
+        <Input />
         </Form.Item>
 
         <Form.Item

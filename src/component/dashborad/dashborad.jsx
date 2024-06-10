@@ -11,7 +11,9 @@ import {
 } from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { Footer } from "antd/es/layout/layout";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/features/counterSlice";
 
 const { Header, Content, Sider } = Layout;
 
@@ -25,11 +27,15 @@ function getItem(label, key, icon, children) {
 }
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  const user = useSelector(selectUser);
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
-
+  if(user?.role == "MEMBER" ){
+    navigate("/")
+}
   const [items, setItems] = useState([]);
   const [key, setKey] = useState();
   const location = useLocation();
