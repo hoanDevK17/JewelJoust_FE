@@ -36,8 +36,9 @@ export default function Login() {
         // console.log(rs);
         if (rs.status === 200) {
           dispatch(login(rs.data));
-          
-          navigate("/homepage");
+          console.log(rs.data)
+          rs.data.role == "MEMBER" ? navigate("/homepage") : navigate("/dashboard")
+           
         }
       })
       .catch((error) => {
