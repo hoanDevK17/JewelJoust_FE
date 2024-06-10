@@ -24,7 +24,7 @@ const navigate = useNavigate();
               navigate("/homepage");
             }}
           >
-           <img src="./Logo.svg" alt="" />
+           <img src="./image.svg" alt="" />
           </span>
         </div>
       </div>

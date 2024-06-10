@@ -6,7 +6,7 @@ import ManageAcount from "./page/manageAcount/index";
 import Dashboard from "./component/dashborad/dashborad";
 import Category from "./component/test/test";
 import Acount from "./page/manageAcount/index"
-
+import RegisterAuction from "./page/RegisterAuction"
 import HomePage from "./page/homepage/homePage";
 import CreateBidRequest from "./page/createBidRequest/createBidRequest";
 import  Profile  from "./page/profile/profile";
@@ -52,7 +52,11 @@ export default function App() {
       path: "/",
       element: <div>Hello world!</div>,
     },
-
+    {
+      path: "/RegisterAuction",
+      element: <RegisterAuction />,
+    },
+    
     
     {
       path: "/dashboard",

@@ -54,7 +54,7 @@ export default function HomePage({ children }) {
           <span
             className="button-link"
             onClick={() => {
-              navigate("/homepage");
+              navigate("");
             }}
           >
             Home
