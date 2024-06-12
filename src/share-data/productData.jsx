@@ -1,0 +1,72 @@
+export const Products =[
+    {
+        id:1,
+        name: "Richard Mille",
+        image :'https://donghoxiteen.com/wp-content/uploads/2021/01/TVB60281138-Tevise-nau-trang-2.jpg',
+        price :10000,
+        time:'Timed-out',
+        sellTime: "09/04/2024-17/04/2024",
+        afterTime:"16/04/2024-19/04/2024",
+        profileCost:1000,
+        jump:100,
+        depositFee:500,
+        hinhThuc:"Online",
+        AucTime:"09:00 20/04/2024"
+    },
+    {
+        id:2,
+        name: "Richard Mille 2",
+        image :'https://dwatchluxury.com/wp-content/uploads/2023/02/Dong-Ho-Co-Nam-Richard-Mille-RM010-RoseGold.jpg',
+        price :10000,
+        time:'Timed-out',
+        sellTime: "09/04/2024-17/04/2024",
+        afterTime:"16/04/2024-19/04/2024",
+        profileCost:1000,
+        jump:100,
+        depositFee:500,
+        hinhThuc:"Online",
+        AucTime:"09:00 20/04/2024"
+    },
+    {
+        id:3,
+        name: "Richard Mille 3",
+        image :'https://dwatchluxury.com/wp-content/uploads/2023/02/Dong-Ho-Co-Nam-Richard-Mille-RM010-RoseGold.jpg',
+        price :10000,
+        time:'Timed-out',
+        sellTime: "09/04/2024-17/04/2024",
+        afterTime:"16/04/2024-19/04/2024",
+        profileCost:1000,
+        jump:100,
+        depositFee:500,
+        hinhThuc:"Online",
+        AucTime:"09:00 20/04/2024"
+    },
+    {
+        id:4,
+        name: "Richard Mille 4",
+        image :'https://dwatchluxury.com/wp-content/uploads/2023/02/Dong-Ho-Co-Nam-Richard-Mille-RM010-RoseGold.jpg',
+        price :10000,
+        time:'Timed-out',
+        sellTime: "09/04/2024-17/04/2024",
+        afterTime:"16/04/2024-19/04/2024",
+        profileCost:1000,
+        jump:100,
+        depositFee:500,
+        hinhThuc:"Online",
+        AucTime:"09:00 20/04/2024"
+    },
+    {
+        id:5,
+        name: "Richard Mille 5",
+        image :'https://dwatchluxury.com/wp-content/uploads/2023/02/Dong-Ho-Co-Nam-Richard-Mille-RM010-RoseGold.jpg',
+        price :10000,
+        time:'Timed-out',
+        sellTime: "09/04/2024-17/04/2024",
+        afterTime:"16/04/2024-19/04/2024",
+        profileCost:1000,
+        jump:100,
+        depositFee:500,
+        hinhThuc:"Online",
+        AucTime:"09:00 20/04/2024"
+    }
+]

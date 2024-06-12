@@ -1,4 +1,14 @@
-import { UserOutlined } from "@ant-design/icons";
+import {
+  EnvironmentOutlined,
+  FacebookOutlined,
+  InstagramOutlined,
+  MailOutlined,
+  PhoneOutlined,
+  TwitterOutlined,
+  UserOutlined, 
+  YoutubeOutlined,
+} from "@ant-design/icons";
+
 import "./home.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -62,7 +72,7 @@ export default function HomePage({ children }) {
           <span
             className="button-link"
             onClick={() => {
-              navigate("/");
+              navigate("/sessions");
             }}
           >
             Jewelry Auction

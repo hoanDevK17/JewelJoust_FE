@@ -13,7 +13,7 @@ import HeadCarousel from "../../component/header-carousel/headCarousel.jsx";
 import { Table } from "antd";
 export default function Home() {
   const onSearch = (value, _e, info) => console.log(info?.source, value);
-  const columns = [
+  const columns =  [
     {
       title: 'Name',
       dataIndex: 'name',
@@ -116,14 +116,14 @@ export default function Home() {
 
         {/* Sang code chỗ này nha */}
         <HeadCarousel />
-        <Content title="Aunction Sessions" btnContent="View all auction" linkURL="/login" />
+        <Content title="Aunction Sessions" btnContent="View all sessions" linkURL="/sessions" />
         <div className="table">
           <Table columns={columns} dataSource={data} onChange={onChange} />
         </div>
         <Content title="Jewelry Aunction" btnContent="View all jewelries" linkURL="/login" />
         <div>
           <Search
-            placeholder="input search text"
+            placeholder="Search Jewelries"
             onSearch={onSearch}
             style={{
               width: 200,

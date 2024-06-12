@@ -6,19 +6,58 @@
 .slider-container {
     font-family: "Poppins";
     margin-top: 20px;
+
     img {
-        width:300px;
+        width: 355px;
         height: 200px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        margin-bottom: 20px;
     }
-    .slick-next:before{
+
+    .slick-next:before {
         color: black;
     }
-    .slick-prev:before{
+
+    .slick-prev:before {
         color: black;
     }
 }
-.card{
+
+.card {
     font-family: "Poppins";
-    background-color: #fff9e8;
-    border: none;
+    background-color: whitesmoke;
+    width: 90% !important;
+    height: 400px;
+    .info{
+        margin-left: 10px;
+    }
+    h1 {
+        margin-bottom: 20px;
+        text-align: center;
+        color: gray;
+    }
+
+    .button-outside {
+        display: flex;
+        justify-content: center;
+        overflow: hidden;
+        .button-detail {
+            width: 250px;
+            height: 35px;
+            border-radius: 8px;
+            border: 1px solid gray;
+            background-color: burlywood;
+        }
+
+        .button-detail:hover {
+            background-color: dimgray;
+            color: white;
+            -webkit-transition: all 500ms ease;
+            -moz-transition: all 500ms ease;
+            -ms-transition: all 500ms ease;
+            -o-transition: all 500ms ease;
+            transition: all 500ms ease;
+        }
+    }
 }
