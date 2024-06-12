@@ -17,7 +17,7 @@ import Profile from "./page/profile/profile";
 import ManageRequest from "./page/manageRequest/index";
 import ManageSession from "./page/manageSession/index";
 import History from "./page/history/history";
-import AuctionRequestSell from "./page/createBidRequest/AuctionRequestSell";
+import AuctionRequestSell from "./page/AuctionRequestSell/AuctionRequestSell";
 
 export default function App() {
   const router = createBrowserRouter([
