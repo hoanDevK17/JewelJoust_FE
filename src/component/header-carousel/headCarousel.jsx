@@ -6,7 +6,7 @@ export default function HeadCarousel() {
     const navigate = useNavigate()
     return (
         <div className=" banner">
-            <Carousel className="carousel">
+            <Carousel autoplay className="carousel">
                 <div >
                     <img src="https://dam.bluenile.com/images/public/20446/5_loose_diamonds_in_varying_cuts_and_1_round_engagement_ring.jpeg" alt="" />
                     <div  style={{ position: "absolute", zIndex: "10000", top: "85px" }}>
@@ -15,7 +15,7 @@ export default function HeadCarousel() {
                             <button  className='button-num1'onClick={() => {
                                 navigate('/registration')
                             }}>
-                                 Register
+                              <p>Register</p>
                             </button>
                             </div>
                     </div>

@@ -1,7 +1,8 @@
 import React from 'react'
 import Slider from "react-slick";
 import './carousel.scss'
-
+import { Products } from '../../share-data/productData';
+import { Link } from 'react-router-dom';
 export default function MyCarousel() {
     const settings = {
         dots: true,
@@ -33,37 +34,26 @@ export default function MyCarousel() {
     return (
         <div className="slider-container">
             <Slider {...settings}>
-                <div>
-                    <div className='card'>
-                        <img src='https://dam.bluenile.com/images/public/20446/5_loose_diamonds_in_varying_cuts_and_1_round_engagement_ring.jpeg' alt=''></img>
-                    </div>
-                    <h1>Diamond A</h1>
-                    <p>Price:</p>
-                    <button>Detail</button>
-                </div>
-                <div>
-                    <div className='card'>
-                        <img src='https://dam.bluenile.com/images/public/20446/5_loose_diamonds_in_varying_cuts_and_1_round_engagement_ring.jpeg' alt=''></img>
-                    </div>
-                    <h1>Diamond A</h1>
-                    <p>Price: 2000$</p>
-                </div>
-                <div>
-                    <div className='card'>
-                        <img src='https://dam.bluenile.com/images/public/20446/5_loose_diamonds_in_varying_cuts_and_1_round_engagement_ring.jpeg' alt=''></img>
-                    </div>
-                    <h1>Diamond A</h1>
-                    <p>Price: 2000$</p>
-                </div>
-                <div>
-                    <div className='card'>
-                        <img src='https://dam.bluenile.com/images/public/20446/5_loose_diamonds_in_varying_cuts_and_1_round_engagement_ring.jpeg' alt=''></img>
-                    </div>
-                    <h1>Diamond A</h1>
-                    <p>Price: 2000$</p>
-                </div>
 
-            </Slider>
-        </div>
+
+                {Products.map((product) => (
+                    <div className='card' style={{
+
+                    }}>
+                        <img src={product.image} alt={product.name} />
+                        <div className='info'>
+                            <h1>{product.name}</h1>
+                            <p>Start price :{product.price}</p>
+                            <p>Time : {product.time}</p>
+                        </div>
+                        <div className='button-outside'>
+                            <Link to={`detail/${product.id}`}>
+                                <p><button className='button-detail'>Detail</button></p>
+                            </Link>
+                        </div>
+                    </div>
+                ))}
+            </Slider >
+        </div >
     )
 }

@@ -5,7 +5,7 @@ import {
   MailOutlined,
   PhoneOutlined,
   TwitterOutlined,
-  UserOutlined,
+  UserOutlined, 
   YoutubeOutlined,
 } from "@ant-design/icons";
 import "./home.scss";
@@ -65,7 +65,7 @@ console.log(user)
           <span
             className="button-link"
             onClick={() => {
-              navigate("/");
+              navigate("/sessions");
             }}
           >
             Jewelry Auction

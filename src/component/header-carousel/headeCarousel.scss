@@ -26,17 +26,23 @@
                 margin-left: 70px;
                 width: 40%;
                 height: 35px;
-                color: white;
+                color: aliceblue;
                 background-color: gray;
                 font-size: 20px;
-                border-radius: 5px;
-                border: none;
+                border-radius: 10px;
+                border: 1px solid black;
             }
 
             .button-num1:hover {
-                 background-color: gainsboro;
-                 border-radius: 5px;
-                 animation-duration: 5s;
+                background-color: darkgray;
+                color:lightslategrey;
+                border-radius: 8px;
+                animation-duration: 5s;
+                -webkit-transition: all 500ms ease;
+                -moz-transition: all 500ms ease;
+                -ms-transition: all 500ms ease;
+                -o-transition: all 500ms ease;
+                transition: all 500ms ease;
             }
         }
     }
@@ -46,4 +52,9 @@
         color: grey;
     }
 
+}
+p{
+    font-family: Georgia;
+    font-style: italic;
+    font-size: 20px;
 }
