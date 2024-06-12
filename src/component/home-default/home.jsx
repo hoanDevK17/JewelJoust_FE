@@ -8,20 +8,19 @@ import {
   UserOutlined, 
   YoutubeOutlined,
 } from "@ant-design/icons";
+
 import "./home.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectUser } from "../../redux/features/counterSlice";
 
-import { useState } from "react";
 import { Avatar, Dropdown, Space } from "antd";
 
 export default function HomePage({ children }) {
   const navigate = useNavigate();
   const user = useSelector(selectUser);
-console.log(user)
+  console.log(user);
   const dispatch = useDispatch();
-  console.log("user:", user);
   const items = [
     {
       key: "1",
@@ -33,9 +32,9 @@ console.log(user)
 
     {
       key: "2",
-      label: "Auction History",
+      label: "History",
       onClick: () => {
-        console.log("oke");
+        navigate("/history");
       },
     },
     {
@@ -49,15 +48,23 @@ console.log(user)
   ];
   return (
     <div className="home-default">
-      <div className="home-page-header" style={{ position: "relative" }}>
+      <div className="home-page-header">
         <div className="home-page-logo">
-          <img src="./Logo.svg" alt="" />
+        <span
+            className="button-link"
+            onClick={() => {
+              navigate("/homepage");
+            }}
+          >
+           <img src="./Logo.svg" alt="" />
+          </span>
+          
         </div>
         <div className="home-page-title">
           <span
             className="button-link"
             onClick={() => {
-              navigate("/homepage");
+              navigate("");
             }}
           >
             Home

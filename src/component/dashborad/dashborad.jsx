@@ -7,10 +7,13 @@ import {
   CheckCircleOutlined,
   TeamOutlined,
   AppstoreAddOutlined,
+  ProductOutlined,
 } from "@ant-design/icons";
-import { Avatar, Breadcrumb, Layout, Menu, Space, theme } from "antd";
+import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { Footer } from "antd/es/layout/layout";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/features/counterSlice";
 
 const { Header, Content, Sider } = Layout;
 
@@ -24,11 +27,15 @@ function getItem(label, key, icon, children) {
 }
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  const user = useSelector(selectUser);
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
-
+  if(user?.role == "MEMBER" ){
+    navigate("/")
+}
   const [items, setItems] = useState([]);
   const [key, setKey] = useState();
   const location = useLocation();
@@ -82,25 +89,9 @@ const Dashboard = () => {
     if (role === "Admin") {
       setItems([
         getItem("Category", "category", <AppstoreAddOutlined />),
-        getItem("Hồ sơ", "profile", <ProfileOutlined />),
-        getItem("Quản lý Clubs", "clubs", <HeartOutlined />, [
-          getItem("Club 1", "club1"),
-          getItem("Club 2", "club2"),
-          getItem("Club 3", "club3"),
-          getItem("All Promotion", "all-promotion"),
-        ]),
-        getItem("Quản lý Accounts", "accounts", <TeamOutlined />, [
-          getItem("Club 1", "account-club-1"),
-          getItem("Club 2", "account-club-2"),
-          getItem("Club 3", "account-club-3"),
-          getItem("All Staffs", "all-staffs"),
-        ]),
-        getItem("Thống kê", "statistics", <BarChartOutlined />, [
-          getItem("Club 1", "stats-club-1"),
-          getItem("Club 2", "stats-club-2"),
-          getItem("Club 3", "stats-club-3"),
-          getItem("All Clubs", "all-clubs"),
-        ]),
+        getItem("Acount", "acount", <ProfileOutlined />),
+        getItem("Request", "request", <TeamOutlined />),
+        getItem("Session", "session", <HeartOutlined />),
       ]);
     }
   }, []);
@@ -165,7 +156,7 @@ const Dashboard = () => {
           style={{ margin: "0 16px", display: "flex", flexDirection: "column" }}
         >
           <Breadcrumb>
-            {location.pathname.split("/").map((path, index, array) => (
+            {location.pathname.split("/").map((path, index) => (
               <Breadcrumb.Item key={path}>
                 {index === 0 ? path : <Link to={`/${path}`}>{path}</Link>}
               </Breadcrumb.Item>

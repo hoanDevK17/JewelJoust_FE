@@ -6,17 +6,23 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../config/axios";
 import { APIregis } from "../../api/api";
+import dayjs from "dayjs";
+import { current } from "@reduxjs/toolkit";
+import moment from "moment";
 
 export default function Registration() {
   const navigate = useNavigate();
   const onChangeDate = (date, dateString) => {
-    console.log(date, dateString);
+    setBirthdayUser(dateString)
   };
 
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [birthdayUser,setBirthdayUser]=useState('');
 
   const regis =(user) => {
+    user.birthday = birthdayUser; 
+    
     console.log(user)
     setIsLoading(true)
     APIregis(user.username, user.password, user.fullname, user.email, user.phone, user.address, user.birthday).then((rs) => {
@@ -98,6 +104,9 @@ export default function Registration() {
                 {
                   required: true,
                   message: 'This box cannot be left blank'
+                },{
+                  type:"email",
+                  message:"Please type Email"
                 }
               ]}>
                 <Input className="conten-mess"
@@ -131,8 +140,10 @@ export default function Registration() {
                 }
               ]}>
                 <DatePicker 
+                format="YYYY-MM-DD"
                 className="conten-mess"
                 type="date"
+               maxDate={dayjs(moment().format("YYYY-MM-DD"),"YYYY-MM-DD")}
                 placeholder="Enter your Birth Day" onChange={onChangeDate} needConfirm />
               </Form.Item>
               <p style={{
@@ -153,7 +164,6 @@ export default function Registration() {
                 lineHeight: 'normal',
                 width:'100%',
                 textAlign:'center',
-                width: '400px',
                 height: '69px'
               }}> 
                   Register 
