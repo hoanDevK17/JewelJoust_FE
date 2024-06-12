@@ -90,19 +90,8 @@ const Dashboard = () => {
       setItems([
         getItem("Category", "category", <AppstoreAddOutlined />),
         getItem("Acount", "acount", <ProfileOutlined />),
-        getItem("Quản lý Clubs", "clubs", <HeartOutlined />, [
-          getItem("Club 1", "club1"),
-          getItem("Club 2", "club2"),
-          getItem("Club 3", "club3"),
-          getItem("All Promotion", "all-promotion"),
-        ]),
         getItem("Request", "request", <TeamOutlined />),
-        getItem("Thống kê", "statistics", <BarChartOutlined />, [
-          getItem("Club 1", "stats-club-1"),
-          getItem("Club 2", "stats-club-2"),
-          getItem("Club 3", "stats-club-3"),
-          getItem("All Clubs", "all-clubs"),
-        ]),
+        getItem("Session", "session", <HeartOutlined />),
       ]);
     }
   }, []);

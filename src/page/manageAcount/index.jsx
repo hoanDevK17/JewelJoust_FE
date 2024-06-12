@@ -69,7 +69,7 @@ export default function Acount() {
                 password: currentUser.password,
                 fullname: currentUser.fullname,
                 address: currentUser.address,
-                birthday: currentUser.birthday,
+                birthday: currentUser.birthday, 
                 email: currentUser.email,
                 phone: currentUser.phone,
                 role: currentUser.role,

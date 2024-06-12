@@ -11,6 +11,7 @@ import HomePage from "./page/homepage/homePage";
 import CreateBidRequest from "./page/createBidRequest/createBidRequest";
 import  Profile  from "./page/profile/profile";
 import ManageRequest from "./page/manageRequest/index";
+import ManageSession from "./page/manageSession/index";
 
 
 export default function App() {
@@ -69,6 +70,10 @@ export default function App() {
        {
         path:"/dashboard/request",
         element: <ManageRequest />,
+       },
+       {
+        path:"/dashboard/session",
+        element: <ManageSession />,
        },
       ],
     }
