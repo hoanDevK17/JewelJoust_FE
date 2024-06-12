@@ -11,7 +11,9 @@ import HomePage from "./page/homepage/homePage";
 import CreateBidRequest from "./page/createBidRequest/createBidRequest";
 import Profile from "./page/profile/profile";
 import ManageRequest from "./page/manageRequest/index";
+import ManageSession from "./page/manageSession/index";
 import History from "./page/history/history";
+
 
 export default function App() {
   const router = createBrowserRouter([
@@ -66,17 +68,23 @@ export default function App() {
       element: <Dashboard />,
       children: [
         {
-          path: "/dashboard/category",
-          element: <Category />,
-        },
-        {
-          path: "/dashboard/acount",
-          element: <Acount />,
-        },
-        {
-          path: "/dashboard/request",
-          element: <ManageRequest />,
-        },
+
+        path:"/dashboard/category",
+        element: <Category />,
+       },
+       {
+        path:"/dashboard/acount",
+        element: <Acount />,
+       },
+       {
+        path:"/dashboard/request",
+        element: <ManageRequest />,
+       },
+       {
+        path:"/dashboard/session",
+        element: <ManageSession />,
+       },
+
       ],
     },
   ]);

@@ -1,17 +1,13 @@
 import { useEffect, useState } from "react";
-import { Button, Modal, Form, Input, Table, DatePicker, Select, Steps,} from 'antd';
+import { Button, Modal, Form, Input, Table,} from 'antd';
 import axios from "axios";
 import { useForm } from "antd/es/form/Form";
-import dayjs from "dayjs";
 import moment from "moment";
-import {EditOutlined, LoadingOutlined, SmileOutlined, SolutionOutlined, UserOutlined } from "@ant-design/icons";
-import { APIgetallrequest } from "../../api/api";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../redux/features/counterSlice";
+import {EditOutlined,} from "@ant-design/icons";
 
 
-export default function ManageRequest() {
-  const token = useSelector(selectUser).token;
+export default function ManageSession() {
+
     // const dateFormat = 'YYYY/MM/DD';
     
     /** Manually entering any of the following formats will perform date parsing */
@@ -28,12 +24,13 @@ export default function ManageRequest() {
 
     const onFinish = async (values) => {
         console.log('Success:', values);
-        values.birthday = dayjs(values.birthday).format(`YYYY-MM-DD`);
         const response = await axios.post("http://jeweljoust.online:8080/api/register-have-role", values);
             setData([...data, response.data]);
             setCurrentId(-1);
             console.log(response);
       };
+
+
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
       };
@@ -64,32 +61,34 @@ export default function ManageRequest() {
           key: 'id',
         },
         {
-          title: 'Jewerly Name',
-          dataIndex: 'jewelryname',
-          key: 'jewelryname',
+          title: 'Name Session',
+          dataIndex: 'nameSession',
+          key: 'nameSession',
         },
         {
-          title: 'Request Date',
-          dataIndex: 'requestdate',
-          key: 'requestdate',
-          render: (date) => dayjs(date).format('YYYY-MM-DD'),
-        },
+            title: 'Start Time',
+            dataIndex: 'start_time',
+            key: 'start_time',
+          },
+          {
+            title: 'End Time',
+            dataIndex: 'end_time',
+            key: 'end_time',
+          },
+          {
+            title: 'Name Jewelry',
+            dataIndex: 'nameJewelry',
+            key: 'nameJewelry',
+          },
           {
             title: 'Initial Price',
-            dataIndex: 'jewelryinitialprice',
-            key: 'jewelryinitialprice',
+            dataIndex: 'initialPrice',
+            key: 'initialPrice',
           },
           {
-            title: 'Ultimate Price',
-            dataIndex: 'ultimateValuation',
-            key: 'ultimateValuation',
-            render: (ultimateValuation) => ultimateValuation?.price ?? 'N/A',
-          },
-
-          {
-            title: 'Request Status',
-            dataIndex: 'status',
-            key: 'status',
+            title: 'Min Step Price',
+            dataIndex: 'minStepPrice',
+            key: 'minStepPrice',
           },
         {
             title: 'Edit',
@@ -107,58 +106,26 @@ export default function ManageRequest() {
 const [data, setData] = useState ([]);
 
 const fetchData = async () => {
-  await APIgetallrequest(token).then((response) => {
-      console.log(response.data); 
-      setData((response.data));
-  })
+    const response = await axios.get("http://jeweljoust.online:8080/api/accounts");
+    console.log(response.data); 
+    setData(response.data);
 };
 
     useEffect(() => {
     fetchData();
 }, []);
 
-const handleDelate = (value) =>{
-    console.log(value);
-    const response = axios.delete(
-        `https://665d6f09e88051d604068e77.mockapi.io/category/${value.id}`
-    );
-    console.log(response.data); 
-    // lọc ra tất cả data loại bỏ data vừa bị xoá
-    setData(data.filter((data) => data.id != value.id));
-};
 
 
 return (
 <div>
-  
+     <Button type="primary" onClick={() => setCurrentId(0)}>
+    Add new Session
+  </Button>
   <Modal title={`${currentId > 0 ? 'Edit': 'Add'} request`} open={currentId >= 0 } onOk={() => form.submit()} onCancel={() => {
     form.resetFields()
     setCurrentId(-1)
   }}>
-   <Steps
-    items={[
-      {
-        title: 'Login',
-        status: 'finish',
-        icon: <UserOutlined />,
-      },
-      {
-        title: 'Verification',
-        status: 'finish',
-        icon: <SolutionOutlined />,
-      },
-      {
-        title: 'Pay',
-        status: 'process',
-        icon: <LoadingOutlined />,
-      },
-      {
-        title: 'Done',
-        status: 'wait',
-        icon: <SmileOutlined />,
-      },
-    ]}
-  />
 
   <Form
   form={form}
@@ -177,11 +144,42 @@ return (
     }}
     onFinish={onFinish}
     onFinishFailed={onFinishFailed}
+    onValuesChange={() => {
+        form.validateFields(['startDateTime', 'endDateTime']);
+      }}
     autoComplete="off"  
-    >
+    >   
+        <Form.Item
+        label="Staff ID"
+        name="staff_id"
+        rules={[
+            {
+            required: true,
+            message: 'Please input Staff ID!',
+            },
+            {whitespace: true},
+        ]}
+        >
+        <Input />
+        </Form.Item>
+        
+        <Form.Item
+        label="Name Session"
+        name="name_session"
+        rules={[
+            {
+            required: true,
+            message: 'Please input name session!',
+            },
+            {whitespace: true},
+        ]}
+        >
+        <Input />
+        </Form.Item>
+
         <Form.Item
         label="Jewerly Name"
-        name="jewerlyname"
+        name="name_jewelry"
         rules={[
             {
             required: true,
@@ -210,7 +208,7 @@ return (
 
         <Form.Item
         label="Initial Price"
-        name="initialprice"
+        name="initial_price"
         rules={[
             {
             required: true,
@@ -223,70 +221,96 @@ return (
         </Form.Item>
 
         <Form.Item
-        label="Supplier Name"
-        name="membername"
+        label="Min Step Price"
+        name="min_stepPrice"
         rules={[
             {
             required: true,
-            message: 'Please input Supplier Name!',
+            message: 'Please input min step price!',
             },
             {whitespace: true},
         ]}
         >
-        <Input />
+        <Input type="number"/>
         </Form.Item>
 
         <Form.Item
-        label="Supplier phone"
-        name="supplierphone"
+        label="Deposit Amount"
+        name="deposit_amount"
         rules={[
             {
             required: true,
-            message: 'Please input supplier phone!',
-            },
-        ]}
-        >
-            <Input type="number" />
-            {/* <Select placeholder = "Select Role" requiredMark="optional">
-                <Select.Option value='MENBER'>Menber</Select.Option>
-                <Select.Option value='STAFF'>Staff</Select.Option>
-                <Select.Option value='MANAGE'>Manage</Select.Option>
-            </Select> */}
-        </Form.Item>
-        {/* {
-            currentId == 0 ? <></> : <Form.Item
-            label="State"
-            name="locked"
-            rules={[
-                {
-                required: true,
-                message: 'Please input state!',
-                },
-            ]}
-            >
-            <Select placeholder = "Select State">
-                <Select.Option value='ATIVE'>Active</Select.Option>
-                <Select.Option value='LOCKED'>Locked</Select.Option>
-            </Select>
-            </Form.Item>
-        } */}
-
-        <Form.Item
-        label="Request Status"
-        name="requeststatus"
-        rules={[
-            {
-            required: true,
-            message: 'Please input request status!',
+            message: 'Please input Deposit Amount!',
             },
             {whitespace: true},
         ]}
         >
-            <Select placeholder = "Select Status">
-                <Select.Option value='ATIVE'>Active</Select.Option>
-                <Select.Option value='LOCKED'>Locked</Select.Option>
-            </Select>
+        <Input type="number"/>
         </Form.Item>
+
+        <Form.Item
+        label="Fee Amount"
+        name="fee_amount"
+        rules={[
+            {
+            required: true,
+            message: 'Please input Fee Amount!',
+            },
+            {whitespace: true},
+        ]}
+        >
+        <Input type="number"/>
+        </Form.Item>
+
+        <Form.Item
+        label="Start Time"
+        name="start_time"
+        rules={[
+            {
+            required: true,
+            message: 'Please input Start Time!',
+            },
+            {whitespace: true},
+            {
+                pattern: /^202[0-9]-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1])) (([0-1][0-9])|(2[0-3])):([0-5][0-9])$/,
+                message: 'Invalid date format! (YYYY-MM-DD HH:mm)',
+            },
+        ]}
+        >
+         <Input placeholder="YYYY-MM-DD HH:mm" />
+        </Form.Item>
+
+        <Form.Item
+        label="End Time"
+        name="end_time"
+        rules={[
+            {
+            required: true,
+            message: 'Please input End Time!',
+            },
+            {whitespace: true},
+            {
+                pattern: /^202[0-9]-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1])) (([0-1][0-9])|(2[0-3])):([0-5][0-9])$/,
+                message: 'Invalid date format! (YYYY-MM-DD HH:mm)',
+            },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || !getFieldValue('start_time')) {
+                  return Promise.resolve();
+                }
+                const start = moment(getFieldValue('start_time'), 'YYYY-MM-DD HH:mm');
+                const end = moment(value, 'YYYY-MM-DD HH:mm');
+                if (end.isBefore(start)) {
+                  return Promise.reject(new Error('The end date and time must be after the start date'));
+                }
+                return Promise.resolve();
+              },
+            }),
+        ]}
+        >
+            <Input placeholder="YYYY-MM-DD HH:mm" />
+        </Form.Item>
+
 
         <Form.Item
         wrapperCol={{
@@ -295,21 +319,6 @@ return (
         }}
         >
         </Form.Item>
-
-        {/* <Form.Item
-        label="Supplier phone"
-        name="Supplier phone"
-        rules={[
-            {
-            required: true,
-            message: 'Please input birthday!',
-            },
-        ]}   
-        getValueFromEvent={(onChange) => moment(onChange).format('YYYY-MM-DD')}
-        getValueProps={(i) => moment(i)}
-        >
-        <DatePicker format='YYYY-MM-DD' style={{ width: '100%' }}/>
-        </Form.Item> */}
     </Form>
   </Modal>
   <Table dataSource={data} columns={columns} />
