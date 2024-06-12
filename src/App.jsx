@@ -12,12 +12,12 @@ import ScrollToTop from "./component/Scroll-to-Top/scroll";
 import Acount from "./page/manageAcount/index";
 import RegisterAuction from "./page/RegisterAuction";
 import HomePage from "./page/homepage/homePage";
-import CreateBidRequest from "./page/createBidRequest/createBidRequest";
+
 import Profile from "./page/profile/profile";
 import ManageRequest from "./page/manageRequest/index";
 import ManageSession from "./page/manageSession/index";
 import History from "./page/history/history";
-
+import AuctionRequestSell from "./page/createBidRequest/AuctionRequestSell";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -51,8 +51,8 @@ export default function App() {
       element: <HomePage />,
     },
     {
-      path: "/createBidRequest",
-      element: <CreateBidRequest />,
+      path: "/auctionRequestSell",
+      element: <AuctionRequestSell />,
     },
     {
       path: "/profile",
@@ -75,16 +75,16 @@ export default function App() {
           element: <Category />,
         },
         {
-        path:"/dashboard/acount",
-        element: <Acount />,
+          path: "/dashboard/acount",
+          element: <Acount />,
         },
         {
-        path:"/dashboard/request",
-        element: <ManageRequest />,
+          path: "/dashboard/request",
+          element: <ManageRequest />,
         },
         {
-        path:"/dashboard/session",
-        element: <ManageSession />,
+          path: "/dashboard/session",
+          element: <ManageSession />,
         },
       ],
     },
@@ -94,16 +94,12 @@ export default function App() {
     },
     {
       path: "/detail/:id",
-      element:
-        (
-          <ScrollToTop>
+      element: (
+        <ScrollToTop>
           <Detail />
         </ScrollToTop>
-        ),
-
+      ),
     },
-      
-
   ]);
 
   return <RouterProvider router={router} />;

@@ -1,60 +1,58 @@
 .carousel {
-    .slick-dots li button:before {
-        font-size: 0px;
+  .slick-dots li button:before {
+    font-size: 0px;
+  }
+
+  .slick-track {
+    .slick-slide {
+      img {
+        width: 100%;
+        // height: fit-content;
+        height: 300px !important;
+        object-fit: cover;
+      }
     }
 
-    .slick-track {
-        .slick-slide {
-
-            img {
-                width: 100%;
-                // height: fit-content;
-                height: 300px !important;
-                object-fit: cover;
-            }
-        }
-
-        .annouce {
-            padding-left: 70px;
-            padding-bottom: 30px;
-        }
-
-        .inside-item {
-            display: flex;
-
-            .button-num1 {
-                margin-left: 70px;
-                width: 40%;
-                height: 35px;
-                color: aliceblue;
-                background-color: gray;
-                font-size: 20px;
-                border-radius: 10px;
-                border: 1px solid black;
-            }
-
-            .button-num1:hover {
-                background-color: darkgray;
-                color:lightslategrey;
-                border-radius: 8px;
-                animation-duration: 5s;
-                -webkit-transition: all 500ms ease;
-                -moz-transition: all 500ms ease;
-                -ms-transition: all 500ms ease;
-                -o-transition: all 500ms ease;
-                transition: all 500ms ease;
-            }
-        }
+    .annouce {
+      padding-left: 70px;
+      padding-bottom: 30px;
     }
 
-    h1 {
-        font-size: 30px;
-        color: grey;
-    }
+    .inside-item {
+      display: flex;
 
+      .button-num1 {
+        margin-left: 70px;
+        width: 40%;
+        height: 35px;
+        color: aliceblue;
+        background-color: gray;
+        font-size: 20px;
+        border-radius: 10px;
+        border: 1px solid black;
+      }
+
+      .button-num1:hover {
+        background-color: darkgray;
+        color: lightslategrey;
+        border-radius: 8px;
+        animation-duration: 5s;
+        -webkit-transition: all 500ms ease;
+        -moz-transition: all 500ms ease;
+        -ms-transition: all 500ms ease;
+        -o-transition: all 500ms ease;
+        transition: all 500ms ease;
+      }
+    }
+  }
+
+  h1 {
+    font-size: 30px;
+    color: grey;
+  }
 }
-p{
-    font-family: Georgia;
-    font-style: italic;
-    font-size: 20px;
+p {
+  // font-family: Georgia;
+  font-style: italic;
+  font-size: 20px;
 }

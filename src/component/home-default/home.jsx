@@ -5,7 +5,7 @@ import {
   MailOutlined,
   PhoneOutlined,
   TwitterOutlined,
-  UserOutlined, 
+  UserOutlined,
   YoutubeOutlined,
 } from "@ant-design/icons";
 
@@ -50,21 +50,20 @@ export default function HomePage({ children }) {
     <div className="home-default">
       <div className="home-page-header">
         <div className="home-page-logo">
-        <span
+          <span
             className="button-link"
             onClick={() => {
               navigate("/homepage");
             }}
           >
-           <img src="./Logo.svg" alt="" />
+            <img src="/Logo.svg" alt="" />
           </span>
-          
         </div>
         <div className="home-page-title">
           <span
             className="button-link"
             onClick={() => {
-              navigate("");
+              navigate("/");
             }}
           >
             Home
@@ -80,10 +79,10 @@ export default function HomePage({ children }) {
           <span
             className="button-link"
             onClick={() => {
-              navigate("/");
+              navigate("/auctionRequestSell");
             }}
           >
-            Products
+            AuctionRequestSell
           </span>
           <span
             className="button-link"
