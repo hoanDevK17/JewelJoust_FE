@@ -19,9 +19,13 @@ export default function AuthenTemplate({ children }) {
           </div>
         </div>
         <div className="authen-template__content__background">
-          <span className="button-link">
-            <img src="./RingBackGround.svg" alt="" />
-          </span>
+          <img
+            onClick={() => {
+              navigate("/homepage");
+            }}
+            src="./RingBackGround.svg"
+            alt=""
+          />
         </div>
       </div>
     </div>

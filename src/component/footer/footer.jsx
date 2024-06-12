@@ -8,7 +8,9 @@ import {
     YoutubeOutlined,
   } from "@ant-design/icons";
   import "./footer.scss"
+import { useNavigate } from "react-router-dom";
 export default function footer() {
+  const navigate = useNavigate();
   return (
     <div className="footer">
         <div className="footer-content">
