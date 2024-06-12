@@ -5,13 +5,14 @@ import ForgotPass from "./page/forgotPass/forgotPass";
 import ManageAcount from "./page/manageAcount/index";
 import Dashboard from "./component/dashborad/dashborad";
 import Category from "./component/test/test";
-import Acount from "./page/manageAcount/index"
-
+import Acount from "./page/manageAcount/index";
+import RegisterAuction from "./page/RegisterAuction";
 import HomePage from "./page/homepage/homePage";
 import CreateBidRequest from "./page/createBidRequest/createBidRequest";
-import  Profile  from "./page/profile/profile";
+import Profile from "./page/profile/profile";
 import ManageRequest from "./page/manageRequest/index";
 import ManageSession from "./page/manageSession/index";
+import History from "./page/history/history";
 
 
 export default function App() {
@@ -53,13 +54,21 @@ export default function App() {
       path: "/",
       element: <div>Hello world!</div>,
     },
+    {
+      path: "/RegisterAuction",
+      element: <RegisterAuction />,
+    },
+    {
+      path: "/history",
+      element: <History />,
+    },
 
-    
     {
       path: "/dashboard",
       element: <Dashboard />,
       children: [
         {
+
         path:"/dashboard/category",
         element: <Category />,
        },
@@ -75,10 +84,10 @@ export default function App() {
         path:"/dashboard/session",
         element: <ManageSession />,
        },
+
       ],
-    }
+    },
   ]);
 
-  return <RouterProvider router={router} />
+  return <RouterProvider router={router} />;
 }
-
