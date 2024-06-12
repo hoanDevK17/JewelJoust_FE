@@ -22,9 +22,9 @@ export default function HomePage({ children }) {
 
     {
       key: "2",
-      label: "Auction History",
+      label: "History",
       onClick: () => {
-        console.log("oke");
+        navigate("/history");
       },
     },
     {

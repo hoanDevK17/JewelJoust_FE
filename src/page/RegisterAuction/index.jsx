@@ -9,15 +9,14 @@ export default function RegisterAuction() {
   const bankName =
     "Ngân hàng Nông Nghiệp và Phát triển nông thôn Việt Nam - Chi nhánh Mỹ Đình";
   const transactionContent = "DGVPA4767026533748";
-  const amount = "40100000";
+  const amount = "40100";
   const [messageApi, contextHolder] = message.useMessage();
+
   function copyToClipboard(text) {
     navigator.clipboard.writeText(text);
-   
-   
     messageApi.open({
-      type: 'success',
-      content: ("Đã sao chép: " + text),
+      type: "success",
+      content: "Đã sao chép: " + text,
     });
   }
 
@@ -33,59 +32,58 @@ export default function RegisterAuction() {
     downloadLink.click();
     document.body.removeChild(downloadLink);
   }
-  // QR code value
-  const qrValue = `STK: ${accountNumber} - Ngan hang: ${bankName} - Noi dung: ${transactionContent} - So tien: ${amount} VND`;
+
+  // QR code value with proper formatting
+  const qrValue = `NH:${bankName}|STK:${accountNumber}|ND:${transactionContent}|ST:${amount}`;
   return (
-    <>  {contextHolder}
+    <>
+      {contextHolder}
       <HomePage>
         <div className="payment-page">
           <div className="order-info">
-            <h3>Thanh toán đấu giá trang sức</h3>
+            <h3>Jewelry Auction Payment</h3>
             <div className="order-details">
               <p>
-                <strong>Thông tin đơn hàng:</strong> 30L - 555.55
+                <strong>Order Information:</strong> 30L - 555.55
               </p>
               <p>
-                <strong>Tiền đặt trước:</strong> 40.000.000 đ
+                <strong>Deposit:</strong> 40,000,000 VND
               </p>
               <p>
-                <strong>Phí hồ sơ:</strong> 100.000 đ
+                <strong>Document Fee:</strong> 100,000 VND
               </p>
               <p>
-                <strong>Tổng cộng:</strong> 40.100.000 đ
+                <strong>Total:</strong> 40,100,000 VND
               </p>
             </div>
           </div>
           <div className="payment-info">
-            <h3>Tài khoản ngân hàng</h3>
+            <h3>Bank Account</h3>
             <div className="payment-all">
               <div className="qr-code">
-                <p>Quét mã để thanh toán</p>
+                <p>Scan to pay</p>
                 <QRCode value={qrValue} size={150} />
-                <button onClick={() => downloadQR()}>Lưu mã QR</button>
+                <button onClick={downloadQR}>Save QR Code</button>
               </div>
               <div className="bank-details">
                 <p>
-                  <strong>Ngân hàng:</strong> {bankName}
+                  <strong>Bank:</strong> {bankName}
                 </p>
                 <p>
-                  <strong>Số tài khoản:</strong> {accountNumber}{" "}
+                  <strong>Account Number:</strong> {accountNumber}{" "}
                   <button onClick={() => copyToClipboard(accountNumber)}>
-                    Sao chép
+                    Copy
                   </button>
                 </p>
                 <p>
-                  <strong>Nội dung chuyển khoản/Nội dung giao dịch:</strong>{" "}
-                  {transactionContent}{" "}
+                  <strong>Transaction Content:</strong> {transactionContent}{" "}
                   <button onClick={() => copyToClipboard(transactionContent)}>
-                    Sao chép
+                    Copy
                   </button>
                 </p>
                 <p>
-                  <strong>Số tiền:</strong> {amount} đ{" "}
-                  <button onClick={() => copyToClipboard(amount)}>
-                    Sao chép
-                  </button>
+                  <strong>Amount:</strong> {amount} VND{" "}
+                  <button onClick={() => copyToClipboard(amount)}>Copy</button>
                 </p>
               </div>
             </div>

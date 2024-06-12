@@ -6,7 +6,6 @@ import {
   Image,
   Input,
   Modal,
-  Row,
   Space,
   Upload,
 } from "antd";
@@ -25,9 +24,11 @@ import "./profile.scss";
 
 import { useState } from "react";
 import ImgCrop from "antd-img-crop";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/features/counterSlice.js";
 
 export default function Profile() {
-  const user = { fullname: "Hoan" };
+  const user = useSelector(selectUser);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   // edit avatar
@@ -68,7 +69,7 @@ export default function Profile() {
     setPreviewOpen(true);
   };
 
-  // edit pass word
+  // edit password
   const [open, setOpen] = useState(false);
   const showDrawer = () => {
     setOpen(true);
@@ -78,7 +79,17 @@ export default function Profile() {
   };
 
   // confirm edit
-  const [modal2Open, setModal2Open] = useState(false);
+  // const [modal2Open, setModal2Open] = useState(false);  
+  const handleUpdateProfile = (profile) => {
+    console.log(profile);
+  };
+
+  // const [form] = Form.useForm();
+
+  const handleChangePass = (values) => {
+    console.log("Form values: ", values);
+  };
+
   return (
     <>
       <UserProfile>
@@ -87,7 +98,6 @@ export default function Profile() {
             <>
               <ImgCrop rotationSlider>
                 <Upload
-                  // action API
                   action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
                   listType="picture-card"
                   fileList={fileList}
@@ -118,9 +128,9 @@ export default function Profile() {
               style={{
                 width: 600,
               }}
+              onFinish={handleUpdateProfile}
             >
-              <Form.Item className="Form">
-                <p>Name:</p>
+              <Form.Item className="Form" name="fullname" label="Name">
                 <Input
                   size="large"
                   defaultValue={user?.fullname}
@@ -128,18 +138,18 @@ export default function Profile() {
                   prefix={<UserOutlined />}
                 />
               </Form.Item>
-              <Form.Item className="Form">
-                <p>Email:</p>
+              <Form.Item className="Form" name="email" label="Email">
                 <Input
                   size="large"
+                  name="email"
                   defaultValue={user?.email}
                   placeholder="   Enter your infomation"
                   prefix={<MailOutlined />}
                 />
               </Form.Item>
-              <Form.Item className="Form">
-                <p>Phone:</p>
+              <Form.Item className="Form" name="phone" label="Phone">
                 <Input
+                  name="phone"
                   size="large"
                   type="tel"
                   pattern="[0-9]{10}"
@@ -148,8 +158,7 @@ export default function Profile() {
                   prefix={<PhoneOutlined />}
                 />
               </Form.Item>
-              <Form.Item className="Form">
-                <p>Birthday:</p>
+              <Form.Item className="Form" name="birthday" label="Birthday">
                 <Input
                   size="large"
                   defaultValue={user?.address}
@@ -157,20 +166,20 @@ export default function Profile() {
                   prefix={<GiftOutlined />}
                 />
               </Form.Item>
-              <Form.Item className="Form">
-                <p>Address:</p>
+              <Form.Item className="Form" name="address" label="Address">
                 <Input
                   size="large"
+                  name="birthday"
                   defaultValue={user?.birthday}
                   placeholder="   Enter your infomation"
                   prefix={<EnvironmentOutlined />}
                 />
               </Form.Item>
-              <Form.Item className="Form">
-                <p>Password:</p>
+              <Form.Item className="Form" label="Password">
                 <Input
                   disabled
                   size="large"
+                  name="password"
                   defaultValue={"\t" + "************"}
                   placeholder="   Enter your infomation"
                   prefix={<LockOutlined />}
@@ -194,80 +203,82 @@ export default function Profile() {
                         extra={
                           <Space>
                             <Button onClick={onClose}>Cancel</Button>
-                            <Button
-                              type="primary"
-                              onClick={() => setModal2Open(true)}
-                            >
-                              Sumbit
-                            </Button>
-                            <Modal
-                              title="Notification"
-                              centered
-                              open={modal2Open}
-                              onOk={() => setModal2Open(false)}
-                              onCancel={() => setModal2Open(false)}
-                            >
-                              <span>
-                                Are you sure with the above information?
-                              </span>
-                            </Modal>
                           </Space>
                         }
                       >
-                        <Form layout="vertical" hideRequiredMark>
-                          <Col span={12}>
-                            <Form.Item
-                              name="name"
-                              label="Password"
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please Enter your Password",
-                                },
-                              ]}
-                            >
-                              <Input placeholder="Please enter Your Password" />
-                            </Form.Item>
-                          </Col>
-                          <Col span={12}>
-                            <Form.Item
-                              name="NewPassWord"
-                              label="New Password"
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please Enter New Password",
-                                },
-                              ]}
-                            >
-                              <Input
-                                style={{
-                                  width: "100%",
-                                }}
-                                placeholder="Please Enter New Password"
-                              />
-                            </Form.Item>
-                          </Col>
+                        <Form
+                          // form={form}
+                          layout="vertical"
+                          hideRequiredMark
+                          onFinish={handleChangePass}
+                        >
+                          <Form.Item
+                            name="password"
+                            label="Password"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please Enter your Password",
+                              },
+                            ]}
+                          >
+                            <Input.Password placeholder="Please enter your Password" />
+                          </Form.Item>
 
-                          <Col span={12}>
-                            <Form.Item
-                              name="ConfirmNewPassWord"
-                              label="Confirm New Password"
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please Enter Confirm New Password",
+                          <Form.Item
+                            name="newPassword"
+                            label="New Password"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please Enter New Password",
+                              },
+                              {
+                                min: 4,
+                                message:
+                                  "New password must be at least 4 characters long",
+                              },
+                            ]}
+                          >
+                            <Input.Password placeholder="Please Enter New Password" />
+                          </Form.Item>
+
+                          <Form.Item
+                            name="confirmNewPassword"
+                            label="Confirm New Password"
+                            dependencies={["newPassword"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please Enter Confirm New Password",
+                              },
+                              ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                  if (
+                                    !value ||
+                                    getFieldValue("newPassword") === value
+                                  ) {
+                                    return Promise.resolve();
+                                  }
+                                  return Promise.reject(
+                                    new Error(
+                                      "The two passwords that you entered do not match!"
+                                    )
+                                  );
                                 },
-                              ]}
-                            >
-                              <Input
-                                style={{
-                                  width: "100%",
-                                }}
-                                placeholder="Please Enter Confirm New Password"
-                              />
-                            </Form.Item>
-                          </Col>
+                              }),
+                            ]}
+                          >
+                            <Input.Password placeholder="Please Enter Confirm New Password" />
+                          </Form.Item>
+
+                          <Form.Item>
+                            <Button type="primary" htmlType="submit">
+                              Submit
+                            </Button>
+
+                            {/* <button type="submit"></button> */}
+                          </Form.Item>
                         </Form>
                       </Drawer>
                     </>
@@ -275,19 +286,27 @@ export default function Profile() {
                 />
               </Form.Item>
               <Form.Item className="submit">
-                <Button type="primary" onClick={() => setModal2Open(true)}>
+                <Button
+                  type="primary"
+                  htmlType="sumbit"
+
+                  // onClick={() => setModal2Open(true)}
+                >
                   Sumbit
                 </Button>
-                <Modal
-                  title="Notification"
-                  centered
-                  open={modal2Open}
-                  onOk={() => setModal2Open(false)}
-                  onCancel={() => setModal2Open(false)}
-                >
-                  <span>Are you sure with the above information?</span>
-                </Modal>
               </Form.Item>
+
+              {/* <button type="submit"></button> */}
+
+              {/* <Modal
+                title="Notification"
+                centered
+                open={modal2Open}
+                onOk={() => setModal2Open(false)}
+                onCancel={() => setModal2Open(false)}
+              >
+                <span>Are you sure with the above information?</span>
+              </Modal> */}
             </Form>
           </div>
         </div>
