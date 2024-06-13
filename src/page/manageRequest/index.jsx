@@ -1,14 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Button,
-  Modal,
-  Form,
-  Input,
-  Table,
-  Steps,
-  Row,
-  Col,
-} from "antd";
+import { Button, Modal, Form, Input, Table, Steps, Row, Col } from "antd";
 import { useForm } from "antd/es/form/Form";
 import dayjs from "dayjs";
 import {
@@ -18,7 +9,11 @@ import {
   SolutionOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { APIgetallrequest, APIrejectedauctionrequestsell, APIsetappraisalprice } from "../../api/api";
+import {
+  APIgetallrequest,
+  APIrejectedauctionrequestsell,
+  APIsetappraisalprice,
+} from "../../api/api";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 
@@ -54,20 +49,16 @@ export default function ManageRequest() {
   const onFinishrejected = async (values) => {
     console.log("Success:", values);
     console.log("Success:", currentId);
-    // Đảm bảo rằng `currentId` và `token` không phải là `null` hoặc `undefined`
-    if (!currentId || !token) {
-      console.error("Missing currentId or token");
-      return;
-  }
-    APIrejectedauctionrequestsell(currentId, values.reason,token).then((rs) =>{
-      console.log(rs)
-    })
-    .catch((error) => {
-      console.error("Error logging in:", error);
-      setErrorMessage(error.response?.data || "Something went wrong");
-    })
-    .finally(() => {
-    });
+
+    APIrejectedauctionrequestsell(currentId, values.reason, token)
+      .then((rs) => {
+        fetchData();
+      })
+      .catch((error) => {
+        console.error("Error logging in:", error);
+        setErrorMessage(error.response?.data || "Something went wrong");
+      })
+      .finally(() => {});
     // setData([...data, response.data]);
     setCurrentId(-1);
     // console.log(response);
@@ -79,16 +70,16 @@ export default function ManageRequest() {
     if (!currentId || !token) {
       console.error("Missing currentId or token");
       return;
-  }
-    APIsetappraisalprice(currentId, values.price,token).then((rs) =>{
-      console.log(rs)
-    })
-    .catch((error) => {
-      console.error("Error logging in:", error);
-      setErrorMessage(error.response?.data || "Something went wrong");
-    })
-    .finally(() => {
-    });
+    }
+    APIsetappraisalprice(currentId, values.price, token)
+      .then((rs) => {
+        console.log(rs);
+      })
+      .catch((error) => {
+        console.error("Error logging in:", error);
+        setErrorMessage(error.response?.data || "Something went wrong");
+      })
+      .finally(() => {});
     // setData([...data, response.data]);
     setCurrentId(-1);
     // console.log(response);
@@ -96,7 +87,6 @@ export default function ManageRequest() {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-  
 
   useEffect(() => {
     console.log(currentId);
@@ -173,8 +163,9 @@ export default function ManageRequest() {
     });
   };
 
-    useEffect(() => {
+  useEffect(() => {
     fetchData();
+    console.log("oke");
   }, []);
 
   // const handleDelate = (value) => {
@@ -259,7 +250,7 @@ export default function ManageRequest() {
         {currentRequest?.status != null ? (
           <>
             {" "}
-            <Form
+            <For  m
               name="basic"
               labelCol={{
                 span: 8,
