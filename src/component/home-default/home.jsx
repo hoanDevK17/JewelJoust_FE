@@ -4,6 +4,7 @@ import {
   InstagramOutlined,
   MailOutlined,
   PhoneOutlined,
+  RedoOutlined,
   TwitterOutlined,
   UserOutlined,
   YoutubeOutlined,
@@ -15,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout, selectUser } from "../../redux/features/counterSlice";
 
 import { Avatar, Dropdown, Space } from "antd";
-
+import BalanceDisplay from '../BalanceDisplay/BalanceDisplay';
 export default function HomePage({ children }) {
   const navigate = useNavigate();
   const user = useSelector(selectUser);
@@ -32,11 +33,19 @@ export default function HomePage({ children }) {
 
     {
       key: "2",
-      label: "History",
+      label: "Active History",
       onClick: () => {
-        navigate("/history");
+        navigate("/ActiveHistory");
       },
     },
+
+    // {
+    //   key: "3",
+    //   label: "Wallet",
+    //   onClick: () => {
+    //     navigate("/Wallet");
+    //   },
+    // },
     {
       key: "3",
       label: "Log Out",
@@ -104,24 +113,32 @@ export default function HomePage({ children }) {
         </div>
         <div className="home-page-login">
           {user ? (
-            <Dropdown
-              menu={{
-                items,
-              }}
-              trigger={["click"]}
-              placement="bottomRight"
-            >
-              <a onClick={(e) => e.preventDefault()}>
-                <Space>
-                  <Avatar
-                    style={{
-                      backgroundColor: "#87d068",
-                    }}
-                    icon={<UserOutlined />}
-                  />
-                </Space>
-              </a>
-            </Dropdown>
+            <>
+              <div className="user-wallet">
+                <div className="App">
+                  
+                  <BalanceDisplay />
+                </div>
+                <Dropdown
+                  menu={{
+                    items,
+                  }}
+                  trigger={["click"]}
+                  placement="bottomRight"
+                >
+                  <a onClick={(e) => e.preventDefault()}>
+                    <Space>
+                      <Avatar
+                        style={{
+                          backgroundColor: "#87d068",
+                        }}
+                        icon={<UserOutlined />}
+                      />
+                    </Space>
+                  </a>
+                </Dropdown>
+              </div>
+            </>
           ) : (
             <>
               <span
