@@ -5,16 +5,12 @@ import {
   Form,
   Input,
   Table,
-  DatePicker,
-  Select,
   Steps,
   Row,
   Col,
 } from "antd";
-import axios from "axios";
 import { useForm } from "antd/es/form/Form";
 import dayjs from "dayjs";
-import moment from "moment";
 import {
   EditOutlined,
   LoadingOutlined,
@@ -22,7 +18,7 @@ import {
   SolutionOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { APIgetallrequest } from "../../api/api";
+import { APIgetallrequest, APIrejectedauctionrequestsell, APIsetappraisalprice } from "../../api/api";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 
@@ -42,20 +38,65 @@ export default function ManageRequest() {
   const [currentId, setCurrentId] = useState(-1);
   const [form] = useForm();
   const [currentRequest, setCurrentRequest] = useState();
-  const onFinish = async (values) => {
+  const [errorMessage, setErrorMessage] = useState("");
+  // const onFinish = async (values) => {
+  //   console.log("Success:", values);
+  //   form.resetFields();
+  //   // values.birthday = dayjs(values.birthday).format(`YYYY-MM-DD`);
+  //   // const response = await axios.post(
+  //   //   "http://jeweljoust.online:8080/api/register-have-role",
+  //   //   values
+  //   // );
+  //   // setData([...data, response.data]);
+  //   setCurrentId(-1);
+  //   // console.log(response);
+  // };
+  const onFinishrejected = async (values) => {
     console.log("Success:", values);
-    values.birthday = dayjs(values.birthday).format(`YYYY-MM-DD`);
-    const response = await axios.post(
-      "http://jeweljoust.online:8080/api/register-have-role",
-      values
-    );
-    setData([...data, response.data]);
+    console.log("Success:", currentId);
+    // Đảm bảo rằng `currentId` và `token` không phải là `null` hoặc `undefined`
+    if (!currentId || !token) {
+      console.error("Missing currentId or token");
+      return;
+  }
+    APIrejectedauctionrequestsell(currentId, values.reason,token).then((rs) =>{
+      console.log(rs)
+    })
+    .catch((error) => {
+      console.error("Error logging in:", error);
+      setErrorMessage(error.response?.data || "Something went wrong");
+    })
+    .finally(() => {
+    });
+    // setData([...data, response.data]);
     setCurrentId(-1);
-    console.log(response);
+    // console.log(response);
+  };
+  const onFinishsetappraisalprice = async (values) => {
+    console.log("Success:", values);
+    console.log("Success", currentId);
+    // Đảm bảo rằng `currentId` và `token` không phải là `null` hoặc `undefined`
+    if (!currentId || !token) {
+      console.error("Missing currentId or token");
+      return;
+  }
+    APIsetappraisalprice(currentId, values.price,token).then((rs) =>{
+      console.log(rs)
+    })
+    .catch((error) => {
+      console.error("Error logging in:", error);
+      setErrorMessage(error.response?.data || "Something went wrong");
+    })
+    .finally(() => {
+    });
+    // setData([...data, response.data]);
+    setCurrentId(-1);
+    // console.log(response);
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+  
 
   useEffect(() => {
     console.log(currentId);
@@ -68,17 +109,6 @@ export default function ManageRequest() {
         }
       });
       setCurrentRequest(currentRequest);
-      form.setFieldsValue({
-        username: "test",
-        password: "test",
-        fullname: "a",
-        address: "w",
-        birthday: moment("04-06-2024"),
-        email: "r",
-        phone: "999",
-        role: "q",
-        locked: "o",
-      });
     } else {
       form.resetFields();
     }
@@ -143,19 +173,19 @@ export default function ManageRequest() {
     });
   };
 
-  useEffect(() => {
+    useEffect(() => {
     fetchData();
   }, []);
 
-  const handleDelate = (value) => {
-    console.log(value);
-    const response = axios.delete(
-      `https://665d6f09e88051d604068e77.mockapi.io/category/${value.id}`
-    );
-    console.log(response.data);
-    // lọc ra tất cả data loại bỏ data vừa bị xoá
-    setData(data.filter((data) => data.id != value.id));
-  };
+  // const handleDelate = (value) => {
+  //   console.log(value);
+  //   const response = axios.delete(
+  //     `https://665d6f09e88051d604068e77.mockapi.io/category/${value.id}`
+  //   );
+  //   console.log(response.data);
+  //   // lọc ra tất cả data loại bỏ data vừa bị xoá
+  //   setData(data.filter((data) => data.id != value.id));
+  // };
 
   return (
     <div>
@@ -246,13 +276,13 @@ export default function ManageRequest() {
               initialValues={{
                 remember: true,
               }}
-              onFinish={onFinish}
+              onFinish={onFinishsetappraisalprice}
               onFinishFailed={onFinishFailed}
               autoComplete="off"
             >
               <Form.Item
                 label="InitialValuation"
-                name="Reason"
+                name="price"
                 style={{ flexGrow: "1" }}
                 rules={[
                   {
@@ -286,14 +316,14 @@ export default function ManageRequest() {
               initialValues={{
                 remember: true,
               }}
-              onFinish={onFinish}
+              onFinish={onFinishrejected}
               onFinishFailed={onFinishFailed}
               autoComplete="off"
             >
               <Form.Item
                 style={{ flexGrow: "1" }}
                 label="Reason"
-                name="Reason"
+                name="reason"
                 rules={[
                   {
                     required: true,
