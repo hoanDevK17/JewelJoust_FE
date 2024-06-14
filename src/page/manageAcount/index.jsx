@@ -156,7 +156,7 @@ const fetchData = async () => {
 const handleDelate = (value) =>{
     console.log(value);
     const response = axios.delete(
-        `https://665d6f09e88051d604068e77.mockapi.io/category/${value.id}`
+        `http://jeweljoust.online:8080/api/account/${value.id}`
     );
     console.log(response.data); 
     // lọc ra tất cả data loại bỏ data vừa bị xoá
