@@ -73,27 +73,23 @@ export const APIauctionrequestsell = (
     },
     { headers: { Authorization: `Bearer ${token}` } }
   );
-  export const APIrejectedauctionrequestsell = (
-    id,
-    reason,
-    token
-  ) =>
-    api.post(
-      `rejected-initial/${id}`,
-      {
-        reason: reason,
-      },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    export const APIsetappraisalprice = (
-      id,
-      price,
-      token
-    ) =>
-      api.post(
-        `confirmed-initial/${id}`,
-        {
-          price: price,
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+export const APIrejectedauctionrequestsell = (id, reason, token) =>
+  api.post(
+    `rejected-initial/${id}`,
+    {
+      reason: reason,
+    },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+export const APIsetappraisalprice = (id, price, token) =>
+  api.post(
+    `confirmed-initial/${id}`,
+    {
+      price: price,
+    },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+export const APIgetallSession = (token) =>
+  api.get("auctionSessions", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
