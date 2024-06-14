@@ -42,7 +42,7 @@ export const APIregis = (
     birthday: birthday,
   });
 export const APIgetallacount = (token) =>
-  api.get("accounts", { headers: { Authorization: `Bearer ${token}` } });
+  api.get("account", { headers: { Authorization: `Bearer ${token}` } });
 export const APIregishaverole = (
   userName,
   passWord,
