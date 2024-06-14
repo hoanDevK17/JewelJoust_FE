@@ -12,7 +12,7 @@ export const APIResetPass = (password, token) =>
   );
 export const APIUpdateProfile = (profile, token, id) =>
   api.put(
-    "update-profile",
+    "account",
     {
       fullname: profile.fullname,
       address: profile.address,
@@ -54,7 +54,7 @@ export const APIregishaverole = (
   role,
   token
 ) =>
-  api.post("register-have-role", {
+  api.post("account/register", {
     username: userName,
     password: passWord,
     fullname: fullName,
@@ -66,11 +66,11 @@ export const APIregishaverole = (
     headers: { Authorization: `Bearer ${token}` },
   });
 export const APIgetallrequest = (token) =>
-  api.get("get-all-auction-request", {
+  api.get("auctionRequest", {
     headers: { Authorization: `Bearer ${token}` },
   });
 export const APIgetallrequestUser = (token) =>
-  api.get("auction-request-by-userid", {
+  api.get("auctionRequest/accountCurrent", {
     headers: { Authorization: `Bearer ${token}` },
   });
 export const APIauctionrequestsell = (
@@ -81,7 +81,7 @@ export const APIauctionrequestsell = (
   token
 ) =>
   api.post(
-    "request-sale",
+    "auctionRequest",
     {
       jewelryName: jewelryName,
       jewelrydescription: jewelryDescription,
@@ -92,7 +92,7 @@ export const APIauctionrequestsell = (
   );
 export const APIrejectedauctionrequestsell = (id, reason, token) =>
   api.post(
-    `rejected-initial/${id}`,
+    `initialValuation/${id}/rejected`,
     {
       reason: reason,
     },
@@ -100,7 +100,7 @@ export const APIrejectedauctionrequestsell = (id, reason, token) =>
   );
 export const APIsetappraisalprice = (id, price, token) =>
   api.post(
-    `confirmed-initial/${id}`,
+    `initialValuation/${id}/comfirmed`,
     {
       price: price,
     },
