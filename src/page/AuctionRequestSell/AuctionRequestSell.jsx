@@ -3,7 +3,7 @@ import HomePage from "../../component/home-default/home.jsx";
 import "./createBidRequest.scss";
 import { Button, Form, Input, Spin, message, Upload } from "antd";
 import { useState } from "react";
-import React from "react";
+
 import { UploadOutlined } from "@ant-design/icons";
 import { APIauctionrequestsell } from "../../api/api.js";
 import { useNavigate } from "react-router-dom";

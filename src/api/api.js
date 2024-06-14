@@ -106,3 +106,7 @@ export const APIsetappraisalprice = (id, price, token) =>
     },
     { headers: { Authorization: `Bearer ${token}` } }
   );
+export const APIgetallSession = (token) =>
+  api.get("auctionSessions", {
+    headers: { Authorization: `Bearer ${token}` },
+  });

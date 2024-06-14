@@ -8,7 +8,7 @@ import { APIgetallSession, APIgetallrequest } from "../../api/api";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 import { Option } from "antd/es/mentions";
-const arrrayA = [1, 2, 3];
+
 export default function ManageSession() {
   const token = useSelector(selectUser).token;
   // const dateFormat = 'YYYY/MM/DD';
