@@ -1,16 +1,21 @@
 import Footer from "../../component/footer/footer.jsx";
 import HomePage from "../../component/home-default/home.jsx";
 import "./createBidRequest.scss";
-import { Button, Form, Input, Spin } from "antd";
+import { Button, Form, Input, Spin, message, Upload } from "antd";
 import { useState } from "react";
 import React from "react";
 import { UploadOutlined } from "@ant-design/icons";
-import { message, Upload } from "antd";
+import { APIauctionrequestsell } from "../../api/api.js";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/features/counterSlice.js";
 
 export default function AuctionRequestSell() {
   const { TextArea } = Input;
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate(); // Sử dụng hook useNavigate từ react-router-dom
+  const token = useSelector(selectUser).token;
   const props = {
     name: "file",
     action: "https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload",
@@ -19,7 +24,6 @@ export default function AuctionRequestSell() {
       accept: "image/png, image/jpeg, .doc, .docx, .xml, .pdf",
     },
     onChange(info) {
-      ``;
       if (info.file.status !== "uploading") {
         console.log(info.file, info.fileList);
       }
@@ -30,30 +34,38 @@ export default function AuctionRequestSell() {
       }
     },
   };
+
   const submit = (cbr) => {
-    console.log(cbr);
+    const resourceRequests = [{ path: "123", name: "321" }];
+    // console.log(
+    //   cbr.jewelryname,
+    //   cbr.jewelrydescription,
+    //   cbr.jewelryinitialprice
+    // );
     setIsLoading(true);
-    APIcbr(
-      cbr.jewerlyname,
-      cbr.describe,
+    // console.log(cbr);
+    APIauctionrequestsell(
+      cbr.jewelryname,
+      cbr.jewelrydescription,
       cbr.jewelryinitialprice,
-      cbr.imgjewerly,
-      cbr.filejewerly
+      resourceRequests,
+      token
     )
       .then((rs) => {
-        console.log(rs);
+        console.log("Full response:", rs);
         if (rs.status === 200) {
-          navigate("/login");
+          navigate("/homepage");
         }
       })
       .catch((error) => {
         console.error("Error logging in:", error);
-        setErrorMessage(error.response.data);
+        setErrorMessage(error.response?.data || "Something went wrong");
       })
       .finally(() => {
         setIsLoading(false);
       });
   };
+
   return (
     <>
       {isLoading ? (
@@ -80,7 +92,7 @@ export default function AuctionRequestSell() {
                   <Form.Item
                     className="input-conten"
                     label="Jewerly name"
-                    name="jewerlyname"
+                    name="jewelryname"
                     rules={[
                       {
                         required: true,
@@ -91,13 +103,13 @@ export default function AuctionRequestSell() {
                     <Input
                       className="input-box"
                       type="text"
-                      placeholder=" Enter your Jewerly name"
+                      placeholder="Enter your Jewerly name"
                     />
                   </Form.Item>
                   <Form.Item
                     className="input-conten"
                     label="Describe:"
-                    name="describe"
+                    name="jewelrydescription"
                     rules={[
                       {
                         required: true,
@@ -109,7 +121,7 @@ export default function AuctionRequestSell() {
                       rows={4}
                       className="input-box"
                       type="text"
-                      placeholder=" Enter Describe"
+                      placeholder="Enter Describe"
                     />
                   </Form.Item>
                   <Form.Item
@@ -126,7 +138,7 @@ export default function AuctionRequestSell() {
                     <Input
                       className="input-box"
                       type="number"
-                      placeholder=" Enter your jewelry initial price"
+                      placeholder="Enter your jewelry initial price"
                     />
                   </Form.Item>
                   <Form.Item
@@ -172,7 +184,7 @@ export default function AuctionRequestSell() {
                         textAlign: "center",
                       }}
                     >
-                      Submis
+                      Submit
                     </Button>
                   </Form.Item>
                 </Form>
