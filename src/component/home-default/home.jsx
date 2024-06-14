@@ -2,6 +2,7 @@ import {
   EnvironmentOutlined,
   FacebookOutlined,
   InstagramOutlined,
+  LoadingOutlined,
   MailOutlined,
   PhoneOutlined,
   RedoOutlined,
@@ -13,15 +14,18 @@ import {
 import "./home.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logout, selectUser } from "../../redux/features/counterSlice";
+import { login, logout, selectUser } from "../../redux/features/counterSlice";
 
 import { Avatar, Dropdown, Space } from "antd";
-import BalanceDisplay from '../BalanceDisplay/BalanceDisplay';
+import { useState } from "react";
+import { APIrefreshBalance } from "../../api/api";
+
 export default function HomePage({ children }) {
   const navigate = useNavigate();
   const user = useSelector(selectUser);
-  console.log(user);
+
   const dispatch = useDispatch();
+  const [isRefreshBalance, setIsRefreshBalance] = useState(false);
   const items = [
     {
       key: "1",
@@ -55,6 +59,21 @@ export default function HomePage({ children }) {
       },
     },
   ];
+  const handleRefreshBalance = () => {
+    setIsRefreshBalance(true);
+    APIrefreshBalance(user.token)
+      .then((rs) => {
+        if (rs.status === 200) {
+          user.wallet.balance = JSON.stringify(rs.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        setIsRefreshBalance(false);
+      });
+  };
   return (
     <div className="home-default">
       <div className="home-page-header">
@@ -114,11 +133,19 @@ export default function HomePage({ children }) {
         <div className="home-page-login">
           {user ? (
             <>
-              <div className="user-wallet">
-                <div className="App">
-                  
-                  <BalanceDisplay />
-                </div>
+              <div className="user-wallet" style={{ alignItems: "center" }}>
+                {isRefreshBalance ? (
+                  <LoadingOutlined />
+                ) : (
+                  <RedoOutlined onClick={handleRefreshBalance} />
+                )}
+                <span
+                  onClick={(e) => e.preventDefault()}
+                  style={{ fontSize: "16px" }}
+                >
+                  Balance: {user?.wallet?.balance}$
+                </span>
+
                 <Dropdown
                   menu={{
                     items,
@@ -126,16 +153,14 @@ export default function HomePage({ children }) {
                   trigger={["click"]}
                   placement="bottomRight"
                 >
-                  <a onClick={(e) => e.preventDefault()}>
-                    <Space>
-                      <Avatar
-                        style={{
-                          backgroundColor: "#87d068",
-                        }}
-                        icon={<UserOutlined />}
-                      />
-                    </Space>
-                  </a>
+                  <Space>
+                    <Avatar
+                      style={{
+                        backgroundColor: "#87d068",
+                      }}
+                      icon={<UserOutlined />}
+                    />
+                  </Space>
                 </Dropdown>
               </div>
             </>

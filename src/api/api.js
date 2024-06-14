@@ -10,6 +10,8 @@ export const APIResetPass = (password, token) =>
     { password: password },
     { headers: { Authorization: `Bearer ${token}` } }
   );
+export const APIrefreshBalance = (token) =>
+  api.get("refreshBalance", { headers: { Authorization: `Bearer ${token}` } });
 export const APIUpdateProfile = (profile, token, id) =>
   api.put(
     "account",
