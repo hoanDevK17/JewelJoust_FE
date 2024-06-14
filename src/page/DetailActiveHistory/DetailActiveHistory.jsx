@@ -6,6 +6,7 @@ import { COLUMS_REQUEST_SELL } from "../../constants/constants";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 import { APIgetallrequestUser } from "../../api/api";
+import ManageUserRequest from "../manageUserSellRequest";
 
 // function getItem(label, key, icon, children) 
 //   return {
@@ -25,16 +26,15 @@ const DetailActiveHistory = ({title}) => {
 
   const fetchData = async () => {
     switch(title) 
-{
+  {
   case "Request Sell History":
     await APIgetallrequestUser(token).then((response) => {
       console.log();
-     
       setData( response.data.sort((a,b) => b.id-a.id));
     });
     break;
     default: setData('')
-}
+  }
     
     
   };
