@@ -28,7 +28,7 @@ export default function ManageSession() {
   const onFinish = async (values) => {
     console.log("Success:", values);
     const response = await axios.post(
-      "http://jeweljoust.online:8080/api/register-have-role",
+      "http://jeweljoust.online:8080/api/account/register",
       values
     );
     setData([...data, response.data]);
