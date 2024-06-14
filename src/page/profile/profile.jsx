@@ -8,6 +8,7 @@ import {
   Modal,
   Space,
   Upload,
+  message,
 } from "antd";
 import UserProfile from "../../component/home-default/home.jsx";
 import {
@@ -24,13 +25,17 @@ import "./profile.scss";
 
 import { useState } from "react";
 import ImgCrop from "antd-img-crop";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../redux/features/counterSlice.js";
+import { useDispatch, useSelector } from "react-redux";
+import { login, selectUser } from "../../redux/features/counterSlice.js";
+import { useForm } from "antd/es/form/Form.js";
+import { APIUpdateProfile } from "../../api/api.js";
 
 export default function Profile() {
   const user = useSelector(selectUser);
+  const dispatch = useDispatch();
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
+  const [messageApi, contextHolder] = message.useMessage();
   // edit avatar
   const getBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -81,7 +86,25 @@ export default function Profile() {
   // confirm edit
   // const [modal2Open, setModal2Open] = useState(false);  
   const handleUpdateProfile = (profile) => {
-    console.log(profile);
+    console.log(profile)
+    APIUpdateProfile(profile,user.token,user.id).then((rs)=>{
+   if(rs.status===200){
+       // console.log(rs);
+       rs.data.token = user.token;
+       // console.log(rs);
+       dispatch(login(rs.data)); messageApi.open({
+        type: 'success',
+        content: 'Update Profile Successfully',
+      });
+   }
+
+      
+    }).catch((error)=>{
+      messageApi.open({
+        type: 'error',
+        content: 'Update Profile Error',
+      });
+    })
   };
 
   // const [form] = Form.useForm();
@@ -89,10 +112,12 @@ export default function Profile() {
   const handleChangePass = (values) => {
     console.log("Form values: ", values);
   };
-
+  // const form = useForm();
+  // form.setFieldsValue("fullname",user?.fullname)
+  
   return (
     <>
-      <UserProfile>
+      <UserProfile> {contextHolder}
         <div className="profile">
           <div className="Avatar">
             <>
@@ -125,62 +150,79 @@ export default function Profile() {
           </div>
           <div className="Form-all">
             <Form
+            // form={form}
               style={{
                 width: 600,
               }}
               onFinish={handleUpdateProfile}
             >
-              <Form.Item className="Form" name="fullname" label="Name">
+              <Form.Item className="Form" name="fullname" label="Name"  initialValue ={user?.fullname} >
                 <Input
                   size="large"
-                  defaultValue={user?.fullname}
+                 
                   placeholder="   Enter your infomation"
                   prefix={<UserOutlined />}
                 />
               </Form.Item>
-              <Form.Item className="Form" name="email" label="Email">
+              <Form.Item className="Form" name="email" label="Email"    initialValue ={user?.email}>
                 <Input
                   size="large"
                   name="email"
-                  defaultValue={user?.email}
+               
                   placeholder="   Enter your infomation"
                   prefix={<MailOutlined />}
                 />
               </Form.Item>
-              <Form.Item className="Form" name="phone" label="Phone">
+              <Form.Item className="Form" name="phone" label="Phone" rules={[
+                {
+                  required: true,
+                  message: 'This box cannot be left blank',
+                
+                },{
+                  pattern:"[0-9]{10}",
+                  message: 'Must 10 number', 
+                }]}      
+                initialValue ={user?.phone}>
                 <Input
                   name="phone"
                   size="large"
                   type="tel"
-                  pattern="[0-9]{10}"
-                  defaultValue={user?.phone}
+            
                   placeholder="   Enter your infomation"
                   prefix={<PhoneOutlined />}
+                  
                 />
               </Form.Item>
-              <Form.Item className="Form" name="birthday" label="Birthday">
+              <Form.Item className="Form" name="birthday" label="Birthday"
+               rules={[{
+                required:true,
+                message:"This box cannot be left blank"
+              }]}       initialValue ={user?.birthday?.substring(0,10)}>
                 <Input
-                  size="large"
-                  defaultValue={user?.address}
+                  size="large"type="date"
+           
                   placeholder="  Enter your infomation"
                   prefix={<GiftOutlined />}
                 />
               </Form.Item>
-              <Form.Item className="Form" name="address" label="Address">
+              <Form.Item className="Form" name="address" label="Address" rules={[{
+                required:true,
+                message:"This box cannot be left blank"
+              }     ]}           initialValue ={user?.address}>
                 <Input
                   size="large"
                   name="birthday"
-                  defaultValue={user?.birthday}
+       
                   placeholder="   Enter your infomation"
                   prefix={<EnvironmentOutlined />}
                 />
               </Form.Item>
-              <Form.Item className="Form" label="Password">
+              <Form.Item className="Form" label="Password"            initialValue ={"\t" + "************"}>
                 <Input
                   disabled
                   size="large"
                   name="password"
-                  defaultValue={"\t" + "************"}
+       
                   placeholder="   Enter your infomation"
                   prefix={<LockOutlined />}
                   suffix={

@@ -33,9 +33,9 @@ const Dashboard = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
-  if(user?.role == "MEMBER" ){
-    navigate("/")
-}
+  if (user?.role == "MEMBER") {
+    navigate("/");
+  }
   const [items, setItems] = useState([]);
   const [key, setKey] = useState();
   const location = useLocation();

@@ -10,6 +10,19 @@ export const APIResetPass = (password, token) =>
     { password: password },
     { headers: { Authorization: `Bearer ${token}` } }
   );
+export const APIUpdateProfile = (profile, token, id) =>
+  api.put(
+    "update-profile",
+    {
+      fullname: profile.fullname,
+      address: profile.address,
+      birthday: profile.birthday,
+      email: profile.email,
+      phone: profile.phone,
+      id: id,
+    },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
 export const APIregis = (
   userName,
   passWord,
@@ -56,6 +69,10 @@ export const APIgetallrequest = (token) =>
   api.get("get-all-auction-request", {
     headers: { Authorization: `Bearer ${token}` },
   });
+export const APIgetallrequestUser = (token) =>
+  api.get("auction-request-by-userid", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 export const APIauctionrequestsell = (
   jewelryName,
   jewelryDescription,
@@ -89,7 +106,3 @@ export const APIsetappraisalprice = (id, price, token) =>
     },
     { headers: { Authorization: `Bearer ${token}` } }
   );
-export const APIgetallSession = (token) =>
-  api.get("auctionSessions", {
-    headers: { Authorization: `Bearer ${token}` },
-  });
