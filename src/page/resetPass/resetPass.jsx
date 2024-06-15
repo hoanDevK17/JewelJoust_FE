@@ -1,32 +1,66 @@
 
 import AuthenTemplate from "../../component/authen-template";
-import { useSearchParams } from "react-router-dom";
-import { Button, Form, Input } from "antd";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { Alert, Button, Form, Input, message } from "antd";
 import { APIResetPass } from "../../api/api";
+import { useState } from "react";
+import { useForm } from "antd/es/form/Form";
 
 
 
 export default function ResetPass() {
     const [searchParams] = useSearchParams();
+    const navigate = useNavigate()
     const token = searchParams.get("token");
-    const handleSubmit = () => { APIResetPass("123456", token).then((rs) => { console.log(rs) }) }
-    // console.log(token)
+    const [status,setStatus] =useState("")
+    const [form] = useForm();
 
-   
+    const handleSubmit = (user) => {
+        APIResetPass(user.password, token).then((rs) => {
+            if (rs.status === 200) {
+                // navigate('/homepage')
+                // alert("Change Password succeesfully")
+                success()
+               setTimeout(()=>{
+                navigate('/homepage')
+               },1500)
+                
+            }else{
+                error();
+            }
+
+        })
+    }
+    const [messageApi, contextHolder] = message.useMessage();
+    const success = () => {
+        messageApi.open({
+            type: 'success',
+            content: 'Change password successfully',
+        });
+    };
+    const error = () => {
+        messageApi.open({
+            type: 'error',
+            content: 'Fail to change password',
+        });
+    };
+
+
     return (<AuthenTemplate>
         {/* <button onClick={handleSubmit}>Submitg</button> */}
         <div >
+            {contextHolder}
             <h1>Please enter your new password!</h1>
             <div className="reset-form" >
                 <Form className="form-reset"
                     labelCol={{
                         span: 24,
                     }}
-                    onFinish={(values) => {
-                        console.log(values)
-                    }}>
+                    onFinish={handleSubmit}
+                    form={form}
+                >
                     <Form.Item
-                        name="password"
+                        name="password1"
                         label="Password"
                         rules={[
                             {
@@ -40,9 +74,9 @@ export default function ResetPass() {
                     </Form.Item>
 
                     <Form.Item
-                        name="confirm"
+                        name="password"
                         label="Confirm Password"
-                        dependencies={['password']}
+                        dependencies={['password1']}
                         hasFeedback
                         rules={[
                             {
@@ -51,7 +85,7 @@ export default function ResetPass() {
                             },
                             ({ getFieldValue }) => ({
                                 validator(_, value) {
-                                    if (!value || getFieldValue('password') === value) {
+                                    if (!value || getFieldValue('password1') === value) {
                                         return Promise.resolve();
                                     }
                                     return Promise.reject(new Error('The new password that you entered do not match!'));
@@ -77,8 +111,9 @@ export default function ResetPass() {
                             width: "100%",
                             textAlign: "center",
                         }}
+                        onClick={status}
                     >
-                        Login
+                        Reset password
                     </Button>
                 </Form>
             </div>
