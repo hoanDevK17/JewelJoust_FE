@@ -30,5 +30,26 @@ export const COLUMS_REQUEST_SELL = [
     title: 'status',
     dataIndex: 'status',
     key: 'status',
+    filterMode: "tree",
+    filters: [
+      {
+        text: "PENDING",
+        value: "PENDING",
+      },
+      {
+        text: "REJECTED",
+        value: "REJECTED",
+      },
+      {
+        text: "CONFIRMED",
+        value: "CONFIRMED",
+      },
+      {
+        text: "Hoan",
+        value: "Hoan",
+      },
+    ],
+    filterSearch: true,
+    onFilter: (value, record) => record.status.includes(value),
   },
 ];

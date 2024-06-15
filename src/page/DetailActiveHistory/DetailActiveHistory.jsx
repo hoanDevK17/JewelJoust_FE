@@ -28,9 +28,8 @@ const DetailActiveHistory = ({title}) => {
 {
   case "Request Sell History":
     await APIgetallrequestUser(token).then((response) => {
-      console.log();
-     
-      setData( response.data.sort((a,b) => b.id-a.id));
+      console.log(response.data);
+      setData((response.data));
     });
     break;
     default: setData('')
