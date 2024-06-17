@@ -121,6 +121,7 @@ export const APIgetallSession = (token) =>
   api.get("auctionSessions", {
     headers: { Authorization: `Bearer ${token}` },
   });
+
 export const APIshipment = (id, token) =>
   api.post(
     `shipment/${id}`,
@@ -141,6 +142,18 @@ export const APIultimateValuationsReject = (id, reason, token) =>
   api.post(
     `ultimateValuations/rejected`,
     { id_auctionRequest: id, reason: reason },
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+
+export const APIChangePassword = (oldPassword, newPassword, token) =>
+  api.put(
+    "account/changePassword",
+    {
+      oldPassword: oldPassword,
+      newPassword: newPassword,
+    },
     {
       headers: { Authorization: `Bearer ${token}` },
     }
