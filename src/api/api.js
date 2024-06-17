@@ -10,6 +10,21 @@ export const APIResetPass = (password, token) =>
     { password: password },
     { headers: { Authorization: `Bearer ${token}` } }
   );
+export const APIrefreshBalance = (token) =>
+  api.get("refreshBalance", { headers: { Authorization: `Bearer ${token}` } });
+export const APIUpdateProfile = (profile, token, id) =>
+  api.put(
+    "account",
+    {
+      fullname: profile.fullname,
+      address: profile.address,
+      birthday: profile.birthday,
+      email: profile.email,
+      phone: profile.phone,
+      id: id,
+    },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
 export const APIregis = (
   userName,
   passWord,
@@ -29,7 +44,7 @@ export const APIregis = (
     birthday: birthday,
   });
 export const APIgetallacount = (token) =>
-  api.get("accounts", { headers: { Authorization: `Bearer ${token}` } });
+  api.get("account", { headers: { Authorization: `Bearer ${token}` } });
 export const APIregishaverole = (
   userName,
   passWord,
@@ -41,7 +56,7 @@ export const APIregishaverole = (
   role,
   token
 ) =>
-  api.post("register-have-role", {
+  api.post("account/register", {
     username: userName,
     password: passWord,
     fullname: fullName,
@@ -53,7 +68,11 @@ export const APIregishaverole = (
     headers: { Authorization: `Bearer ${token}` },
   });
 export const APIgetallrequest = (token) =>
-  api.get("get-all-auction-request", {
+  api.get("auctionRequest", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+export const APIgetallrequestUser = (token) =>
+  api.get("auctionRequest/accountCurrent", {
     headers: { Authorization: `Bearer ${token}` },
   });
 export const APIauctionrequestsell = (
@@ -64,7 +83,7 @@ export const APIauctionrequestsell = (
   token
 ) =>
   api.post(
-    "request-sale",
+    "auctionRequest",
     {
       jewelryName: jewelryName,
       jewelrydescription: jewelryDescription,
@@ -73,33 +92,32 @@ export const APIauctionrequestsell = (
     },
     { headers: { Authorization: `Bearer ${token}` } }
   );
-  export const APIrejectedauctionrequestsell = (
-    id,
-    reason,
-    token
-  ) =>
-    api.post(
-      `rejected-initial/${id}`,
-      {
-        reason: reason,
-      },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    export const APIsetappraisalprice = (
-      id,
-      price,
-      token
-    ) =>
-      api.post(
-        `confirmed-initial/${id}`,
-        {
-          price: price,
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+
+
 export const APIgetlistrequestbyuserid = (
    token
 ) => api.get(
   "`confirmed-initial/${id}`",
   { headers: { Authorization: `Bearer ${token}` } }
 )
+
+export const APIrejectedauctionrequestsell = (id, reason, token) =>
+  api.post(
+    `initialValuation/${id}/rejected`,
+    {
+      reason: reason,
+    },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+export const APIsetappraisalprice = (id, price, token) =>
+  api.post(
+    `initialValuation/${id}/comfirmed`,
+    {
+      price: price,
+    },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+export const APIgetallSession = (token) =>
+  api.get("auctionSessions", {
+    headers: { Authorization: `Bearer ${token}` },
+  });

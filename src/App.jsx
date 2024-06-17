@@ -12,12 +12,13 @@ import ScrollToTop from "./component/Scroll-to-Top/scroll";
 import Acount from "./page/manageAcount/index";
 import RegisterAuction from "./page/RegisterAuction";
 import HomePage from "./page/homepage/homePage";
-
+import Wallet from "./page/Wallet/Wallet";
 import Profile from "./page/profile/profile";
 import ManageRequest from "./page/manageRequest/index";
 import ManageSession from "./page/manageSession/index";
-import History from "./page/history/history";
+import ActiveHistory from "./page/ActiveHistory/ActiveHistory";
 import AuctionRequestSell from "./page/AuctionRequestSell/AuctionRequestSell";
+import RequestSellHistory from "./page/RequestSellHistory/RequestSellHistory";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -50,10 +51,7 @@ export default function App() {
       path: "/homepage",
       element: <HomePage />,
     },
-    {
-      path: "/auctionRequestSell",
-      element: <AuctionRequestSell />,
-    },
+
     {
       path: "/profile",
       element: <Profile />,
@@ -63,8 +61,22 @@ export default function App() {
       element: <RegisterAuction />,
     },
     {
-      path: "/history",
-      element: <History />,
+      path: "/auctionRequestSell",
+      element: <AuctionRequestSell />,
+    },
+    {
+      path: "/ActiveHistory",
+      element: <ActiveHistory />,
+      children: [
+        {
+          path: "/ActiveHistory/RequestSell",
+          element: <RequestSellHistory />,
+        },
+      ],
+    },
+    {
+      path: "/Wallet",
+      element: <Wallet />,
     },
     {
       path: "/dashboard",
