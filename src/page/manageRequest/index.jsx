@@ -46,12 +46,14 @@ export default function ManageRequest() {
   //   setCurrentId(-1);
   //   // console.log(response);
   // };
-  const onFinishrejected = async (values) => {
-    console.log("Success:", values);
-    console.log("Success:", currentId);
+  const onFinishsetappraisalprice = async (values) => {
 
-    APIrejectedauctionrequestsell(currentId, values.reason, token)
+    console.log("Success:", values);
+    console.log("Success", currentId);
+        
+    APIsetappraisalprice(currentId, values.price, token)
       .then((rs) => {
+        console.log(rs);
         fetchData();
       })
       .catch((error) => {
@@ -63,17 +65,15 @@ export default function ManageRequest() {
     setCurrentId(-1);
     // console.log(response);
   };
-  const onFinishsetappraisalprice = async (values) => {
+
+  const onFinishrejected = async (values) => {
     console.log("Success:", values);
-    console.log("Success", currentId);
-    // Đảm bảo rằng `currentId` và `token` không phải là `null` hoặc `undefined`
-    if (!currentId || !token) {
-      console.error("Missing currentId or token");
-      return;
-    }
-    APIsetappraisalprice(currentId, values.price, token)
+    console.log("Success:", currentId);
+
+    APIrejectedauctionrequestsell(currentId, values.reason, token)
       .then((rs) => {
         console.log(rs);
+        fetchData();
       })
       .catch((error) => {
         console.error("Error logging in:", error);
@@ -84,6 +84,7 @@ export default function ManageRequest() {
     setCurrentId(-1);
     // console.log(response);
   };
+  
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
@@ -284,7 +285,7 @@ export default function ManageRequest() {
                 ]}
                 hasFeedback
               >
-                <Input />
+                <Input type="number"/>
               </Form.Item>
               <Button type="primary" htmlType="submit">
                 Valuation
