@@ -27,8 +27,7 @@ import { useState } from "react";
 import ImgCrop from "antd-img-crop";
 import { useDispatch, useSelector } from "react-redux";
 import { login, selectUser } from "../../redux/features/counterSlice.js";
-import { useForm } from "antd/es/form/Form.js";
-import { APIUpdateProfile } from "../../api/api.js";
+import { APIUpdateProfile, APIChangePassword } from "../../api/api.js";
 
 export default function Profile() {
   const user = useSelector(selectUser);
@@ -36,7 +35,11 @@ export default function Profile() {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [messageApi, contextHolder] = message.useMessage();
+  const [open, setOpen] = useState(false);
+  const [form] = Form.useForm();
+
   // edit avatar
+
   const getBase64 = (file) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -75,49 +78,76 @@ export default function Profile() {
   };
 
   // edit password
-  const [open, setOpen] = useState(false);
   const showDrawer = () => {
     setOpen(true);
   };
   const onClose = () => {
     setOpen(false);
+    form.resetFields();
   };
 
   // confirm edit
-  // const [modal2Open, setModal2Open] = useState(false);  
+  // const [modal2Open, setModal2Open] = useState(false);
   const handleUpdateProfile = (profile) => {
-    console.log(profile)
-    APIUpdateProfile(profile,user.token,user.id).then((rs)=>{
-   if(rs.status===200){
-       // console.log(rs);
-       rs.data.token = user.token;
-       // console.log(rs);
-       dispatch(login(rs.data)); messageApi.open({
-        type: 'success',
-        content: 'Update Profile Successfully',
+    console.log(profile);
+    APIUpdateProfile(profile, user.token, user.id)
+      .then((rs) => {
+        if (rs.status === 200) {
+          // console.log(rs);
+          rs.data.token = user.token;
+          // console.log(rs);
+          dispatch(login(rs.data));
+          messageApi.open({
+            type: "success",
+            content: "Update Profile Successfully",
+          });
+        }
+      })
+      .catch((error) => {
+        messageApi.open({
+          type: "error",
+          content: "Update Profile Error",
+        });
       });
-   }
-
-      
-    }).catch((error)=>{
-      messageApi.open({
-        type: 'error',
-        content: 'Update Profile Error',
-      });
-    })
   };
 
   // const [form] = Form.useForm();
 
   const handleChangePass = (values) => {
-    console.log("Form values: ", values);
+    console.log(user.token);
+    APIChangePassword(values.oldPassword, values.newPassword, user.token)
+      .then((rs) => {
+        // console.log(rs)
+        if (rs.data == "Change password Succesfully") {
+          // console.log("Form values: ", values);
+
+          messageApi.open({
+            type: "success",
+            content: rs.data ? rs.data : "ChangePassword Successfully",
+          });
+          onClose();
+        } else {
+          messageApi.open({
+            type: "error",
+            content: rs.data,
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error logging in:", error);
+        messageApi.open({
+          type: "error",
+          content: "Something is wrong",
+        });
+      });
+    // console.log(values)
   };
-  // const form = useForm();
-  // form.setFieldsValue("fullname",user?.fullname)
-  
+
   return (
     <>
-      <UserProfile> {contextHolder}
+      <UserProfile>
+        {" "}
+        {contextHolder}
         <div className="profile">
           <div className="Avatar">
             <>
@@ -150,80 +180,110 @@ export default function Profile() {
           </div>
           <div className="Form-all">
             <Form
-            // form={form}
+              // form={form}
               style={{
                 width: 600,
               }}
+              hideRequiredMark
               onFinish={handleUpdateProfile}
             >
-              <Form.Item className="Form" name="fullname" label="Name"  initialValue ={user?.fullname} >
+              <Form.Item
+                className="Form"
+                name="fullname"
+                label="Name"
+                initialValue={user?.fullname}
+              >
                 <Input
                   size="large"
-                 
                   placeholder="   Enter your infomation"
                   prefix={<UserOutlined />}
                 />
               </Form.Item>
-              <Form.Item className="Form" name="email" label="Email"    initialValue ={user?.email}>
+              <Form.Item
+                className="Form"
+                name="email"
+                label="Email"
+                initialValue={user?.email}
+              >
                 <Input
                   size="large"
                   name="email"
-               
                   placeholder="   Enter your infomation"
                   prefix={<MailOutlined />}
                 />
               </Form.Item>
-              <Form.Item className="Form" name="phone" label="Phone" rules={[
-                {
-                  required: true,
-                  message: 'This box cannot be left blank',
-                
-                },{
-                  pattern:"[0-9]{10}",
-                  message: 'Must 10 number', 
-                }]}      
-                initialValue ={user?.phone}>
+              <Form.Item
+                className="Form"
+                name="phone"
+                label="Phone"
+                rules={[
+                  {
+                    required: true,
+                    message: "This box cannot be left blank",
+                  },
+                  {max:10,
+                    pattern: "[0-9]{10}",
+                    message: "Please enter correct phone number information",
+                  },
+                ]}
+                initialValue={user?.phone}
+              >
                 <Input
                   name="phone"
                   size="large"
                   type="tel"
-            
                   placeholder="   Enter your infomation"
                   prefix={<PhoneOutlined />}
-                  
                 />
               </Form.Item>
-              <Form.Item className="Form" name="birthday" label="Birthday"
-               rules={[{
-                required:true,
-                message:"This box cannot be left blank"
-              }]}       initialValue ={user?.birthday?.substring(0,10)}>
+              <Form.Item
+                className="Form"
+                name="birthday"
+                label="Birthday"
+                rules={[
+                  {
+                    required: true,
+                    message: "This box cannot be left blank",
+                  },
+                ]}
+                initialValue={user?.birthday?.substring(0, 10)}
+              >
                 <Input
-                  size="large"type="date"
-           
+                  size="large"
+                  type="date"
                   placeholder="  Enter your infomation"
                   prefix={<GiftOutlined />}
                 />
               </Form.Item>
-              <Form.Item className="Form" name="address" label="Address" rules={[{
-                required:true,
-                message:"This box cannot be left blank"
-              }     ]}           initialValue ={user?.address}>
+              <Form.Item
+                className="Form"
+                name="address"
+                label="Address"
+                rules={[
+                  {
+                    required: true,
+                    message: "This box cannot be left blank",
+                  },
+                ]}
+                initialValue={user?.address}
+              >
                 <Input
                   size="large"
                   name="birthday"
-       
                   placeholder="   Enter your infomation"
                   prefix={<EnvironmentOutlined />}
                 />
               </Form.Item>
-              <Form.Item className="Form" label="Password"            initialValue ={"\t" + "************"}>
+              <Form.Item
+                className="Form"
+                label="Password"
+                initialValue={"\t" + "************"}
+              >
                 <Input
                   disabled
                   size="large"
                   name="password"
-       
-                  placeholder="   Enter your infomation"
+                  placeholder={"\t" + "************"}
                   prefix={<LockOutlined />}
                   suffix={
                     <>
@@ -233,7 +293,7 @@ export default function Profile() {
                         icon={<EditOutlined />}
                       ></Button>
                       <Drawer
-                        title="Create a new account"
+                        title="Change Password"
                         width={720}
                         onClose={onClose}
                         open={open}
@@ -249,13 +309,13 @@ export default function Profile() {
                         }
                       >
                         <Form
-                          // form={form}
+                          form={form}
                           layout="vertical"
                           hideRequiredMark
                           onFinish={handleChangePass}
                         >
                           <Form.Item
-                            name="password"
+                            name="oldPassword"
                             label="Password"
                             rules={[
                               {
@@ -313,7 +373,11 @@ export default function Profile() {
                           >
                             <Input.Password placeholder="Please Enter Confirm New Password" />
                           </Form.Item>
-
+                          <p
+                            style={{
+                              color: "red",
+                            }}
+                          ></p>
                           <Form.Item>
                             <Button type="primary" htmlType="submit">
                               Submit
