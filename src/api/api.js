@@ -86,33 +86,33 @@ export const APIauctionrequestsell = (
     "auctionRequest",
     {
       jewelryName: jewelryName,
-      jewelrydescription: jewelryDescription,
-      jewelryinitialprice: jewelryInitialPrice,
+
+      jewelryDescription: jewelryDescription,
+      initialPrice: jewelryInitialPrice,
       resourceRequests: resourceRequests,
     },
     { headers: { Authorization: `Bearer ${token}` } }
   );
 
-
-export const APIgetlistrequestbyuserid = (
-   token
-) => api.get(
-  "`confirmed-initial/${id}`",
-  { headers: { Authorization: `Bearer ${token}` } }
-)
+export const APIgetlistrequestbyuserid = (token) =>
+  api.get("`confirmed-initial/${id}`", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 
 export const APIrejectedauctionrequestsell = (id, reason, token) =>
   api.post(
-    `initialValuation/${id}/rejected`,
+    `initialValuation/rejected`,
     {
+      id: id,
       reason: reason,
     },
     { headers: { Authorization: `Bearer ${token}` } }
   );
 export const APIsetappraisalprice = (id, price, token) =>
   api.post(
-    `initialValuation/${id}/comfirmed`,
+    `initialValuation/comfirmed`,
     {
+      id: id,
       price: price,
     },
     { headers: { Authorization: `Bearer ${token}` } }
@@ -121,3 +121,27 @@ export const APIgetallSession = (token) =>
   api.get("auctionSessions", {
     headers: { Authorization: `Bearer ${token}` },
   });
+export const APIshipment = (id, token) =>
+  api.post(
+    `shipment/${id}`,
+    {},
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+export const APIultimateValuations = (id, price, token) =>
+  api.post(
+    `ultimateValuations`,
+    { id_auctionRequest: id, price: price },
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+export const APIultimateValuationsReject = (id, reason, token) =>
+  api.post(
+    `ultimateValuations/rejected`,
+    { id_auctionRequest: id, reason: reason },
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );

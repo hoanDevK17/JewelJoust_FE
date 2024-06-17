@@ -1,7 +1,7 @@
 import Footer from "../../component/footer/footer.jsx";
 import HomePage from "../../component/home-default/home.jsx";
 import "./createBidRequest.scss";
-import { Button, Form, Image, Input, Spin, Upload,message} from "antd";
+import { Button, Form, Image, Input, Spin, Upload, message } from "antd";
 import { useState } from "react";
 
 import { UploadOutlined } from "@ant-design/icons";
@@ -14,25 +14,22 @@ import uploadFile from "../../assets/hook/useUpload.js";
 export default function AuctionRequestSell() {
   const { TextArea } = Input;
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+
   const navigate = useNavigate(); // Sử dụng hook useNavigate từ react-router-dom
   const token = useSelector(selectUser).token;
   const [url, setUrl] = useState([]);
-  
-
-const use = async (file) => {
-   
-  try{
-    const imageUrl = await uploadFile(file);
-    setUrl((prevUrl) => [...prevUrl, imageUrl]);
-    message.success(`${file.name} file uploaded successfully`);
-  }
-  catch(error) {
-    console.error('Upload failed:', error);
-    message.error(`${file.name} file upload failed.`);
-  }
-}
-
+  const [img, setImg] = useState([]);
+  const [messageApi, contextHolder] = message.useMessage();
+  const use = async (file) => {
+    try {
+      const imageUrl = await uploadFile(file);
+      setUrl((prevUrl) => [...prevUrl, imageUrl]);
+      messageApi.success(`${file.name} file uploaded successfully`);
+    } catch (error) {
+      console.error("Upload failed:", error);
+      messageApi.error(`${file.name} file upload failed.`);
+    }
+  };
 
   const props = {
     name: "file",
@@ -42,11 +39,9 @@ const use = async (file) => {
     },
     onChange(info) {
       console.log("onChange");
-      use(info.file.originFileObj)
+      use(info.file.originFileObj);
     },
   };
-
- 
 
   const submit = (cbr) => {
     const resourceRequests = [{ path: "123", name: "321" }];
@@ -56,7 +51,7 @@ const use = async (file) => {
     //   cbr.jewelryinitialprice
     // );
     setIsLoading(true);
-    // console.log(cbr);
+    console.log(cbr);
     APIauctionrequestsell(
       cbr.jewelryname,
       cbr.jewelrydescription,
@@ -68,11 +63,14 @@ const use = async (file) => {
         console.log("Full response:", rs);
         if (rs.status === 200) {
           navigate("/homepage");
+          alert("Success!");
+        } else {
+          messageApi.error(`Something went wrong`);
         }
       })
       .catch((error) => {
+        messageApi.error(`Something went wrong`);
         console.error("Error logging in:", error);
-        setErrorMessage(error.response?.data || "Something went wrong");
       })
       .finally(() => {
         setIsLoading(false);
@@ -81,6 +79,7 @@ const use = async (file) => {
 
   return (
     <>
+      {contextHolder}
       {isLoading ? (
         <Spin
           style={{
@@ -159,25 +158,23 @@ const use = async (file) => {
                     label="Upload image of your jewelry"
                     name="imgjewerly"
                   >
-                    <Upload  {...props}>
+                    <Upload {...props}>
                       <Button icon={<UploadOutlined />}>Click to Upload</Button>
                     </Upload>
                   </Form.Item>
-                  {url?.map((src,index)=>{
-        return <Image
-        key={index}
-        width={200}
-        src={src}
-      />
+                  {url?.map((src, index) => {
+                    return <Image key={index} width={200} src={src} />;
                   })}
                   <Form.Item
                     className="input-conten"
                     label="Upload the certificate files of your jewelry"
                     name="filejewerly"
                   >
-                    <Upload {...props}
-                    listType="picture"
-                    defaultFileList={[...img]}>
+                    <Upload
+                      {...props}
+                      listType="picture"
+                      defaultFileList={[...img]}
+                    >
                       <Button icon={<UploadOutlined />}>Click to Upload</Button>
                     </Upload>
                   </Form.Item>
@@ -185,9 +182,7 @@ const use = async (file) => {
                     style={{
                       color: "red",
                     }}
-                  >
-                    {errorMessage ? errorMessage : ""}
-                  </p>
+                  ></p>
                   <Form.Item>
                     <Button
                       type="primary"
