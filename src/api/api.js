@@ -92,6 +92,15 @@ export const APIauctionrequestsell = (
     },
     { headers: { Authorization: `Bearer ${token}` } }
   );
+
+
+export const APIgetlistrequestbyuserid = (
+   token
+) => api.get(
+  "`confirmed-initial/${id}`",
+  { headers: { Authorization: `Bearer ${token}` } }
+)
+
 export const APIrejectedauctionrequestsell = (id, reason, token) =>
   api.post(
     `initialValuation/${id}/rejected`,

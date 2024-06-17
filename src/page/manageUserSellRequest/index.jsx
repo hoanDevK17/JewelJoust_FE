@@ -1,5 +1,14 @@
 import { useEffect, useState } from "react";
-import { Button, Modal, Form, Input, Table, Steps, Row, Col } from "antd";
+import {
+  Button,
+  Modal,
+  Form,
+  Input,
+  Table,
+  Steps,
+  Row,
+  Col,
+} from "antd";
 import { useForm } from "antd/es/form/Form";
 import dayjs from "dayjs";
 import {
@@ -9,56 +18,31 @@ import {
   SolutionOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import {
-  APIgetallrequest,
-  APIrejectedauctionrequestsell,
-  APIsetappraisalprice,
-} from "../../api/api";
+import { APIgetlistrequestbyuserid, APIrejectedauctionrequestsell, APIsetappraisalprice } from "../../api/api";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 
-export default function ManageRequest() {
+export default function ManageUserRequest() {
   const token = useSelector(selectUser).token;
-  // const dateFormat = 'YYYY/MM/DD';
 
-  /** Manually entering any of the following formats will perform date parsing */
-  // const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
-  // const customFormat = (value) => `custom format: ${value.format(dateFormat)}`;
-  // const customWeekStartEndFormat = (value) =>
-  //   `${dayjs(value).startOf('week').format(weekFormat)} ~ ${dayjs(value)
-  //     .endOf('week')
-  //     .format(weekFormat)}`;
-
-  // id >= 0
   const [currentId, setCurrentId] = useState(-1);
   const [form] = useForm();
   const [currentRequest, setCurrentRequest] = useState();
   const [errorMessage, setErrorMessage] = useState("");
-  // const onFinish = async (values) => {
-  //   console.log("Success:", values);
-  //   form.resetFields();
-  //   // values.birthday = dayjs(values.birthday).format(`YYYY-MM-DD`);
-  //   // const response = await axios.post(
-  //   //   "http://jeweljoust.online:8080/api/register-have-role",
-  //   //   values
-  //   // );
-  //   // setData([...data, response.data]);
-  //   setCurrentId(-1);
-  //   // console.log(response);
-  // };
+  
   const onFinishrejected = async (values) => {
     console.log("Success:", values);
     console.log("Success:", currentId);
 
-    APIrejectedauctionrequestsell(currentId, values.reason, token)
-      .then((rs) => {
-        fetchData();
-      })
-      .catch((error) => {
-        console.error("Error logging in:", error);
-        setErrorMessage(error.response?.data || "Something went wrong");
-      })
-      .finally(() => {});
+    APIrejectedauctionrequestsell(currentId, values.reason,token).then((rs) =>{
+      console.log(rs)
+    })
+    .catch((error) => {
+      console.error("Error logging in:", error);
+      setErrorMessage(error.response?.data || "Something went wrong");
+    })
+    .finally(() => {
+    });
     // setData([...data, response.data]);
     setCurrentId(-1);
     // console.log(response);
@@ -70,16 +54,16 @@ export default function ManageRequest() {
     if (!currentId || !token) {
       console.error("Missing currentId or token");
       return;
-    }
-    APIsetappraisalprice(currentId, values.price, token)
-      .then((rs) => {
-        console.log(rs);
-      })
-      .catch((error) => {
-        console.error("Error logging in:", error);
-        setErrorMessage(error.response?.data || "Something went wrong");
-      })
-      .finally(() => {});
+  }
+    APIsetappraisalprice(currentId, values.price,token).then((rs) =>{
+      console.log(rs)
+    })
+    .catch((error) => {
+      console.error("Error logging in:", error);
+      setErrorMessage(error.response?.data || "Something went wrong");
+    })
+    .finally(() => {
+    });
     // setData([...data, response.data]);
     setCurrentId(-1);
     // console.log(response);
@@ -87,6 +71,7 @@ export default function ManageRequest() {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+  
 
   useEffect(() => {
     console.log(currentId);
@@ -105,11 +90,6 @@ export default function ManageRequest() {
   }, [currentId]);
 
   const columns = [
-    {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-    },
     {
       title: "Jewerly Name",
       dataIndex: "jewelryname",
@@ -157,15 +137,14 @@ export default function ManageRequest() {
   const [data, setData] = useState([]);
 
   const fetchData = async () => {
-    await APIgetallrequest(token).then((response) => {
+    await APIgetlistrequestbyuserid(token).then((response) => {
       console.log(response.data);
       setData(response.data);
     });
   };
 
-  useEffect(() => {
+    useEffect(() => {
     fetchData();
-    console.log("oke");
   }, []);
 
   // const handleDelate = (value) => {
