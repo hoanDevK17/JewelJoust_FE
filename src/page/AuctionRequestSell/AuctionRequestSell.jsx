@@ -1,7 +1,7 @@
 import Footer from "../../component/footer/footer.jsx";
 import HomePage from "../../component/home-default/home.jsx";
 import "./createBidRequest.scss";
-import { Button, Form, Input, Spin, message, Upload } from "antd";
+import { Button, Form, Image, Input, Spin, Upload,message} from "antd";
 import { useState } from "react";
 
 import { UploadOutlined } from "@ant-design/icons";
@@ -9,6 +9,7 @@ import { APIauctionrequestsell } from "../../api/api.js";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice.js";
+import uploadFile from "../../assets/hook/useUpload.js";
 
 export default function AuctionRequestSell() {
   const { TextArea } = Input;
@@ -16,24 +17,36 @@ export default function AuctionRequestSell() {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate(); // Sử dụng hook useNavigate từ react-router-dom
   const token = useSelector(selectUser).token;
+  const [url, setUrl] = useState([]);
+  
+
+const use = async (file) => {
+   
+  try{
+    const imageUrl = await uploadFile(file);
+    setUrl((prevUrl) => [...prevUrl, imageUrl]);
+    message.success(`${file.name} file uploaded successfully`);
+  }
+  catch(error) {
+    console.error('Upload failed:', error);
+    message.error(`${file.name} file upload failed.`);
+  }
+}
+
+
   const props = {
     name: "file",
-    action: "https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload",
     headers: {
       authorization: "authorization-text",
       accept: "image/png, image/jpeg, .doc, .docx, .xml, .pdf",
     },
     onChange(info) {
-      if (info.file.status !== "uploading") {
-        console.log(info.file, info.fileList);
-      }
-      if (info.file.status === "done") {
-        message.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
-      }
+      console.log("onChange");
+      use(info.file.originFileObj)
     },
   };
+
+ 
 
   const submit = (cbr) => {
     const resourceRequests = [{ path: "123", name: "321" }];
@@ -48,7 +61,7 @@ export default function AuctionRequestSell() {
       cbr.jewelryname,
       cbr.jewelrydescription,
       cbr.jewelryinitialprice,
-      resourceRequests,
+      url,
       token
     )
       .then((rs) => {
@@ -146,16 +159,25 @@ export default function AuctionRequestSell() {
                     label="Upload image of your jewelry"
                     name="imgjewerly"
                   >
-                    <Upload {...props}>
+                    <Upload  {...props}>
                       <Button icon={<UploadOutlined />}>Click to Upload</Button>
                     </Upload>
                   </Form.Item>
+                  {url?.map((src,index)=>{
+        return <Image
+        key={index}
+        width={200}
+        src={src}
+      />
+                  })}
                   <Form.Item
                     className="input-conten"
                     label="Upload the certificate files of your jewelry"
                     name="filejewerly"
                   >
-                    <Upload {...props}>
+                    <Upload {...props}
+                    listType="picture"
+                    defaultFileList={[...img]}>
                       <Button icon={<UploadOutlined />}>Click to Upload</Button>
                     </Upload>
                   </Form.Item>
