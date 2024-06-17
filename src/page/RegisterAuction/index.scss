@@ -33,15 +33,16 @@
       //   border-left: solid 1px;
     }
   }
+  button {
+    border: none;
+    //    display: flex;
+    width: max-content;
+    background-color: rgba(240, 255, 255, 0);
+    color: rgb(22, 214, 32);
+    font-size: 15px;
+  }
+  p {
+    font-size: 14px;
+  }
 }
-button {
-  border: none;
-  //    display: flex;
-  width: max-content;
-  background-color: rgba(240, 255, 255, 0);
-  color: rgb(22, 214, 32);
-  font-size: 15px;
-}
-p {
-  font-size: 14px;
-}
+

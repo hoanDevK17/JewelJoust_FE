@@ -112,3 +112,13 @@ export const APIgetallSession = (token) =>
   api.get("auctionSessions", {
     headers: { Authorization: `Bearer ${token}` },
   });
+export const APIChangePassword = (
+  oldPassword,
+  newPassword,token
+) =>
+  api.put("account/changePassword", {
+    oldPassword: oldPassword,
+    newPassword: newPassword,
+  },{
+    headers: { Authorization: `Bearer ${token}` },
+  });

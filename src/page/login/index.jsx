@@ -36,9 +36,10 @@ export default function Login() {
         // console.log(rs);
         if (rs.status === 200) {
           dispatch(login(rs.data));
-          console.log(rs.data)
-          rs.data.role == "MEMBER" ? navigate("/homepage") : navigate("/dashboard")
-           
+          console.log(rs.data);
+          rs.data.role == "MEMBER"
+            ? navigate("/homepage")
+            : navigate("/dashboard");
         }
       })
       .catch((error) => {
@@ -49,42 +50,41 @@ export default function Login() {
         setIsLoading(false);
       });
   };
-  const handleLoginGoogle = () =>{
+  const handleLoginGoogle = () => {
     setIsLoading(true);
     signInWithPopup(auth, provider)
-  .then(async (result) => {
-    // This gives you a Google Access Token. You can use it to access the Google API.
-    
-    const token = result.user.accessToken;
-    console.log(token)
-    // The signed-in user info.
-    const user = result.user;
-    const response =  await api.post("/login-google",{token: token})
-    console.log(response)
-    // save redux
-    
-    // save token local storage. 
+      .then(async (result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
 
-    // navigate 
-    if(response.status === 200){
-      navigate("/homepage");
-    }
+        const token = result.user.accessToken;
+        console.log(token);
+        // The signed-in user info.
+        const user = result.user;
+        const response = await api.post("/login-google", { token: token });
+        console.log(response);
+        // save redux
 
-  }).catch((error) => {
-    // Handle Errors here.
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // The email of the user's account used.
-    const email = error.customData.email;
-    // The AuthCredential type that was used.
-    const credential = GoogleAuthProvider.credentialFromError(error);
-    // ...
-  })
-  .finally(() => {
-    setIsLoading(false);
-  });
+        // save token local storage.
 
-  }
+        // navigate
+        if (response.status === 200) {
+          navigate("/homepage");
+        }
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
   return (
     <>
       {isLoading ? (
@@ -96,7 +96,7 @@ export default function Login() {
             paddingTop: "50vh",
           }}
         ></Spin>
-     ) : (
+      ) : (
         <AuthenTemplate>
           <div className="Login-page">
             <div className="Login-page-welcome">
@@ -106,13 +106,15 @@ export default function Login() {
             <div className="Login-page-input">
               <Form
                 className="form-login"
+                hideRequiredMark
+
                 labelCol={{
                   span: 24,
                 }}
                 onFinish={Handlelogin}
               >
                 <Form.Item
-                  label="Email address:"
+                  label="User ID:"
                   name="email"
                   rules={[
                     {
@@ -149,7 +151,7 @@ export default function Login() {
                     color: "red",
                   }}
                 >
-                  {errorMessage && errorMessage }
+                  {errorMessage && errorMessage}
                 </p>
                 <Form.Item>
                   <Button
@@ -186,7 +188,7 @@ export default function Login() {
 
             <div className="button-login">
               <span>or</span>
-              <div className="Login-google" onClick={handleLoginGoogle}> 
+              <div className="Login-google" onClick={handleLoginGoogle}>
                 <button>
                   <img src="./IconGoogle.svg" alt="" title="" />
                   Sign in with Google
