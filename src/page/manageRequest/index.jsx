@@ -1,32 +1,9 @@
 import { useEffect, useState } from "react";
-
-
-import {
-  Button,
-  Modal,
-  Form,
-  Input,
-  Table,
-  Steps,
-  Row,
-  Col,
-  Switch, Tag
-} from "antd";
+import { Button, Modal, Form, Input, Table, Steps,Row,Col,Switch, Tag } from "antd";
 import { useForm } from "antd/es/form/Form";
 import dayjs from "dayjs";
-import {
-  EditOutlined,
-  LoadingOutlined,
-  SmileOutlined,
-  SolutionOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import {
-  APIgetallrequest,
-  APIrejectedauctionrequestsell,
-  APIsetappraisalprice,
-  APIshipment,
-} from "../../api/api";
+import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, EditOutlined, LoadingOutlined, } from "@ant-design/icons";
+import { APIgetallrequest, APIrejectedauctionrequestsell, APIsetappraisalprice, APIshipment,} from "../../api/api";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 import { current } from "@reduxjs/toolkit";
@@ -34,44 +11,23 @@ import { current } from "@reduxjs/toolkit";
 export default function ManageRequest() {
   const token = useSelector(selectUser).token;
 
+  // set format cho date
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0 nên cần +1
     const year = date.getFullYear();
-
     return `${hours}:${minutes} ${day}/${month}/${year}`;
   }
-  // const dateFormat = 'YYYY/MM/DD';
-
-  /** Manually entering any of the following formats will perform date parsing */
-  // const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
-  // const customFormat = (value) => `custom format: ${value.format(dateFormat)}`;
-  // const customWeekStartEndFormat = (value) =>
-  //   `${dayjs(value).startOf('week').format(weekFormat)} ~ ${dayjs(value)
-  //     .endOf('week')
-  //     .format(weekFormat)}`;
 
   const [currentId, setCurrentId] = useState(-1);
   const [form] = useForm();
   const [currentRequest, setCurrentRequest] = useState();
-
   const [isRejected, setIsRejected] = useState(false);
-  // const onFinish = async (values) => {
-  //   console.log("Success:", values);
-  //   form.resetFields();
-  //   // values.birthday = dayjs(values.birthday).format(`YYYY-MM-DD`);
-  //   // const response = await axios.post(
-  //   //   "http://jeweljoust.online:8080/api/register-have-role",
-  //   //   values
-  //   // );
-  //   // setData([...data, response.data]);
-  //   setCurrentId(-1);
-  //   // console.log(response);
-  // };
+  
+
   const onFinishrejected = async (values) => {
     APIrejectedauctionrequestsell(currentId, values.reason, token)
       .then((rs) => {
@@ -82,14 +38,11 @@ export default function ManageRequest() {
         console.error("Error logging in:", error);
       })
       .finally(() => {});
-    // setData([...data, response.data]);
     setCurrentId(-1);
-    // console.log(response);
   };
   const onFinishsetappraisalprice = async (values) => {
     console.log("Success:", values);
     console.log("Success", currentId);
-    // Đảm bảo rằng `currentId` và `token` không phải là `null` hoặc `undefined`
     if (!currentId || !token) {
       console.error("Missing currentId or token");
       return;
@@ -275,16 +228,22 @@ export default function ManageRequest() {
     },
   ];
 
+
   const [data, setData] = useState([]);
+
 
   const fetchData = async () => {
     await APIgetallrequest(token).then((response) => {
       setData(response.data);
     });
   };
+
+
   const handelFormPending = (checked) => {
     setIsRejected(checked);
   };
+
+
   const onFinishReceived = () => {
     console.log(currentId, token);
     APIshipment(currentId, token)
@@ -298,11 +257,10 @@ export default function ManageRequest() {
       .finally(() => {
         setCurrentId(-1);
       });
-    // setData([...data, response.data]);
-
-    // console.log(response);
   };
-  const handleUltimateValuation = async (value) => {
+
+
+  const handleUltimateValuation = async () => {
     APIshipment(currentId, token)
       .then((rs) => {
         console.log(rs);
@@ -314,11 +272,10 @@ export default function ManageRequest() {
       .finally(() => {
         setCurrentId(-1);
       });
-    // setData([...data, response.data]);
-
-    // console.log(response);
   };
-  const handleUltimateValuationReject = async (value) => {
+
+
+  const handleUltimateValuationReject = async () => {
     console.log(currentId, token);
     APIshipment(currentId, token)
       .then((rs) => {
@@ -331,9 +288,6 @@ export default function ManageRequest() {
       .finally(() => {
         setCurrentId(-1);
       });
-    // setData([...data, response.data]);
-
-    // console.log(response);
   };
 
   useEffect(() => {
@@ -341,15 +295,221 @@ export default function ManageRequest() {
     console.log("oke");
   }, []);
 
-  // const handleDelate = (value) => {
-  //   console.log(value);
-  //   const response = axios.delete(
-  //     `https://665d6f09e88051d604068e77.mockapi.io/category/${value.id}`
-  //   );
-  //   console.log(response.data);
-  //   // lọc ra tất cả data loại bỏ data vừa bị xoá
-  //   setData(data.filter((data) => data.id != value.id));
-  // };
+
+
+  // in ra step 
+  const renderSteps = (status) => {
+    return (
+      <Steps current={0}>
+      <Steps.Step
+        title="Initial Valuation"
+        status={getStatusForStep("Initial Valuation", status)}
+        icon={getIconForStep("Initial Valuation", status)}
+      />
+      <Steps.Step
+        title="Delivery"
+        status={getStatusForStep("Delivery", status)}
+        icon={getIconForStep("Delivery", status)}
+      />
+      <Steps.Step
+        title="Pricing Phase"
+        status={getStatusForStep("Pricing Phase", status)}
+        icon={getIconForStep("Pricing Phase", status)}
+      />
+      <Steps.Step
+        title="Done"
+        status={getStatusForStep("Done", status)}
+        icon={getIconForStep("Done", status)}
+      />
+    </Steps>
+    );
+  };
+
+  //lấy status từ Status
+  const getStatusForStep = (title, status) => {
+    switch (title) {
+      case "Initial Valuation":
+        switch (status) {
+          case "PENDING":
+            return "process";
+          case "REJECTED":
+          case "CANCEL":
+            return "error";
+          case "CONFIRMED":
+          case "RECEIVED":
+          case "MISSED":
+          case "REVIEW":
+          case "UNACCEPTED":
+          case "UNAPPROVED":
+          case "APPROVED":
+          case "AGREED":
+          case "DECLINED":
+            return "finish";
+          default:
+            return "finish";
+        }
+      case "Delivery":
+        switch (status) {
+          case "PENDING":
+          case "REJECTED":
+          case "CANCEL":
+            return "wait";
+          case "CONFIRMED":
+            return "process";
+          case "RECEIVED":
+            return "finish"
+          case "MISSED":
+            return "error"
+          case "REVIEW":
+          case "UNACCEPTED":
+          case "UNAPPROVED":
+          case "APPROVED":
+          case "AGREED":
+          case "DECLINED":
+            return "wait";
+          default:
+            return "wait";
+        }
+      case "Pricing Phase":
+        switch (status) {
+          case "PENDING":
+          case "REJECTED":
+          case "CANCEL":
+          case "CONFIRMED":
+          case "MISSED":
+            return "wait"
+          case "RECEIVED":
+          case "REVIEW":
+            return "process"
+          case "UNACCEPTED":
+          case "UNAPPROVED":
+            return "error"
+          case "APPROVED":
+          case "AGREED":
+          case "DECLINED":
+            return "finish";
+          default:
+            return "wait";
+        }
+      case "Done":
+        switch (status) {
+          case "PENDING":
+          case "REJECTED":
+          case "CANCEL":
+          case "CONFIRMED":
+          case "RECEIVED":
+          case "MISSED":
+          case "REVIEW":
+          case "UNACCEPTED":
+          case "UNAPPROVED":
+            return "wait";
+          case "APPROVED":
+            return "process";
+          case "AGREED":
+            return "finish";
+          case "DECLINED":
+            return "error";
+          default:
+            return "wait";
+        }
+      default:
+        return "wait";
+    }
+  };
+
+  // lấy icon từ Status
+  const getIconForStep = (title, status) => {
+    switch (title) {
+      case "Initial Valuation":
+        switch (status) {
+          case "PENDING":
+            return <LoadingOutlined />;
+          case "REJECTED":
+          case "CANCEL":
+            return <CloseCircleOutlined />;
+          case "CONFIRMED":
+          case "RECEIVED":
+          case "MISSED":
+          case "REVIEW":
+          case "UNACCEPTED":
+          case "UNAPPROVED":
+          case "APPROVED":
+          case "AGREED":
+          case "DECLINED":
+            return <CheckCircleOutlined />;
+          default:
+            return <CheckCircleOutlined />;
+        }
+      case "Delivery":
+        switch (status) {
+          case "PENDING":
+          case "REJECTED":
+          case "CANCEL":
+            return <ClockCircleOutlined />;
+          case "CONFIRMED":
+            return <LoadingOutlined />;
+          case "RECEIVED":
+            return <CheckCircleOutlined />;
+          case "MISSED":
+            return <CloseCircleOutlined />;
+          case "REVIEW":
+          case "UNACCEPTED":
+          case "UNAPPROVED":
+          case "APPROVED":
+          case "AGREED":
+          case "DECLINED":
+            return <CheckCircleOutlined />;
+          default:
+            return <CheckCircleOutlined />;
+        }
+      case "Pricing Phase":
+        switch (status) {
+          case "PENDING":
+          case "REJECTED":
+          case "CANCEL":
+          case "CONFIRMED":
+          case "MISSED":
+            return <ClockCircleOutlined />;
+          case "RECEIVED":
+          case "REVIEW":
+            return <LoadingOutlined />;
+          case "UNACCEPTED":
+          case "UNAPPROVED":
+            return <CloseCircleOutlined />;
+          case "APPROVED":
+          case "AGREED":
+          case "DECLINED":
+            return <CheckCircleOutlined />;
+          default:
+            return <ClockCircleOutlined />;
+        }
+      case "Done":
+        switch (status) {
+          case "PENDING":
+          case "REJECTED":
+          case "CANCEL":
+          case "CONFIRMED":
+          case "RECEIVED":
+          case "MISSED":
+          case "REVIEW":
+          case "UNACCEPTED":
+          case "UNAPPROVED":
+            return <ClockCircleOutlined />;
+          case "APPROVED":
+            return <LoadingOutlined />;
+          case "AGREED":
+            return <CheckCircleOutlined />;
+          case "DECLINED":
+            return <CloseCircleOutlined />;
+          default:
+            return <ClockCircleOutlined />;
+        }
+      default:
+        return <ClockCircleOutlined />;
+    }
+  };
+
+
 
   return (
     <div>
@@ -362,30 +522,9 @@ export default function ManageRequest() {
           setCurrentId(-1);
         }}
       >
-        <Steps
-          items={[
-            {
-              title: "Login",
-              status: "finish",
-              icon: <UserOutlined />,
-            },
-            {
-              title: "Verification",
-              status: "finish",
-              icon: <SolutionOutlined />,
-            },
-            {
-              title: "Pay",
-              status: "process",
-              icon: <LoadingOutlined />,
-            },
-            {
-              title: "Done",
-              status: "wait",
-              icon: <SmileOutlined />,
-            },
-          ]}
-        />
+        <div> 
+         {renderSteps(currentRequest?.status)}
+        </div>
           <div style={{
             padding: '20px',
             border: '1px solid #ccc',
@@ -714,7 +853,6 @@ export default function ManageRequest() {
         ) : (
           <>
             <Row>
-
               {currentRequest?.status === "CONFIRMED" ? (
                 <>
                   <h6>Initial Valuation</h6>
@@ -757,7 +895,6 @@ export default function ManageRequest() {
                   )}
                 </>
               )}
-
             </Row>
           </>
         )}
