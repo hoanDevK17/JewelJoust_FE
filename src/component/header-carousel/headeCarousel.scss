@@ -8,12 +8,18 @@
       img {
         width: 100%;
         // height: fit-content;
-        height: 300px !important;
+        height: 350px !important;
         object-fit: cover;
       }
     }
 
     .annouce {
+      padding-left: 70px;
+      padding-bottom: 30px;
+    }
+
+    .annouce2 {
+      color: white;
       padding-left: 70px;
       padding-bottom: 30px;
     }
@@ -44,6 +50,32 @@
         transition: all 500ms ease;
       }
     }
+    .inside-item2 {
+      display: flex;
+
+      .button-num2 {
+        margin-left:100px;
+        width: 45%;
+        height: 35px;
+        color: aliceblue;
+        background-color: gray;
+        font-size: 20px;
+        border-radius: 8px;
+        border: 1px solid black;
+      }
+
+      .button-num2:hover {
+        background-color: black;
+        color: lightslategrey;
+        border-radius: 8px;
+        animation-duration: 5s;
+        -webkit-transition: all 500ms ease;
+        -moz-transition: all 500ms ease;
+        -ms-transition: all 500ms ease;
+        -o-transition: all 500ms ease;
+        transition: all 500ms ease;
+      }
+    }
   }
 
   h1 {
@@ -51,6 +83,7 @@
     color: grey;
   }
 }
+
 p {
   // font-family: Georgia;
   font-style: italic;
