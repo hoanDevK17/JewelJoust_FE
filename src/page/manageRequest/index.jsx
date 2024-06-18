@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+
+
 import {
   Button,
   Modal,
@@ -8,7 +10,7 @@ import {
   Steps,
   Row,
   Col,
-  Switch,
+  Switch, Tag
 } from "antd";
 import { useForm } from "antd/es/form/Form";
 import dayjs from "dayjs";
@@ -32,6 +34,27 @@ import { current } from "@reduxjs/toolkit";
 export default function ManageRequest() {
   const token = useSelector(selectUser).token;
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0 nên cần +1
+    const year = date.getFullYear();
+
+    return `${hours}:${minutes} ${day}/${month}/${year}`;
+  }
+  // const dateFormat = 'YYYY/MM/DD';
+
+  /** Manually entering any of the following formats will perform date parsing */
+  // const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
+  // const customFormat = (value) => `custom format: ${value.format(dateFormat)}`;
+  // const customWeekStartEndFormat = (value) =>
+  //   `${dayjs(value).startOf('week').format(weekFormat)} ~ ${dayjs(value)
+  //     .endOf('week')
+  //     .format(weekFormat)}`;
+
   const [currentId, setCurrentId] = useState(-1);
   const [form] = useForm();
   const [currentRequest, setCurrentRequest] = useState();
@@ -52,6 +75,7 @@ export default function ManageRequest() {
   const onFinishrejected = async (values) => {
     APIrejectedauctionrequestsell(currentId, values.reason, token)
       .then((rs) => {
+        console.log(rs);
         fetchData();
       })
       .catch((error) => {
@@ -137,6 +161,103 @@ export default function ManageRequest() {
       title: "Request Status",
       dataIndex: "status",
       key: "status",
+      filterMode: "tree",
+    filters: [
+      {
+        text: "PENDING",
+        value: "PENDING",
+      },
+      {
+        text: "REJECTED",
+        value: "REJECTED",
+      },
+      {
+        text: "CONFIRMED",
+        value: "CONFIRMED",
+      },
+      {
+        text: "CANCEL",
+        value: "CANCEL",
+      },
+      {
+        text: "RECEIVED",
+        value: "RECEIVED",
+      },
+      {
+        text: "MISSED",
+        value: "MISSED",
+      },
+      {
+        text: "REVIEW",
+        value: "REVIEW",
+      },
+      {
+        text: "UNACCEPTED",
+        value: "UNACCEPTED",
+      },
+      {
+        text: "UNAPPROVED",
+        value: "UNAPPROVED",
+      },
+      {
+        text: "APPROVED",
+        value: "APPROVED",
+      },
+      {
+        text: "AGREED",
+        value: "AGREED",
+      },
+      {
+        text: "DECLINED",
+        value: "DECLINED",
+      },
+    ],
+    filterSearch: true,
+    onFilter: (value, record) => record.status.includes(value),
+    render: (text) => {
+      let color = "";
+      switch (text) {
+        case "PENDING":
+          color = "lightskyblue";
+          break;
+        case "REJECTED":
+          color = "tomato";
+          break;
+        case "CONFIRMED":
+          color = "limegreen";
+          break;
+        case "CANCEL":
+          color = "gray";
+          break;
+        case "RECEIVED":
+          color = "mediumseagreen";
+          break;
+        case "MISSED":
+          color = "gold";
+          break;
+        case "REVIEW":
+          color = "orange";
+          break;
+        case "UNACCEPTED":
+          color = "orangered";
+          break;
+        case "UNAPPROVED":
+          color = "darkorange";
+          break;
+        case "APPROVED":
+          color = "forestgreen";
+          break;
+        case "AGREED":
+          color = "dodgerblue";
+          break;
+        case "DECLINED":
+          color = "red";
+          break;
+        default:
+          color = "default";
+      }
+      return <Tag color={color}>{text}</Tag>;
+    },
     },
     {
       title: "Edit",
@@ -265,40 +386,72 @@ export default function ManageRequest() {
             },
           ]}
         />
-
-        <Row>
-          <Col span={12}>
-            <p>
-              <strong>ID:</strong> {currentRequest?.id}
-            </p>
-          </Col>
-          <Col span={12}>
-            <p>
-              <strong>Name:</strong> {currentRequest?.jewelryname}
-            </p>
-          </Col>
-          <Col span={12}>
-            <p>
-              <strong>Description:</strong> {currentRequest?.jewelrydescription}
-            </p>
-          </Col>
-          <Col span={12}>
-            <p>
-              <strong>Initial Price:</strong>{" "}
-              {currentRequest?.jewelryinitialprice}
-            </p>
-          </Col>
-          <Col span={12}>
-            <p>
-              <strong>Request Date:</strong> {currentRequest?.requestdate}
-            </p>
-          </Col>
-          <Col span={12}>
-            <p>
-              <strong>Status:</strong> {currentRequest?.status}
-            </p>
-          </Col>
+          <div style={{
+            padding: '20px',
+            border: '1px solid #ccc',
+            borderRadius: '8px',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+            backgroundColor: '#fff', // Màu nền
+            marginBottom: '10px',
+          }}>
+          <Row gutter={[16, 16]}>
+            <Col span={24} >
+                <Row gutter={[16, 16]}>
+                    <Col span={12}>
+                        <p>
+                            <strong>ID:</strong> {currentRequest?.id}
+                        </p>
+                    </Col>
+                    <Col span={12}>
+                        <p>
+                            <strong>Name:</strong> {currentRequest?.jewelryname}
+                        </p>
+                    </Col>
+                </Row>
+            </Col>
+            <Col span={24} style={{ borderTop: '1px solid rgba(0, 0, 0, 0.1)', }}>
+                <Row gutter={[16, 16]} style={{ paddingTop: '10px' }}>
+                    <Col span={23}>
+                        <p>
+                            <strong>Request Date: </strong> {" "} {formatDate(currentRequest?.requestdate)}
+                        </p>
+                    </Col>
+                </Row>
+            </Col>
+            <Col span={24} style={{ borderTop: '1px solid rgba(0, 0, 0, 0.1)', }}>
+                <Row gutter={[16, 16]} style={{ paddingTop: '10px' }}>
+                    <Col span={12}>
+                        <p>
+                            <strong>Initial Price:</strong> {currentRequest?.jewelryinitialprice}
+                        </p>
+                    </Col>
+                    <Col span={12}>
+                        <p>
+                            <strong>Status:</strong> {currentRequest?.status}
+                        </p>
+                    </Col>
+                </Row>
+            </Col>
+            <Col span={24} style={{ borderTop: '1px solid rgba(0, 0, 0, 0.1)',}}>
+                <Row gutter={[16, 16]} style={{ paddingTop: '10px' }}>
+                    <Col span={24}>
+                        <p>
+                            <strong>Description:</strong>
+                        </p>
+                        <div style={{
+                            padding: '10px',
+                            border: '1px solid #ccc',
+                            borderRadius: '8px',
+                            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                            backgroundColor: '#f9f9f9'
+                        }}>
+                            {currentRequest?.jewelrydescription}
+                        </div>
+                    </Col>
+                </Row>
+            </Col>
         </Row>
+        </div>
         {currentRequest?.status === "PENDING" ? (
           <>
             <Switch
@@ -561,6 +714,7 @@ export default function ManageRequest() {
         ) : (
           <>
             <Row>
+
               {currentRequest?.status === "CONFIRMED" ? (
                 <>
                   <h6>Initial Valuation</h6>
@@ -603,6 +757,7 @@ export default function ManageRequest() {
                   )}
                 </>
               )}
+
             </Row>
           </>
         )}
