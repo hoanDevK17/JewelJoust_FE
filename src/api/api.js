@@ -86,7 +86,6 @@ export const APIauctionrequestsell = (
     "auctionRequest",
     {
       jewelryName: jewelryName,
-
       jewelryDescription: jewelryDescription,
       initialPrice: jewelryInitialPrice,
       resourceRequests: resourceRequests,

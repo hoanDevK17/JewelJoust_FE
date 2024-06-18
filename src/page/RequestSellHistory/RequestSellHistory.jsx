@@ -19,7 +19,10 @@ const columns = [
     title: "ID",
     dataIndex: "id",
     key: "id",
-
+    sorter: {
+      compare: (a, b) => a.id - b.id,
+      multiple: 1,
+    },
     // render: (a) => {console.log(a)}
   },
   {
@@ -34,12 +37,40 @@ const columns = [
     key: "requestdate",
     render: (requestdate) => dayjs(requestdate).format("HH:mm DD/MM/YYYY "),
   },
+
   {
-    title: "ultimateValuation",
+    title: "Desired Price",
+    dataIndex: "jewelryinitialprice",
+    key: "jewelryinitialprice",
+    render: (price) => `${price}$`,
+    sorter: {
+      compare: (a, b) => a.jewelryinitialprice - b.jewelryinitialprice,
+      multiple: 2,
+    },
+  },
+  {
+    title: "Initial Price",
+    dataIndex: "initialValuations",
+    key: "initialValuations",
+    render: (initialValuations) =>
+      initialValuations?.price > 0 ? `${initialValuations?.price}$` : "N/A",
+    sorter: {
+      compare: (a, b) =>
+        a.initialValuations?.price - b.initialValuations?.price,
+      multiple: 3,
+    },
+  },
+  {
+    title: "Ultimate Price",
     dataIndex: "ultimateValuation",
     key: "ultimateValuation",
     render: (ultimateValuation) =>
-      ultimateValuation?.price ? ultimateValuation?.price : "N/A",
+      ultimateValuation?.price > 0 ? `${ultimateValuation?.price}$` : "N/A",
+    sorter: {
+      compare: (a, b) =>
+        a.ultimateValuation?.price - b.ultimateValuation?.price,
+      multiple: 3,
+    },
   },
   {
     title: "status",
@@ -71,16 +102,40 @@ const columns = [
       let color = "";
       switch (text) {
         case "PENDING":
-          color = "geekblue";
+          color = "lightskyblue";
           break;
         case "REJECTED":
-          color = "volcano";
+          color = "tomato";
           break;
         case "CONFIRMED":
-          color = "green";
+          color = "limegreen";
           break;
-        case "Hoan":
+        case "CANCEL":
+          color = "gray";
+          break;
+        case "RECEIVED":
+          color = "mediumseagreen";
+          break;
+        case "MISSED":
           color = "gold";
+          break;
+        case "REVIEW":
+          color = "orange";
+          break;
+        case "UNACCEPTED":
+          color = "orangered";
+          break;
+        case "UNAPPROVED":
+          color = "darkorange";
+          break;
+        case "APPROVED":
+          color = "forestgreen";
+          break;
+        case "AGREED":
+          color = "dodgerblue";
+          break;
+        case "DECLINED":
+          color = "red";
           break;
         default:
           color = "default";
