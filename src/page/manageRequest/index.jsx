@@ -296,7 +296,7 @@ export default function ManageRequest() {
   }, []);
 
 
-
+  // tạo ra timeline
   // in ra step 
   const renderSteps = (status) => {
     return (
@@ -577,7 +577,7 @@ export default function ManageRequest() {
                         <p>
                             <strong>Description:</strong>
                         </p>
-                        <div style={{
+                        <div style={{ 
                             padding: '10px',
                             border: '1px solid #ccc',
                             borderRadius: '8px',
