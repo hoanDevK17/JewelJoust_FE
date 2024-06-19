@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice.js";
 import uploadFile from "../../assets/hook/useUpload.js";
+import { useForm } from "antd/es/form/Form.js";
 
 export default function AuctionRequestSell() {
   const { TextArea } = Input;
@@ -17,13 +18,25 @@ export default function AuctionRequestSell() {
 
   const navigate = useNavigate(); // Sử dụng hook useNavigate từ react-router-dom
   const token = useSelector(selectUser).token;
-  const [url, setUrl] = useState([]);
+  const [urlJewelry, setUrlJewelry] = useState([]);
   const [img, setImg] = useState([]);
+
   const [messageApi, contextHolder] = message.useMessage();
+  const [form] = useForm();
+
   const use = async (file) => {
     try {
+      console.log("oke", file);
       const imageUrl = await uploadFile(file);
-      setUrl((prevUrl) => [...prevUrl, imageUrl]);
+      // setUrl((prevUrl) => [...prevUrl, { path: imageUrl }]);
+      // setUrl({
+      //   uid: "-1",
+      //   name: "image.png",
+      //   status: "done",
+      //   url: imageUrl,
+      // });
+      file.url = imageUrl;
+      setUrlJewelry((urlJewelry) => [...urlJewelry, file]);
       messageApi.success(`${file.name} file uploaded successfully`);
     } catch (error) {
       console.error("Upload failed:", error);
@@ -38,18 +51,11 @@ export default function AuctionRequestSell() {
       accept: "image/png, image/jpeg, .doc, .docx, .xml, .pdf",
     },
     onChange(info) {
-      console.log("onChange");
       use(info.file.originFileObj);
     },
   };
 
   const submit = (cbr) => {
-    const resourceRequests = [{ path: "123", name: "321" }];
-    // console.log(
-    //   cbr.jewelryname,
-    //   cbr.jewelrydescription,
-    //   cbr.jewelryinitialprice
-    // );
     setIsLoading(true);
     console.log(cbr);
     APIauctionrequestsell(
@@ -62,15 +68,15 @@ export default function AuctionRequestSell() {
       .then((rs) => {
         console.log("Full response:", rs);
         if (rs.status === 200) {
-          navigate("/homepage");
-          alert("Success!");
+          message.success("Requested file was successfully");
+          console.log("oke");
+          form.resetFields();
         } else {
           messageApi.error(`Something went wrong`);
         }
       })
       .catch((error) => {
-        messageApi.error(`Something went wrong`);
-        console.error("Error logging in:", error);
+        messageApi.error(`Something went wrong`, error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -100,6 +106,7 @@ export default function AuctionRequestSell() {
                     span: 24,
                   }}
                   onFinish={submit}
+                  form={form}
                 >
                   <Form.Item
                     className="input-conten"
@@ -138,7 +145,7 @@ export default function AuctionRequestSell() {
                   </Form.Item>
                   <Form.Item
                     className="input-conten"
-                    label="Jewelry Initial Price:"
+                    label="Desired Price($)"
                     name="jewelryinitialprice"
                     rules={[
                       {
@@ -150,7 +157,13 @@ export default function AuctionRequestSell() {
                     <Input
                       className="input-box"
                       type="number"
-                      placeholder="Enter your jewelry initial price"
+                      placeholder="Enter your jewelry desired price"
+                      rules={[
+                        {
+                          required: true,
+                          message: "This box cannot be left blank",
+                        },
+                      ]}
                     />
                   </Form.Item>
                   <Form.Item
@@ -158,25 +171,31 @@ export default function AuctionRequestSell() {
                     label="Upload image of your jewelry"
                     name="imgjewerly"
                   >
-                    <Upload {...props}>
+                    <Upload {...props} fileList={urlJewelry}>
                       <Button icon={<UploadOutlined />}>Click to Upload</Button>
                     </Upload>
                   </Form.Item>
-                  {url?.map((src, index) => {
-                    return <Image key={index} width={200} src={src} />;
-                  })}
+                  <div
+                    style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}
+                  >
+                    {urlJewelry?.map((file, index) => {
+                      return (
+                        <Image
+                          key={index}
+                          width={"calc(33% - 16px)"}
+                          src={file.url}
+                        />
+                      );
+                    })}
+                  </div>
                   <Form.Item
                     className="input-conten"
                     label="Upload the certificate files of your jewelry"
                     name="filejewerly"
                   >
-                    <Upload
-                      {...props}
-                      listType="picture"
-                      defaultFileList={[...img]}
-                    >
+                    {/* <Upload {...props} listType="picture" fileList={url}>
                       <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                    </Upload>
+                    </Upload> */}
                   </Form.Item>
                   <p
                     style={{

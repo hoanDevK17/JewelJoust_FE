@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+
 import { Button, Modal, Form, Input, Table, Steps,Row,Col,Switch, Tag } from "antd";
+
 import { useForm } from "antd/es/form/Form";
 import dayjs from "dayjs";
 import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined, EditOutlined, LoadingOutlined, } from "@ant-design/icons";
@@ -14,20 +16,22 @@ export default function ManageRequest() {
   // set format cho date
   const formatDate = (dateString) => {
     const date = new Date(dateString);
+
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0 nên cần +1
+
     const year = date.getFullYear();
     return `${hours}:${minutes} ${day}/${month}/${year}`;
-  }
+
+  };
+
 
   const [currentId, setCurrentId] = useState(-1);
   const [form] = useForm();
   const [currentRequest, setCurrentRequest] = useState();
   const [isRejected, setIsRejected] = useState(false);
-  
-
   const onFinishrejected = async (values) => {
     APIrejectedauctionrequestsell(currentId, values.reason, token)
       .then((rs) => {
@@ -56,9 +60,8 @@ export default function ManageRequest() {
         console.error("Error logging in:", error);
       })
       .finally(() => {});
-    // setData([...data, response.data]);
+
     setCurrentId(-1);
-    // console.log(response);
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -99,15 +102,24 @@ export default function ManageRequest() {
       render: (date) => dayjs(date).format("YYYY-MM-DD"),
     },
     {
-      title: "Initial Price",
+      title: "Desired Price",
       dataIndex: "jewelryinitialprice",
       key: "jewelryinitialprice",
+      render: (price) => `${price}$`,
+    },
+    {
+      title: "Initial Price",
+      dataIndex: "initialValuations",
+      key: "initialValuations",
+      render: (initialValuations) =>
+        initialValuations?.price > 0 ? `${initialValuations?.price}$` : "N/A",
     },
     {
       title: "Ultimate Price",
       dataIndex: "ultimateValuation",
       key: "ultimateValuation",
-      render: (ultimateValuation) => ultimateValuation?.price ?? "N/A",
+      render: (ultimateValuation) =>
+        ultimateValuation?.price > 0 ? `${ultimateValuation?.price}$` : "N/A",
     },
 
     {
@@ -115,102 +127,102 @@ export default function ManageRequest() {
       dataIndex: "status",
       key: "status",
       filterMode: "tree",
-    filters: [
-      {
-        text: "PENDING",
-        value: "PENDING",
+      filters: [
+        {
+          text: "PENDING",
+          value: "PENDING",
+        },
+        {
+          text: "REJECTED",
+          value: "REJECTED",
+        },
+        {
+          text: "CONFIRMED",
+          value: "CONFIRMED",
+        },
+        {
+          text: "CANCEL",
+          value: "CANCEL",
+        },
+        {
+          text: "RECEIVED",
+          value: "RECEIVED",
+        },
+        {
+          text: "MISSED",
+          value: "MISSED",
+        },
+        {
+          text: "REVIEW",
+          value: "REVIEW",
+        },
+        {
+          text: "UNACCEPTED",
+          value: "UNACCEPTED",
+        },
+        {
+          text: "UNAPPROVED",
+          value: "UNAPPROVED",
+        },
+        {
+          text: "APPROVED",
+          value: "APPROVED",
+        },
+        {
+          text: "AGREED",
+          value: "AGREED",
+        },
+        {
+          text: "DECLINED",
+          value: "DECLINED",
+        },
+      ],
+      filterSearch: true,
+      onFilter: (value, record) => record.status.includes(value),
+      render: (text) => {
+        let color = "";
+        switch (text) {
+          case "PENDING":
+            color = "lightskyblue";
+            break;
+          case "REJECTED":
+            color = "tomato";
+            break;
+          case "CONFIRMED":
+            color = "limegreen";
+            break;
+          case "CANCEL":
+            color = "gray";
+            break;
+          case "RECEIVED":
+            color = "mediumseagreen";
+            break;
+          case "MISSED":
+            color = "gold";
+            break;
+          case "REVIEW":
+            color = "orange";
+            break;
+          case "UNACCEPTED":
+            color = "orangered";
+            break;
+          case "UNAPPROVED":
+            color = "darkorange";
+            break;
+          case "APPROVED":
+            color = "forestgreen";
+            break;
+          case "AGREED":
+            color = "dodgerblue";
+            break;
+          case "DECLINED":
+            color = "red";
+            break;
+          default:
+            color = "default";
+        }
+        return <Tag color={color}>{text}</Tag>;
       },
-      {
-        text: "REJECTED",
-        value: "REJECTED",
-      },
-      {
-        text: "CONFIRMED",
-        value: "CONFIRMED",
-      },
-      {
-        text: "CANCEL",
-        value: "CANCEL",
-      },
-      {
-        text: "RECEIVED",
-        value: "RECEIVED",
-      },
-      {
-        text: "MISSED",
-        value: "MISSED",
-      },
-      {
-        text: "REVIEW",
-        value: "REVIEW",
-      },
-      {
-        text: "UNACCEPTED",
-        value: "UNACCEPTED",
-      },
-      {
-        text: "UNAPPROVED",
-        value: "UNAPPROVED",
-      },
-      {
-        text: "APPROVED",
-        value: "APPROVED",
-      },
-      {
-        text: "AGREED",
-        value: "AGREED",
-      },
-      {
-        text: "DECLINED",
-        value: "DECLINED",
-      },
-    ],
-    filterSearch: true,
-    onFilter: (value, record) => record.status.includes(value),
-    render: (text) => {
-      let color = "";
-      switch (text) {
-        case "PENDING":
-          color = "lightskyblue";
-          break;
-        case "REJECTED":
-          color = "tomato";
-          break;
-        case "CONFIRMED":
-          color = "limegreen";
-          break;
-        case "CANCEL":
-          color = "gray";
-          break;
-        case "RECEIVED":
-          color = "mediumseagreen";
-          break;
-        case "MISSED":
-          color = "gold";
-          break;
-        case "REVIEW":
-          color = "orange";
-          break;
-        case "UNACCEPTED":
-          color = "orangered";
-          break;
-        case "UNAPPROVED":
-          color = "darkorange";
-          break;
-        case "APPROVED":
-          color = "forestgreen";
-          break;
-        case "AGREED":
-          color = "dodgerblue";
-          break;
-        case "DECLINED":
-          color = "red";
-          break;
-        default:
-          color = "default";
-      }
-      return <Tag color={color}>{text}</Tag>;
-    },
     },
     {
       title: "Edit",
@@ -522,6 +534,42 @@ export default function ManageRequest() {
           setCurrentId(-1);
         }}
       >
+
+        <Steps
+          items={[
+            {
+              title: "Login",
+              status: "finish",
+              icon: <UserOutlined />,
+            },
+            {
+              title: "Verification",
+              status: "finish",
+              icon: <SolutionOutlined />,
+            },
+            {
+              title: "Pay",
+              status: "process",
+              icon: <LoadingOutlined />,
+            },
+            {
+              title: "Done",
+              status: "wait",
+              icon: <SmileOutlined />,
+            },
+          ]}
+        />
+        <div
+          style={{
+            padding: "20px",
+            border: "1px solid #ccc",
+            borderRadius: "8px",
+            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+            backgroundColor: "#fff", // Màu nền
+            marginBottom: "10px",
+          }}
+        >
+
         <div> 
          {renderSteps(currentRequest?.status)}
         </div>
@@ -533,44 +581,77 @@ export default function ManageRequest() {
             backgroundColor: '#fff', // Màu nền
             marginBottom: '10px',
           }}>
+
           <Row gutter={[16, 16]}>
-            <Col span={24} >
-                <Row gutter={[16, 16]}>
-                    <Col span={12}>
-                        <p>
-                            <strong>ID:</strong> {currentRequest?.id}
-                        </p>
-                    </Col>
-                    <Col span={12}>
-                        <p>
-                            <strong>Name:</strong> {currentRequest?.jewelryname}
-                        </p>
-                    </Col>
-                </Row>
+            <Col span={24}>
+              <Row gutter={[16, 16]}>
+                <Col span={12}>
+                  <p>
+                    <strong>ID:</strong> {currentRequest?.id}
+                  </p>
+                </Col>
+                <Col span={12}>
+                  <p>
+                    <strong>Name:</strong> {currentRequest?.jewelryname}
+                  </p>
+                </Col>
+              </Row>
             </Col>
-            <Col span={24} style={{ borderTop: '1px solid rgba(0, 0, 0, 0.1)', }}>
-                <Row gutter={[16, 16]} style={{ paddingTop: '10px' }}>
-                    <Col span={23}>
-                        <p>
-                            <strong>Request Date: </strong> {" "} {formatDate(currentRequest?.requestdate)}
-                        </p>
-                    </Col>
-                </Row>
+            <Col
+              span={24}
+              style={{ borderTop: "1px solid rgba(0, 0, 0, 0.1)" }}
+            >
+              <Row gutter={[16, 16]} style={{ paddingTop: "10px" }}>
+                <Col span={23}>
+                  <p>
+                    <strong>Request Date: </strong>{" "}
+                    {formatDate(currentRequest?.requestdate)}
+                  </p>
+                </Col>
+              </Row>
             </Col>
-            <Col span={24} style={{ borderTop: '1px solid rgba(0, 0, 0, 0.1)', }}>
-                <Row gutter={[16, 16]} style={{ paddingTop: '10px' }}>
-                    <Col span={12}>
-                        <p>
-                            <strong>Initial Price:</strong> {currentRequest?.jewelryinitialprice}
-                        </p>
-                    </Col>
-                    <Col span={12}>
-                        <p>
-                            <strong>Status:</strong> {currentRequest?.status}
-                        </p>
-                    </Col>
-                </Row>
+            <Col
+              span={24}
+              style={{ borderTop: "1px solid rgba(0, 0, 0, 0.1)" }}
+            >
+              <Row gutter={[16, 16]} style={{ paddingTop: "10px" }}>
+                <Col span={12}>
+                  <p>
+                    <strong>Initial Price:</strong>{" "}
+                    {currentRequest?.jewelryinitialprice}
+                  </p>
+                </Col>
+                <Col span={12}>
+                  <p>
+                    <strong>Status:</strong> {currentRequest?.status}
+                  </p>
+                </Col>
+              </Row>
             </Col>
+
+            <Col
+              span={24}
+              style={{ borderTop: "1px solid rgba(0, 0, 0, 0.1)" }}
+            >
+              <Row gutter={[16, 16]} style={{ paddingTop: "10px" }}>
+                <Col span={24}>
+                  <p>
+                    <strong>Description:</strong>
+                  </p>
+                  <div
+                    style={{
+                      padding: "10px",
+                      border: "1px solid #ccc",
+                      borderRadius: "8px",
+                      boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                      backgroundColor: "#f9f9f9",
+                    }}
+                  >
+                    {currentRequest?.jewelrydescription}
+                  </div>
+                </Col>
+              </Row>
+
             <Col span={24} style={{ borderTop: '1px solid rgba(0, 0, 0, 0.1)',}}>
                 <Row gutter={[16, 16]} style={{ paddingTop: '10px' }}>
                     <Col span={24}>
@@ -588,8 +669,9 @@ export default function ManageRequest() {
                         </div>
                     </Col>
                 </Row>
+
             </Col>
-        </Row>
+          </Row>
         </div>
         {currentRequest?.status === "PENDING" ? (
           <>
