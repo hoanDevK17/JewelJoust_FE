@@ -15,6 +15,7 @@ export const counterSlice = createSlice({
    
       return null;
     },
+    
   },
 });
 

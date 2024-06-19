@@ -222,6 +222,14 @@ export default function AuctionRequestSell() {
                     >
                       Submit
                     </Button>
+                    <span
+                className="Request-Sell-History"
+                onClick={() => {
+                  navigate("/ActiveHistory/RequestSell");
+                }}
+              >
+                Request Sell History
+              </span>
                   </Form.Item>
                 </Form>
               </div>

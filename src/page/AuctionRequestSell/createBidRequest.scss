@@ -1,14 +1,19 @@
-.createBidRequest{
-    .form-creat-bid{
-        max-width:600px;
-        width: calc(100% - 48px);
-        margin: auto;
-            // height: 1000px;
-            color: rebeccapurple;
-        
-    }
+.createBidRequest {
+  .form-creat-bid {
+    max-width: 600px;
+    width: calc(100% - 48px);
+    margin: auto;
+    // height: 1000px;
+    color: rebeccapurple;
+  }
 }
 
-.ant-upload-list-item-container{
-    display: none !important;
+.ant-upload-list-item-container {
+  display: none !important;
+}
+.Request-Sell-History {
+  display: flex;
+  justify-content: end;
+  margin-top: 10px;
+  color: rgb(70, 245, 6);
 }

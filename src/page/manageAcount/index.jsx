@@ -4,7 +4,11 @@ import axios from "axios";
 import { useForm } from "antd/es/form/Form";
 import dayjs from "dayjs";
 import moment from "moment";
-import { APIgetallacount, APIregishaverole } from "../../api/api";
+import {
+  APIUpdateProfile,
+  APIgetallacount,
+  APIregishaverole,
+} from "../../api/api";
 import useSelection from "antd/es/table/hooks/useSelection";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -27,53 +31,74 @@ export default function Acount() {
   const [currentId, setCurrentId] = useState(-1);
   const [currentIdDate, setCurrentIdDate] = useState(0);
   const [form] = useForm();
-
+  console.log(token);
   const onFinish = async (values) => {
-    if (setCurrentIdDate === 0 && values.date) {
-      const date = moment(values.date, "YYYY-MM-DD").format("YYYY-MM-DD");
-      message.success(`Date submitted: ${date}`);
-    } else {
-      message.error("Please enter a valid date");
-    }
-    console.log("Success:", values);
-    APIregishaverole(
-      values.userName,
-      values.passWord,
-      values.fullName,
+    values.birthday = dayjs(values.birthday).format(`YYYY-MM-DD`);
+    console.log(
+      values.username,
+      values.password,
+      values.fullname,
       values.email,
       values.phone,
       values.address,
       values.birthday,
       values.role,
       token
-    )
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.error("Error logging in:", error);
-      })
-      .finally(() => {});
-    // values.birthday = dayjs(values.birthday).format(`YYYY-MM-DD`);
-    // const response = await axios.post("http://jeweljoust.online:8080/api/register", values).then((response) => {
-    //     console.log(response)
-    // });
-    //     setData([...data, response.data]);
-    //     setCurrentId(-1);
-    //     console.log(response);
+    );
+    if (currentId == 0) {
+      APIregishaverole(
+        values.username,
+        values.password,
+        values.fullname,
+        values.email,
+        values.phone,
+        values.address,
+        values.birthday,
+        values.role,
+        token
+      )
+        .then((response) => {
+          console.log(response);
+          if (response.status === 200) {
+            message.success("Add account successfully");
+            setCurrentId(-1);
+          }
+        })
+        .catch((error) => {
+          console.error("Error logging in:", error);
+          message.error("Something went wrong");
+        })
+        .finally(() => {
+          fetchData();
+        });
+    }
+    if (currentId > 0) {
+      APIUpdateProfile(values, token, currentId)
+        .then((response) => {
+          if (response.status === 200) {
+            message.success("Edit account successfully");
+            setCurrentId(-1);
+          }
+        })
+        .catch((error) => {
+          console.error("Error logging in:", error);
+          message.error("Something went wrong");
+        })
+        .finally(() => {
+          fetchData();
+        });
+    }
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
   useEffect(() => {
-    console.log(currentId);
-    const currentUser = data.find((item) => {
-      console.log(item);
-      if (item.id == currentId) return item;
-    });
-
     if (currentId > 0) {
+      const currentUser = data.find((item) => {
+        console.log(item);
+        if (item.id == currentId) return item;
+      });
       console.log(JSON.stringify(currentUser.status));
       form.setFieldsValue({
         username: currentUser.username,
@@ -143,27 +168,26 @@ export default function Acount() {
         </Button>
       ),
     },
-    {
-      title: "Delete",
-      render: (value) => (
-        <Button
-          onClick={() => {
-            handleDelate(value);
-          }}
-          danger
-          type="primary"
-        >
-          Delete
-        </Button>
-      ),
-    },
+    // {
+    //   title: "Delete",
+    //   render: (value) => (
+    //     <Button
+    //       onClick={() => {
+    //         handleDelate(value);
+    //       }}
+    //       danger
+    //       type="primary"
+    //     >
+    //       Delete
+    //     </Button>
+    //   ),
+    // },
   ];
 
   const [data, setData] = useState([]);
 
   const fetchData = async () => {
     await APIgetallacount(token).then((response) => {
-      console.log(response.data);
       setData(response.data);
     });
   };
@@ -172,15 +196,15 @@ export default function Acount() {
     fetchData();
   }, []);
 
-  const handleDelate = (value) => {
-    console.log(value);
-    const response = axios.delete(
-      `http://jeweljoust.online:8080/api/account/${value.id}`
-    );
-    console.log(response.data);
-    // lọc ra tất cả data loại bỏ data vừa bị xoá
-    setData(data.filter((data) => data.id != value.id));
-  };
+  // const handleDelate = (value) => {
+  //   console.log(value);
+  //   const response = axios.delete(
+  //     `http://jeweljoust.online:8080/api/account/${value.id}`
+  //   );
+  //   console.log(response.data);
+  //   // lọc ra tất cả data loại bỏ data vừa bị xoá
+  //   setData(data.filter((data) => data.id != value.id));
+  // };
 
   const getValueProps = (value) => {
     if (currentIdDate === 0) {
@@ -309,7 +333,7 @@ export default function Acount() {
             ]}
           >
             <Select placeholder="Select Role" requiredMark="optional">
-              <Select.Option value="MENBER">Menber</Select.Option>
+              <Select.Option value="MEMBER">Member</Select.Option>
               <Select.Option value="STAFF">Staff</Select.Option>
               <Select.Option value="MANAGER">Manage</Select.Option>
             </Select>
