@@ -56,10 +56,7 @@ export default function App() {
       path: "/profile",
       element: <Profile />,
     },
-    {
-      path: "/RegisterAuction",
-      element: <RegisterAuction />,
-    },
+    
     {
       path: "/auctionRequestSell",
       element: <AuctionRequestSell />,
@@ -111,6 +108,10 @@ export default function App() {
           <Detail />
         </ScrollToTop>
       ),
+    },
+    {
+      path: "/RegisterAuction/:id",
+      element: <RegisterAuction />,
     },
   ]);
 

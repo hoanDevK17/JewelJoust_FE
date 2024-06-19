@@ -109,11 +109,18 @@ export default function Detail() {
               </p>
               {product.hinhThuc}
               <div className="button-outside">
-                <Link to={`/RegisterAuction`}>
-                  <p>
-                    <button className="button-detail">Auction Register</button>
-                  </p>
-                </Link>
+                <p>
+                  <button
+                    className="button-detail"
+                    onClick={() => {
+                      console.log("oke");
+
+                      navigate(`/RegisterAuction/${product.id}`);
+                    }}
+                  >
+                    Auction Register
+                  </button>
+                </p>
               </div>
             </div>
           </div>
