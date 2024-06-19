@@ -22,6 +22,7 @@ export const APIUpdateProfile = (profile, token, id) =>
       email: profile.email,
       phone: profile.phone,
       id: id,
+      status: profile.status ? profile.status : "ACTIVE",
     },
     { headers: { Authorization: `Bearer ${token}` } }
   );
@@ -56,17 +57,20 @@ export const APIregishaverole = (
   role,
   token
 ) =>
-  api.post("account/register", {
-    username: userName,
-    password: passWord,
-    fullname: fullName,
-    email: email,
-    phone: phone,
-    address: address,
-    birthday: birthday,
-    role: role,
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  api.post(
+    "account/register",
+    {
+      username: userName,
+      password: passWord,
+      fullname: fullName,
+      address: address,
+      birthday: birthday,
+      email: email,
+      phone: phone,
+      role: role,
+    },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
 export const APIgetallrequest = (token) =>
   api.get("auctionRequest", {
     headers: { Authorization: `Bearer ${token}` },
