@@ -16,19 +16,19 @@ import dayjs from "dayjs";
 // set format cho date
 const formatDate = (dateString) => {
   const date = new Date(dateString);
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0 nên cần +1
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Tháng bắt đầu từ 0 nên cần +1
   const year = date.getFullYear();
   return `${hours}:${minutes} ${day}/${month}/${year}`;
-}
+};
 
 // tạo ra timeline
-  // in ra step 
-  const renderSteps = (status) => {
-    return (
-      <Steps current={0}>
+// in ra step
+const renderSteps = (status) => {
+  return (
+    <Steps current={0}>
       <Steps.Step
         title="Initial Valuation"
         status={getStatusForStep("Initial Valuation", status)}
@@ -50,192 +50,192 @@ const formatDate = (dateString) => {
         icon={getIconForStep("Done", status)}
       />
     </Steps>
-    );
-  };
+  );
+};
 
-  //lấy status từ Status
-  const getStatusForStep = (title, status) => {
-    switch (title) {
-      case "Initial Valuation":
-        switch (status) {
-          case "PENDING":
-            return "process";
-          case "REJECTED":
-          case "CANCEL":
-            return "error";
-          case "CONFIRMED":
-          case "RECEIVED":
-          case "MISSED":
-          case "REVIEW":
-          case "UNACCEPTED":
-          case "UNAPPROVED":
-          case "APPROVED":
-          case "AGREED":
-          case "DECLINED":
-            return "finish";
-          default:
-            return "finish";
-        }
-      case "Delivery":
-        switch (status) {
-          case "PENDING":
-          case "REJECTED":
-          case "CANCEL":
-            return "wait";
-          case "CONFIRMED":
-            return "process";
-          case "RECEIVED":
-            return "finish"
-          case "MISSED":
-            return "error"
-          case "REVIEW":
-          case "UNACCEPTED":
-          case "UNAPPROVED":
-          case "APPROVED":
-          case "AGREED":
-          case "DECLINED":
-            return "wait";
-          default:
-            return "wait";
-        }
-      case "Pricing Phase":
-        switch (status) {
-          case "PENDING":
-          case "REJECTED":
-          case "CANCEL":
-          case "CONFIRMED":
-          case "MISSED":
-            return "wait"
-          case "RECEIVED":
-          case "REVIEW":
-            return "process"
-          case "UNACCEPTED":
-          case "UNAPPROVED":
-            return "error"
-          case "APPROVED":
-          case "AGREED":
-          case "DECLINED":
-            return "finish";
-          default:
-            return "wait";
-        }
-      case "Done":
-        switch (status) {
-          case "PENDING":
-          case "REJECTED":
-          case "CANCEL":
-          case "CONFIRMED":
-          case "RECEIVED":
-          case "MISSED":
-          case "REVIEW":
-          case "UNACCEPTED":
-          case "UNAPPROVED":
-            return "wait";
-          case "APPROVED":
-            return "process";
-          case "AGREED":
-            return "finish";
-          case "DECLINED":
-            return "error";
-          default:
-            return "wait";
-        }
-      default:
-        return "wait";
-    }
-  };
+//lấy status từ Status
+const getStatusForStep = (title, status) => {
+  switch (title) {
+    case "Initial Valuation":
+      switch (status) {
+        case "PENDING":
+          return "process";
+        case "REJECTED":
+        case "CANCEL":
+          return "error";
+        case "CONFIRMED":
+        case "RECEIVED":
+        case "MISSED":
+        case "REVIEW":
+        case "UNACCEPTED":
+        case "UNAPPROVED":
+        case "APPROVED":
+        case "AGREED":
+        case "DECLINED":
+          return "finish";
+        default:
+          return "finish";
+      }
+    case "Delivery":
+      switch (status) {
+        case "PENDING":
+        case "REJECTED":
+        case "CANCEL":
+          return "wait";
+        case "CONFIRMED":
+          return "process";
+        case "RECEIVED":
+          return "finish";
+        case "MISSED":
+          return "error";
+        case "REVIEW":
+        case "UNACCEPTED":
+        case "UNAPPROVED":
+        case "APPROVED":
+        case "AGREED":
+        case "DECLINED":
+          return "wait";
+        default:
+          return "wait";
+      }
+    case "Pricing Phase":
+      switch (status) {
+        case "PENDING":
+        case "REJECTED":
+        case "CANCEL":
+        case "CONFIRMED":
+        case "MISSED":
+          return "wait";
+        case "RECEIVED":
+        case "REVIEW":
+          return "process";
+        case "UNACCEPTED":
+        case "UNAPPROVED":
+          return "error";
+        case "APPROVED":
+        case "AGREED":
+        case "DECLINED":
+          return "finish";
+        default:
+          return "wait";
+      }
+    case "Done":
+      switch (status) {
+        case "PENDING":
+        case "REJECTED":
+        case "CANCEL":
+        case "CONFIRMED":
+        case "RECEIVED":
+        case "MISSED":
+        case "REVIEW":
+        case "UNACCEPTED":
+        case "UNAPPROVED":
+          return "wait";
+        case "APPROVED":
+          return "process";
+        case "AGREED":
+          return "finish";
+        case "DECLINED":
+          return "error";
+        default:
+          return "wait";
+      }
+    default:
+      return "wait";
+  }
+};
 
-  // lấy icon từ Status
-  const getIconForStep = (title, status) => {
-    switch (title) {
-      case "Initial Valuation":
-        switch (status) {
-          case "PENDING":
-            return <LoadingOutlined />;
-          case "REJECTED":
-          case "CANCEL":
-            return <CloseCircleOutlined />;
-          case "CONFIRMED":
-          case "RECEIVED":
-          case "MISSED":
-          case "REVIEW":
-          case "UNACCEPTED":
-          case "UNAPPROVED":
-          case "APPROVED":
-          case "AGREED":
-          case "DECLINED":
-            return <CheckCircleOutlined />;
-          default:
-            return <CheckCircleOutlined />;
-        }
-      case "Delivery":
-        switch (status) {
-          case "PENDING":
-          case "REJECTED":
-          case "CANCEL":
-            return <ClockCircleOutlined />;
-          case "CONFIRMED":
-            return <LoadingOutlined />;
-          case "RECEIVED":
-            return <CheckCircleOutlined />;
-          case "MISSED":
-            return <CloseCircleOutlined />;
-          case "REVIEW":
-          case "UNACCEPTED":
-          case "UNAPPROVED":
-          case "APPROVED":
-          case "AGREED":
-          case "DECLINED":
-            return <CheckCircleOutlined />;
-          default:
-            return <CheckCircleOutlined />;
-        }
-      case "Pricing Phase":
-        switch (status) {
-          case "PENDING":
-          case "REJECTED":
-          case "CANCEL":
-          case "CONFIRMED":
-          case "MISSED":
-            return <ClockCircleOutlined />;
-          case "RECEIVED":
-          case "REVIEW":
-            return <LoadingOutlined />;
-          case "UNACCEPTED":
-          case "UNAPPROVED":
-            return <CloseCircleOutlined />;
-          case "APPROVED":
-          case "AGREED":
-          case "DECLINED":
-            return <CheckCircleOutlined />;
-          default:
-            return <ClockCircleOutlined />;
-        }
-      case "Done":
-        switch (status) {
-          case "PENDING":
-          case "REJECTED":
-          case "CANCEL":
-          case "CONFIRMED":
-          case "RECEIVED":
-          case "MISSED":
-          case "REVIEW":
-          case "UNACCEPTED":
-          case "UNAPPROVED":
-            return <ClockCircleOutlined />;
-          case "APPROVED":
-            return <LoadingOutlined />;
-          case "AGREED":
-            return <CheckCircleOutlined />;
-          case "DECLINED":
-            return <CloseCircleOutlined />;
-          default:
-            return <ClockCircleOutlined />;
-        }
-      default:
-        return <ClockCircleOutlined />;
-    }
-  };
+// lấy icon từ Status
+const getIconForStep = (title, status) => {
+  switch (title) {
+    case "Initial Valuation":
+      switch (status) {
+        case "PENDING":
+          return <LoadingOutlined />;
+        case "REJECTED":
+        case "CANCEL":
+          return <CloseCircleOutlined />;
+        case "CONFIRMED":
+        case "RECEIVED":
+        case "MISSED":
+        case "REVIEW":
+        case "UNACCEPTED":
+        case "UNAPPROVED":
+        case "APPROVED":
+        case "AGREED":
+        case "DECLINED":
+          return <CheckCircleOutlined />;
+        default:
+          return <CheckCircleOutlined />;
+      }
+    case "Delivery":
+      switch (status) {
+        case "PENDING":
+        case "REJECTED":
+        case "CANCEL":
+          return <ClockCircleOutlined />;
+        case "CONFIRMED":
+          return <LoadingOutlined />;
+        case "RECEIVED":
+          return <CheckCircleOutlined />;
+        case "MISSED":
+          return <CloseCircleOutlined />;
+        case "REVIEW":
+        case "UNACCEPTED":
+        case "UNAPPROVED":
+        case "APPROVED":
+        case "AGREED":
+        case "DECLINED":
+          return <CheckCircleOutlined />;
+        default:
+          return <CheckCircleOutlined />;
+      }
+    case "Pricing Phase":
+      switch (status) {
+        case "PENDING":
+        case "REJECTED":
+        case "CANCEL":
+        case "CONFIRMED":
+        case "MISSED":
+          return <ClockCircleOutlined />;
+        case "RECEIVED":
+        case "REVIEW":
+          return <LoadingOutlined />;
+        case "UNACCEPTED":
+        case "UNAPPROVED":
+          return <CloseCircleOutlined />;
+        case "APPROVED":
+        case "AGREED":
+        case "DECLINED":
+          return <CheckCircleOutlined />;
+        default:
+          return <ClockCircleOutlined />;
+      }
+    case "Done":
+      switch (status) {
+        case "PENDING":
+        case "REJECTED":
+        case "CANCEL":
+        case "CONFIRMED":
+        case "RECEIVED":
+        case "MISSED":
+        case "REVIEW":
+        case "UNACCEPTED":
+        case "UNAPPROVED":
+          return <ClockCircleOutlined />;
+        case "APPROVED":
+          return <LoadingOutlined />;
+        case "AGREED":
+          return <CheckCircleOutlined />;
+        case "DECLINED":
+          return <CloseCircleOutlined />;
+        default:
+          return <ClockCircleOutlined />;
+      }
+    default:
+      return <ClockCircleOutlined />;
+  }
+};
 
 const columns = [
   {
@@ -402,7 +402,7 @@ const columns = [
 function RequestSellHistory() {
   const title = "Request Sell History";
   const [data, setData] = useState();
-  const token = useSelector(selectUser).token;
+  const token = useSelector(selectUser)?.token;
 
   const [currentId, setCurrentId] = useState(-1);
   const [currentRequest, setCurrentRequest] = useState();
@@ -449,75 +449,88 @@ function RequestSellHistory() {
               setCurrentId(-1);
             }}
           >
-            <div> 
-         {renderSteps(currentRequest?.status)}
-        </div>
-          <div style={{
-            padding: '20px',
-            border: '1px solid #ccc',
-            borderRadius: '8px',
-            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-            backgroundColor: '#fff', // Màu nền
-            marginBottom: '10px',
-          }}>
-          <Row gutter={[16, 16]}>
-            <Col span={24} >
-                <Row gutter={[16, 16]}>
+            <div>{renderSteps(currentRequest?.status)}</div>
+            <div
+              style={{
+                padding: "20px",
+                border: "1px solid #ccc",
+                borderRadius: "8px",
+                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                backgroundColor: "#fff", // Màu nền
+                marginBottom: "10px",
+              }}
+            >
+              <Row gutter={[16, 16]}>
+                <Col span={24}>
+                  <Row gutter={[16, 16]}>
                     <Col span={12}>
-                        <p>
-                            <strong>ID:</strong> {currentRequest?.id}
-                        </p>
+                      <p>
+                        <strong>ID:</strong> {currentRequest?.id}
+                      </p>
                     </Col>
                     <Col span={12}>
-                        <p>
-                            <strong>Name:</strong> {currentRequest?.jewelryname}
-                        </p>
+                      <p>
+                        <strong>Name:</strong> {currentRequest?.jewelryname}
+                      </p>
                     </Col>
-                </Row>
-            </Col>
-            <Col span={24} style={{ borderTop: '1px solid rgba(0, 0, 0, 0.1)', }}>
-                <Row gutter={[16, 16]} style={{ paddingTop: '10px' }}>
+                  </Row>
+                </Col>
+                <Col
+                  span={24}
+                  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.1)" }}
+                >
+                  <Row gutter={[16, 16]} style={{ paddingTop: "10px" }}>
                     <Col span={23}>
-                        <p>
-                            <strong>Request Date: </strong> {" "} {formatDate(currentRequest?.requestdate)}
-                        </p>
+                      <p>
+                        <strong>Request Date: </strong>{" "}
+                        {formatDate(currentRequest?.requestdate)}
+                      </p>
                     </Col>
-                </Row>
-            </Col>
-            <Col span={24} style={{ borderTop: '1px solid rgba(0, 0, 0, 0.1)', }}>
-                <Row gutter={[16, 16]} style={{ paddingTop: '10px' }}>
+                  </Row>
+                </Col>
+                <Col
+                  span={24}
+                  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.1)" }}
+                >
+                  <Row gutter={[16, 16]} style={{ paddingTop: "10px" }}>
                     <Col span={12}>
-                        <p>
-                            <strong>Initial Price:</strong> {currentRequest?.jewelryinitialprice}
-                        </p>
+                      <p>
+                        <strong>Initial Price:</strong>{" "}
+                        {currentRequest?.jewelryinitialprice}
+                      </p>
                     </Col>
                     <Col span={12}>
-                        <p>
-                            <strong>Status:</strong> {currentRequest?.status}
-                        </p>
+                      <p>
+                        <strong>Status:</strong> {currentRequest?.status}
+                      </p>
                     </Col>
-                </Row>
-            </Col>
-            <Col span={24} style={{ borderTop: '1px solid rgba(0, 0, 0, 0.1)',}}>
-                <Row gutter={[16, 16]} style={{ paddingTop: '10px' }}>
+                  </Row>
+                </Col>
+                <Col
+                  span={24}
+                  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.1)" }}
+                >
+                  <Row gutter={[16, 16]} style={{ paddingTop: "10px" }}>
                     <Col span={24}>
-                        <p>
-                            <strong>Description:</strong>
-                        </p>
-                        <div style={{ 
-                            padding: '10px',
-                            border: '1px solid #ccc',
-                            borderRadius: '8px',
-                            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-                            backgroundColor: '#f9f9f9'
-                        }}>
-                            {currentRequest?.jewelrydescription}
-                        </div>
+                      <p>
+                        <strong>Description:</strong>
+                      </p>
+                      <div
+                        style={{
+                          padding: "10px",
+                          border: "1px solid #ccc",
+                          borderRadius: "8px",
+                          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                          backgroundColor: "#f9f9f9",
+                        }}
+                      >
+                        {currentRequest?.jewelrydescription}
+                      </div>
                     </Col>
-                </Row>
-            </Col>
-        </Row>
-        </div>
+                  </Row>
+                </Col>
+              </Row>
+            </div>
           </Modal>
           <Table
             dataSource={data}

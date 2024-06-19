@@ -2,15 +2,10 @@ import { useEffect, useState } from "react";
 import {
   ProfileOutlined,
   HeartOutlined,
-  UserOutlined,
-  BarChartOutlined,
-  CheckCircleOutlined,
   TeamOutlined,
   AppstoreAddOutlined,
-  ProductOutlined,
 } from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
-import { Footer } from "antd/es/layout/layout";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";

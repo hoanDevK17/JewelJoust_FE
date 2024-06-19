@@ -17,7 +17,7 @@ export default function AuctionRequestSell() {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate(); // Sử dụng hook useNavigate từ react-router-dom
-  const token = useSelector(selectUser).token;
+  const token = useSelector(selectUser)?.token;
   const [urlJewelry, setUrlJewelry] = useState([]);
   const [img, setImg] = useState([]);
 
@@ -223,13 +223,13 @@ export default function AuctionRequestSell() {
                       Submit
                     </Button>
                     <span
-                className="Request-Sell-History"
-                onClick={() => {
-                  navigate("/ActiveHistory/RequestSell");
-                }}
-              >
-                Request Sell History
-              </span>
+                      className="Request-Sell-History"
+                      onClick={() => {
+                        navigate("/ActiveHistory/RequestSell");
+                      }}
+                    >
+                      Request Sell History
+                    </span>
                   </Form.Item>
                 </Form>
               </div>
