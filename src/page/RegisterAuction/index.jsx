@@ -3,13 +3,20 @@ import Footer from "../../component/footer/footer.jsx";
 import HomePage from "../../component/home-default/home.jsx";
 import "./index.scss";
 import { message } from "antd";
+import { Products } from "../../share-data/productData";
+import { useParams } from "react-router-dom";
 
 export default function RegisterAuction() {
+  const Params = useParams();
+
+  const product = Products.find((obj) => {
+    return obj.id == Params.id;
+  });
   const accountNumber = "141099999999";
   const bankName =
     "Ngân hàng Nông Nghiệp và Phát triển nông thôn Việt Nam - Chi nhánh Mỹ Đình";
   const transactionContent = "DGVPA4767026533748";
-  const amount = "40100";
+  const amount = product.price + product.depositFee;
   const [messageApi, contextHolder] = message.useMessage();
 
   function copyToClipboard(text) {
@@ -44,16 +51,16 @@ export default function RegisterAuction() {
             <h3>Jewelry Auction Payment</h3>
             <div className="order-details">
               <p>
-                <strong>Order Information:</strong> 30L - 555.55
+                <strong>Order Information:  </strong> {product.name}
               </p>
               <p>
-                <strong>Deposit:</strong> 40,000,000 VND
+                <strong>Deposit:</strong> {product.price}
               </p>
               <p>
-                <strong>Document Fee:</strong> 100,000 VND
+                <strong>Document Fee:</strong> {product.depositFee}
               </p>
               <p>
-                <strong>Total:</strong> 40,100,000 VND
+                <strong>Total:</strong> {product.price + product.depositFee}
               </p>
             </div>
           </div>
@@ -82,7 +89,7 @@ export default function RegisterAuction() {
                   </button>
                 </p>
                 <p>
-                  <strong>Amount:</strong> {amount} VND{" "}
+                  <strong>Amount:</strong> {amount}{" "}
                   <button onClick={() => copyToClipboard(amount)}>Copy</button>
                 </p>
               </div>
