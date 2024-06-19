@@ -19,7 +19,6 @@ export default function AuctionRequestSell() {
   const navigate = useNavigate(); // Sử dụng hook useNavigate từ react-router-dom
   const token = useSelector(selectUser)?.token;
   const [urlJewelry, setUrlJewelry] = useState([]);
-  const [img, setImg] = useState([]);
 
   const [messageApi, contextHolder] = message.useMessage();
   const [form] = useForm();
@@ -57,12 +56,17 @@ export default function AuctionRequestSell() {
 
   const submit = (cbr) => {
     setIsLoading(true);
-    console.log(cbr);
+    console.log(urlJewelry);
+    var path = [];
+    urlJewelry.forEach((file) => {
+      path = [...path, { path: file.url }];
+    });
+    console.log(path);
     APIauctionrequestsell(
       cbr.jewelryname,
       cbr.jewelrydescription,
       cbr.jewelryinitialprice,
-      url,
+      path,
       token
     )
       .then((rs) => {
@@ -71,6 +75,7 @@ export default function AuctionRequestSell() {
           message.success("Requested file was successfully");
           console.log("oke");
           form.resetFields();
+          setUrlJewelry([]);
         } else {
           messageApi.error(`Something went wrong`);
         }
@@ -168,7 +173,7 @@ export default function AuctionRequestSell() {
                   </Form.Item>
                   <Form.Item
                     className="input-conten"
-                    label="Upload image of your jewelry"
+                    label="Upload image of your jewelry and certificate"
                     name="imgjewerly"
                   >
                     <Upload {...props} fileList={urlJewelry}>
@@ -188,15 +193,15 @@ export default function AuctionRequestSell() {
                       );
                     })}
                   </div>
-                  <Form.Item
+                  {/* <Form.Item
                     className="input-conten"
                     label="Upload the certificate files of your jewelry"
                     name="filejewerly"
                   >
-                    {/* <Upload {...props} listType="picture" fileList={url}>
+                    <Upload {...props} listType="picture" fileList={url}>
                       <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                    </Upload> */}
-                  </Form.Item>
+                    </Upload>
+                  </Form.Item> */}
                   <p
                     style={{
                       color: "red",
