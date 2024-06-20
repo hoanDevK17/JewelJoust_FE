@@ -35,9 +35,9 @@ export default function MyCarousel() {
   return (
     <div className="slider-container">
       <Slider {...settings}>
-        {Products.map((product, index) => (
+        {Products.map((product, id) => (
           <div
-            key={index}
+            key={id}
             className="card"
             style={{}}
             onClick={() => {
@@ -45,7 +45,7 @@ export default function MyCarousel() {
               navigate(`/detail/${product.id}`);
             }}
           >
-            <img src={product.image} alt={product.name} />
+            <img src={product.image[0]} alt={product.name} />
             <div className="info">
               <h1>{product.name}</h1>
               <p>Start price :{product.price}</p>
