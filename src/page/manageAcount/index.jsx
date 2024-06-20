@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { selectUser } from "../../redux/features/counterSlice";
 
 export default function Acount() {
-  const token = useSelector(selectUser).token;
+  const token = useSelector(selectUser)?.token;
   // console.log(user)
   // const dateFormat = 'YYYY/MM/DD';
   /** Manually entering any of the following formats will perform date parsing */

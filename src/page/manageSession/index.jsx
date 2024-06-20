@@ -10,7 +10,7 @@ import { selectUser } from "../../redux/features/counterSlice";
 import { Option } from "antd/es/mentions";
 
 export default function ManageSession() {
-  const token = useSelector(selectUser).token;
+  const token = useSelector(selectUser)?.token;
   // const dateFormat = 'YYYY/MM/DD';
 
   /** Manually entering any of the following formats will perform date parsing */

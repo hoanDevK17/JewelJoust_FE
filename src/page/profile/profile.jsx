@@ -94,7 +94,7 @@ export default function Profile() {
       .then((rs) => {
         if (rs.status === 200) {
           // console.log(rs);
-          rs.data.token = user.token;
+          rs.data.token = user?.token;
           // console.log(rs);
           dispatch(login(rs.data));
           messageApi.open({
@@ -221,7 +221,8 @@ export default function Profile() {
                     required: true,
                     message: "This box cannot be left blank",
                   },
-                  {max:10,
+                  {
+                    max: 10,
                     pattern: "[0-9]{10}",
                     message: "Please enter correct phone number information",
                   },

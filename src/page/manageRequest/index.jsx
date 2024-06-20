@@ -12,6 +12,7 @@ import {
   Switch,
   Tag,
   Image,
+  message,
 } from "antd";
 
 import { useForm } from "antd/es/form/Form";
@@ -22,15 +23,14 @@ import {
   CloseCircleOutlined,
   EditOutlined,
   LoadingOutlined,
-  SmileOutlined,
-  SolutionOutlined,
-  UserOutlined,
 } from "@ant-design/icons";
 import {
   APIgetallrequest,
   APIrejectedauctionrequestsell,
   APIsetappraisalprice,
   APIshipment,
+  APIultimateValuations,
+  APIultimateValuationsReject,
 } from "../../api/api";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
@@ -38,7 +38,8 @@ import { current } from "@reduxjs/toolkit";
 import styled from "styled-components";
 
 export default function ManageRequest() {
-  const token = useSelector(selectUser).token;
+  const token = useSelector(selectUser)?.token;
+  
 
   // set format cho date
   const formatDate = (dateString) => {
@@ -292,29 +293,30 @@ export default function ManageRequest() {
       });
   };
 
-  const handleUltimateValuation = async () => {
-    APIshipment(currentId, token)
+  const handleUltimateValuation = async (value) => {
+    APIultimateValuations(currentId, value.price, token)
       .then((rs) => {
         console.log(rs);
+        message.success("Successfully");
         fetchData();
       })
       .catch((error) => {
-        console.error("Error logging in:", error);
+        message.error("Something went wrong");
       })
       .finally(() => {
         setCurrentId(-1);
       });
   };
 
-  const handleUltimateValuationReject = async () => {
-    console.log(currentId, token);
-    APIshipment(currentId, token)
+  const handleUltimateValuationReject = async (value) => {
+    APIultimateValuationsReject(currentId, value.reason, token)
       .then((rs) => {
         console.log(rs);
+        message.success("Successfully");
         fetchData();
       })
       .catch((error) => {
-        console.error("Error logging in:", error);
+        message.error("Something went wrong");
       })
       .finally(() => {
         setCurrentId(-1);
@@ -541,7 +543,6 @@ export default function ManageRequest() {
 
   return (
     <>
-      {" "}
       <div>
         <Modal
           width= {850}
@@ -901,53 +902,51 @@ export default function ManageRequest() {
               )}
             </>
           ) : (
-            <>
-              <Row>
-                {currentRequest?.status === "CONFIRMED" ? (
-                  <>
-                    <h6>Initial Valuation</h6>
-                    <Col span={12}>
-                      <p>
-                        <strong>ID:</strong>{" "}
-                        {currentRequest?.initialValuations.id}
-                      </p>
-                    </Col>
-                    <Col span={12}>
-                      <p>
-                        <strong>Date:</strong>{" "}
-                        {currentRequest?.initialValuations.initialdate}
-                      </p>
-                    </Col>
-                    <Col span={12}>
-                      <p>
-                        <strong>Status:</strong>{" "}
-                        {currentRequest?.initialValuations.status}
-                      </p>
-                    </Col>
-                    <Col span={12}>
-                      <p>
-                        <strong>Price:</strong>{" "}
-                        {currentRequest?.initialValuations.price}
-                      </p>
-                    </Col>
-                  </>
-                ) : (
-                  <>
-                    {currentRequest?.status === "REJECTED" ? (
-                      <Col span={12}>
-                        <p>
-                          <strong>Reason:</strong>{" "}
-                          {currentRequest?.initialValuations.reason}
-                        </p>
-                      </Col>
-                    ) : (
-                      <></>
-                    )}
-                  </>
-                )}
-              </Row>
-            </>
+            <></>
           )}
+          <Row>
+            {currentRequest?.status === "CONFIRMED" ? (
+              <>
+                <h6>Initial Valuation</h6>
+                <Col span={12}>
+                  <p>
+                    <strong>ID:</strong> {currentRequest?.initialValuations.id}
+                  </p>
+                </Col>
+                <Col span={12}>
+                  <p>
+                    <strong>Date:</strong>{" "}
+                    {currentRequest?.initialValuations.initialdate}
+                  </p>
+                </Col>
+                <Col span={12}>
+                  <p>
+                    <strong>Status:</strong>{" "}
+                    {currentRequest?.initialValuations.status}
+                  </p>
+                </Col>
+                <Col span={12}>
+                  <p>
+                    <strong>Price:</strong>{" "}
+                    {currentRequest?.initialValuations.price}
+                  </p>
+                </Col>
+              </>
+            ) : (
+              <>
+                {currentRequest?.status === "UNACCEPTED" ? (
+                  <Col span={12}>
+                    <p>
+                      <strong>Reason:</strong>{" "}
+                      {currentRequest?.ultimateValuation.reason}
+                    </p>
+                  </Col>
+                ) : (
+                  <></>
+                )}
+              </>
+            )}
+          </Row>
         </Modal>
         <Table dataSource={data} columns={columns} />
       </div>

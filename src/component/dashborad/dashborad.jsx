@@ -2,18 +2,14 @@ import { useEffect, useState } from "react";
 import {
   ProfileOutlined,
   HeartOutlined,
-  UserOutlined,
-  BarChartOutlined,
-  CheckCircleOutlined,
   TeamOutlined,
   AppstoreAddOutlined,
-  ProductOutlined,
 } from "@ant-design/icons";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
-import { Footer } from "antd/es/layout/layout";
+import { Breadcrumb, Button, Layout, Menu, theme } from "antd";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../redux/features/counterSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { logout, selectUser } from "../../redux/features/counterSlice";
+
 
 const { Header, Content, Sider } = Layout;
 
@@ -27,6 +23,7 @@ function getItem(label, key, icon, children) {
 }
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector(selectUser);
   const [collapsed, setCollapsed] = useState(false);
@@ -159,6 +156,30 @@ const Dashboard = () => {
             }}
           >
             System of Auction Jewelry
+            <Button
+              type="primary" 
+              onClick={() => {
+                dispatch(logout());
+                navigate("/");
+                }
+              }
+              style={{
+                position: "absolute",
+                right: "30px",
+                top: "20px",
+                backgroundColor: "#1677ff",
+                color: "white",
+                border: "none",
+                borderRadius: "5px",
+                padding: "2px 6px",
+                fontSize: "14px",
+                cursor: "pointer",
+                height: "24px",
+                lineHeight: "20px",
+              }}
+            >
+              Logout
+            </Button>
           </header>
         </Header>
         <Content
