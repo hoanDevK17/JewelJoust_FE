@@ -11,6 +11,7 @@ import {
   Col,
   Switch,
   Tag,
+  Image,
   message,
 } from "antd";
 
@@ -34,6 +35,7 @@ import {
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 import { current } from "@reduxjs/toolkit";
+import styled from "styled-components";
 
 export default function ManageRequest() {
   const token = useSelector(selectUser)?.token;
@@ -543,15 +545,17 @@ export default function ManageRequest() {
     <>
       <div>
         <Modal
+          width= {850}
           title={`${currentId > 0 ? "Edit" : "Add"} request`}
           open={currentId >= 0}
           onOk={() => form.submit()}
           onCancel={() => {
             form.resetFields();
-            setCurrentId(-1);
+            setCurrentId(-1);         
           }}
         >
           <div>{renderSteps(currentRequest?.status)}</div>
+          <h5>sell's request: </h5>
           <div
             style={{
               padding: "20px",
@@ -564,25 +568,18 @@ export default function ManageRequest() {
           >
             <Row gutter={[0, 0]}>
               <Col span={24}>
-                <Row gutter={[16, 16]}>
-                  <Col span={12}>
+                <Row gutter={[0, 0]}>
+                  <Col span={4}>
                     <p>
                       <strong>ID:</strong> {currentRequest?.id}
                     </p>
                   </Col>
-                  <Col span={12}>
+                  <Col span={6}>
                     <p>
                       <strong>Name:</strong> {currentRequest?.jewelryname}
                     </p>
                   </Col>
-                </Row>
-              </Col>
-              <Col
-                span={24}
-                style={{ borderTop: "1px solid rgba(0, 0, 0, 0.1)" }}
-              >
-                <Row gutter={[16, 16]} style={{ paddingTop: "10px" }}>
-                  <Col span={23}>
+                  <Col span={12}>
                     <p>
                       <strong>Request Date: </strong>{" "}
                       {formatDate(currentRequest?.requestdate)}
@@ -594,26 +591,25 @@ export default function ManageRequest() {
                 span={24}
                 style={{ borderTop: "1px solid rgba(0, 0, 0, 0.1)" }}
               >
-                <Row gutter={[16, 16]} style={{ paddingTop: "10px" }}>
+                <Row gutter={[0, 0]} style={{ paddingTop: "10px" }}>
+                  <Col span={12}>
+                    <p>
+                      <strong>Status:</strong> {currentRequest?.status}
+                    </p>            
+                  </Col>
                   <Col span={12}>
                     <p>
                       <strong>Initial Price:</strong>{" "}
                       {currentRequest?.jewelryinitialprice}
                     </p>
                   </Col>
-                  <Col span={12}>
-                    <p>
-                      <strong>Status:</strong> {currentRequest?.status}
-                    </p>
-                  </Col>
                 </Row>
               </Col>
-
               <Col
                 span={24}
                 style={{ borderTop: "1px solid rgba(0, 0, 0, 0.1)" }}
               >
-                <Row gutter={[16, 16]} style={{ paddingTop: "10px" }}>
+                <Row gutter={[0, 0]} style={{ paddingTop: "10px" }}>
                   <Col span={24}>
                     <p>
                       <strong>Description:</strong>
@@ -631,6 +627,18 @@ export default function ManageRequest() {
                     </div>
                   </Col>
                 </Row>
+              <Row>
+
+              {currentRequest?.resources?.map(img=><>
+                <Image
+          
+          src={img.path}
+          width={"calc(33% - 16px)"}
+        />  </>
+
+              
+                )}
+              </Row>
               </Col>
             </Row>
           </div>
