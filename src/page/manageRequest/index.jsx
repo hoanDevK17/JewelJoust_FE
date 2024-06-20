@@ -22,9 +22,6 @@ import {
   CloseCircleOutlined,
   EditOutlined,
   LoadingOutlined,
-  SmileOutlined,
-  SolutionOutlined,
-  UserOutlined,
 } from "@ant-design/icons";
 import {
   APIgetallrequest,
@@ -40,6 +37,7 @@ import { current } from "@reduxjs/toolkit";
 
 export default function ManageRequest() {
   const token = useSelector(selectUser)?.token;
+  
 
   // set format cho date
   const formatDate = (dateString) => {
@@ -398,7 +396,7 @@ export default function ManageRequest() {
           case "APPROVED":
           case "AGREED":
           case "DECLINED":
-            return "wait";
+            return "finish";
           default:
             return "wait";
         }
