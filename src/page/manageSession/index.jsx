@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
-import { Button, Modal, Form, Input, Table, Select } from "antd";
+import { Button, Modal, Form, Input, Table, Select, message } from "antd";
 import axios from "axios";
 import { useForm } from "antd/es/form/Form";
 import moment from "moment";
 import { EditOutlined } from "@ant-design/icons";
-import { APIgetallSession, APIgetallrequest } from "../../api/api";
+import {
+  APIcreateSession,
+  APIgetallSession,
+  APIgetallacount,
+  APIgetallrequest,
+} from "../../api/api";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 import { Option } from "antd/es/mentions";
+import { Ls } from "dayjs";
 
 export default function ManageSession() {
   const token = useSelector(selectUser)?.token;
@@ -25,15 +31,17 @@ export default function ManageSession() {
   const [currentId, setCurrentId] = useState(-1);
   const [form] = useForm();
   const [requestAuctions, setRequestAuctions] = useState([]);
+
   const onFinish = async (values) => {
-    console.log("Success:", values);
-    const response = await axios.post(
-      "http://jeweljoust.online:8080/api/account/register",
-      values
-    );
-    setData([...data, response.data]);
-    setCurrentId(-1);
-    console.log(response);
+    APIcreateSession(values, token)
+      .then((response) => {
+        message.success("Successfully");
+        fetchData();
+      })
+      .catch((error) => {
+        message.error("Something went wrong", error);
+      })
+      .finally(() => {});
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -41,11 +49,8 @@ export default function ManageSession() {
   };
 
   useEffect(() => {
-    console.log(currentId);
-    APIgetallrequest(token).then((rs) => {
-      console.log(rs.data);
-      setRequestAuctions(rs.data);
-    });
+    fetchAuctionRequest();
+    fetchStaff();
     if (currentId > 0) {
       form.setFieldsValue({
         username: "test",
@@ -121,11 +126,30 @@ export default function ManageSession() {
   ];
 
   const [data, setData] = useState([]);
-
+  const [staffs, setStaffs] = useState([]);
   const fetchData = async () => {
     APIgetallSession(token).then((response) => {
-      console.log(response.data);
       setData(response.data);
+    });
+  };
+  const fetchAuctionRequest = async () => {
+    APIgetallrequest(token).then((response) => {
+      setRequestAuctions(response.data);
+    });
+  };
+  const fetchStaff = async () => {
+    APIgetallacount(token).then((response) => {
+      var optionStaff = [];
+      response.data.forEach((account) => {
+        if (account.role == "STAFF") {
+          optionStaff = [
+            ...optionStaff,
+            { value: account.id, label: `${account.id}. ${account.username}` },
+          ];
+        }
+      });
+
+      setStaffs(optionStaff);
     });
   };
 
@@ -139,7 +163,7 @@ export default function ManageSession() {
         Add new Session
       </Button>
       <Modal
-        title={`${currentId > 0 ? "Edit" : "Add"} request`}
+        title={`${currentId > 0 ? "Edit" : "Add"} Session`}
         open={currentId >= 0}
         onOk={() => form.submit()}
         onCancel={() => {
@@ -169,20 +193,6 @@ export default function ManageSession() {
           }}
           autoComplete="off"
         >
-          <Form.Item
-            label="Staff ID"
-            name="staff_id"
-            rules={[
-              {
-                required: true,
-                message: "Please input Staff ID!",
-              },
-              { whitespace: true },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-
           <Form.Item
             label="Name Session"
             name="name_session"
@@ -236,7 +246,7 @@ export default function ManageSession() {
               },
             ]}
           >
-            <Select placeholder="Select a option Auction Request" allowClear>
+            <Select placeholder="Auction RequestID" allowClear showSearch>
               {/* {requestAuctions?.map((request) => {
                 console.log("a");
                 return (
@@ -248,10 +258,7 @@ export default function ManageSession() {
               {requestAuctions?.map((request, index) => {
                 return (
                   <Option key={index} value={request.id}>
-                    {request.id}-{request.jewelryname}-
-                    {request.ultimateValuation
-                      ? request.ultimateValuation.price
-                      : "N/A"}
+                    {request.jewelryname} - {request.ultimateValuation.price}$
                   </Option>
                 );
               })}
@@ -299,7 +306,28 @@ export default function ManageSession() {
           >
             <Input type="number" />
           </Form.Item>
-
+          <Form.Item
+            label="Staff"
+            name="staff_id"
+            rules={[
+              {
+                required: true,
+                message: "Please input Staff ID!",
+              },
+            ]}
+          >
+            <Select
+              showSearch
+              placeholder="Select a person"
+              filterOption={(input, staff) => {
+                console.log(staff);
+                return (staff?.label ?? "")
+                  .toLowerCase()
+                  .includes(input.toLowerCase());
+              }}
+              options={staffs}
+            ></Select>
+          </Form.Item>
           <Form.Item
             label="Start Time"
             name="start_time"
