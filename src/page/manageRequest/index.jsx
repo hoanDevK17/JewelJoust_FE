@@ -25,6 +25,8 @@ import {
   LoadingOutlined,
 } from "@ant-design/icons";
 import {
+  APIAcceptUltimate,
+  APIRejectUltimate,
   APIgetallrequest,
   APIrejectedauctionrequestsell,
   APIsetappraisalprice,
@@ -34,12 +36,9 @@ import {
 } from "../../api/api";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
-import { current } from "@reduxjs/toolkit";
-import styled from "styled-components";
 
 export default function ManageRequest() {
   const token = useSelector(selectUser)?.token;
-  
 
   // set format cho date
   const formatDate = (dateString) => {
@@ -55,13 +54,17 @@ export default function ManageRequest() {
   };
 
   const [currentId, setCurrentId] = useState(-1);
+  const [data, setData] = useState([]);
   const [form] = useForm();
   const [currentRequest, setCurrentRequest] = useState();
   const [isRejected, setIsRejected] = useState(false);
+
   const onFinishrejected = async (values) => {
     APIrejectedauctionrequestsell(currentId, values.reason, token)
-      .then((rs) => {
-        console.log(rs);
+      .then((response) => {
+        if (response.status == 200) {
+          message.success("Successfully");
+        }
         fetchData();
       })
       .catch((error) => {
@@ -71,15 +74,15 @@ export default function ManageRequest() {
     setCurrentId(-1);
   };
   const onFinishsetappraisalprice = async (values) => {
-    console.log("Success:", values);
-    console.log("Success", currentId);
     if (!currentId || !token) {
       console.error("Missing currentId or token");
       return;
     }
     APIsetappraisalprice(currentId, values.price, token)
-      .then((rs) => {
-        console.log(rs);
+      .then((response) => {
+        if (response.status == 200) {
+          message.success("Successfully");
+        }
         fetchData();
       })
       .catch((error) => {
@@ -92,24 +95,6 @@ export default function ManageRequest() {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-
-  useEffect(() => {
-    console.log(currentId);
-    if (currentId > 0) {
-      const currentRequest = data.find((item) => {
-        {
-          if (item?.id == currentId) {
-            console.log(item);
-            return item;
-          }
-        }
-      });
-      setCurrentRequest(currentRequest);
-    } else {
-      form.resetFields();
-    }
-  }, [currentId]);
-
   const columns = [
     {
       title: "ID",
@@ -266,11 +251,11 @@ export default function ManageRequest() {
     },
   ];
 
-  const [data, setData] = useState([]);
-
   const fetchData = async () => {
     await APIgetallrequest(token).then((response) => {
-      setData(response.data);
+      if (response.status == 200) {
+        setData(response.data);
+      }
     });
   };
 
@@ -301,7 +286,7 @@ export default function ManageRequest() {
         fetchData();
       })
       .catch((error) => {
-        message.error("Something went wrong");
+        message.error("Something went wrong", error);
       })
       .finally(() => {
         setCurrentId(-1);
@@ -316,20 +301,42 @@ export default function ManageRequest() {
         fetchData();
       })
       .catch((error) => {
-        message.error("Something went wrong");
+        message.error("Something went wrong", error);
+      })
+      .finally(() => {
+        setCurrentId(-1);
+      });
+  };
+  const handleAcceptUltimateValuation = async () => {
+    APIAcceptUltimate(currentId, token)
+      .then((rs) => {
+        console.log(rs);
+        message.success("Successfully");
+        fetchData();
+      })
+      .catch((error) => {
+        message.error("Something went wrong", error?.data);
+      })
+      .finally(() => {
+        setCurrentId(-1);
+      });
+  };
+  const handleRejectUltimateValuation = async (value) => {
+    console.log(value);
+    APIRejectUltimate(currentId, value.reason, token)
+      .then((rs) => {
+        console.log(rs);
+        message.success("Successfully");
+        fetchData();
+      })
+      .catch((error) => {
+        message.error("Something went wrong", error);
       })
       .finally(() => {
         setCurrentId(-1);
       });
   };
 
-  useEffect(() => {
-    fetchData();
-    console.log("oke");
-  }, []);
-
-  // tạo ra timeline
-  // in ra step
   const renderSteps = (status) => {
     return (
       <Steps current={0}>
@@ -540,18 +547,40 @@ export default function ManageRequest() {
         return <ClockCircleOutlined />;
     }
   };
+  useEffect(() => {
+    fetchData();
+    console.log("oke");
+  }, []);
+  useEffect(() => {
+    console.log(currentId);
+    if (currentId > 0) {
+      const currentRequest = data.find((item) => {
+        {
+          if (item?.id == currentId) {
+            console.log(item);
+            return item;
+          }
+        }
+      });
+      setCurrentRequest(currentRequest);
+    } else {
+      form.resetFields();
+    }
+  }, [currentId]);
+  // tạo ra timeline
+  // in ra step
 
   return (
     <>
       <div>
         <Modal
-          width= {850}
+          width={850}
           title={`${currentId > 0 ? "Edit" : "Add"} request`}
           open={currentId >= 0}
           onOk={() => form.submit()}
           onCancel={() => {
             form.resetFields();
-            setCurrentId(-1);         
+            setCurrentId(-1);
           }}
         >
           <div>{renderSteps(currentRequest?.status)}</div>
@@ -569,20 +598,21 @@ export default function ManageRequest() {
             <Row gutter={[0, 0]}>
               <Col span={24}>
                 <Row gutter={[0, 0]}>
-                  <Col span={4}>
+                  <Col span={8}>
                     <p>
-                      <strong>ID:</strong> {currentRequest?.id}
+                      <strong>ID Request:</strong> {currentRequest?.id}
                     </p>
                   </Col>
-                  <Col span={6}>
+
+                  <Col span={8}>
                     <p>
-                      <strong>Name:</strong> {currentRequest?.jewelryname}
+                      <strong>Status:</strong> {currentRequest?.status}
                     </p>
                   </Col>
-                  <Col span={12}>
+                  <Col span={8}>
                     <p>
-                      <strong>Request Date: </strong>{" "}
-                      {formatDate(currentRequest?.requestdate)}
+                      <strong>Initial Price:</strong>
+                      {currentRequest?.jewelryinitialprice}
                     </p>
                   </Col>
                 </Row>
@@ -594,17 +624,18 @@ export default function ManageRequest() {
                 <Row gutter={[0, 0]} style={{ paddingTop: "10px" }}>
                   <Col span={12}>
                     <p>
-                      <strong>Status:</strong> {currentRequest?.status}
-                    </p>            
+                      <strong>Request Date: </strong>
+                      {formatDate(currentRequest?.requestdate)}
+                    </p>
                   </Col>
                   <Col span={12}>
                     <p>
-                      <strong>Initial Price:</strong>{" "}
-                      {currentRequest?.jewelryinitialprice}
+                      <strong>Name:</strong> {currentRequest?.jewelryname}
                     </p>
                   </Col>
                 </Row>
               </Col>
+
               <Col
                 span={24}
                 style={{ borderTop: "1px solid rgba(0, 0, 0, 0.1)" }}
@@ -627,29 +658,28 @@ export default function ManageRequest() {
                     </div>
                   </Col>
                 </Row>
-              <Row>
-
-              {currentRequest?.resources?.map(img=><>
-                <Image
-          
-          src={img.path}
-          width={"calc(33% - 16px)"}
-        />  </>
-
-              
-                )}
-              </Row>
+                <Row>
+                  {currentRequest?.resources?.map((img) => (
+                    <>
+                      <Image src={img.path} width={"calc(33% - 16px)"} />
+                    </>
+                  ))}
+                </Row>
               </Col>
             </Row>
           </div>
-          {currentRequest?.status === "PENDING" ? (
+          {currentRequest?.status === "PENDING" && (
             <>
-              <Switch
-                unCheckedChildren="Valuation"
-                checkedChildren="Reject"
-                onChange={handelFormPending}
-              />
-              {isRejected ? (
+              <Row>
+                <h6 style={{ marginRight: "12px" }}>Valuation</h6>
+
+                <Switch
+                  unCheckedChildren="Reject"
+                  checkedChildren="Valuation"
+                  onChange={handelFormPending}
+                />
+              </Row>
+              {!isRejected ? (
                 <Form
                   name="basic"
                   labelCol={{
@@ -659,10 +689,10 @@ export default function ManageRequest() {
                     span: 16,
                   }}
                   style={{
-                    maxWidth: 600,
                     display: "flex",
                     gap: "16px",
-                    justifyContent: "space-between",
+                    justifyContent: "center",
+                    maxWidth: 500,
                   }}
                   initialValues={{
                     remember: true,
@@ -700,10 +730,10 @@ export default function ManageRequest() {
                     span: 16,
                   }}
                   style={{
-                    maxWidth: 600,
                     display: "flex",
                     gap: "16px",
-                    justifyContent: "space-between",
+                    maxWidth: 600,
+                    justifyContent: "center",
                   }}
                   initialValues={{
                     remember: true,
@@ -733,55 +763,45 @@ export default function ManageRequest() {
                 </Form>
               )}
             </>
-          ) : (
+          )}
+
+          {currentRequest?.initialValuations != null && (
             <>
+              <h6>Initial Valuation</h6>
+
               <Row>
-                {currentRequest?.status === "CONFIRMED" ? (
-                  <>
-                    <h6>Initial Valuation</h6>
-                    <Col span={12}>
-                      <p>
-                        <strong>ID:</strong>{" "}
-                        {currentRequest?.initialValuations.id}
-                      </p>
-                    </Col>
-                    <Col span={12}>
-                      <p>
-                        <strong>Date:</strong>{" "}
-                        {currentRequest?.initialValuations.initialdate}
-                      </p>
-                    </Col>
-                    <Col span={12}>
-                      <p>
-                        <strong>Status:</strong>{" "}
-                        {currentRequest?.initialValuations.status}
-                      </p>
-                    </Col>
-                    <Col span={12}>
-                      <p>
-                        <strong>Price:</strong>{" "}
-                        {currentRequest?.initialValuations.price}
-                      </p>
-                    </Col>
-                  </>
-                ) : (
-                  <>
-                    {currentRequest?.status === "REJECTED" ? (
-                      <Col span={12}>
-                        <p>
-                          <strong>Reason:</strong>{" "}
-                          {currentRequest?.initialValuations.reason}
-                        </p>
-                      </Col>
-                    ) : (
-                      <></>
-                    )}
-                  </>
-                )}
+                <Col span={12}>
+                  <p>
+                    <strong>Date: </strong>
+                    {formatDate(currentRequest?.initialValuations.initialdate)}
+                  </p>
+                </Col>
+                <Col span={12}>
+                  <p>
+                    <strong>Status: </strong>
+                    {currentRequest?.initialValuations.status}
+                  </p>
+                </Col>
+                <Col span={12}>
+                  <p>
+                    <strong>Price: </strong>
+                    {currentRequest?.initialValuations.price}
+                  </p>
+                </Col>
               </Row>
             </>
           )}
-          {currentRequest?.status === "CONFIRMED" ? (
+
+          {currentRequest?.status === "REJECTED" && (
+            <Col span={12}>
+              <p>
+                <strong>Reason:</strong>
+                {currentRequest?.initialValuations.reason}
+              </p>
+            </Col>
+          )}
+
+          {currentRequest?.status === "CONFIRMED" && (
             <Form
               name="basic"
               labelCol={{
@@ -806,11 +826,9 @@ export default function ManageRequest() {
                 Received
               </Button>
             </Form>
-          ) : (
-            <></>
           )}
 
-          {currentRequest?.status === "RECEIVED" ? (
+          {currentRequest?.status === "RECEIVED" && (
             <>
               <Switch
                 unCheckedChildren="Valuation"
@@ -901,52 +919,70 @@ export default function ManageRequest() {
                 </Form>
               )}
             </>
-          ) : (
-            <></>
           )}
-          <Row>
-            {currentRequest?.status === "CONFIRMED" ? (
-              <>
-                <h6>Initial Valuation</h6>
-                <Col span={12}>
-                  <p>
-                    <strong>ID:</strong> {currentRequest?.initialValuations.id}
-                  </p>
-                </Col>
-                <Col span={12}>
-                  <p>
-                    <strong>Date:</strong>{" "}
-                    {currentRequest?.initialValuations.initialdate}
-                  </p>
-                </Col>
-                <Col span={12}>
-                  <p>
-                    <strong>Status:</strong>{" "}
-                    {currentRequest?.initialValuations.status}
-                  </p>
-                </Col>
-                <Col span={12}>
-                  <p>
-                    <strong>Price:</strong>{" "}
-                    {currentRequest?.initialValuations.price}
-                  </p>
-                </Col>
-              </>
-            ) : (
-              <>
-                {currentRequest?.status === "UNACCEPTED" ? (
-                  <Col span={12}>
+
+          {currentRequest?.ultimateValuation && (
+            <>
+              <h6>UltimateValuation</h6>
+              <Row>
+                {currentRequest?.status == "UNACCEPTED" ? (
+                  <>
                     <p>
-                      <strong>Reason:</strong>{" "}
+                      <strong>Reason: </strong>
                       {currentRequest?.ultimateValuation.reason}
                     </p>
-                  </Col>
+                  </>
                 ) : (
-                  <></>
+                  <>
+                    <Col span={12}>
+                      <p>
+                        <strong>Price:</strong>
+                        {currentRequest?.ultimateValuation.price}
+                      </p>
+                    </Col>
+                    {currentRequest?.status == "REVIEW" && (
+                      <>
+                        <Switch
+                          unCheckedChildren="Reject"
+                          checkedChildren="Accept"
+                          onChange={handelFormPending}
+                        />
+
+                        {isRejected ? (
+                          <Form onFinish={handleAcceptUltimateValuation}>
+                            <Button type="primary" htmlType="submit">
+                              Accept
+                            </Button>
+                          </Form>
+                        ) : (
+                          <Form onFinish={handleRejectUltimateValuation}>
+                            <Form.Item
+                              style={{ flexGrow: "1" }}
+                              label="Reason"
+                              name="reason"
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Please input Reason !",
+                                },
+                                { whitespace: true },
+                              ]}
+                              hasFeedback
+                            >
+                              <Input />
+                            </Form.Item>
+                            <Button type="primary" htmlType="submit">
+                              Reject
+                            </Button>
+                          </Form>
+                        )}
+                      </>
+                    )}
+                  </>
                 )}
-              </>
-            )}
-          </Row>
+              </Row>
+            </>
+          )}
         </Modal>
         <Table dataSource={data} columns={columns} />
       </div>

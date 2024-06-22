@@ -10,6 +10,18 @@ export const APIResetPass = (password, token) =>
     { password: password },
     { headers: { Authorization: `Bearer ${token}` } }
   );
+
+export const APIChangePassword = (oldPassword, newPassword, token) =>
+  api.put(
+    "account/changePassword",
+    {
+      oldPassword: oldPassword,
+      newPassword: newPassword,
+    },
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
 export const APIrefreshBalance = (token) =>
   api.get("refreshBalance", { headers: { Authorization: `Bearer ${token}` } });
 export const APIUpdateProfile = (profile, token, id) =>
@@ -46,6 +58,8 @@ export const APIregis = (
   });
 export const APIgetallacount = (token) =>
   api.get("account", { headers: { Authorization: `Bearer ${token}` } });
+export const APIgetallacountbyRole = (role, token) =>
+  api.get(`account/${role}`, { headers: { Authorization: `Bearer ${token}` } });
 export const APIregishaverole = (
   userName,
   passWord,
@@ -58,7 +72,7 @@ export const APIregishaverole = (
   token
 ) =>
   api.post(
-    "account/register",
+    `account/register`,
     {
       username: userName,
       password: passWord,
@@ -72,11 +86,11 @@ export const APIregishaverole = (
     { headers: { Authorization: `Bearer ${token}` } }
   );
 export const APIgetallrequest = (token) =>
-  api.get("auctionRequest", {
+  api.get("auctionRequests", {
     headers: { Authorization: `Bearer ${token}` },
   });
 export const APIgetallrequestUser = (token) =>
-  api.get("auctionRequest/accountCurrent", {
+  api.get("auctionRequests/accountCurrent", {
     headers: { Authorization: `Bearer ${token}` },
   });
 export const APIauctionrequestsell = (
@@ -87,7 +101,7 @@ export const APIauctionrequestsell = (
   token
 ) =>
   api.post(
-    "auctionRequest",
+    "auctionRequests",
     {
       jewelryName: jewelryName,
       jewelryDescription: jewelryDescription,
@@ -104,7 +118,7 @@ export const APIgetlistrequestbyuserid = (token) =>
 
 export const APIrejectedauctionrequestsell = (id, reason, token) =>
   api.post(
-    `initialValuation/rejected`,
+    `initialValuations/rejected`,
     {
       id: id,
       reason: reason,
@@ -113,21 +127,17 @@ export const APIrejectedauctionrequestsell = (id, reason, token) =>
   );
 export const APIsetappraisalprice = (id, price, token) =>
   api.post(
-    `initialValuation/comfirmed`,
+    `initialValuations/comfirmed`,
     {
       id: id,
       price: price,
     },
     { headers: { Authorization: `Bearer ${token}` } }
   );
-export const APIgetallSession = (token) =>
-  api.get("auctionSessions", {
-    headers: { Authorization: `Bearer ${token}` },
-  });
 
 export const APIshipment = (id, token) =>
   api.post(
-    `shipment/${id}`,
+    `shipments/${id}`,
     {},
     {
       headers: { Authorization: `Bearer ${token}` },
@@ -149,13 +159,40 @@ export const APIultimateValuationsReject = (id, reason, token) =>
       headers: { Authorization: `Bearer ${token}` },
     }
   );
-
-export const APIChangePassword = (oldPassword, newPassword, token) =>
+export const APIAcceptUltimate = (id, token) =>
   api.put(
-    "account/changePassword",
+    `ultimateValuations/${id}`,
+    {},
     {
-      oldPassword: oldPassword,
-      newPassword: newPassword,
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+export const APIRejectUltimate = (id, reason, token) =>
+  api.put(
+    `ultimateValuations/${id}/rejected`,
+    { reason: reason },
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+// Session
+export const APIgetallSession = (token) =>
+  api.get("auctionSessions", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+export const APIcreateSession = (value, token) =>
+  api.post(
+    "auctionSessions",
+    {
+      auction_request_id: value.id_auction_request,
+      staff_id: value.staff_id,
+      start_time: value.start_time,
+      end_time: value.end_time,
+      min_stepPrice: value.min_stepPrice,
+      deposit_amount: value.deposit_amount,
+      name_session: value.name_session,
+      name_jewelry: value.name_jewelry,
+      description: value.description,
     },
     {
       headers: { Authorization: `Bearer ${token}` },
