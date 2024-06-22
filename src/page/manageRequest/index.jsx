@@ -565,7 +565,7 @@ export default function ManageRequest() {
               backgroundColor: "#fff", // Màu nền
               marginBottom: "10px",
             }}
-          >
+            >
             <Row gutter={[0, 0]}>
               <Col span={24}>
                 <Row gutter={[0, 0]}>
@@ -592,15 +592,21 @@ export default function ManageRequest() {
                 style={{ borderTop: "1px solid rgba(0, 0, 0, 0.1)" }}
               >
                 <Row gutter={[0, 0]} style={{ paddingTop: "10px" }}>
-                  <Col span={12}>
+                  <Col span={8}>
                     <p>
                       <strong>Status:</strong> {currentRequest?.status}
                     </p>            
                   </Col>
-                  <Col span={12}>
+                  <Col span={8}>
+                    <p>
+                      <strong>Desired Price:</strong>{" "}
+                      {currentRequest?.jewelryinitialprice}
+                    </p>
+                  </Col>
+                  <Col span={8}>
                     <p>
                       <strong>Initial Price:</strong>{" "}
-                      {currentRequest?.jewelryinitialprice}
+                      {currentRequest?.initialValuations?.price}
                     </p>
                   </Col>
                 </Row>
@@ -630,13 +636,11 @@ export default function ManageRequest() {
               <Row>
 
               {currentRequest?.resources?.map(img=><>
-                <Image
-          
-          src={img.path}
-          width={"calc(33% - 16px)"}
-        />  </>
-
-              
+                <Image         
+                  src={img.path}
+                  width={"calc(33% - 16px)"}
+                /> 
+                </>
                 )}
               </Row>
               </Col>
@@ -734,82 +738,73 @@ export default function ManageRequest() {
               )}
             </>
           ) : (
-            <>
-              <Row>
-                {currentRequest?.status === "CONFIRMED" ? (
-                  <>
-                    <h6>Initial Valuation</h6>
-                    <Col span={12}>
-                      <p>
-                        <strong>ID:</strong>{" "}
-                        {currentRequest?.initialValuations.id}
-                      </p>
-                    </Col>
-                    <Col span={12}>
-                      <p>
-                        <strong>Date:</strong>{" "}
-                        {currentRequest?.initialValuations.initialdate}
-                      </p>
-                    </Col>
-                    <Col span={12}>
-                      <p>
-                        <strong>Status:</strong>{" "}
-                        {currentRequest?.initialValuations.status}
-                      </p>
-                    </Col>
-                    <Col span={12}>
-                      <p>
-                        <strong>Price:</strong>{" "}
-                        {currentRequest?.initialValuations.price}
-                      </p>
-                    </Col>
-                  </>
-                ) : (
-                  <>
-                    {currentRequest?.status === "REJECTED" ? (
-                      <Col span={12}>
-                        <p>
-                          <strong>Reason:</strong>{" "}
-                          {currentRequest?.initialValuations.reason}
-                        </p>
-                      </Col>
-                    ) : (
-                      <></>
-                    )}
-                  </>
-                )}
-              </Row>
-            </>
+            <></>
           )}
           {currentRequest?.status === "CONFIRMED" ? (
-            <Form
-              name="basic"
-              labelCol={{
-                span: 8,
-              }}
-              wrapperCol={{
-                span: 16,
-              }}
-              style={{
-                maxWidth: 600,
-                display: "flex",
-                gap: "16px",
-                justifyContent: "space-between",
-              }}
-              initialValues={{
-                remember: true,
-              }}
-              onFinish={onFinishReceived}
-              autoComplete="off"
-            >
-              <Button type="primary" htmlType="submit">
-                Received
-              </Button>
-            </Form>
+            <>
+              <h6>Initial Valuation</h6>
+                <Col span={12}>
+                  <p>
+                    <strong>ID:</strong>{" "}
+                      {currentRequest?.initialValuations.id}
+                  </p>
+                    </Col>
+                <Col span={12}>
+                  <p>
+                    <strong>Date:</strong>{" "}
+                      {currentRequest?.initialValuations.initialdate}
+                  </p>
+                </Col>
+                <Col span={12}>
+                  <p>
+                    <strong>Status:</strong>{" "}
+                      {currentRequest?.initialValuations.status}
+                  </p>
+                </Col>
+                <Col span={12}>
+                  <p>
+                    <strong>Price:</strong>{" "}
+                      {currentRequest?.initialValuations.price}
+                  </p>
+                </Col>
+                <Form
+                  name="basic"
+                  labelCol={{
+                    span: 8,
+                  }}
+                  wrapperCol={{
+                    span: 16,
+                  }}
+                  style={{
+                    maxWidth: 600,
+                    display: "flex",
+                    gap: "16px",
+                    justifyContent: "space-between",
+                  }}
+                  initialValues={{
+                    remember: true,
+                  }}
+                  onFinish={onFinishReceived}
+                  autoComplete="off"
+                >
+                  <Button type="primary" htmlType="submit">
+                    Received
+                  </Button>
+                </Form>
+            </>
           ) : (
             <></>
           )}
-
+          {currentRequest?.status === "REJECTED" ? (
+            <Col span={12}>
+              <p>
+                <strong>Reason:</strong>{" "}
+                {currentRequest?.initialValuations.reason}
+              </p>
+            </Col>
+          ) : (
+            <></>
+          )}
           {currentRequest?.status === "RECEIVED" ? (
             <>
               <Switch
@@ -904,37 +899,7 @@ export default function ManageRequest() {
           ) : (
             <></>
           )}
-          <Row>
-            {currentRequest?.status === "CONFIRMED" ? (
-              <>
-                <h6>Initial Valuation</h6>
-                <Col span={12}>
-                  <p>
-                    <strong>ID:</strong> {currentRequest?.initialValuations.id}
-                  </p>
-                </Col>
-                <Col span={12}>
-                  <p>
-                    <strong>Date:</strong>{" "}
-                    {currentRequest?.initialValuations.initialdate}
-                  </p>
-                </Col>
-                <Col span={12}>
-                  <p>
-                    <strong>Status:</strong>{" "}
-                    {currentRequest?.initialValuations.status}
-                  </p>
-                </Col>
-                <Col span={12}>
-                  <p>
-                    <strong>Price:</strong>{" "}
-                    {currentRequest?.initialValuations.price}
-                  </p>
-                </Col>
-              </>
-            ) : (
-              <>
-                {currentRequest?.status === "UNACCEPTED" ? (
+          {currentRequest?.status === "UNACCEPTED" ? (
                   <Col span={12}>
                     <p>
                       <strong>Reason:</strong>{" "}
@@ -943,10 +908,7 @@ export default function ManageRequest() {
                   </Col>
                 ) : (
                   <></>
-                )}
-              </>
-            )}
-          </Row>
+                )}      
         </Modal>
         <Table dataSource={data} columns={columns} />
       </div>

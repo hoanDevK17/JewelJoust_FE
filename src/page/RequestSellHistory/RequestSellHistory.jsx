@@ -6,7 +6,7 @@ import {
   CloseCircleOutlined,
   LoadingOutlined,
 } from "@ant-design/icons";
-import { Col, Modal, Row, Spin, Steps, Table, Tag } from "antd";
+import { Col, Image, Modal, Row, Spin, Steps, Table, Tag } from "antd";
 
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
@@ -443,6 +443,7 @@ function RequestSellHistory() {
       ) : (
         <>
           <Modal
+            width= {850}
             title={`Detail Information`}
             open={currentId >= 0}
             onCancel={() => {
@@ -450,87 +451,97 @@ function RequestSellHistory() {
             }}
           >
             <div>{renderSteps(currentRequest?.status)}</div>
+            <h5>sell's request: </h5>
             <div
-              style={{
-                padding: "20px",
-                border: "1px solid #ccc",
-                borderRadius: "8px",
-                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-                backgroundColor: "#fff", // Màu nền
-                marginBottom: "10px",
-              }}
+            style={{
+              padding: "20px",
+              border: "1px solid #ccc",
+              borderRadius: "8px",
+              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+              backgroundColor: "#fff", // Màu nền
+              marginBottom: "10px",
+            }}
             >
-              <Row gutter={[16, 16]}>
-                <Col span={24}>
-                  <Row gutter={[16, 16]}>
-                    <Col span={12}>
-                      <p>
-                        <strong>ID:</strong> {currentRequest?.id}
-                      </p>
-                    </Col>
-                    <Col span={12}>
-                      <p>
-                        <strong>Name:</strong> {currentRequest?.jewelryname}
-                      </p>
-                    </Col>
-                  </Row>
-                </Col>
-                <Col
-                  span={24}
-                  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.1)" }}
-                >
-                  <Row gutter={[16, 16]} style={{ paddingTop: "10px" }}>
-                    <Col span={23}>
-                      <p>
-                        <strong>Request Date: </strong>{" "}
-                        {formatDate(currentRequest?.requestdate)}
-                      </p>
-                    </Col>
-                  </Row>
-                </Col>
-                <Col
-                  span={24}
-                  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.1)" }}
-                >
-                  <Row gutter={[16, 16]} style={{ paddingTop: "10px" }}>
-                    <Col span={12}>
-                      <p>
-                        <strong>Initial Price:</strong>{" "}
-                        {currentRequest?.jewelryinitialprice}
-                      </p>
-                    </Col>
-                    <Col span={12}>
-                      <p>
-                        <strong>Status:</strong> {currentRequest?.status}
-                      </p>
-                    </Col>
-                  </Row>
-                </Col>
-                <Col
-                  span={24}
-                  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.1)" }}
-                >
-                  <Row gutter={[16, 16]} style={{ paddingTop: "10px" }}>
-                    <Col span={24}>
-                      <p>
-                        <strong>Description:</strong>
-                      </p>
-                      <div
-                        style={{
-                          padding: "10px",
-                          border: "1px solid #ccc",
-                          borderRadius: "8px",
-                          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-                          backgroundColor: "#f9f9f9",
-                        }}
-                      >
-                        {currentRequest?.jewelrydescription}
-                      </div>
-                    </Col>
-                  </Row>
-                </Col>
+            <Row gutter={[0, 0]}>
+              <Col span={24}>
+                <Row gutter={[0, 0]}>
+                  <Col span={4}>
+                    <p>
+                      <strong>ID:</strong> {currentRequest?.id}
+                    </p>
+                  </Col>
+                  <Col span={6}>
+                    <p>
+                      <strong>Name:</strong> {currentRequest?.jewelryname}
+                    </p>
+                  </Col>
+                  <Col span={12}>
+                    <p>
+                      <strong>Request Date: </strong>{" "}
+                      {formatDate(currentRequest?.requestdate)}
+                    </p>
+                  </Col>
+                </Row>
+              </Col>
+              <Col
+                span={24}
+                style={{ borderTop: "1px solid rgba(0, 0, 0, 0.1)" }}
+              >
+                <Row gutter={[0, 0]} style={{ paddingTop: "10px" }}>
+                  <Col span={8}>
+                    <p>
+                      <strong>Status:</strong> {currentRequest?.status}
+                    </p>            
+                  </Col>
+                  <Col span={8}>
+                    <p>
+                      <strong>Desired Price:</strong>{" "}
+                      {currentRequest?.jewelryinitialprice}
+                    </p>
+                  </Col>
+                  <Col span={8}>
+                    <p>
+                      <strong>Initial Price:</strong>{" "}
+                      {currentRequest?.initialValuations?.price}
+                    </p>
+                  </Col>
+                </Row>
+              </Col>
+              <Col
+                span={24}
+                style={{ borderTop: "1px solid rgba(0, 0, 0, 0.1)" }}
+              >
+                <Row gutter={[0, 0]} style={{ paddingTop: "10px" }}>
+                  <Col span={24}>
+                    <p>
+                      <strong>Description:</strong>
+                    </p>
+                    <div
+                      style={{
+                        padding: "10px",
+                        border: "1px solid #ccc",
+                        borderRadius: "8px",
+                        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                        backgroundColor: "#f9f9f9",
+                      }}
+                    >
+                      {currentRequest?.jewelrydescription}
+                    </div>
+                  </Col>
+                </Row>
+              <Row>
+
+              {currentRequest?.resources?.map(img=><>
+                <Image         
+                  src={img.path}
+                  width={"calc(33% - 16px)"}
+                /> 
+                </>
+                )}
               </Row>
-            </div>
+              </Col>
+            </Row>
+          </div>
           </Modal>
           <Table
             dataSource={data}
