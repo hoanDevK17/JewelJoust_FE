@@ -167,10 +167,10 @@ export const APIAcceptUltimate = (id, token) =>
       headers: { Authorization: `Bearer ${token}` },
     }
   );
-export const APIRejectUltimate = (id, token) =>
+export const APIRejectUltimate = (id, reason, token) =>
   api.put(
-    `ultimateValuations/${id}/reject`,
-    {},
+    `ultimateValuations/${id}/rejected`,
+    { reason: reason },
     {
       headers: { Authorization: `Bearer ${token}` },
     }

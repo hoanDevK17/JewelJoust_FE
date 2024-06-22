@@ -321,8 +321,9 @@ export default function ManageRequest() {
         setCurrentId(-1);
       });
   };
-  const handleRejectUltimateValuation = async () => {
-    APIRejectUltimate(currentId, token)
+  const handleRejectUltimateValuation = async (value) => {
+    console.log(value);
+    APIRejectUltimate(currentId, value.reason, token)
       .then((rs) => {
         console.log(rs);
         message.success("Successfully");

@@ -258,7 +258,7 @@ export default function ManageSession() {
               {requestAuctions?.map((request, index) => {
                 return (
                   <Option key={index} value={request.id}>
-                    {request.jewelryname} - {request.ultimateValuation.price}$
+                    {request.jewelryname} - {request.ultimateValuation?.price}$
                   </Option>
                 );
               })}
