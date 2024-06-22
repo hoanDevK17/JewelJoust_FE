@@ -113,7 +113,7 @@ export default function MyCarousel() {
                 <CardMedia
                   component="img"
                   height="140"
-                  image={product.image}
+                  image={product.image[0]}
                   alt="green iguana"
                 />
                 <CardContent>
