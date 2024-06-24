@@ -186,8 +186,8 @@ export const APIcreateSession = (value, token) =>
     {
       auction_request_id: value.id_auction_request,
       staff_id: value.staff_id,
-      start_time: value.start_time,
-      end_time: value.end_time,
+      start_time: value.start_time.substring(0, 10),
+      end_time: value.end_time.substring(0, 10),
       min_stepPrice: value.min_stepPrice,
       deposit_amount: value.deposit_amount,
       name_session: value.name_session,

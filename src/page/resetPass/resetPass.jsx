@@ -9,7 +9,6 @@ export default function ResetPass() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const token = searchParams.get("token");
-  const [status, setStatus] = useState("");
   const [form] = useForm();
 
   const handleSubmit = (user) => {
@@ -111,7 +110,6 @@ export default function ResetPass() {
                 width: "100%",
                 textAlign: "center",
               }}
-              onClick={status}
             >
               Reset password
             </Button>
