@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { api } from "../config/axios";
 
 export const APIlogin = (userName, passWord) =>
@@ -176,23 +177,23 @@ export const APIRejectUltimate = (id, reason, token) =>
     }
   );
 // Session
-export const APIgetallSession = (token) =>
-  api.get("auctionSessions", {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-export const APIcreateSession = (value, token) =>
+export const APIgetallSession = () => api.get("auctionSessions");
+export const APIgetSessionByID = (id) => api.get(`auctionSessions/id/${id}`);
+export const APIcreateSession = (values, token) =>
   api.post(
     "auctionSessions",
     {
-      auction_request_id: value.id_auction_request,
-      staff_id: value.staff_id,
-      start_time: value.start_time.substring(0, 10),
-      end_time: value.end_time.substring(0, 10),
-      min_stepPrice: value.min_stepPrice,
-      deposit_amount: value.deposit_amount,
-      name_session: value.name_session,
-      name_jewelry: value.name_jewelry,
-      description: value.description,
+      auction_request_id: values.id_auction_request,
+      staff_id: values.staff_id,
+      start_time: dayjs(values.range_time[0]).format(
+        "YYYY-MM-DDTHH:mm:ss.SSSZ"
+      ),
+      end_time: dayjs(values.range_time[1]).format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
+      min_stepPrice: values.min_stepPrice,
+      deposit_amount: values.deposit_amount,
+      name_session: values.name_session,
+      name_jewelry: values.name_jewelry,
+      description: values.description,
     },
     {
       headers: { Authorization: `Bearer ${token}` },
