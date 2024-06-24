@@ -1,7 +1,16 @@
 import Footer from "../../component/footer/footer.jsx";
 import HomePage from "../../component/home-default/home.jsx";
 import "./createBidRequest.scss";
-import { Button, Form, Image, Input, Spin, Upload, message } from "antd";
+import {
+  Button,
+  Form,
+  Image,
+  Input,
+  Spin,
+  Typography,
+  Upload,
+  message,
+} from "antd";
 import { useState } from "react";
 
 import { UploadOutlined } from "@ant-design/icons";
@@ -19,7 +28,7 @@ export default function AuctionRequestSell() {
   const navigate = useNavigate(); // Sử dụng hook useNavigate từ react-router-dom
   const token = useSelector(selectUser)?.token;
   const [urlJewelry, setUrlJewelry] = useState([]);
-
+  const { Text } = Typography;
   const [messageApi, contextHolder] = message.useMessage();
   const [form] = useForm();
 
@@ -236,6 +245,19 @@ export default function AuctionRequestSell() {
                       Request Sell History
                     </span>
                   </Form.Item>
+                  <p style={{ color: "black" }}>
+                    {" "}
+                    <Text
+                      type="danger"
+                      style={{ fontSize: 16 }}
+                      onClick={() => {
+                        navigate("/login");
+                      }}
+                    >
+                      {" "}
+                      {token == null && " Please Sign in to request sell"}
+                    </Text>
+                  </p>
                 </Form>
               </div>
             </div>
