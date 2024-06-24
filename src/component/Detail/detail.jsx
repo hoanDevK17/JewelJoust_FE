@@ -7,7 +7,6 @@ import "./detail.scss";
 import MyCarousel from "../carousel/Carousel.jsx";
 import { Col, Container } from "react-bootstrap";
 import { Row, Tabs } from "antd";
-import { Typography } from "@mui/material";
 export default function Detail() {
   const navigate = useNavigate();
   const userName = useParams();
