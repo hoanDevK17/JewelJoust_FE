@@ -79,6 +79,7 @@ export const Products = [
             'https://justintime.in/cdn/shop/articles/Tissot_buying_guide_comparison_Mobile.png?v=1696404861',
             'https://www.tissotwatches.com/media/catalog/product/T/1/T137.407.11.041.00_AMB_S_1.jpg',
         ],
+        price: 10000,
         time: 'Timed-out',
         sellTime: "09/04/2024-17/04/2024",
         afterTime: "16/04/2024-19/04/2024",
