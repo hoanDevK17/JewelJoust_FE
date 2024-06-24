@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "./carousel.scss";
 import { Products } from "../../share-data/productData";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia } from "@mui/material";
+import {
+  Button,
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardMedia,
+} from "@mui/material";
 import { Typography } from "antd";
+import { APIgetallSession } from "../../api/api";
 // export default function MyCarousel() {
 //   const navigate = useNavigate();
 //   const settings = {
@@ -67,7 +75,6 @@ import { Typography } from "antd";
 //   );
 // }
 
-
 export default function MyCarousel() {
   const navigate = useNavigate();
   const settings = {
@@ -97,38 +104,49 @@ export default function MyCarousel() {
       },
     ],
   };
+  const [data, setData] = useState();
+  const fetchData = async () => {
+    APIgetallSession().then((response) => {
+      setData(response.data);
+    });
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <div className="slider-container">
       <Slider {...settings}>
-        {Products.map((product, id) => (
-          <div className="cards"
-          key={id}
-            onClick={() => {
-              console.log("oke");
-              navigate(`/detail/${product.id}`);
-            }}
-          >
-            <Card  sx={{ maxWidth: 345 }}>
-              <CardActionArea>
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={product.image[0]}
-                  alt="green iguana"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h1" component="div">
-                    {product.name}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                    species, ranging across all continents except Antarctica
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </div>
-        ))}
+        {data?.map((session, index) => {
+          return (
+            <div
+              className="cards"
+              key={index}
+              onClick={() => {
+                console.log("oke");
+                navigate(`/detail/${session.id}`);
+              }}
+            >
+              <Card sx={{ maxWidth: 345 }}>
+                <CardActionArea>
+                  <CardMedia
+                    component="img"
+                    height="140"
+                    image={session.auctionRequest.resources[0]?.path}
+                    alt="green iguana"
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h1" component="div">
+                      {session.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {session.description}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </div>
+          );
+        })}
       </Slider>
     </div>
   );

@@ -84,7 +84,11 @@ export default function HomePage({ children }) {
               navigate("/homepage");
             }}
           >
-            <img src="/Logo.svg" alt="" />
+            <img
+              src="/Logo.svg"
+              alt=""
+              style={{ maxHeight: "45px", maxWidth: "200px" }}
+            />
           </span>
         </div>
         <div className="home-page-title">

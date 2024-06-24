@@ -47,6 +47,7 @@ export default function ManageSession() {
   const [staffs, setStaffs] = useState([]);
   const [currentRequestID, setCurrentRequestID] = useState(-1);
   const [currentRequest, setCurrentRequest] = useState();
+  const [currentSession, setCurrentSession] = useState();
   const { RangePicker } = DatePicker;
   const disabledDate = (current) => {
     // Can not select days before today and today
@@ -54,7 +55,7 @@ export default function ManageSession() {
   };
 
   const fetchData = async () => {
-    APIgetallSession(token).then((response) => {
+    APIgetallSession().then((response) => {
       setData(response.data);
     });
   };
@@ -85,16 +86,24 @@ export default function ManageSession() {
     });
   };
   const onFinish = async (values) => {
-    console.log(dayjs.format(values));
-    // APIcreateSession( values, token)
-    //   .then((response) => {
-    //     message.success("Successfully");
-    //     fetchData();
-    //   })
-    //   .catch((error) => {
-    //     message.error("Something went wrong", error);
-    //   })
-    //   .finally(() => {});
+    console.log(
+      dayjs(values.range_time[0]).format("YYYY-MM-DDTHH:mm"),
+      dayjs(values.range_time[1]).format("YYYY-MM-DDTHH:mm")
+    );
+    values.id_auction_request = currentRequestID;
+    console.log(values);
+    APIcreateSession(values, token)
+      .then((response) => {
+        message.success("Successfully");
+
+        fetchData();
+      })
+      .catch((error) => {
+        message.error("Something went wrong", error);
+      })
+      .finally(() => {
+        setCurrentId(-1);
+      });
   };
 
   const handleSelection = (value) => {
@@ -112,9 +121,11 @@ export default function ManageSession() {
       });
     }
     if (currentId > 0) {
+      const current_session = data.find((item) => item?.id == currentId);
+      console.log(current_session);
       form.setFieldsValue({
-        id_auction_request: "test",
-        staff_id: "test",
+        id_session: current_session.id,
+        staff_id: current_session.staffSession.id,
         fullname: "a",
         address: "w",
         birthday: moment("04-06-2024"),
@@ -123,6 +134,7 @@ export default function ManageSession() {
         role: "q",
         locked: "o",
       });
+      setCurrentSession(current_session);
     } else {
       form.resetFields();
     }
@@ -143,11 +155,13 @@ export default function ManageSession() {
       title: "Start Time",
       dataIndex: "start_time",
       key: "start_time",
+      render: (date) => dayjs(date).format("YYYY-MM-DD HH:mm"),
     },
     {
       title: "End Time",
       dataIndex: "end_time",
       key: "end_time",
+      render: (date) => dayjs(date).format("YYYY-MM-DD HH:mm"),
     },
     {
       title: "Name Jewelry",
@@ -236,7 +250,6 @@ export default function ManageSession() {
           type="primary"
           onClick={() => {
             if (currentRequestID > 0) {
-              form.setFieldValue({ id_auction_request: currentRequestID });
               setCurrentId(0);
             } else {
               message.error("Please choose session");
@@ -257,14 +270,36 @@ export default function ManageSession() {
         }}
         width={1120}
       >
+        <h6>Information Request</h6>
         <Row wrap={false}>
           <Col style={{ marginBottom: "24px" }} span={12}>
-            {currentRequest?.id > 0 && (
+            {currentId > 0 ? (
               <>
-                Information Name : {currentRequest.jewelryname}
-                Price : {currentRequest.ultimateValuation.price}
-                Image :{" "}
-                {currentRequest.resources.map((item) => (
+                <Row>
+                  ID Request : {currentSession?.auctionRequest?.id}{" "}
+                  <strong>Name</strong> :{" "}
+                  {currentSession?.auctionRequest?.jewelryname}
+                  <strong>Price</strong> :{" "}
+                  {currentSession?.auctionRequest?.ultimateValuation.price}
+                </Row>
+                {currentSession?.auctionRequest?.resources.map((item) => (
+                  <>
+                    <Image
+                      src={item.path}
+                      style={{ width: 300, maxHeight: 700 }}
+                    />
+                  </>
+                ))}
+              </>
+            ) : (
+              <>
+                <Row>
+                  {" "}
+                  <strong>Name</strong> : {currentRequest?.jewelryname}{" "}
+                  <strong>Price</strong> :{" "}
+                  {currentRequest?.ultimateValuation.price}
+                </Row>
+                {currentRequest?.resources.map((item) => (
                   <>
                     <Image
                       src={item.path}
@@ -298,6 +333,11 @@ export default function ManageSession() {
               }}
               autoComplete="off"
             >
+              {currentId > 0 && (
+                <Form.Item label="ID Session" name="id_session">
+                  <Input readOnly />
+                </Form.Item>
+              )}
               <Form.Item
                 label="Name Session"
                 name="name_session"
@@ -340,7 +380,9 @@ export default function ManageSession() {
                 <Input />
               </Form.Item>
 
-              <Form.Item hidden name="id_auction_request"></Form.Item>
+              <Form.Item hidden name="id_auction_request">
+                {/* <Input value={currentRequestID}></Input> */}
+              </Form.Item>
 
               <Form.Item
                 label="Min Step Price"
@@ -369,20 +411,6 @@ export default function ManageSession() {
               >
                 <Input type="number" />
               </Form.Item>
-
-              <Form.Item
-                label="Fee Amount"
-                name="fee_amount"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input Fee Amount!",
-                  },
-                  { whitespace: true },
-                ]}
-              >
-                <Input type="number" />
-              </Form.Item>
               <Form.Item
                 label="Staff"
                 name="staff_id"
@@ -397,7 +425,6 @@ export default function ManageSession() {
                   showSearch
                   placeholder="Select a person"
                   filterOption={(input, staff) => {
-                    console.log(staff);
                     return (staff?.label ?? "")
                       .toLowerCase()
                       .includes(input.toLowerCase());
@@ -449,11 +476,11 @@ export default function ManageSession() {
                   showTime={{
                     hideDisabledOptions: true,
                     defaultValue: [
-                      dayjs("00:00:00", "HH:mm:ss"),
-                      dayjs("11:59:59", "HH:mm:ss"),
+                      dayjs("00:00", "HH:mm"),
+                      dayjs("11:59", "HH:mm"),
                     ],
                   }}
-                  format="YYYY-MM-DD HH:mm:ss"
+                  format="YYYY-MM-DD HH:mm"
                 />
               </Form.Item>
 
