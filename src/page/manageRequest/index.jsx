@@ -584,7 +584,7 @@ export default function ManageRequest() {
           }}
         >
           <div>{renderSteps(currentRequest?.status)}</div>
-          <h5>sell's request: </h5>
+          <h5>Sell request: </h5>
           <div
             style={{
               padding: "20px",
