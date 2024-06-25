@@ -103,6 +103,14 @@ export default function HomePage({ children }) {
           <span
             className="button-link"
             onClick={() => {
+              navigate("/bidding");
+            }}
+          >
+            Bidding
+          </span>
+          <span
+            className="button-link"
+            onClick={() => {
               navigate("/sessions");
             }}
           >
