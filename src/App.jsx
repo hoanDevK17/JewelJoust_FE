@@ -19,6 +19,7 @@ import ManageSession from "./page/manageSession/index";
 import ActiveHistory from "./page/ActiveHistory/ActiveHistory";
 import AuctionRequestSell from "./page/AuctionRequestSell/AuctionRequestSell";
 import RequestSellHistory from "./page/RequestSellHistory/RequestSellHistory";
+import Bidding from "./page/bidding/Bidding";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -112,6 +113,10 @@ export default function App() {
     {
       path: "/RegisterAuction/:id",
       element: <RegisterAuction />,
+    },
+    {
+      path: "/bidding",
+      element: <Bidding/>,
     },
   ]);
 
