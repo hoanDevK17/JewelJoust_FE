@@ -57,7 +57,7 @@ export default function App() {
       path: "/profile",
       element: <Profile />,
     },
-    
+
     {
       path: "/auctionRequestSell",
       element: <AuctionRequestSell />,
@@ -116,7 +116,7 @@ export default function App() {
     },
     {
       path: "/bidding",
-      element: <Bidding/>,
+      element: <Bidding />,
     },
   ]);
 

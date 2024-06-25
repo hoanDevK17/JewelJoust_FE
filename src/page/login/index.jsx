@@ -36,7 +36,7 @@ export default function Login() {
         // console.log(rs);
         if (rs.status === 200) {
           dispatch(login(rs.data));
-          console.log(rs.data);
+          localStorage.setItem("token", rs.data.token);
           rs.data.role == "MEMBER"
             ? navigate("/homepage")
             : navigate("/dashboard");
@@ -50,40 +50,24 @@ export default function Login() {
         setIsLoading(false);
       });
   };
-  const handleLoginGoogle = () => {
+  const handleLoginGoogle = async () => {
     setIsLoading(true);
-    signInWithPopup(auth, provider)
-      .then(async (result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-
-        const token = result.user.accessToken;
-        console.log(token);
-        // The signed-in user info.
-        const user = result.user;
-        const response = await api.post("/login-google", { token: token });
-        console.log(response);
-        // save redux
-
-        // save token local storage.
-
-        // navigate
-        if (response.status === 200) {
-          navigate("/homepage");
-        }
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        // ...
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    const result = await signInWithPopup(auth, provider);
+    const token = result.user.accessToken;
+    console.log(token);
+    try {
+      const response = await api.post("/login-google", { token: token });
+      console.log(response.data);
+      dispatch(login(response.data));
+      localStorage.setItem("token", response.data.token);
+      setIsLoading(false);
+      console.log("oke");
+      response.data.role == "MEMBER"
+        ? navigate("/homepage")
+        : navigate("/dashboard");
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <>
@@ -107,7 +91,6 @@ export default function Login() {
               <Form
                 className="form-login"
                 hideRequiredMark
-
                 labelCol={{
                   span: 24,
                 }}

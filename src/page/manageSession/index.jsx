@@ -169,9 +169,10 @@ export default function ManageSession() {
       key: "nameJewelry",
     },
     {
-      title: "Initial Price",
-      dataIndex: "initialPrice",
-      key: "initialPrice",
+      title: "Starting Price",
+
+      key: "price",
+      render: (session) => session.auctionRequest.ultimateValuation.price,
     },
     {
       title: "Min Step Price",

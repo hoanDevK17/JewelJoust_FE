@@ -12,7 +12,7 @@ import {
   CardMedia,
 } from "@mui/material";
 import { Typography } from "antd";
-import { APIgetallSession } from "../../api/api";
+import { APIgetallSession, APIgetallSessionByStatus } from "../../api/api";
 // export default function MyCarousel() {
 //   const navigate = useNavigate();
 //   const settings = {
@@ -106,7 +106,8 @@ export default function MyCarousel() {
   };
   const [data, setData] = useState();
   const fetchData = async () => {
-    APIgetallSession().then((response) => {
+    APIgetallSessionByStatus("INITIALIZED").then((response) => {
+      console.log(response);
       setData(response.data);
     });
   };

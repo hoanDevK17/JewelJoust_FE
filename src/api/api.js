@@ -178,6 +178,8 @@ export const APIRejectUltimate = (id, reason, token) =>
   );
 // Session
 export const APIgetallSession = () => api.get("auctionSessions");
+export const APIgetallSessionByStatus = (status) =>
+  api.get(`auctionSessions/${status}`);
 export const APIgetSessionByID = (id) => api.get(`auctionSessions/id/${id}`);
 export const APIcreateSession = (values, token) =>
   api.post(

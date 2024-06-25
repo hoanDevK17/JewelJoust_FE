@@ -117,7 +117,7 @@ export default function Detail() {
               {/* <h6>Auction Form:</h6> <h4>{product?.hinhThuc}</h4> */}
               {/* <h6>Leap:</h6> <h4>{jump}$</h4> */}
               <div className="button-outside">
-                <Link to={`/RegisterAuction`}>
+                <Link to={`/RegisterAuction/${product?.id}`}>
                   <h6>
                     <button className="button-detail">Auction Register</button>
                   </h6>

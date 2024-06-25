@@ -5,18 +5,19 @@ import "./index.scss";
 import { message } from "antd";
 import { Products } from "../../share-data/productData";
 import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { APIgetSessionByID } from "../../api/api.js";
 
 export default function RegisterAuction() {
-  const Params = useParams();
+  const params = useParams();
+  const [product, setProduct] = useState();
 
-  const product = Products.find((obj) => {
-    return obj.id == Params.id;
-  });
   const accountNumber = "141099999999";
   const bankName =
     "Ngân hàng Nông Nghiệp và Phát triển nông thôn Việt Nam - Chi nhánh Mỹ Đình";
   const transactionContent = "DGVPA4767026533748";
-  const amount = product.price + product.depositFee;
+  const amount =
+    product?.auctionRequest.ultimateValuation.price + product?.feeAmount;
   const [messageApi, contextHolder] = message.useMessage();
 
   function copyToClipboard(text) {
@@ -39,7 +40,18 @@ export default function RegisterAuction() {
     downloadLink.click();
     document.body.removeChild(downloadLink);
   }
-
+  useEffect(() => {
+    console.log("okee1223");
+    APIgetSessionByID(params.id)
+      .then((response) => {
+        console.log(response);
+        setProduct(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {});
+  }, [location]);
   // QR code value with proper formatting
   const qrValue = `NH:${bankName}|STK:${accountNumber}|ND:${transactionContent}|ST:${amount}`;
   return (
@@ -51,16 +63,19 @@ export default function RegisterAuction() {
             <h3>Jewelry Auction Payment</h3>
             <div className="order-details">
               <p>
-                <strong>Order Information:  </strong> {product.name}
+                <strong>Order Information: </strong> {product?.nameJewelry}
               </p>
               <p>
-                <strong>Deposit:</strong> {product.price}
+                <strong>Deposit:</strong>{" "}
+                {product?.auctionRequest.ultimateValuation.price}
               </p>
               <p>
-                <strong>Document Fee:</strong> {product.depositFee}
+                <strong>Document Fee:</strong> {product?.feeAmount}
               </p>
               <p>
-                <strong>Total:</strong> {product.price + product.depositFee}
+                <strong>Total:</strong>{" "}
+                {product?.auctionRequest.ultimateValuation.price +
+                  product?.feeAmount}
               </p>
             </div>
           </div>
