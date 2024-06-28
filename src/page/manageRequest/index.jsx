@@ -266,12 +266,12 @@ export default function ManageRequest() {
   const onFinishReceived = () => {
     console.log(currentId, token);
     APIshipment(currentId, token)
-      .then((rs) => {
-        console.log(rs);
+      .then(() => {
+        message.success("Successfully");
         fetchData();
       })
       .catch((error) => {
-        console.error("Error logging in:", error);
+        message.error("Something went wrong", error);
       })
       .finally(() => {
         setCurrentId(-1);
