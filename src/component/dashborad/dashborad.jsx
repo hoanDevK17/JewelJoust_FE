@@ -4,6 +4,7 @@ import {
   HeartOutlined,
   TeamOutlined,
   AppstoreAddOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
 import { Breadcrumb, Button, Layout, Menu, theme } from "antd";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
@@ -156,30 +157,27 @@ const Dashboard = () => {
             }}
           >
             System of Auction Jewelry
-            <Button
-              type="primary" 
+            <LogoutOutlined
+              type="primary"
               onClick={() => {
                 dispatch(logout());
                 navigate("/");
-                }
-              }
+              }}
               style={{
                 position: "absolute",
                 right: "30px",
-                top: "20px",
+                top: "15px",
                 backgroundColor: "#1677ff",
                 color: "white",
                 border: "none",
                 borderRadius: "5px",
-                padding: "2px 6px",
-                fontSize: "14px",
+                padding: "6px 12px",
+                fontSize: "16px",
                 cursor: "pointer",
-                height: "24px",
-                lineHeight: "20px",
+                height: "35px",
+                lineHeight: "23px", // Adjusted to fit the new height
               }}
-            >
-              Logout
-            </Button>
+            />
           </header>
         </Header>
         <Content
