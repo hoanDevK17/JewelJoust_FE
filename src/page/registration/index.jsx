@@ -309,7 +309,7 @@ export default function Registration() {
                       textAlign: "center",
                       height: "69px",
                     }}
-                  > 
+                  >
                     Register
                   </Button>
                 </Form.Item>
