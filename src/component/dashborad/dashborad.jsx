@@ -84,7 +84,7 @@ const Dashboard = () => {
     //   ]);
     // }
 
-    if (role === "Admin") {
+    if (role === "Admin") {q  
       setItems([
         getItem("Category", "category", <AppstoreAddOutlined />),
         getItem("Acount", "acount", <ProfileOutlined />),
