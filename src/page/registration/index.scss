@@ -30,8 +30,8 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
-    gap: 5px;
-    width: 400px;
+    gap: 20px;
+    width: 500px;
   }
   .conten-name {
     width: 400px;
@@ -42,6 +42,7 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+    margin-bottom: 16px;
   }
   .conten-mess {
     width: 404px;
@@ -87,4 +88,7 @@
     line-height: normal;
     color: #fec00f;
   }
+}
+:where(.css-dev-only-do-not-override-m4timi).ant-form-item .ant-form-item-explain-error {
+  width: 500px;
 }

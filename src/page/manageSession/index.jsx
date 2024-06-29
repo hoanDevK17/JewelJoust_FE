@@ -426,7 +426,7 @@ export default function ManageSession() {
                   showSearch
                   placeholder="Select a person"
                   filterOption={(input, staff) => {
-                    return (staff?.label ?? "")
+                    return (staff?.label ?? "")q
                       .toLowerCase()
                       .includes(input.toLowerCase());
                   }}
