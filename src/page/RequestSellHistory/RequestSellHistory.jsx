@@ -1,25 +1,24 @@
 import { useEffect, useState } from "react";
-import HomePage from "../../component/home-default/home";
 import {
   CheckCircleOutlined,
   ClockCircleOutlined,
   CloseCircleOutlined,
+  EditOutlined,
   LoadingOutlined,
 } from "@ant-design/icons";
-import { Col, Modal, Row, Spin, Steps, Table, Tag } from "antd";
-
+import { Button, Col, Modal, Row, Spin, Steps, Table, Tag } from "antd";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 import { APIgetallrequestUser } from "../../api/api";
 import dayjs from "dayjs";
+import "./index.scss";
 
-// set format cho date
 const formatDate = (dateString) => {
   const date = new Date(dateString);
   const hours = String(date.getHours()).padStart(2, "0");
   const minutes = String(date.getMinutes()).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0"); // Tháng bắt đầu từ 0 nên cần +1
+  const month = String(date.getMonth() + 1).padStart(2, "0");
   const year = date.getFullYear();
   return `${hours}:${minutes} ${day}/${month}/${year}`;
 };
@@ -94,7 +93,7 @@ const getStatusForStep = (title, status) => {
         case "APPROVED":
         case "AGREED":
         case "DECLINED":
-          return "wait";
+          return "finish";
         default:
           return "wait";
       }
@@ -237,7 +236,7 @@ const getIconForStep = (title, status) => {
   }
 };
 
-const columns = [
+const columns = (setCurrentId) => [
   {
     title: "ID",
     dataIndex: "id",
@@ -246,21 +245,18 @@ const columns = [
       compare: (a, b) => a.id - b.id,
       multiple: 1,
     },
-    // render: (a) => {console.log(a)}
   },
   {
     title: "Name",
     dataIndex: "jewelryname",
     key: "jewelryname",
   },
-
   {
     title: "CreatedDate",
     dataIndex: "requestdate",
     key: "requestdate",
     render: (requestdate) => dayjs(requestdate).format("HH:mm DD/MM/YYYY "),
   },
-
   {
     title: "Desired Price",
     dataIndex: "jewelryinitialprice",
@@ -398,21 +394,33 @@ const columns = [
       return <Tag color={color}>{text}</Tag>;
     },
   },
+  {
+    title: "Edit",
+    render: (value, record) => (
+      <Button
+        type="primary"
+        onClick={() => {
+          setCurrentId(record.id);
+        }}
+      >
+        <EditOutlined />
+      </Button>
+    ),
+  },
 ];
+
 function RequestSellHistory() {
-  const title = "Request Sell History";
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
   const token = useSelector(selectUser)?.token;
 
   const [currentId, setCurrentId] = useState(-1);
   const [currentRequest, setCurrentRequest] = useState();
   const [isLoading, setIsLoading] = useState(false);
+
   const fetchData = async () => {
     setIsLoading(true);
     await APIgetallrequestUser(token)
       .then((response) => {
-        console.log(response);
-
         setData(response.data.sort((a, b) => b.id - a.id));
       })
       .catch((error) => {
@@ -428,6 +436,7 @@ function RequestSellHistory() {
       setCurrentRequest(data.find((request) => request.id === currentId));
     }
   }, [currentId]);
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -435,11 +444,7 @@ function RequestSellHistory() {
   return (
     <>
       {isLoading ? (
-        <Spin
-          style={{
-            width: "100%",
-          }}
-        ></Spin>
+        <Spin style={{ width: "100%" }}></Spin>
       ) : (
         <>
           <Modal
@@ -452,7 +457,7 @@ function RequestSellHistory() {
             <div>{renderSteps(currentRequest?.status)}</div>
             <div
               style={{
-                padding: "20px",
+                padding: "20px", 
                 border: "1px solid #ccc",
                 borderRadius: "8px",
                 boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
@@ -464,7 +469,7 @@ function RequestSellHistory() {
                 <Col span={24}>
                   <Row gutter={[16, 16]}>
                     <Col span={12}>
-                      <p>
+                      <p> 
                         <strong>ID:</strong> {currentRequest?.id}
                       </p>
                     </Col>
@@ -532,16 +537,10 @@ function RequestSellHistory() {
               </Row>
             </div>
           </Modal>
+
           <Table
+            columns={columns(setCurrentId)}
             dataSource={data}
-            columns={columns}
-            onRow={(record, rowIndex) => {
-              return {
-                onClick: () => {
-                  setCurrentId(record.id);
-                }, // click row
-              };
-            }}
           />
         </>
       )}

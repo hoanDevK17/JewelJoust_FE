@@ -60,7 +60,7 @@ export const ActiveHistory = () => {
           gap: "32px",
           maxWidth: "calc(100% - 48px)",
           margin: "auto",
-          height: "calc(100vh - 170px)",
+          height: "calc(100vh + 97px)",
         }}
       >
         <Menu
