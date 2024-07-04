@@ -64,6 +64,7 @@ span:hover {
 .user-wallet {
   display: flex;
   gap: 12px;
+  justify-content: flex-end;
 }
 .addWallet {
   text-align: end;
