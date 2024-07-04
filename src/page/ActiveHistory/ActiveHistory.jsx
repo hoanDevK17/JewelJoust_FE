@@ -3,12 +3,12 @@ import HomePage from "../../component/home-default/home";
 import {
   AppstoreOutlined,
   CalendarOutlined,
-  LinkOutlined,
+
   MailOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { Card, Menu, Table } from "antd";
-import RequestSellHistory from "../RequestSellHistory/RequestSellHistory";
+import { Card, Menu } from "antd";
+
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 // function getItem(label, key, icon, children) {
@@ -34,9 +34,9 @@ export const items = [
   },
   {
     key: "3",
-    label: "Navigation Two",
+    label: "Registration Session History",
     icon: <AppstoreOutlined />,
-    path: "/",
+    path: "/RegistrationSession",
   },
   {
     key: "4",

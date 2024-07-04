@@ -13,7 +13,7 @@ export const APIChangePassword = (oldPassword, newPassword) =>
     oldPassword: oldPassword,
     newPassword: newPassword,
   });
-export const APIrefreshBalance = () => api.get("refreshBalance");
+export const APIrefreshBalance = () => api.get("refreshBalance")
 export const APIUpdateProfile = (profile, id) =>
   api.put("account", {
     fullname: profile.fullname,
@@ -127,3 +127,4 @@ export const APIregisSession = (id) =>
   api.post("auctionRegistrations", {
     auctionSession_id: id,
   });
+export const APIHistoryRegisSession = ()   => api.get("auctionRegistrations");

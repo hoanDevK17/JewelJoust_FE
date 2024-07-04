@@ -18,8 +18,10 @@ import ManageRequest from "./page/manageRequest/index";
 import ManageSession from "./page/manageSession/index";
 import ActiveHistory from "./page/ActiveHistory/ActiveHistory";
 import AuctionRequestSell from "./page/AuctionRequestSell/AuctionRequestSell";
-import RequestSellHistory from "./page/RequestSellHistory/RequestSellHistory";
+
 import Bidding from "./page/bidding/Bidding";
+import RequestSellHistory from "./page/HistoryRequsestSell/RequestSellHistory";
+import RegistrationSessionHistory from "./page/HistoryRegistrationSession";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -69,6 +71,10 @@ export default function App() {
         {
           path: "/ActiveHistory/RequestSell",
           element: <RequestSellHistory />,
+        },
+        {
+          path: "/ActiveHistory/RegistrationSession",
+          element: <RegistrationSessionHistory />,
         },
       ],
     },
