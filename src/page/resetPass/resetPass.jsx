@@ -8,11 +8,11 @@ import { useForm } from "antd/es/form/Form";
 export default function ResetPass() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const token = searchParams.get("token");
+
   const [form] = useForm();
 
   const handleSubmit = (user) => {
-    APIResetPass(user.password, token).then((rs) => {
+    APIResetPass(user.password).then((rs) => {
       if (rs.status === 200) {
         // navigate('/homepage')
         // alert("Change Password succeesfully")

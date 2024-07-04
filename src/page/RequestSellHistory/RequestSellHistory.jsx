@@ -402,14 +402,14 @@ const columns = [
 function RequestSellHistory() {
   const title = "Request Sell History";
   const [data, setData] = useState();
-  const token = useSelector(selectUser)?.token;
+
 
   const [currentId, setCurrentId] = useState(-1);
   const [currentRequest, setCurrentRequest] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const fetchData = async () => {
     setIsLoading(true);
-    await APIgetallrequestUser(token)
+    await APIgetallrequestUser()
       .then((response) => {
         console.log(response);
 

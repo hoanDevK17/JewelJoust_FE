@@ -54,14 +54,12 @@ export default function Login() {
     setIsLoading(true);
     const result = await signInWithPopup(auth, provider);
     const token = result.user.accessToken;
-    console.log(token);
     try {
       const response = await api.post("/login-google", { token: token });
       console.log(response.data);
       dispatch(login(response.data));
       localStorage.setItem("token", response.data.token);
       setIsLoading(false);
-      console.log("oke");
       response.data.role == "MEMBER"
         ? navigate("/homepage")
         : navigate("/dashboard");

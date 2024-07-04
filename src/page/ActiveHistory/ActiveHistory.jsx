@@ -9,7 +9,7 @@ import {
 } from "@ant-design/icons";
 import { Card, Menu, Table } from "antd";
 import RequestSellHistory from "../RequestSellHistory/RequestSellHistory";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 // function getItem(label, key, icon, children) {
 //   return {
@@ -46,12 +46,24 @@ export const items = [
   },
 ];
 export const ActiveHistory = () => {
-  const [title, setTitle] = useState(items[0].label);
+  const location = useLocation();
+  const [currentItem, setCurrentItem] = useState();
   const navigate = useNavigate();
-  // const handleSelectKey = (keyPath) => {
-  //   setKey(keyPath);
-  // };
 
+  // const [uri,setUri] = useState(items[)
+  useEffect(() => {
+    // Lấy path từ location và cắt bỏ "/ActiveHistory" để so sánh với path trong items
+    const currentPath = location.pathname.slice(14);
+
+    // Tìm item có path trùng với currentPath
+    const selectedItem = items.find((item) => item.path === currentPath);
+
+    if (selectedItem) {
+      setCurrentItem(selectedItem);
+    } else {
+      setCurrentItem(items[0]);
+    }
+  }, [location.pathname]);
   return (
     <HomePage>
       <div
@@ -70,13 +82,23 @@ export const ActiveHistory = () => {
           defaultSelectedKeys={["1"]}
           defaultOpenKeys={["1"]}
           onSelect={({ key }) => {
-            setTitle(items[key - 1].label);
-            navigate(`/ActiveHistory${items[key - 1].path}`);
+            const selectedItem = items.find((item) => item.key === key);
+            if (selectedItem) {
+              setCurrentItem(selectedItem);
+              navigate(`/ActiveHistory${selectedItem.path}`);
+            }
           }}
           items={items}
-        ></Menu>
+          selectedKeys={[currentItem?.key]}
+        >
+          {items.map((item) => (
+            <Menu.Item key={item.key} icon={item.icon}>
+              {item.label}
+            </Menu.Item>
+          ))}
+        </Menu>
         <Card
-          title={title}
+          title={currentItem?.label}
           style={{
             width: "100%",
           }}

@@ -29,7 +29,6 @@ import { Option } from "antd/es/mentions";
 import dayjs, { Ls } from "dayjs";
 
 export default function ManageSession() {
-  const token = useSelector(selectUser)?.token;
   // const dateFormat = 'YYYY/MM/DD';
 
   /** Manually entering any of the following formats will perform date parsing */
@@ -61,7 +60,7 @@ export default function ManageSession() {
     });
   };
   const fetchAuctionRequest = async () => {
-    APIgetallrequest(token).then((response) => {
+    APIgetallrequest().then((response) => {
       var listRequestApproved = [];
       response.data?.map((request) => {
         if (request.status == "APPROVED") {
@@ -72,7 +71,7 @@ export default function ManageSession() {
     });
   };
   const fetchStaff = async () => {
-    APIgetallacount(token).then((response) => {
+    APIgetallacount().then((response) => {
       var optionStaff = [];
       response.data.forEach((account) => {
         if (account.role == "STAFF") {
@@ -93,9 +92,9 @@ export default function ManageSession() {
     );
     values.id_auction_request = currentRequestID;
     console.log(values);
-    APIcreateSession(values, token)
+    APIcreateSession(values)
       .then((response) => {
-        message.success("Successfully");
+        if (response.status === 200) message.success("Successfully");
 
         fetchData();
       })
@@ -134,7 +133,7 @@ export default function ManageSession() {
         deposit_amount: current_session.depositAmount,
         range_time: [
           dayjs(current_session.start_time, "YYYY-MM-DD HH:mm"),
-          dayjs(current_session.end_time, "YYYY-MM-DD HH:mm")
+          dayjs(current_session.end_time, "YYYY-MM-DD HH:mm"),
         ],
       });
       setCurrentSession(current_session);
@@ -290,10 +289,10 @@ export default function ManageSession() {
                   <>
                     <Image
                       src={item.path}
-                      width={"calc(50% - 16px)"} 
+                      width={"calc(50% - 16px)"}
                       style={{
-                      padding: "10px",
-                    }}
+                        padding: "10px",
+                      }}
                     />
                   </>
                 ))}
@@ -310,10 +309,10 @@ export default function ManageSession() {
                   <>
                     <Image
                       src={item.path}
-                      width={"calc(50% - 16px)"} 
+                      width={"calc(50% - 16px)"}
                       style={{
-                      padding: "10px",
-                    }}
+                        padding: "10px",
+                      }}
                     />
                   </>
                 ))}
@@ -481,7 +480,7 @@ export default function ManageSession() {
                 {/* <Input placeholder="YYYY-MM-DD HH:mm" /> */}
 
                 <RangePicker
-                  style={{width: "100%"}}
+                  style={{ width: "100%" }}
                   disabledDate={disabledDate}
                   showTime={{
                     hideDisabledOptions: true,

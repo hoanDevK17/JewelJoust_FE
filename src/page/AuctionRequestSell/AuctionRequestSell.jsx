@@ -26,7 +26,7 @@ export default function AuctionRequestSell() {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate(); // Sử dụng hook useNavigate từ react-router-dom
-  const token = useSelector(selectUser)?.token;
+  const user = useSelector(selectUser);
   const [urlJewelry, setUrlJewelry] = useState([]);
   const { Text } = Typography;
   const [messageApi, contextHolder] = message.useMessage();
@@ -75,8 +75,7 @@ export default function AuctionRequestSell() {
       cbr.jewelryname,
       cbr.jewelrydescription,
       cbr.jewelryinitialprice,
-      path,
-      token
+      path
     )
       .then((rs) => {
         console.log("Full response:", rs);
@@ -255,7 +254,7 @@ export default function AuctionRequestSell() {
                       }}
                     >
                       {" "}
-                      {token == null && " Please Sign in to request sell"}
+                      {user == null && " Please Sign in to request sell"}
                     </Text>
                   </p>
                 </Form>
