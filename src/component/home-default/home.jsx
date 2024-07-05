@@ -43,7 +43,7 @@ export default function HomePage({ children }) {
       key: "3",
       label: "Wallet",
       onClick: () => {
-        navigate("/Wallet/Balance");
+        navigate("/Wallet/Deposit");
       },
     },
     {
@@ -127,7 +127,7 @@ export default function HomePage({ children }) {
                 <span>Hi: {user?.fullname}</span>
                 <div className="user-wallet" style={{ alignItems: "center" }}>
                  {<PlusOutlined onClick={()=>{
-                  navigate("/Wallet/Balance")
+                  navigate("/Wallet/Deposit")
 
                  }}/>}
                   {isRefreshBalance ? (
