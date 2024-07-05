@@ -26,7 +26,6 @@ import Recharge from "./page/Balance/Recharge";
 import Withdraw from "./page/Balance/Withdraw";
 import RequestSellHistory from "./page/HistoryRequsestSell/RequestSellHistory";
 import RegistrationSessionHistory from "./page/HistoryRegistrationSession";
-import TestPopup from "./page/testpopup";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -147,10 +146,6 @@ export default function App() {
     {
       path: "/bidding",
       element: <Bidding />,
-    },
-    {
-      path: "/test",
-      element: <TestPopup />,
     },
   ]);
 
