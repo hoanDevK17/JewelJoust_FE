@@ -24,7 +24,7 @@ import {
 import "./profile.scss";
 
 import { useState } from "react";
-import ImgCrop from "antd-img-crop";
+
 import { useDispatch, useSelector } from "react-redux";
 import { login, selectUser } from "../../redux/features/counterSlice.js";
 import { APIUpdateProfile, APIChangePassword } from "../../api/api.js";
@@ -32,50 +32,13 @@ import { APIUpdateProfile, APIChangePassword } from "../../api/api.js";
 export default function Profile() {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState("");
+  
   const [messageApi, contextHolder] = message.useMessage();
   const [open, setOpen] = useState(false);
   const [form] = Form.useForm();
 
   // edit avatar
 
-  const getBase64 = (file) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-  const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
-
-  const [fileList, setFileList] = useState([]);
-  const uploadButton = (
-    <button
-      style={{
-        border: 0,
-        background: "none",
-      }}
-      type="button"
-    >
-      <PlusOutlined />
-      <div
-        style={{
-          marginTop: 8,
-        }}
-      >
-        Upload
-      </div>
-    </button>
-  );
-
-  const handlePreview = async (file) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-    setPreviewImage(file.url || file.preview);
-    setPreviewOpen(true);
-  };
 
   // edit password
   const showDrawer = () => {
@@ -90,7 +53,7 @@ export default function Profile() {
   // const [modal2Open, setModal2Open] = useState(false);
   const handleUpdateProfile = (profile) => {
     console.log(profile);
-    APIUpdateProfile(profile, user.token, user.id)
+    APIUpdateProfile(profile, user.id)
       .then((rs) => {
         if (rs.status === 200) {
           // console.log(rs);
