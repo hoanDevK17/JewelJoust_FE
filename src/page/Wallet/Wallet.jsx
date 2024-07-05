@@ -9,16 +9,11 @@ export const itemWallet = [
   {
     key: "1",
     icon: <MailOutlined />,
-    label: "Your Balance",
-    path: "/Balance",
-  },{
-    key: "2",
-    icon: <MailOutlined />,
     label: "Deposit History",
     path: "/Deposit",
   },
   {
-    key: "3",
+    key: "2",
     icon: <CalendarOutlined />,
     label: "Withdrawal History",
     path: "/Withdrawal",
