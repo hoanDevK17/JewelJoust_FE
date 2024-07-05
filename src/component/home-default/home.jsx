@@ -151,7 +151,7 @@ export default function HomePage({ children }) {
             <>
               {" "}
               <div className="user_wallet_all">
-                <span style={{display:"flex",justifyContent:"flex-end"}}>Hi: {user?.fullname}</span>
+                <span style={{display:"flex",justifyContent:"flex-end"}}>Welcome: {user?.fullname}</span>
                 <div className="user-wallet" style={{ alignItems: "center" }}>
                   {
                     <PlusOutlined
