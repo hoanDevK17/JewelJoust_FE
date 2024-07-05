@@ -1,20 +1,9 @@
-import {
-  EnvironmentOutlined,
-  FacebookOutlined,
-  InstagramOutlined,
-  LoadingOutlined,
-  MailOutlined,
-  PhoneOutlined,
-  RedoOutlined,
-  TwitterOutlined,
-  UserOutlined,
-  YoutubeOutlined,
-} from "@ant-design/icons";
+import { LoadingOutlined, PlusOutlined, RedoOutlined, UserOutlined } from "@ant-design/icons";
 
 import "./home.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { login, logout, selectUser } from "../../redux/features/counterSlice";
+import { logout, selectUser } from "../../redux/features/counterSlice";
 
 import { Avatar, Dropdown, Space } from "antd";
 import { useState } from "react";
@@ -22,6 +11,13 @@ import { APIrefreshBalance } from "../../api/api";
 
 export default function HomePage({ children }) {
   const navigate = useNavigate();
+  const handleClick = () => {
+    navigate("/");
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
   const user = useSelector(selectUser);
 
   const dispatch = useDispatch();
@@ -43,13 +39,13 @@ export default function HomePage({ children }) {
       },
     },
 
-    // {
-    //   key: "3",
-    //   label: "Wallet",
-    //   onClick: () => {
-    //     navigate("/Wallet");
-    //   },
-    // },
+    {
+      key: "3",
+      label: "Wallet",
+      onClick: () => {
+        navigate("/Wallet/Balance");
+      },
+    },
     {
       key: "3",
       label: "Log Out",
@@ -78,12 +74,7 @@ export default function HomePage({ children }) {
     <div className="home-default">
       <div className="home-page-header">
         <div className="home-page-logo">
-          <span
-            className="button-link"
-            onClick={() => {
-              navigate("/homepage");
-            }}
-          >
+          <span className="button-link" onClick={handleClick}>
             <img
               src="/Logo.svg"
               alt=""
@@ -92,12 +83,7 @@ export default function HomePage({ children }) {
           </span>
         </div>
         <div className="home-page-title">
-          <span
-            className="button-link"
-            onClick={() => {
-              navigate("/");
-            }}
-          >
+          <span className="button-link" onClick={handleClick}>
             Home
           </span>
           <span
@@ -112,6 +98,10 @@ export default function HomePage({ children }) {
             className="button-link"
             onClick={() => {
               navigate("/sessions");
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+              });
             }}
           >
             Jewelry Auction
@@ -120,61 +110,59 @@ export default function HomePage({ children }) {
             className="button-link"
             onClick={() => {
               navigate("/auctionRequestSell");
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+              });
             }}
           >
             AuctionRequestSell
-          </span>
-          <span
-            className="button-link"
-            onClick={() => {
-              navigate("/");
-            }}
-          >
-            News
-          </span>
-
-          <span
-            className="button-link"
-            onClick={() => {
-              navigate("/");
-            }}
-          >
-            About Us
           </span>
         </div>
         <div className="home-page-login">
           {user ? (
             <>
-              <div className="user-wallet" style={{ alignItems: "center" }}>
-                {isRefreshBalance ? (
-                  <LoadingOutlined />
-                ) : (
-                  <RedoOutlined onClick={handleRefreshBalance} />
-                )}
-                <span
-                  onClick={(e) => e.preventDefault()}
-                  style={{ fontSize: "16px" }}
-                >
-                  Balance: {user?.wallet?.balance}$
-                </span>
+              {" "}
+              <div className="user_wallet_all">
+                <span>Hi: {user?.fullname}</span>
+                <div className="user-wallet" style={{ alignItems: "center" }}>
+                 {<PlusOutlined onClick={()=>{
+                  navigate("/Wallet/Balance")
 
+                 }}/>}
+                  {isRefreshBalance ? (
+                    
+                    <LoadingOutlined />
+                  ) : (
+                    <RedoOutlined onClick={handleRefreshBalance} />
+                  )}
+                  <span
+                    onClick={(e) => e.preventDefault()}
+                    style={{ fontSize: "16px" }}
+                  >
+                    Balance: {user?.wallet?.balance}$
+                  </span>
+
+                  
+                </div>
+                </div>
                 <Dropdown
-                  menu={{
-                    items,
-                  }}
-                  trigger={["click"]}
-                  placement="bottomRight"
-                >
-                  <Space>
-                    <Avatar
-                      style={{
-                        backgroundColor: "#87d068",
-                      }}
-                      icon={<UserOutlined />}
-                    />
-                  </Space>
-                </Dropdown>
-              </div>
+                    menu={{
+                      items,
+                    }}
+                    trigger={["click"]}
+                    placement="bottomRight"
+                  >
+                    <Space>
+                      <Avatar
+                        style={{
+                          backgroundColor: "#87d068",
+                        }}
+                        icon={<UserOutlined />}
+                      />
+                    </Space>
+                  </Dropdown>
+              
             </>
           ) : (
             <>

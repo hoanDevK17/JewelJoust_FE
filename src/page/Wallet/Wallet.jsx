@@ -1,24 +1,68 @@
+import { Card, Menu } from "antd";
+import HomePage from "../../component/home-default/home";
 import "./Wallet.scss"; // Import the SCSS file
-
-const UserInfo = () => {
+import { Outlet, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import {  CalendarOutlined, MailOutlined, } from "@ant-design/icons";
+export const itemWallet = [
+  
+  {
+    key: "1",
+    icon: <MailOutlined />,
+    label: "Your Balance",
+    path: "/Balance",
+  },{
+    key: "2",
+    icon: <MailOutlined />,
+    label: "Deposit History",
+    path: "/Deposit",
+  },
+  {
+    key: "3",
+    icon: <CalendarOutlined />,
+    label: "Withdrawal History",
+    path: "/Withdrawal",
+  },
+ 
+];
+export default function Wallet() {
+  const [title, setTitle] = useState(itemWallet[0].label);
+  const navigate = useNavigate();
+ 
   return (
-    <div className="user-info">
-      <div className="user-icon">
-        <img src="path-to-user-icon.png" alt="User Icon" />
+    <HomePage>
+      <div
+        style={{
+          display: "flex",
+          gap: "32px",
+          maxWidth: "calc(100% - 48px)",
+          margin: "auto",
+          height: "calc(100vh - 170px)",
+        }}
+      >
+        <Menu
+          style={{
+            width: 256,
+            height: "fit-content"
+          }}
+          defaultSelectedKeys={["1"]}
+          defaultOpenKeys={["1"]}
+          onSelect={({ key }) => {
+            setTitle(itemWallet[key - 1].label);
+            navigate(`/Wallet${itemWallet[key - 1].path}`);
+          }}
+          items={itemWallet}
+        ></Menu>
+        <Card
+          title={title}
+          style={{
+            width: "100%",
+            maxHeight: "100vh" 
+          }}
+        >
+          <Outlet />
+        </Card>
       </div>
-      <div className="username">{u}</div>
-      <div className="balance">
-        <span>0.55</span>
-        <div className="refresh-icon">
-          <img src="path-to-refresh-icon.png" alt="Refresh Icon" />
-        </div>
-      </div>
-      <button className="recharge-button">
-        <img src="path-to-piggy-bank-icon.png" alt="Recharge Icon" />
-        Nạp tiền
-      </button>
-    </div>
+    </HomePage>
   );
-};
-
-export default UserInfo;
+}

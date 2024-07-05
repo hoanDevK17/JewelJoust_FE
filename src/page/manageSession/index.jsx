@@ -193,6 +193,7 @@ export default function ManageSession() {
           type="primary"
           onClick={() => {
             console.log(record.id);
+            console.log();
             setCurrentId(record.id);
           }}
         >
@@ -324,6 +325,7 @@ export default function ManageSession() {
             <Form
               form={form}
               name="basic"
+              hideRequiredMark
               labelCol={{
                 span: 8,
               }}
