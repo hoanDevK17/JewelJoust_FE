@@ -1,4 +1,9 @@
-import { LoadingOutlined, PlusOutlined, RedoOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  LoadingOutlined,
+  PlusOutlined,
+  RedoOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 
 import "./home.scss";
 import { useNavigate } from "react-router-dom";
@@ -14,15 +19,16 @@ export default function HomePage({ children }) {
   const handleClick = () => {
     navigate("/");
     window.scrollTo({
-      top: 0,
+      to: 0,
       behavior: "smooth",
     });
   };
   const user = useSelector(selectUser);
-
+  const isMember = user?.role === "MEMBER";
   const dispatch = useDispatch();
   const [isRefreshBalance, setIsRefreshBalance] = useState(false);
-  const items = [
+
+  const itemsMember = [
     {
       key: "1",
       label: "Profile",
@@ -55,6 +61,25 @@ export default function HomePage({ children }) {
       },
     },
   ];
+  const itemsAdmin = [
+   
+
+    {
+      key: "1",
+      label: "Dashborad",
+      onClick: () => {
+        navigate("/dashboard");
+      },
+    },
+    {
+      key: "2",
+      label: "Log Out",
+      onClick: () => {
+        dispatch(logout());
+        navigate("/");
+      },
+    },
+  ];
   const handleRefreshBalance = () => {
     setIsRefreshBalance(true);
     APIrefreshBalance(user.token)
@@ -70,6 +95,7 @@ export default function HomePage({ children }) {
         setIsRefreshBalance(false);
       });
   };
+
   return (
     <div className="home-default">
       <div className="home-page-header">
@@ -119,19 +145,22 @@ export default function HomePage({ children }) {
             AuctionRequestSell
           </span>
         </div>
+
         <div className="home-page-login">
           {user ? (
             <>
               {" "}
               <div className="user_wallet_all">
-                <span>Hi: {user?.fullname}</span>
+                <span style={{display:"flex",justifyContent:"flex-end"}}>Hi: {user?.fullname}</span>
                 <div className="user-wallet" style={{ alignItems: "center" }}>
-                 {<PlusOutlined onClick={()=>{
-                  navigate("/Wallet/Deposit")
-
-                 }}/>}
+                  {
+                    <PlusOutlined
+                      onClick={() => {
+                        navigate("/Wallet/Deposit");
+                      }}
+                    />
+                  }
                   {isRefreshBalance ? (
-                    
                     <LoadingOutlined />
                   ) : (
                     <RedoOutlined onClick={handleRefreshBalance} />
@@ -142,27 +171,22 @@ export default function HomePage({ children }) {
                   >
                     Balance: {user?.wallet?.balance}$
                   </span>
-
-                  
                 </div>
-                </div>
-                <Dropdown
-                    menu={{
-                      items,
+              </div>
+              <Dropdown
+                menu={{ items: isMember ? itemsMember : itemsAdmin }}
+                trigger={["click"]}
+                placement="bottomRight"
+              >
+                <Space>
+                  <Avatar
+                    style={{
+                      backgroundColor: "#87d068",
                     }}
-                    trigger={["click"]}
-                    placement="bottomRight"
-                  >
-                    <Space>
-                      <Avatar
-                        style={{
-                          backgroundColor: "#87d068",
-                        }}
-                        icon={<UserOutlined />}
-                      />
-                    </Space>
-                  </Dropdown>
-              
+                    icon={<UserOutlined />}
+                  />
+                </Space>
+              </Dropdown>
             </>
           ) : (
             <>
