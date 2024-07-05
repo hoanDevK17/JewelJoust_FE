@@ -49,6 +49,35 @@ export default function Registration() {
       });
   };
 
+  const validateRules = (_, value) => {
+    if (!value) {
+      return Promise.reject(new Error("This box cannot be left blank"));
+    }
+    if (value.trim().length === 0) {
+      return Promise.reject(new Error("Whitespace is not allowed"));
+    }
+    if (value.trim().length < 3) {
+      return Promise.reject(new Error("you must be enter least 3 characters"));
+    }
+    return Promise.resolve();
+  };
+
+  const passwordValidator = (_, value) => {
+    if (!value) {
+      return Promise.resolve(new Error("This box cannot be left blank"));
+    }
+    if (value.trim().length < 6) {
+      return Promise.reject(new Error("you must be enter least 6 characters"));
+    }
+    const hasUpperCase = /[A-Z]/.test(value);
+    const hasLowerCase = /[a-z]/.test(value);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value);
+    if (hasUpperCase && hasLowerCase && hasSpecialChar) {
+      return Promise.resolve();
+    }
+    return Promise.reject("Password must have one uppercase, lowercase letter and one special character.");
+  };
+
   return (
     <>
       {isLoading ? (
@@ -75,10 +104,13 @@ export default function Registration() {
             </button>
             <div className="boxs-conten">
               <Form
+                autoComplete="off"
                 className="boxs-conten"
                 labelCol={{
                   span: 24,
                 }}
+                wrapperCol={{
+                  span: 24}}
                 onFinish={regis}
               >
                 <Form.Item
@@ -87,10 +119,10 @@ export default function Registration() {
                   name="username"
                   rules={[
                     {
-                      required: true,
-                      message: "This box cannot be left blank",
+                      validator: validateRules,
                     },
                   ]}
+                  hasFeedback
                 >
                   <Input
                     className="conten-mess"
@@ -105,9 +137,12 @@ export default function Registration() {
                   rules={[
                     {
                       required: true,
-                      message: "This box cannot be left blank",
+                    },
+                    {
+                      validator: passwordValidator
                     },
                   ]}
+                  hasFeedback
                 >
                   <Input
                     className="conten-mess"
@@ -119,12 +154,24 @@ export default function Registration() {
                   className="conten-name"
                   label="Confirm password"
                   name="Confirm-password"
+                  dependencies={["password"]}
+                  style={{ marginBottom: "16px" }}
                   rules={[
                     {
                       required: true,
-                      message: "This box cannot be left blank",
                     },
+                    ({ getFieldValue }) => ({
+                      validator(_, value) {
+                        if (!value || getFieldValue("password") === value) {
+                          return Promise.resolve();
+                        }
+                        return Promise.reject(
+                          "The two passwords that you entered does not match."
+                        );
+                      },
+                    }),
                   ]}
+                  hasFeedback
                 >
                   <Input
                     className="conten-mess"
@@ -138,11 +185,11 @@ export default function Registration() {
                   name="fullname"
                   rules={[
                     {
-                      required: true,
-                      message: "This box cannot be left blank",
+                      validator: validateRules,
                     },
                   ]}
-                >
+                  hasFeedback
+                  >
                   <Input
                     className="conten-mess"
                     type="text"
@@ -163,6 +210,7 @@ export default function Registration() {
                       message: "Please type Email",
                     },
                   ]}
+                  hasFeedback
                 >
                   <Input
                     className="conten-mess"
@@ -188,6 +236,7 @@ export default function Registration() {
                       message: "Phone must contain between 9 to 11 number",
                     },
                   ]}
+                  hasFeedback
                 >
                   <Input
                     className="conten-mess"
@@ -201,10 +250,10 @@ export default function Registration() {
                   name="address"
                   rules={[
                     {
-                      required: true,
-                      message: "This box cannot be left blank",
+                      validator: validateRules,
                     },
                   ]}
+                  hasFeedback
                 >
                   <Input
                     className="conten-mess"
@@ -222,6 +271,7 @@ export default function Registration() {
                       message: "This box cannot be left blank, just enter date",
                     },
                   ]}
+                  hasFeedback
                 >
                   <DatePicker
                     format="YYYY-MM-DD"

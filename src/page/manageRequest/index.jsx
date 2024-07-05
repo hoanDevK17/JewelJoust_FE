@@ -38,8 +38,6 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 
 export default function ManageRequest() {
-  const token = useSelector(selectUser)?.token;
-
   // set format cho date
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -60,7 +58,7 @@ export default function ManageRequest() {
   const [isRejected, setIsRejected] = useState(false);
 
   const onFinishrejected = async (values) => {
-    APIrejectedauctionrequestsell(currentId, values.reason, token)
+    APIrejectedauctionrequestsell(currentId, values.reason)
       .then((response) => {
         if (response.status == 200) {
           message.success("Successfully");
@@ -74,11 +72,11 @@ export default function ManageRequest() {
     setCurrentId(-1);
   };
   const onFinishsetappraisalprice = async (values) => {
-    if (!currentId || !token) {
-      console.error("Missing currentId or token");
-      return;
-    }
-    APIsetappraisalprice(currentId, values.price, token)
+    // if (!currentId || !token) {
+    //   console.error("Missing currentId or token");
+    //   return;
+    // }
+    APIsetappraisalprice(currentId, values.price)
       .then((response) => {
         if (response.status == 200) {
           message.success("Successfully");
@@ -252,7 +250,7 @@ export default function ManageRequest() {
   ];
 
   const fetchData = async () => {
-    await APIgetallrequest(token).then((response) => {
+    await APIgetallrequest().then((response) => {
       if (response.status == 200) {
         setData(response.data);
       }
@@ -264,14 +262,15 @@ export default function ManageRequest() {
   };
 
   const onFinishReceived = () => {
-    console.log(currentId, token);
-    APIshipment(currentId, token)
-      .then((rs) => {
-        console.log(rs);
+    console.log(currentId);
+    APIshipment(currentId)
+      .then(() => {
+        message.success("Successfully");
         fetchData();
       })
       .catch((error) => {
-        console.error("Error logging in:", error);
+        console.log(error);
+        message.error("Something went wrong", error);
       })
       .finally(() => {
         setCurrentId(-1);
@@ -279,7 +278,7 @@ export default function ManageRequest() {
   };
 
   const handleUltimateValuation = async (value) => {
-    APIultimateValuations(currentId, value.price, token)
+    APIultimateValuations(currentId, value.price)
       .then((rs) => {
         console.log(rs);
         message.success("Successfully");
@@ -294,7 +293,7 @@ export default function ManageRequest() {
   };
 
   const handleUltimateValuationReject = async (value) => {
-    APIultimateValuationsReject(currentId, value.reason, token)
+    APIultimateValuationsReject(currentId, value.reason)
       .then((rs) => {
         console.log(rs);
         message.success("Successfully");
@@ -308,7 +307,7 @@ export default function ManageRequest() {
       });
   };
   const handleAcceptUltimateValuation = async () => {
-    APIAcceptUltimate(currentId, token)
+    APIAcceptUltimate(currentId)
       .then((rs) => {
         console.log(rs);
         message.success("Successfully");
@@ -323,7 +322,7 @@ export default function ManageRequest() {
   };
   const handleRejectUltimateValuation = async (value) => {
     console.log(value);
-    APIRejectUltimate(currentId, value.reason, token)
+    APIRejectUltimate(currentId, value.reason)
       .then((rs) => {
         console.log(rs);
         message.success("Successfully");
@@ -661,13 +660,18 @@ export default function ManageRequest() {
                 <Row>
                   {currentRequest?.resources?.map((img) => (
                     <>
-                      <Image src={img.path} width={"calc(33% - 16px)"} />
+                      <Image
+                        src={img.path}
+                        width={"calc(33% - 16px)"}
+                        height={250}
+                      />
                     </>
                   ))}
                 </Row>
               </Col>
             </Row>
           </div>
+
           {currentRequest?.status === "PENDING" && (
             <>
               <Row>
@@ -767,28 +771,44 @@ export default function ManageRequest() {
 
           {currentRequest?.initialValuations != null && (
             <>
-              <h6>Initial Valuation</h6>
-
-              <Row>
-                <Col span={12}>
-                  <p>
-                    <strong>Date: </strong>
-                    {formatDate(currentRequest?.initialValuations.initialdate)}
-                  </p>
-                </Col>
-                <Col span={12}>
-                  <p>
-                    <strong>Status: </strong>
-                    {currentRequest?.initialValuations.status}
-                  </p>
-                </Col>
-                <Col span={12}>
-                  <p>
-                    <strong>Price: </strong>
-                    {currentRequest?.initialValuations.price}
-                  </p>
-                </Col>
-              </Row>
+              <h5>Initial Valuation:</h5>
+              <div
+                style={{
+                  padding: "20px",
+                  border: "1px solid #ccc",
+                  borderRadius: "8px",
+                  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                  backgroundColor: "#fff", // Màu nền
+                  marginBottom: "10px",
+                }}
+              >
+                <Row>
+                  <Col span={24}>
+                    <Row gutter={[0, 0]}>
+                      <Col span={8}>
+                        <p>
+                          <strong>Date: </strong>
+                          {formatDate(
+                            currentRequest?.initialValuations.initialdate
+                          )}
+                        </p>
+                      </Col>
+                      <Col span={8}>
+                        <p>
+                          <strong>Status: </strong>
+                          {currentRequest?.initialValuations.status}
+                        </p>
+                      </Col>
+                      <Col span={8}>
+                        <p>
+                          <strong>Price: </strong>
+                          {currentRequest?.initialValuations.price}
+                        </p>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              </div>
             </>
           )}
 
@@ -802,30 +822,38 @@ export default function ManageRequest() {
           )}
 
           {currentRequest?.status === "CONFIRMED" && (
-            <Form
-              name="basic"
-              labelCol={{
-                span: 8,
-              }}
-              wrapperCol={{
-                span: 16,
-              }}
+            <div
               style={{
-                maxWidth: 600,
                 display: "flex",
-                gap: "16px",
-                justifyContent: "space-between",
+                justifyContent: "center",
+                marginTop: "16px",
               }}
-              initialValues={{
-                remember: true,
-              }}
-              onFinish={onFinishReceived}
-              autoComplete="off"
             >
-              <Button type="primary" htmlType="submit">
-                Received
-              </Button>
-            </Form>
+              <Form
+                name="basic"
+                labelCol={{
+                  span: 8,
+                }}
+                wrapperCol={{
+                  span: 16,
+                }}
+                style={{
+                  maxWidth: 600,
+                  display: "flex",
+                  gap: "16px",
+                  justifyContent: "space-between",
+                }}
+                initialValues={{
+                  remember: true,
+                }}
+                onFinish={onFinishReceived}
+                autoComplete="off"
+              >
+                <Button type="primary" htmlType="submit">
+                  Received
+                </Button>
+              </Form>
+            </div>
           )}
 
           {currentRequest?.status === "RECEIVED" && (
@@ -923,59 +951,141 @@ export default function ManageRequest() {
 
           {currentRequest?.ultimateValuation && (
             <>
-              <h6>UltimateValuation</h6>
+              <h5>Ultimate Valuation:</h5>
               <Row>
                 {currentRequest?.status == "UNACCEPTED" ? (
                   <>
-                    <p>
-                      <strong>Reason: </strong>
-                      {currentRequest?.ultimateValuation.reason}
-                    </p>
+                    <div
+                      style={{
+                        width: "100%",
+                        padding: "20px",
+                        border: "1px solid #ccc",
+                        borderRadius: "8px",
+                        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                        backgroundColor: "#fff", // Màu nền
+                        marginBottom: "10px",
+                      }}
+                    >
+                      <p>
+                        <strong>Reason: </strong>
+                        {currentRequest?.ultimateValuation.reason}
+                      </p>
+                    </div>
                   </>
                 ) : (
                   <>
-                    <Col span={12}>
-                      <p>
-                        <strong>Price:</strong>
-                        {currentRequest?.ultimateValuation.price}
-                      </p>
-                    </Col>
+                    <div
+                      style={{
+                        width: "100%",
+                        padding: "20px",
+                        border: "1px solid #ccc",
+                        borderRadius: "8px",
+                        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                        backgroundColor: "#fff", // Màu nền
+                        marginBottom: "10px",
+                      }}
+                    >
+                      <Col>
+                        <p>
+                          <strong>Price:</strong>
+                          {currentRequest?.ultimateValuation.price}
+                        </p>
+                      </Col>
+                    </div>
                     {currentRequest?.status == "REVIEW" && (
                       <>
-                        <Switch
-                          unCheckedChildren="Reject"
-                          checkedChildren="Accept"
-                          onChange={handelFormPending}
-                        />
-
-                        {isRejected ? (
-                          <Form onFinish={handleAcceptUltimateValuation}>
-                            <Button type="primary" htmlType="submit">
-                              Accept
-                            </Button>
-                          </Form>
-                        ) : (
-                          <Form onFinish={handleRejectUltimateValuation}>
-                            <Form.Item
-                              style={{ flexGrow: "1" }}
-                              label="Reason"
-                              name="reason"
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please input Reason !",
-                                },
-                                { whitespace: true },
-                              ]}
-                              hasFeedback
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "12px",
+                          }}
+                        >
+                          <h6 style={{ marginRight: "12px" }}>Review</h6>
+                          <Switch
+                            unCheckedChildren="Reject"
+                            checkedChildren="Accept"
+                            onChange={handelFormPending}
+                          />
+                        </div>
+                        <div
+                          style={{
+                            width: "100%",
+                            display: "flex",
+                            justifyContent: "center",
+                            marginTop: "16px",
+                          }}
+                        >
+                          {!isRejected ? (
+                            <Form
+                              name="basic"
+                              labelCol={{
+                                span: 8,
+                              }}
+                              wrapperCol={{
+                                span: 16,
+                              }}
+                              style={{
+                                display: "flex",
+                                gap: "16px",
+                                justifyContent: "center",
+                                maxWidth: 600,
+                              }}
+                              initialValues={{
+                                remember: true,
+                              }}
+                              onFinish={handleRejectUltimateValuation}
+                              onFinishFailed={onFinishFailed}
+                              autoComplete="off"
                             >
-                              <Input />
-                            </Form.Item>
-                            <Button type="primary" htmlType="submit">
-                              Reject
-                            </Button>
-                          </Form>
-                        )}
+                              <Form.Item
+                                style={{ flexGrow: "1" }}
+                                label="Reason"
+                                name="reason"
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: "Please input Reason!",
+                                  },
+                                  { whitespace: true },
+                                ]}
+                                hasFeedback
+                              >
+                                <Input />
+                              </Form.Item>
+                              <Button type="primary" htmlType="submit">
+                                Reject
+                              </Button>
+                            </Form>
+                          ) : (
+                            <Form
+                              name="basic"
+                              labelCol={{
+                                span: 8,
+                              }}
+                              wrapperCol={{
+                                span: 16,
+                              }}
+                              style={{
+                                display: "flex",
+                                gap: "16px",
+                                justifyContent: "center",
+                                maxWidth: 500,
+                              }}
+                              initialValues={{
+                                remember: true,
+                              }}
+                              onFinish={handleAcceptUltimateValuation}
+                              onFinishFailed={onFinishFailed}
+                              autoComplete="off"
+                            >
+                              <Button type="primary" htmlType="submit">
+                                Accept
+                              </Button>
+                            </Form>
+                          )}
+                        </div>
                       </>
                     )}
                   </>

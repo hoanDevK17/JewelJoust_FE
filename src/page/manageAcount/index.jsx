@@ -9,13 +9,10 @@ import {
   APIgetallacount,
   APIregishaverole,
 } from "../../api/api";
-import useSelection from "antd/es/table/hooks/useSelection";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { selectUser } from "../../redux/features/counterSlice";
+
 
 export default function Acount() {
-  const token = useSelector(selectUser)?.token;
+
   // console.log(user)
   // const dateFormat = 'YYYY/MM/DD';
   /** Manually entering any of the following formats will perform date parsing */
@@ -31,7 +28,7 @@ export default function Acount() {
   const [currentId, setCurrentId] = useState(-1);
   const [currentIdDate, setCurrentIdDate] = useState(0);
   const [form] = useForm();
-  console.log(token);
+
   const onFinish = async (values) => {
     values.birthday = dayjs(values.birthday).format(`YYYY-MM-DD`);
     console.log(
@@ -43,7 +40,7 @@ export default function Acount() {
       values.address,
       values.birthday,
       values.role,
-      token
+
     );
     if (currentId == 0) {
       APIregishaverole(
@@ -55,7 +52,7 @@ export default function Acount() {
         values.address,
         values.birthday,
         values.role,
-        token
+   
       )
         .then((response) => {
           console.log(response);
@@ -73,7 +70,7 @@ export default function Acount() {
         });
     }
     if (currentId > 0) {
-      APIUpdateProfile(values, token, currentId)
+      APIUpdateProfile(values, currentId)
         .then((response) => {
           if (response.status === 200) {
             message.success("Edit account successfully");
@@ -187,7 +184,7 @@ export default function Acount() {
   const [data, setData] = useState([]);
 
   const fetchData = async () => {
-    await APIgetallacount(token).then((response) => {
+    await APIgetallacount().then((response) => {
       setData(response.data);
     });
   };

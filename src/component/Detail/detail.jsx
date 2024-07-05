@@ -6,8 +6,8 @@ import Footer from "../../component/footer/footer.jsx";
 import "./detail.scss";
 import MyCarousel from "../carousel/Carousel.jsx";
 import { Col, Container } from "react-bootstrap";
-import { Row, Tabs } from "antd";
-import { APIgetSessionByID } from "../../api/api.js";
+import { Button, Row, Tabs, message } from "antd";
+import { APIgetSessionByID, APIregisSession } from "../../api/api.js";
 import dayjs from "dayjs";
 import { useLocation } from "react-router-dom";
 export default function Detail() {
@@ -39,8 +39,21 @@ export default function Detail() {
   const handleTab = (index) => {
     setMainImage(product?.auctionRequest?.resources[index].path);
   };
+  const handleRegisAuction = () => {
+    APIregisSession(params.id)
+      .then((response) => {
+        message.success(
+          "Registration for the auction session was successful. Thank you for registering!"
+        );
+      })
+      .catch((error) => {
+        message.error(error?.response?.data);
+      })
+      .finally(() => {
+        getRefre
+      });
+  };
   useEffect(() => {
-    console.log("okee1223");
     APIgetSessionByID(params.id)
       .then((response) => {
         console.log(response);
@@ -117,11 +130,11 @@ export default function Detail() {
               {/* <h6>Auction Form:</h6> <h4>{product?.hinhThuc}</h4> */}
               {/* <h6>Leap:</h6> <h4>{jump}$</h4> */}
               <div className="button-outside">
-                <Link to={`/RegisterAuction/${product?.id}`}>
+                <Button onClick={handleRegisAuction}>
                   <h6>
                     <button className="button-detail">Auction Register</button>
                   </h6>
-                </Link>
+                </Button>
               </div>
             </Col>
           </Row>
