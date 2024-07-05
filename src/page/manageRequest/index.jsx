@@ -567,9 +567,6 @@ export default function ManageRequest() {
       form.resetFields();
     }
   }, [currentId]);
-  // tạo ra timeline
-  // in ra step
-
   return (
     <>
       <div>
@@ -811,12 +808,25 @@ export default function ManageRequest() {
           )}
 
           {currentRequest?.status === "REJECTED" && (
-            <Col span={12}>
-              <p>
-                <strong>Reason:</strong>
-                {currentRequest?.initialValuations.reason}
-              </p>
-            </Col>
+              <Col span={12}>
+                <div
+              style={{
+              width: "800px",
+              padding: "20px",
+              border: "1px solid #ccc",
+              borderRadius: "8px",
+              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+              backgroundColor: "#fff", // Màu nền
+              marginBottom: "10px",
+            }}
+            >  
+                  <p>
+                    <strong>Reason:</strong>
+                    {currentRequest?.initialValuations.reason}
+                  </p>
+                  </div> 
+              </Col>     
+               
           )}
 
           {currentRequest?.status === "CONFIRMED" && (
