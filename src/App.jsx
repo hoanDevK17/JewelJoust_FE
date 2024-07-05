@@ -25,6 +25,7 @@ import DepositHistory from "./page/DepositHistory/DepositHistory"
 import Balance from "./page/Balance/Balance"
 import RequestSellHistory from "./page/HistoryRequsestSell/RequestSellHistory";
 import RegistrationSessionHistory from "./page/HistoryRegistrationSession";
+import TestPopup from "./page/testpopup";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -139,6 +140,10 @@ export default function App() {
     {
       path: "/bidding",
       element: <Bidding />,
+    },
+    {
+      path: "/test",
+      element: <TestPopup />,
     },
   ]);
 
