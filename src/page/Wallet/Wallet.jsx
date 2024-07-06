@@ -3,20 +3,14 @@ import HomePage from "../../component/home-default/home";
 import "./Wallet.scss"; // Import the SCSS file
 import { Outlet, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import {  CalendarOutlined, MailOutlined, } from "@ant-design/icons";
+import {  CalendarOutlined, HistoryOutlined, MailOutlined, } from "@ant-design/icons";
 export const itemWallet = [
   
   {
     key: "1",
-    icon: <MailOutlined />,
-    label: "Deposit History",
-    path: "/Deposit",
-  },
-  {
-    key: "2",
-    icon: <CalendarOutlined />,
-    label: "Withdrawal History",
-    path: "/Withdrawal",
+    icon: <HistoryOutlined />,
+    label: "Transaction history",
+    path: "/History",
   },
  
 ];

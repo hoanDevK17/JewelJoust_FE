@@ -38,7 +38,7 @@ export default function Bidding() {
     return (
         <HomePage>
             <Container fluid style={{marginBottom:"20px"}}>
-                <Row className="justify-content-xl-center">
+                <Row className="justify-content-xl-center" style={{justifyContent: 'center'}}>
                     <Col xl={1}>
                         {product.image.map((img, index) => (
                             <img src={img} key={index} style={{

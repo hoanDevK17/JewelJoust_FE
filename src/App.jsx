@@ -20,10 +20,7 @@ import ActiveHistory from "./page/ActiveHistory/ActiveHistory";
 import AuctionRequestSell from "./page/AuctionRequestSell/AuctionRequestSell";
 
 import Bidding from "./page/bidding/Bidding";
-import WithdrawalHistory from "./page/WithdrawalHistory/WithdrawalHistory";
-import DepositHistory from "./page/DepositHistory/DepositHistory";
-import Recharge from "./page/Balance/Recharge";
-import Withdraw from "./page/Balance/Withdraw";
+import WalletHistory from "./page/WalletHistory/WalletHistory";
 import RequestSellHistory from "./page/HistoryRequsestSell/RequestSellHistory";
 import RegistrationSessionHistory from "./page/HistoryRegistrationSession";
 
@@ -85,22 +82,20 @@ export default function App() {
     {
       path: "/Wallet",
       element: <Wallet />,
-      children: [
+      children: [      
+        // {
+
+        //   path: "/Wallet/Withdrawal",
+        //   element: <WithdrawalHistory />,
+        // },
+        // {
+        //   path: "/Wallet/Deposit",
+        //   element: <DepositHistory />,
+        // },
         {
-          path: "/Wallet/Withdrawal",
-          element: <WithdrawalHistory />,
-        },
-        {
-          path: "/Wallet/Deposit",
-          element: <DepositHistory />,
-        },
-        {
-          path: "/Wallet/Deposit/Recharge",
-          element: <Recharge />,
-        },
-        {
-          path: "/Wallet/Withdraw/Withdraw",
-          element: <Withdraw />,
+          path: "/Wallet/History",
+          element: <WalletHistory />,
+
         },
       ],
     },
