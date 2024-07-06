@@ -49,7 +49,7 @@ export default function HomePage({ children }) {
       key: "3",
       label: "Wallet",
       onClick: () => {
-        navigate("/Wallet/Deposit");
+        navigate("/Wallet/History");
       },
     },
     {
@@ -156,7 +156,7 @@ export default function HomePage({ children }) {
                   {
                     <PlusOutlined
                       onClick={() => {
-                        navigate("/Wallet/Deposit");
+                        navigate("/Wallet/History");
                       }}
                     />
                   }
