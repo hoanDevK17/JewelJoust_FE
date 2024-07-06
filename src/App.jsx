@@ -93,7 +93,6 @@ export default function App() {
         {
           path: "/Wallet/Deposit",
           element: <DepositHistory />,
-         
         },
         {
           path: "/Wallet/Deposit/Recharge",

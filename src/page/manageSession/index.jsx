@@ -19,9 +19,11 @@ import moment from "moment";
 import { EditOutlined } from "@ant-design/icons";
 import {
   APIcreateSession,
+  APIgetAllRequestToSession,
   APIgetallSession,
   APIgetallacount,
   APIgetallrequest,
+  APIgetallrequestbyStatus,
 } from "../../api/api";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
@@ -42,7 +44,7 @@ export default function ManageSession() {
   // id >= 0
   const [currentId, setCurrentId] = useState(-1);
   const [form] = useForm();
-  const [requestAuctionsApproved, setRequestAuctionsApproved] = useState([]);
+  const [requestAuctionsAgreed, setRequestAuctionsAgreed] = useState([]);
   const [data, setData] = useState([]);
   const [staffs, setStaffs] = useState([]);
   const [currentRequestID, setCurrentRequestID] = useState(-1);
@@ -58,16 +60,10 @@ export default function ManageSession() {
     APIgetallSession().then((response) => {
       setData(response.data);
     });
-  };
-  const fetchAuctionRequest = async () => {
-    APIgetallrequest().then((response) => {
-      var listRequestApproved = [];
-      response.data?.map((request) => {
-        if (request.status == "APPROVED") {
-          listRequestApproved.push(request);
-        }
-      });
-      setRequestAuctionsApproved(listRequestApproved);
+  };  
+  const fetchAuctionRequestAgreed = async () => {
+    APIgetAllRequestToSession().then((response) => {
+      setRequestAuctionsAgreed(response?.data);
     });
   };
   const fetchStaff = async () => {
@@ -95,11 +91,11 @@ export default function ManageSession() {
     APIcreateSession(values)
       .then((response) => {
         if (response.status === 200) message.success("Successfully");
-
         fetchData();
       })
       .catch((error) => {
-        message.error("Something went wrong", error);
+        console.log(error);
+        message.error("Something went wrong", error.response?.data);
       })
       .finally(() => {
         setCurrentId(-1);
@@ -111,7 +107,7 @@ export default function ManageSession() {
   };
   useEffect(() => {
     if (currentId === 0) {
-      requestAuctionsApproved.forEach((item) => {
+      requestAuctionsAgreed.forEach((item) => {
         {
           if (item?.id == currentRequestID) {
             console.log(item);
@@ -205,7 +201,7 @@ export default function ManageSession() {
 
   useEffect(() => {
     fetchData();
-    fetchAuctionRequest();
+    fetchAuctionRequestAgreed();
     fetchStaff();
   }, []);
 
@@ -224,7 +220,7 @@ export default function ManageSession() {
             listHeight={1000}
             onSelect={handleSelection}
           >
-            {/* {requestAuctionsApproved?.map((request) => {
+            {/* {requestAuctionsAgreed?.map((request) => {
                 console.log("a");
                 return (
                   <>
@@ -233,7 +229,7 @@ export default function ManageSession() {
                 );
               })} */}
 
-            {requestAuctionsApproved?.map((request, index) => {
+            {requestAuctionsAgreed?.map((request, index) => {
               return (
                 <Select.Option key={index} value={request.id}>
                   {request.jewelryname}

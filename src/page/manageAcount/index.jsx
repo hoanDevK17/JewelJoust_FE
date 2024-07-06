@@ -10,9 +10,7 @@ import {
   APIregishaverole,
 } from "../../api/api";
 
-
 export default function Acount() {
-
   // console.log(user)
   // const dateFormat = 'YYYY/MM/DD';
   /** Manually entering any of the following formats will perform date parsing */
@@ -39,8 +37,7 @@ export default function Acount() {
       values.phone,
       values.address,
       values.birthday,
-      values.role,
-
+      values.role
     );
     if (currentId == 0) {
       APIregishaverole(
@@ -51,8 +48,7 @@ export default function Acount() {
         values.phone,
         values.address,
         values.birthday,
-        values.role,
-   
+        values.role
       )
         .then((response) => {
           console.log(response);
@@ -63,7 +59,7 @@ export default function Acount() {
         })
         .catch((error) => {
           console.error("Error logging in:", error);
-          message.error("Something went wrong");
+          message.error("Something went wrong " + error?.response?.data);
         })
         .finally(() => {
           fetchData();
@@ -332,7 +328,7 @@ export default function Acount() {
             <Select placeholder="Select Role" requiredMark="optional">
               <Select.Option value="MEMBER">Member</Select.Option>
               <Select.Option value="STAFF">Staff</Select.Option>
-              <Select.Option value="MANAGER">Manage</Select.Option>
+              <Select.Option value="MANAGER">Manager</Select.Option>
             </Select>
           </Form.Item>
           {currentId == 0 ? (

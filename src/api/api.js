@@ -13,7 +13,7 @@ export const APIChangePassword = (oldPassword, newPassword) =>
     oldPassword: oldPassword,
     newPassword: newPassword,
   });
-export const APIrefreshBalance = () => api.get("refreshBalance")
+export const APIrefreshBalance = () => api.get("refreshBalance");
 export const APIUpdateProfile = (profile, id) =>
   api.put("account", {
     fullname: profile.fullname,
@@ -61,10 +61,15 @@ export const APIregishaverole = (
     address: address,
     birthday: birthday,
     email: email,
-    phone: phone,
     role: role,
+    phone: phone,
+    status: "ACTIVE",
   });
 export const APIgetallrequest = () => api.get("auctionRequests");
+export const APIgetallrequestbyStatus = (status) =>
+  api.get(`auctionRequests/${status}`);
+export const APIgetAllRequestToSession = () =>
+  api.get(`auctionRequests/available`);
 export const APIgetallrequestUser = () =>
   api.get("auctionRequests/accountCurrent");
 export const APIauctionrequestsell = (
@@ -73,7 +78,7 @@ export const APIauctionrequestsell = (
   jewelryInitialPrice,
   resourceRequests
 ) =>
-  api2.post("auctionRequests", {
+  api.post("auctionRequests", {
     jewelryName: jewelryName,
     jewelryDescription: jewelryDescription,
     initialPrice: jewelryInitialPrice,
@@ -127,4 +132,4 @@ export const APIregisSession = (id) =>
   api.post("auctionRegistrations", {
     auctionSession_id: id,
   });
-export const APIHistoryRegisSession = ()   => api.get("auctionRegistrations");
+export const APIHistoryRegisSession = () => api.get("auctionRegistrations");

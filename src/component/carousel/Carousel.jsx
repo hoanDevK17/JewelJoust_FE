@@ -3,16 +3,9 @@ import Slider from "react-slick";
 import "./carousel.scss";
 import { Products } from "../../share-data/productData";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  Button,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  CardMedia,
-} from "@mui/material";
+import { Card, CardActionArea, CardContent, CardMedia } from "@mui/material";
 import { Typography } from "antd";
-import { APIgetallSession, APIgetallSessionByStatus } from "../../api/api";
+import { APIgetallSessionByStatus } from "../../api/api";
 // export default function MyCarousel() {
 //   const navigate = useNavigate();
 //   const settings = {
@@ -114,7 +107,7 @@ export default function MyCarousel() {
   useEffect(() => {
     fetchData();
   }, []);
-  return (
+  return data?.length > 0 ? (
     <div className="slider-container">
       <Slider {...settings}>
         {data?.map((session, index) => {
@@ -150,5 +143,7 @@ export default function MyCarousel() {
         })}
       </Slider>
     </div>
+  ) : (
+    <></>
   );
 }
