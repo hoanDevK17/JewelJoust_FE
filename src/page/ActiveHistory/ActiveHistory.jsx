@@ -23,9 +23,9 @@ export const items = [
   {
     key: "1",
     icon: <MailOutlined />,
-    label: "History transaction",
+    label: "Wallet Usage History",
     path: "/",
-  },
+  },  
   {
     key: "2",
     icon: <CalendarOutlined />,

@@ -1,8 +1,8 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://jeweljoust.online:8080/api/",
-  // baseURL: "http://localhost:8080/api/",
+  // baseURL: "http://jeweljoust.online:8080/api/",
+  baseURL: "http://localhost:8080/api/",
 
   headers: {
     "Content-Type": "application/json",
@@ -23,7 +23,6 @@ api.interceptors.request.use(
 );
 export default api;
 // const baseUrl = "http://localhost:8080/api/";
-
 // const config = {
 //   baseUrl,
 //   timeout: 3000000,
