@@ -7,9 +7,8 @@ import {
   LoadingOutlined,
 } from "@ant-design/icons";
 import { Button, Col, Modal, Row, Spin, Steps, Table, Tag } from "antd";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../redux/features/counterSlice";
-import { APIgetallrequestUser } from "../../api/api";
+
+import { APIgetallrequest, APIgetallrequestUser } from "../../api/api";
 import dayjs from "dayjs";
 import "./index.scss";
 
@@ -410,11 +409,7 @@ const columns = (setCurrentId) => [
 ];
 
 function RequestSellHistory() {
-
-  const title = "Request Sell History";
   const [data, setData] = useState();
-
-
 
   const [currentId, setCurrentId] = useState(-1);
   const [currentRequest, setCurrentRequest] = useState();
@@ -422,7 +417,7 @@ function RequestSellHistory() {
 
   const fetchData = async () => {
     setIsLoading(true);
-    await APIgetallrequestUser()
+    await APIgetallrequest()
       .then((response) => {
         setData(response.data.sort((a, b) => b.id - a.id));
       })
@@ -460,7 +455,7 @@ function RequestSellHistory() {
             <div>{renderSteps(currentRequest?.status)}</div>
             <div
               style={{
-                padding: "20px", 
+                padding: "20px",
                 border: "1px solid #ccc",
                 borderRadius: "8px",
                 boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
@@ -472,7 +467,7 @@ function RequestSellHistory() {
                 <Col span={24}>
                   <Row gutter={[16, 16]}>
                     <Col span={12}>
-                      <p> 
+                      <p>
                         <strong>ID:</strong> {currentRequest?.id}
                       </p>
                     </Col>
@@ -541,10 +536,7 @@ function RequestSellHistory() {
             </div>
           </Modal>
 
-          <Table
-            columns={columns(setCurrentId)}
-            dataSource={data}
-          />
+          <Table columns={columns(setCurrentId)} dataSource={data} />
         </>
       )}
     </>

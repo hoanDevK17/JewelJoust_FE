@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 import { Button, Col, Modal, Row, Spin, Steps, Table, Tag } from "antd";
 
-import { APIHistoryRegisSession, APIgetallrequestUser } from "../../api/api";
+import { APIHistoryRegisSession } from "../../api/api";
 import dayjs from "dayjs";
 
 const formatDate = (dateString) => {
@@ -200,7 +200,6 @@ const columns = (setCurrentId) => [
 ];
 
 function RegistrationSessionHistory() {
-  const title = "Request Sell History";
   const [data, setData] = useState();
 
   const [currentId, setCurrentId] = useState(-1);
