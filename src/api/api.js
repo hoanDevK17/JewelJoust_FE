@@ -133,3 +133,11 @@ export const APIregisSession = (id) =>
     auctionSession_id: id,
   });
 export const APIHistoryRegisSession = () => api.get("auctionRegistrations");
+// Transaction
+export const APIDeposit = (walletId, amount, description) =>
+  api.post(`wallet/deposit`, {
+    walletId: walletId,
+    amount: amount,
+    description: description,
+  });
+export const APIgetTransactions = () => api.get("transactions");

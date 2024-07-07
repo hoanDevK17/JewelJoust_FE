@@ -2,22 +2,34 @@ import { Card, Menu } from "antd";
 import HomePage from "../../component/home-default/home";
 import "./Wallet.scss"; // Import the SCSS file
 import { Outlet, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import {  CalendarOutlined, HistoryOutlined, MailOutlined, } from "@ant-design/icons";
+import { useEffect, useState } from "react";
+import {
+  CalendarOutlined,
+  HistoryOutlined,
+  MailOutlined,
+} from "@ant-design/icons";
+import { APIgetTransactions } from "../../api/api";
 export const itemWallet = [
-  
   {
     key: "1",
     icon: <HistoryOutlined />,
     label: "Transaction history",
     path: "/History",
   },
- 
 ];
 export default function Wallet() {
   const [title, setTitle] = useState(itemWallet[0].label);
+  const [data, setData] = useState([]);
   const navigate = useNavigate();
- 
+  const fetchData = async () => {
+    APIgetTransactions().then((response) => {
+      console.log(response);
+      setData(response.data);
+    });
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <HomePage>
       <div
@@ -32,7 +44,7 @@ export default function Wallet() {
         <Menu
           style={{
             width: 256,
-            height: "fit-content"
+            height: "fit-content",
           }}
           defaultSelectedKeys={["1"]}
           defaultOpenKeys={["1"]}
@@ -46,7 +58,7 @@ export default function Wallet() {
           title={title}
           style={{
             width: "100%",
-            maxHeight: "100vh" 
+            maxHeight: "100vh",
           }}
         >
           <Outlet />

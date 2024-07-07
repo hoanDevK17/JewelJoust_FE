@@ -1,8 +1,24 @@
-import { Button, ConfigProvider, Form, Input, Modal, Spin, Table } from "antd";
+import {
+  Button,
+  ConfigProvider,
+  Form,
+  Input,
+  Modal,
+  Spin,
+  Table,
+  message,
+} from "antd";
 import { TinyColor } from "@ctrl/tinycolor";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { ArrowLeftOutlined, MinusCircleOutlined, PlusCircleOutlined } from "@ant-design/icons";
+import {
+  ArrowLeftOutlined,
+  MinusCircleOutlined,
+  PlusCircleOutlined,
+} from "@ant-design/icons";
+import { APIDeposit } from "../../api/api";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/features/counterSlice";
 export default function WalletHistory() {
   const dataSource = [
     {
@@ -22,65 +38,9 @@ export default function WalletHistory() {
       Status: "OK",
     },
     {
-      key: "1",
+      key: "3",
       ID: "Mike",
       Amount: 32,
-      Method: "10 Downing Street",
-      RequestDate: "20/10/2003",
-      Status: "OK",
-    },
-    {
-      key: "2",
-      ID: "John",
-      Amount: 42,
-      Method: "10 Downing Street",
-      RequestDate: "20/10/2003",
-      Status: "OK",
-    },
-    {
-      key: "1",
-      ID: "Mike",
-      Amount: 32,
-      Method: "10 Downing Street",
-      RequestDate: "20/10/2003",
-      Status: "OK",
-    },
-    {
-      key: "2",
-      ID: "John",
-      Amount: 42,
-      Method: "10 Downing Street",
-      RequestDate: "20/10/2003",
-      Status: "OK",
-    },
-    {
-      key: "1",
-      ID: "Mike",
-      Amount: 32,
-      Method: "10 Downing Street",
-      RequestDate: "20/10/2003",
-      Status: "OK",
-    },
-    {
-      key: "2",
-      ID: "John",
-      Amount: 42,
-      Method: "10 Downing Street",
-      RequestDate: "20/10/2003",
-      Status: "OK",
-    },
-    {
-      key: "1",
-      ID: "Mike",
-      Amount: 32,
-      Method: "10 Downing Street",
-      RequestDate: "20/10/2003",
-      Status: "OK",
-    },
-    {
-      key: "2",
-      ID: "John",
-      Amount: 42,
       Method: "10 Downing Street",
       RequestDate: "20/10/2003",
       Status: "OK",
@@ -121,10 +81,11 @@ export default function WalletHistory() {
     colors.map((color) => new TinyColor(color).darken(5).toString());
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const handleRecharge  =()=> {
+  const handleRecharge = () => {
     setIsLoading(true);
-    navigate("/Wallet/Deposit/Recharge")
-    setIsLoading(false);  };
+    navigate("/Wallet/Deposit/Recharge");
+    setIsLoading(false);
+  };
   const handleWithdrawal = () => {
     setIsLoading(true);
     navigate("/Wallet/Withdraw/Withdraw");
@@ -135,15 +96,11 @@ export default function WalletHistory() {
   const [amount, setAmount] = useState("");
 
   const [convertedAmount, setConvertedAmount] = useState(0);
-
+  const user = useSelector(selectUser);
   const handleAmountChange = (e) => {
     const value = e.target.value;
     setAmount(value);
     setConvertedAmount(value ? value / 25.238 : 0);
-  };
-
-  const handleSubmit = () => {
-    console.log("Amount:", amount);
   };
 
   const showAddModal = () => {
@@ -171,12 +128,20 @@ export default function WalletHistory() {
   };
 
   const onFinishAdd = (values) => {
-    console.log('Add values:', values);
+    console.log(values.amount);
+    console.log(user?.wallet?.id, values.amount, "Deposit " + values.amount);
+    APIDeposit(user?.wallet?.id, values.amount, "Deposit " + values.amount)
+      .then(() => {
+        message.success("Deposit added successfully" + values.amount);
+      })
+      .catch((error) => {
+        message.error("Something went wrong", error);
+      });
     handleAddOk();
   };
 
   const onFinishSubtract = (values) => {
-    console.log('Subtract values:', values);
+    console.log("Subtract values:", values);
     handleSubtractOk();
   };
   return (
@@ -209,30 +174,30 @@ export default function WalletHistory() {
                 type="primary"
                 onClick={showAddModal}
                 style={{
-                  backgroundColor: '#1677ff',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '5px',
-                  padding: '6px 12px',
-                  fontSize: '16px',
-                  cursor: 'pointer',
-                  height: '35px',
-                  lineHeight: '23px',
+                  backgroundColor: "#1677ff",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "5px",
+                  padding: "6px 12px",
+                  fontSize: "16px",
+                  cursor: "pointer",
+                  height: "35px",
+                  lineHeight: "23px",
                 }}
               />
               <MinusCircleOutlined
                 type="primary"
                 onClick={showSubtractModal}
                 style={{
-                  backgroundColor: '#1677ff',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '5px',
-                  padding: '6px 12px',
-                  fontSize: '16px',
-                  cursor: 'pointer',
-                  height: '35px',
-                  lineHeight: '23px',
+                  backgroundColor: "#1677ff",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "5px",
+                  padding: "6px 12px",
+                  fontSize: "16px",
+                  cursor: "pointer",
+                  height: "35px",
+                  lineHeight: "23px",
                 }}
               />
             </div>
@@ -247,10 +212,7 @@ export default function WalletHistory() {
             <>
               {" "}
               <p>
-                <ArrowLeftOutlined
-                  onClick={handleAddCancel}
-                />{" "}
-                Banking
+                <ArrowLeftOutlined onClick={handleAddCancel} /> Banking
               </p>
               <div style={{ display: "flex", gap: 100 }}>
                 <Form
@@ -268,7 +230,9 @@ export default function WalletHistory() {
                   <h1>Amount</h1>
                   <Form.Item
                     name="amount"
-                    rules={[{ required: true, message: "Please input the amount!" }]}
+                    rules={[
+                      { required: true, message: "Please input the amount!" },
+                    ]}
                   >
                     <Input
                       size="large"
@@ -282,25 +246,30 @@ export default function WalletHistory() {
                   <p>The Unit Of Calculation is: 25.238$</p>
                   <p>Conversion Amount: {convertedAmount.toFixed(3)} $</p>
 
-                  <Form.Item style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
+                  <Form.Item
+                    style={{ display: "flex", justifyContent: "center" }}
+                  >
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      style={{ width: "100%" }}
+                    >
                       Submit
                     </Button>
                   </Form.Item>
                 </Form>
-                <div
-                >
+                <div>
                   <div style={{ marginTop: 20 }}>
                     <h1>Payment Guide</h1>
                     <p>1. Fill in the deposit amount &gt; click submit.</p>
                     <p>
-                      2. Please transfer correct bank information and fill in the
-                      correct payment gateway content displayed.
+                      2. Please transfer correct bank information and fill in
+                      the correct payment gateway content displayed.
                     </p>
                     <p>
-                      3. Points will be automatically updated to your account after 2-3
-                      minutes of depositing. In case of refusal, please contact customer
-                      service.
+                      3. Points will be automatically updated to your account
+                      after 2-3 minutes of depositing. In case of refusal,
+                      please contact customer service.
                     </p>
                   </div>
                 </div>
@@ -317,10 +286,7 @@ export default function WalletHistory() {
             <>
               {" "}
               <p>
-                <ArrowLeftOutlined
-                  onClick={handleSubtractCancel}
-                />{" "}
-                Banking
+                <ArrowLeftOutlined onClick={handleSubtractCancel} /> Banking
               </p>
               <div style={{ display: "flex", gap: 100 }}>
                 <Form
@@ -338,7 +304,9 @@ export default function WalletHistory() {
                   <h1>Amount</h1>
                   <Form.Item
                     name="amount"
-                    rules={[{ required: true, message: "Please input the amount!" }]}
+                    rules={[
+                      { required: true, message: "Please input the amount!" },
+                    ]}
                   >
                     <Input
                       size="large"
@@ -354,46 +322,66 @@ export default function WalletHistory() {
                   <Form.Item
                     label="Bank Name"
                     name="bankName"
-                    rules={[{ required: true, message: 'Please input the bank name!' }]}
-                    style={{ width: '100%' }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input the bank name!",
+                      },
+                    ]}
+                    style={{ width: "100%" }}
                   >
                     <Input />
                   </Form.Item>
                   <Form.Item
                     label="Account Number"
                     name="accountNumber"
-                    rules={[{ required: true, message: 'Please input the account number!' }]}
-                    style={{ width: '100%' }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input the account number!",
+                      },
+                    ]}
+                    style={{ width: "100%" }}
                   >
                     <Input />
                   </Form.Item>
                   <Form.Item
                     label="Recipient Name"
                     name="recipientName"
-                    rules={[{ required: true, message: 'Please input the recipient name!' }]}
-                    style={{ width: '100%' }}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input the recipient name!",
+                      },
+                    ]}
+                    style={{ width: "100%" }}
                   >
                     <Input />
                   </Form.Item>
-                  <Form.Item style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
+                  <Form.Item
+                    style={{ display: "flex", justifyContent: "center" }}
+                  >
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      style={{ width: "100%" }}
+                    >
                       Submit
                     </Button>
                   </Form.Item>
                 </Form>
-                <div
-                >
+                <div>
                   <div style={{ marginTop: 20 }}>
                     <h1>Payment Guide</h1>
                     <p>1. Fill in the deposit amount &gt; click submit.</p>
                     <p>
-                      2. Please transfer correct bank information and fill in the
-                      correct payment gateway content displayed.
+                      2. Please transfer correct bank information and fill in
+                      the correct payment gateway content displayed.
                     </p>
                     <p>
-                      3. Points will be automatically updated to your account after 2-3
-                      minutes of depositing. In case of refusal, please contact customer
-                      service.
+                      3. Points will be automatically updated to your account
+                      after 2-3 minutes of depositing. In case of refusal,
+                      please contact customer service.
                     </p>
                   </div>
                 </div>
@@ -408,4 +396,3 @@ export default function WalletHistory() {
     </>
   );
 }
-
