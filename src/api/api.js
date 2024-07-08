@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import api2, { api } from "../config/axios";
+import { api } from "../config/axios";
 
 export const APIlogin = (userName, passWord) =>
   api.post("login", { username: userName, password: passWord });

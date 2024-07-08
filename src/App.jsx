@@ -82,7 +82,7 @@ export default function App() {
     {
       path: "/Wallet",
       element: <Wallet />,
-      children: [      
+      children: [
         // {
 
         //   path: "/Wallet/Withdrawal",
@@ -95,7 +95,6 @@ export default function App() {
         {
           path: "/Wallet/History",
           element: <WalletHistory />,
-
         },
       ],
     },
@@ -138,7 +137,7 @@ export default function App() {
       element: <RegisterAuction />,
     },
     {
-      path: "/bidding",
+      path: "/bidding/:id",
       element: <Bidding />,
     },
   ]);

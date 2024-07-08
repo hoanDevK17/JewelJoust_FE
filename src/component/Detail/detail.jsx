@@ -49,9 +49,7 @@ export default function Detail() {
       .catch((error) => {
         message.error(error?.response?.data);
       })
-      .finally(() => {
-        getRefre
-      });
+      .finally(() => {});
   };
   useEffect(() => {
     APIgetSessionByID(params.id)
