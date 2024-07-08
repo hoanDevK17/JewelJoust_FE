@@ -74,23 +74,9 @@ export default function WalletHistory() {
       key: "Status",
     },
   ];
-  const colors2 = ["#fc6076", "#ff9a44", "#ef9d43", "#e75516"];
-  const getHoverColors = (colors) =>
-    colors.map((color) => new TinyColor(color).lighten(5).toString());
-  const getActiveColors = (colors) =>
-    colors.map((color) => new TinyColor(color).darken(5).toString());
-  const navigate = useNavigate();
+ 
   const [isLoading, setIsLoading] = useState(false);
-  const handleRecharge = () => {
-    setIsLoading(true);
-    navigate("/Wallet/Deposit/Recharge");
-    setIsLoading(false);
-  };
-  const handleWithdrawal = () => {
-    setIsLoading(true);
-    navigate("/Wallet/Withdraw/Withdraw");
-    setIsLoading(false);
-  };
+  
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const [isSubtractModalVisible, setIsSubtractModalVisible] = useState(false);
   const [amount, setAmount] = useState("");
@@ -101,6 +87,11 @@ export default function WalletHistory() {
     const value = e.target.value;
     setAmount(value);
     setConvertedAmount(value ? value / 25.238 : 0);
+  };
+  const handleAmountSub = (e) => {
+    const value = e.target.value;
+    setAmount(value);
+    setConvertedAmount(value ? value * 25.238 : 0);
   };
 
   const showAddModal = () => {
@@ -126,13 +117,13 @@ export default function WalletHistory() {
   const handleSubtractCancel = () => {
     setIsSubtractModalVisible(false);
   };
-
-  const onFinishAdd = (values) => {
-    console.log(values.amount);
-    console.log(user?.wallet?.id, values.amount, "Deposit " + values.amount);
-    APIDeposit(user?.wallet?.id, values.amount, "Deposit " + values.amount)
+  
+  const onFinishAdd = () => {
+    console.log("oki"+convertedAmount.toFixed(2));
+    // console.log(user?.wallet?.id, values.amount, "Deposit " + values.amount);
+    APIDeposit(user?.wallet?.id, convertedAmount.toFixed(2) , "Deposit " + convertedAmount.toFixed(2))
       .then(() => {
-        message.success("Deposit added successfully" + values.amount);
+        message.success("Deposit added successfully: " + convertedAmount.toFixed(2) + "$");
       })
       .catch((error) => {
         message.error("Something went wrong", error);
@@ -144,6 +135,8 @@ export default function WalletHistory() {
     console.log("Subtract values:", values);
     handleSubtractOk();
   };
+  const balance = user?.wallet?.balance;
+  const formattedBalance = Number(balance).toFixed(2);
   return (
     <>
       {isLoading ? (
@@ -165,11 +158,11 @@ export default function WalletHistory() {
               marginBottom: "10px",
             }}
           >
-            <div>Username: username</div>
-            <div>Full Name: Full Name</div>
-            <div>Email: email@example.com</div>
+            <div>Username: {user?.username}</div>
+            <div>Full Name: {user?.fullname}</div>
+            <div>Email: {user?.email}</div>
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <div>Số dư: 1000</div>
+              <div>Số dư: {(formattedBalance)}</div>
               <PlusCircleOutlined
                 type="primary"
                 onClick={showAddModal}
@@ -242,9 +235,9 @@ export default function WalletHistory() {
                       suffix="VND(k)"
                     />
                   </Form.Item>
-                  <p>= {convertedAmount} $</p>
-                  <p>The Unit Of Calculation is: 25.238$</p>
-                  <p>Conversion Amount: {convertedAmount.toFixed(3)} $</p>
+                  <p>= {convertedAmount.toFixed(2)} $</p>
+                  <p>The Unit Of Calculation is: 25.24$</p>
+                  <p>Conversion Amount: {convertedAmount.toFixed(2)} $</p>
 
                   <Form.Item
                     style={{ display: "flex", justifyContent: "center" }}
@@ -312,13 +305,13 @@ export default function WalletHistory() {
                       size="large"
                       type="number"
                       value={amount}
-                      onChange={handleAmountChange}
+                      onChange={handleAmountSub}
                       suffix="$"
                     />
                   </Form.Item>
-                  <p>= {convertedAmount} VND(k)</p>
-                  <p>The Unit Of Calculation is: 25.238$</p>
-                  <p>Conversion Amount: {convertedAmount.toFixed(3)} VND(k)</p>
+                  <p>= {convertedAmount.toFixed(2)} VND(k)</p>
+                  <p>The Unit Of Calculation is: 25.24$</p>
+                  <p>Conversion Amount: {convertedAmount.toFixed(2)} VND(k)</p>
                   <Form.Item
                     label="Bank Name"
                     name="bankName"
