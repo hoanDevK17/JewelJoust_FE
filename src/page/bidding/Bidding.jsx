@@ -5,6 +5,7 @@ import HomePage from "../../component/home-default/home";
 import Footer from "../../component/footer/footer.jsx";
 import { useParams } from "react-router-dom";
 import { APIgetSessionByID } from "../../api/api.js";
+import styled from "styled-components";
 export default function Bidding() {
   const product = Products.find((obj) => {
     return obj.id == 1;
@@ -57,6 +58,25 @@ export default function Bidding() {
   useEffect(() => {
     fetchData();
   }, []);
+//   const Thumbnail = styled.img`
+//   width: 70%;
+//   max-width: 100%;
+//   height: auto;
+//   margin-bottom: 10px;
+//   border-radius: 8px;
+//   cursor: pointer;
+//   object-fit: cover;
+
+//   @media (max-width: 768px) {
+//     width: 50%;
+//     margin-bottom: 8px;
+//   }
+
+//   @media (max-width: 480px) {
+//     width: 30%;
+//     margin-bottom: 5px;
+//   }
+// `;
   return (
     <HomePage>
       <Container fluid style={{ marginBottom: "20px" }}>
@@ -71,21 +91,26 @@ export default function Bidding() {
                 key={index}
                 style={{
                   width: "70%",
+                  maxWidth:"20vw",
                   height: "50px",
                   marginBottom: "10px",
                   borderRadius: "8px",
                   cursor: "pointer",
+                  objectFit:"cover"
                 }}
                 onClick={() => handleTab(index)}
               />
+              
             ))}
           </Col>
           <Col xl={5}>
             <img
               src={mainImage}
               style={{
+                maxWidth: "800px",
                 width: "100%",
-                height: "550px",
+                maxHeight: "800px",
+                objectFit: "cover",
               }}
             />
           </Col>
