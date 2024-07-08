@@ -6,7 +6,7 @@ import Footer from "../../component/footer/footer.jsx";
 import "./detail.scss";
 import MyCarousel from "../carousel/Carousel.jsx";
 import { Col, Container } from "react-bootstrap";
-import { Button, Row, Tabs, message } from "antd";
+import { Button, Popconfirm, Row, Tabs, message } from "antd";
 import { APIgetSessionByID, APIregisSession } from "../../api/api.js";
 import dayjs from "dayjs";
 import { useLocation } from "react-router-dom";
@@ -52,7 +52,7 @@ export default function Detail() {
         console.log(error);
         message.error(error?.response?.data);
       })
-      .finally(() => {});
+      .finally(() => { });
   };
   useEffect(() => {
     APIgetSessionByID(params.id)
@@ -63,7 +63,7 @@ export default function Detail() {
       .catch((error) => {
         console.log(error);
       })
-      .finally(() => {});
+      .finally(() => { });
   }, [location]);
   useEffect(() => {
     setMainImage(product?.auctionRequest?.resources[0].path);
@@ -97,7 +97,7 @@ export default function Detail() {
                 src={mainImage}
                 style={{
                   maxWidth: "800px",
-                  width:"100%",
+                  width: "100%",
                   maxHeight: "800px",
                   objectFit: "cover",
                 }}
@@ -121,7 +121,7 @@ export default function Detail() {
               <h6>Start Price:</h6>{" "}
               <h4>{product?.auctionRequest.ultimateValuation.price}$</h4>
               <h6>
-                Start Time: 
+                Start Time:
               </h6>
               <h4> {dayjs(product?.start_time).format("YYYY-MM-DD HH-mm")}</h4>
               <h6>
@@ -134,11 +134,23 @@ export default function Detail() {
               {/* <h6>Auction Form:</h6> <h4>{product?.hinhThuc}</h4> */}
               {/* <h6>Leap:</h6> <h4>{jump}$</h4> */}
               <div className="button-outside">
-                <Button onClick={handleRegisAuction}className="button-detail">
+                {/* <Button onClick={handleRegisAuction}className="button-detail">
                   <h6>
                    Auction Register
                   </h6>
-                </Button>
+                </Button> */}
+                <Popconfirm
+                  title="Confirm Registration"
+                  description="Are you sure to register for this auction?"
+                  onConfirm={handleRegisAuction}
+                  onCancel={() => message.error("Registration cancelled")}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Button className="button-detail">
+                    <h6>Auction Register</h6>
+                  </Button>
+                </Popconfirm>
               </div>
             </Col>
           </Row>
