@@ -40,13 +40,16 @@ export default function Detail() {
     setMainImage(product?.auctionRequest?.resources[index].path);
   };
   const handleRegisAuction = () => {
+    console.log("handleRegisAuction");
     APIregisSession(params.id)
       .then((response) => {
+        console.log(response);
         message.success(
           "Registration for the auction session was successful. Thank you for registering!"
         );
       })
       .catch((error) => {
+        console.log(error);
         message.error(error?.response?.data);
       })
       .finally(() => {});

@@ -140,6 +140,7 @@ export default function App() {
       path: "/bidding/:id",
       element: <Bidding />,
     },
+   
   ]);
 
   return <RouterProvider router={router} />;
