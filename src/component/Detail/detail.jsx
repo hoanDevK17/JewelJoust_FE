@@ -26,7 +26,7 @@ export default function Detail() {
       key: "1",
       label: "Jewelry Details",
       children:
-        "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
+        <h6>{product?.description}</h6>,
     },
   ];
   const [mainImage, setMainImage] = useState(
@@ -81,8 +81,8 @@ export default function Detail() {
                     src={img.path}
                     key={index}
                     style={{
-                      width: "200px",
-                      height: "200px",
+                      width: "90%",
+                      height: "70px",
                       marginBottom: "10px",
                       borderRadius: "8px",
                       cursor: "pointer",
@@ -97,6 +97,7 @@ export default function Detail() {
                 src={mainImage}
                 style={{
                   maxWidth: "800px",
+                  width:"100%",
                   maxHeight: "800px",
                   objectFit: "cover",
                 }}
@@ -120,20 +121,22 @@ export default function Detail() {
               <h6>Start Price:</h6>{" "}
               <h4>{product?.auctionRequest.ultimateValuation.price}$</h4>
               <h6>
-                Start Time:
-                {dayjs(product?.start_time).format("YYYY-MM-DD HH-mm")}
+                Start Time: 
               </h6>
+              <h4> {dayjs(product?.start_time).format("YYYY-MM-DD HH-mm")}</h4>
               <h6>
-                End Time: {dayjs(product?.end_time).format("YYYY-MM-DD HH-mm")}$
+                End Time:
               </h6>
-              <h6>Profile Cost:</h6> <h4></h4>
-              <h6>Deposit Fee:</h6> <h4>{product?.feeAmount}$</h4>
+              <h4>{dayjs(product?.end_time).format("YYYY-MM-DD HH-mm")}</h4>
+              <h6>Profile Cost:</h6> <h4>{product?.feeAmount}$</h4>
+              <h6>Step Price:</h6> <h4>{product?.minStepPrice}$</h4>
+              <h6>Deposit Fee:</h6> <h4>{product?.depositAmount}$</h4>
               {/* <h6>Auction Form:</h6> <h4>{product?.hinhThuc}</h4> */}
               {/* <h6>Leap:</h6> <h4>{jump}$</h4> */}
               <div className="button-outside">
-                <Button onClick={handleRegisAuction}>
+                <Button onClick={handleRegisAuction}className="button-detail">
                   <h6>
-                    <button className="button-detail">Auction Register</button>
+                   Auction Register
                   </h6>
                 </Button>
               </div>
