@@ -21,15 +21,6 @@ export default function Wallet() {
   const [title, setTitle] = useState(itemWallet[0].label);
   const [data, setData] = useState([]);
   const navigate = useNavigate();
-  const fetchData = async () => {
-    APIgetTransactions().then((response) => {
-      console.log(response);
-      setData(response.data);
-    });
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
   return (
     <HomePage>
       <div
