@@ -1,6 +1,6 @@
+import React, { useEffect, useState } from "react";
 import {
   Button,
-  ConfigProvider,
   Form,
   Input,
   Modal,
@@ -8,72 +8,69 @@ import {
   Table,
   message,
 } from "antd";
-import { TinyColor } from "@ctrl/tinycolor";
+import { ArrowLeftOutlined, MinusCircleOutlined, PlusCircleOutlined } from "@ant-design/icons";
+import { APIDeposit, APIgetTransactions } from "../../api/api"; // Sửa đổi chỗ này để thêm APIgetTransactions
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import {
-  ArrowLeftOutlined,
-  MinusCircleOutlined,
-  PlusCircleOutlined,
-} from "@ant-design/icons";
-import { APIDeposit } from "../../api/api";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
+
 export default function WalletHistory() {
-  const dataSource = [
-    {
-      key: "1",
-      ID: "Mike",
-      Amount: 32,
-      Method: "10 Downing Street",
-      RequestDate: "20/10/2003",
-      Status: "OK",
-    },
-    {
-      key: "2",
-      ID: "John",
-      Amount: 42,
-      Method: "10 Downing Street",
-      RequestDate: "20/10/2003",
-      Status: "OK",
-    },
-    {
-      key: "3",
-      ID: "Mike",
-      Amount: 32,
-      Method: "10 Downing Street",
-      RequestDate: "20/10/2003",
-      Status: "OK",
-    },
-  ];
   const columns = [
     {
       title: "ID",
-      dataIndex: "ID",
-      key: "ID",
+      dataIndex: "id",
+      key: "id",
     },
     {
       title: "Amount",
-      dataIndex: "Amount",
-      key: "Amount",
-    },
-
-    {
-      title: "Request Date",
-      dataIndex: "RequestDate",
-      key: "RequestDate",
+      dataIndex: "amount",
+      key: "amount",
     },
     {
-      title: "Method",
-      dataIndex: "Method",
-      key: "Method",
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+    },
+    {
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+      render: (text) => new Date(text).toLocaleString(), // Định dạng ngày
     },
     {
       title: "Status",
-      dataIndex: "Status",
-      key: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (status) => (status ? status : "N/A"), // Hiển thị "N/A" nếu không có trạng thái
     },
   ];
+
+
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const user = useSelector(selectUser);
+
+  const fetchData = async () => {
+    setIsLoading(true); // Bắt đầu tải dữ liệu
+    APIgetTransactions()
+      .then((response) => {
+        console.log(response);
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        setIsLoading(false); // Kết thúc tải dữ liệu
+      });
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+
  
   const [isLoading, setIsLoading] = useState(false);
   
@@ -82,7 +79,7 @@ export default function WalletHistory() {
   const [amount, setAmount] = useState("");
 
   const [convertedAmount, setConvertedAmount] = useState(0);
-  const user = useSelector(selectUser);
+
   const handleAmountChange = (e) => {
     const value = e.target.value;
     setAmount(value);
@@ -123,6 +120,8 @@ export default function WalletHistory() {
     // console.log(user?.wallet?.id, values.amount, "Deposit " + values.amount);
     APIDeposit(user?.wallet?.id, convertedAmount.toFixed(2) , "Deposit " + convertedAmount.toFixed(2))
       .then(() => {
+        message.success("Deposit added successfully" + values.amount);
+        fetchData(); // Load lại danh sách giao dịch sau khi thêm thành công
         message.success("Deposit added successfully: " + convertedAmount.toFixed(2) + "$");
       })
       .catch((error) => {
@@ -137,6 +136,7 @@ export default function WalletHistory() {
   };
   const balance = user?.wallet?.balance;
   const formattedBalance = Number(balance).toFixed(2);
+
   return (
     <>
       {isLoading ? (
@@ -147,7 +147,7 @@ export default function WalletHistory() {
             backgroundColor: "#fff9e8",
             paddingTop: "50vh",
           }}
-        ></Spin>
+        />
       ) : (
         <div>
           <div
@@ -158,11 +158,18 @@ export default function WalletHistory() {
               marginBottom: "10px",
             }}
           >
+
+            <div>Username: {user.username}</div> {/* Hiển thị username từ state */}
+            <div>Full Name: {user?.fullname}</div> {/* Hiển thị full name từ state */}
+            <div>Email: {user.email}</div> {/* Hiển thị email từ state */}
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <div>Balance: {user.wallet.balance}</div> {/* Hiển thị số dư từ state */}
             <div>Username: {user?.username}</div>
             <div>Full Name: {user?.fullname}</div>
             <div>Email: {user?.email}</div>
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
               <div>Số dư: {(formattedBalance)}</div>
+
               <PlusCircleOutlined
                 type="primary"
                 onClick={showAddModal}
@@ -203,7 +210,6 @@ export default function WalletHistory() {
             onCancel={handleAddCancel}
           >
             <>
-              {" "}
               <p>
                 <ArrowLeftOutlined onClick={handleAddCancel} /> Banking
               </p>
@@ -277,7 +283,6 @@ export default function WalletHistory() {
             onCancel={handleSubtractCancel}
           >
             <>
-              {" "}
               <p>
                 <ArrowLeftOutlined onClick={handleSubtractCancel} /> Banking
               </p>
@@ -301,6 +306,8 @@ export default function WalletHistory() {
                       { required: true, message: "Please input the amount!" },
                     ]}
                   >
+
+                    <Input size="large" suffix="VND(k)" />
                     <Input
                       size="large"
                       type="number"
@@ -381,9 +388,7 @@ export default function WalletHistory() {
               </div>
             </>
           </Modal>
-          <div style={{ width: "100%" }}>
-            <Table dataSource={dataSource} columns={columns} />
-          </div>
+          <Table columns={columns} dataSource={data} rowKey="id" /> {/* Hiển thị bảng */}
         </div>
       )}
     </>
