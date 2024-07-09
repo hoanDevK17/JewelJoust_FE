@@ -159,13 +159,14 @@ export const APIDeposit = (walletId, amount, description) =>
   });
 export const APIgetTransactions = () => api.get("transactions");
 
-
 //auction-confirmation-api
-export const APIAuctionConfirmation = (id) => api.put(`auctionConfirmation/confirmed`);
-export const APIAuctionRejected = (id) => api.put(`auctionConfirmation/rejected`);
+export const APIAuctionConfirmation = (id) =>
+  api.put(`auctionConfirmation/confirmed`);
+export const APIAuctionRejected = (id) =>
+  api.put(`auctionConfirmation/rejected`);
 // Bidding
-export const APIBidding = (id_session,price) =>
+export const APIBidding = (id_session, price) =>
   api.post(`auctionBid`, {
     id_session: id_session,
     price: price,
-
+  });
