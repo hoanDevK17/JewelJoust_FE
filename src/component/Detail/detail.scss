@@ -1,28 +1,27 @@
-
-h6{
-    color: gray;
+h6 {
+  color: gray;
 }
 .button-outside {
-    margin-top: 30px;
-    display: flex;
-    justify-content: left;
-    overflow: hidden;
+  margin-top: 30px;
+  display: flex;
+  justify-content: left;
+  overflow: hidden;
 
-    .button-detail {
-        width: 250px;
-        height: 35px;
-        border-radius: 8px;
-        border: 1px solid gray;
-        background-color: burlywood;
-    }
+  .button-detail {
+    width: 180px;
+    height: 35px;
+    border-radius: 8px;
+    border: 1px solid gray;
+    background-color: burlywood;
+  }
 
-    .button-detail:hover {
-        background-color: dimgray;
-        color: white;
-        -webkit-transition: all 500ms ease;
-        -moz-transition: all 500ms ease;
-        -ms-transition: all 500ms ease;
-        -o-transition: all 500ms ease;
-        transition: all 500ms ease;
-    }
+  .button-detail:hover {
+    background-color: dimgray;
+    color: white;
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -ms-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+  }
 }

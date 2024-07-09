@@ -58,25 +58,25 @@ export default function Bidding() {
   useEffect(() => {
     fetchData();
   }, []);
-//   const Thumbnail = styled.img`
-//   width: 70%;
-//   max-width: 100%;
-//   height: auto;
-//   margin-bottom: 10px;
-//   border-radius: 8px;
-//   cursor: pointer;
-//   object-fit: cover;
+  //   const Thumbnail = styled.img`
+  //   width: 70%;
+  //   max-width: 100%;
+  //   height: auto;
+  //   margin-bottom: 10px;
+  //   border-radius: 8px;
+  //   cursor: pointer;
+  //   object-fit: cover;
 
-//   @media (max-width: 768px) {
-//     width: 50%;
-//     margin-bottom: 8px;
-//   }
+  //   @media (max-width: 768px) {
+  //     width: 50%;
+  //     margin-bottom: 8px;
+  //   }
 
-//   @media (max-width: 480px) {
-//     width: 30%;
-//     margin-bottom: 5px;
-//   }
-// `;
+  //   @media (max-width: 480px) {
+  //     width: 30%;
+  //     margin-bottom: 5px;
+  //   }
+  // `;
   return (
     <HomePage>
       <Container fluid style={{ marginBottom: "20px" }}>
@@ -91,16 +91,15 @@ export default function Bidding() {
                 key={index}
                 style={{
                   width: "70%",
-                  maxWidth:"20vw",
+                  maxWidth: "20vw",
                   height: "50px",
                   marginBottom: "10px",
                   borderRadius: "8px",
                   cursor: "pointer",
-                  objectFit:"cover"
+                  objectFit: "cover",
                 }}
                 onClick={() => handleTab(index)}
               />
-              
             ))}
           </Col>
           <Col xl={5}>

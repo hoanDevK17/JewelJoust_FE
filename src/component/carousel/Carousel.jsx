@@ -83,6 +83,8 @@ export default function MyCarousel() {
       </Slider>
     </div>
   ) : (
-    <><p>asdasd</p></>
+    <>
+      <p>Không có phiên nào</p>
+    </>
   );
 }
