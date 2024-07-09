@@ -45,6 +45,7 @@ export default function WalletHistory() {
     },
   ];
 
+
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -69,6 +70,10 @@ export default function WalletHistory() {
     fetchData();
   }, []);
 
+
+ 
+  const [isLoading, setIsLoading] = useState(false);
+  
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const [isSubtractModalVisible, setIsSubtractModalVisible] = useState(false);
   const [amount, setAmount] = useState("");
@@ -79,6 +84,11 @@ export default function WalletHistory() {
     const value = e.target.value;
     setAmount(value);
     setConvertedAmount(value ? value / 25.238 : 0);
+  };
+  const handleAmountSub = (e) => {
+    const value = e.target.value;
+    setAmount(value);
+    setConvertedAmount(value ? value * 25.238 : 0);
   };
 
   const showAddModal = () => {
@@ -104,14 +114,15 @@ export default function WalletHistory() {
   const handleSubtractCancel = () => {
     setIsSubtractModalVisible(false);
   };
-
-  const onFinishAdd = (values) => {
-    console.log(values.amount);
-    console.log(user?.wallet?.id, values.amount, "Deposit " + values.amount);
-    APIDeposit(user?.wallet?.id, values.amount, "Deposit " + values.amount)
+  
+  const onFinishAdd = () => {
+    console.log("oki"+convertedAmount.toFixed(2));
+    // console.log(user?.wallet?.id, values.amount, "Deposit " + values.amount);
+    APIDeposit(user?.wallet?.id, convertedAmount.toFixed(2) , "Deposit " + convertedAmount.toFixed(2))
       .then(() => {
         message.success("Deposit added successfully" + values.amount);
         fetchData(); // Load lại danh sách giao dịch sau khi thêm thành công
+        message.success("Deposit added successfully: " + convertedAmount.toFixed(2) + "$");
       })
       .catch((error) => {
         message.error("Something went wrong", error);
@@ -123,6 +134,8 @@ export default function WalletHistory() {
     console.log("Subtract values:", values);
     handleSubtractOk();
   };
+  const balance = user?.wallet?.balance;
+  const formattedBalance = Number(balance).toFixed(2);
 
   return (
     <>
@@ -145,11 +158,18 @@ export default function WalletHistory() {
               marginBottom: "10px",
             }}
           >
+
             <div>Username: {user.username}</div> {/* Hiển thị username từ state */}
             <div>Full Name: {user?.fullname}</div> {/* Hiển thị full name từ state */}
             <div>Email: {user.email}</div> {/* Hiển thị email từ state */}
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <div>Balance: {user.wallet.balance}</div> {/* Hiển thị số dư từ state */}
+            <div>Balance: {user.wallet.balance}</div> {/* Hiển thị số dư từ state */}
+            <div>Username: {user?.username}</div>
+            <div>Full Name: {user?.fullname}</div>
+            <div>Email: {user?.email}</div>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <div>Số dư: {(formattedBalance)}</div>
+
               <PlusCircleOutlined
                 type="primary"
                 onClick={showAddModal}
@@ -221,9 +241,9 @@ export default function WalletHistory() {
                       suffix="VND(k)"
                     />
                   </Form.Item>
-                  <p>= {convertedAmount} $</p>
-                  <p>The Unit Of Calculation is: 25.238$</p>
-                  <p>Conversion Amount: {convertedAmount.toFixed(3)} $</p>
+                  <p>= {convertedAmount.toFixed(2)} $</p>
+                  <p>The Unit Of Calculation is: 25.24$</p>
+                  <p>Conversion Amount: {convertedAmount.toFixed(2)} $</p>
 
                   <Form.Item
                     style={{ display: "flex", justifyContent: "center" }}
@@ -286,7 +306,57 @@ export default function WalletHistory() {
                       { required: true, message: "Please input the amount!" },
                     ]}
                   >
+
                     <Input size="large" suffix="VND(k)" />
+                    <Input
+                      size="large"
+                      type="number"
+                      value={amount}
+                      onChange={handleAmountSub}
+                      suffix="$"
+                    />
+                  </Form.Item>
+                  <p>= {convertedAmount.toFixed(2)} VND(k)</p>
+                  <p>The Unit Of Calculation is: 25.24$</p>
+                  <p>Conversion Amount: {convertedAmount.toFixed(2)} VND(k)</p>
+                  <Form.Item
+                    label="Bank Name"
+                    name="bankName"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input the bank name!",
+                      },
+                    ]}
+                    style={{ width: "100%" }}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    label="Account Number"
+                    name="accountNumber"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input the account number!",
+                      },
+                    ]}
+                    style={{ width: "100%" }}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    label="Recipient Name"
+                    name="recipientName"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input the recipient name!",
+                      },
+                    ]}
+                    style={{ width: "100%" }}
+                  >
+                    <Input />
                   </Form.Item>
                   <Form.Item
                     style={{ display: "flex", justifyContent: "center" }}

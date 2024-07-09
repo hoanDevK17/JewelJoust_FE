@@ -114,7 +114,8 @@ export const APIRejectUltimate = (id, reason) =>
 export const APIgetallSession = () => api.get("auctionSessions");
 export const APIgetallSessionByStatus = (status) =>
   api.get(`auctionSessions/${status}`);
-export const APIgetSessionByID = (id) => api.get(`auctionSessions/id/${id}`);
+export const APIgetSessionByID = (id_sesion, id_user) =>
+  api.get(`auctionSessions/detail/${id_sesion}?idUser=${id_user}`);
 export const APIcreateSession = (values) =>
   api.post("auctionSessions", {
     auction_request_id: values.id_auction_request,
@@ -126,11 +127,27 @@ export const APIcreateSession = (values) =>
     name_session: values.name_session,
     name_jewelry: values.name_jewelry,
     description: values.description,
+    resourceSession: [],
   });
-// Register the session
-export const APIregisSession = (id) =>
+export const APIupdateSession = (values) =>
+  api.put(`auctionSessions/${values.id_session}`, {
+    auction_request_id: values.id_auction_request,
+    staff_id: values.staff_id,
+    start_time: dayjs(values.range_time[0]).format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
+    end_time: dayjs(values.range_time[1]).format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
+    min_stepPrice: values.min_stepPrice,
+    deposit_amount: values.deposit_amount,
+    name_session: values.name_session,
+    name_jewelry: values.name_jewelry,
+    description: values.description,
+    resourceSession: [],
+    status: "BIDDING",
+  });
+// Register the attend session
+export const APIRegistrations = (id, price) =>
   api.post("auctionRegistrations", {
     auctionSession_id: id,
+    price: price,
   });
 export const APIHistoryRegisSession = () => api.get("auctionRegistrations");
 // Transaction
@@ -142,8 +159,13 @@ export const APIDeposit = (walletId, amount, description) =>
   });
 export const APIgetTransactions = () => api.get("transactions");
 
+
 //auction-confirmation-api
 export const APIAuctionConfirmation = (id) => api.put(`auctionConfirmation/confirmed`);
 export const APIAuctionRejected = (id) => api.put(`auctionConfirmation/rejected`);
-
+// Bidding
+export const APIBidding = (id_session,price) =>
+  api.post(`auctionBid`, {
+    id_session: id_session,
+    price: price,
 

@@ -8,7 +8,11 @@ import {
 import "./home.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logout, selectUser } from "../../redux/features/counterSlice";
+import {
+  logout,
+  refreshBalance,
+  selectUser,
+} from "../../redux/features/counterSlice";
 
 import { Avatar, Dropdown, Space } from "antd";
 import { useState } from "react";
@@ -53,7 +57,7 @@ export default function HomePage({ children }) {
       },
     },
     {
-      key: "3",
+      key: "4",
       label: "Log Out",
       onClick: () => {
         dispatch(logout());
@@ -62,8 +66,6 @@ export default function HomePage({ children }) {
     },
   ];
   const itemsAdmin = [
-   
-
     {
       key: "1",
       label: "Dashborad",
@@ -82,10 +84,11 @@ export default function HomePage({ children }) {
   ];
   const handleRefreshBalance = () => {
     setIsRefreshBalance(true);
-    APIrefreshBalance(user.token)
+    APIrefreshBalance()
       .then((rs) => {
         if (rs.status === 200) {
-          user.wallet.balance = JSON.stringify(rs.data);
+          // user.wallet.balance = JSON.stringify(rs.data);
+          dispatch(refreshBalance(rs.data));
         }
       })
       .catch((error) => {
@@ -151,27 +154,33 @@ export default function HomePage({ children }) {
             <>
               {" "}
               <div className="user_wallet_all">
-                <span style={{display:"flex",justifyContent:"flex-end"}}>Welcome: {user?.fullname}</span>
-                <div className="user-wallet" style={{ alignItems: "center" }}>
-                  {
-                    <PlusOutlined
-                      onClick={() => {
-                        navigate("/Wallet/History");
-                      }}
-                    />
-                  }
-                  {isRefreshBalance ? (
-                    <LoadingOutlined />
-                  ) : (
-                    <RedoOutlined onClick={handleRefreshBalance} />
-                  )}
-                  <span
-                    onClick={(e) => e.preventDefault()}
-                    style={{ fontSize: "16px" }}
-                  >
-                    Balance: {user?.wallet?.balance}$
-                  </span>
-                </div>
+                <span style={{ display: "flex", justifyContent: "flex-end" }}>
+                  Welcome: {user?.fullname}
+                </span>
+                {isMember ? (
+                  <div className="user-wallet" style={{ alignItems: "center" }}>
+                    {
+                      <PlusOutlined
+                        onClick={() => {
+                          navigate("/Wallet/History");
+                        }}
+                      />
+                    }
+                    {isRefreshBalance ? (
+                      <LoadingOutlined />
+                    ) : (
+                      <RedoOutlined onClick={handleRefreshBalance} />
+                    )}
+                    <span
+                      onClick={(e) => e.preventDefault()}
+                      style={{ fontSize: "16px" }}
+                    >
+                      Balance: {Number(user?.wallet?.balance).toFixed(2)}$
+                    </span>
+                  </div>
+                ) : (
+                  <></>
+                )}
               </div>
               <Dropdown
                 menu={{ items: isMember ? itemsMember : itemsAdmin }}

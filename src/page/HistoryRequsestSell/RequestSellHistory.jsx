@@ -498,7 +498,7 @@ function RequestSellHistory() {
                   <Row gutter={[16, 16]} style={{ paddingTop: "10px" }}>
                     <Col span={12}>
                       <p>
-                        <strong>Initial Price:</strong>{" "}
+                        <strong>Desired Price:</strong>{" "}
                         {currentRequest?.jewelryinitialprice}
                       </p>
                     </Col>
@@ -529,6 +529,45 @@ function RequestSellHistory() {
                       >
                         {currentRequest?.jewelrydescription}
                       </div>
+                      {/* {currentRequest?.status === "REJECTED" ? (
+                        <Row gutter={[16, 16]} style={{ paddingTop: "10px" }}>
+                          <Col span={24}>
+                            <p>
+                              <strong>Reason of rejection:</strong>
+                            </p>
+                            <div
+                              style={{
+                                padding: "10px",
+                                border: "1px solid #ccc",
+                                borderRadius: "8px",
+                                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                                backgroundColor: "#f9f9f9",
+                              }}
+                            >
+                              {currentRequest?.reasonReject}
+                            </div>
+                          </Col>
+                        </Row>
+                      ) : (
+                        <Row gutter={[16, 16]} style={{ paddingTop: "10px" }}>
+                          <Col span={24}>
+                            <p>
+                              <strong>Initial price:</strong>
+                            </p>
+                            <div
+                              style={{
+                                padding: "10px",
+                                border: "1px solid #ccc",
+                                borderRadius: "8px",
+                                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                                backgroundColor: "#f9f9f9",
+                              }}
+                            >
+                              {currentRequest?.initialValuations?.price}
+                            </div>
+                          </Col>
+                        </Row>
+                      )} */}
                     </Col>
                   </Row>
                 </Col>

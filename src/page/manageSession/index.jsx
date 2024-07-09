@@ -13,22 +13,17 @@ import {
   Image,
   DatePicker,
 } from "antd";
-import axios from "axios";
 import { useForm } from "antd/es/form/Form";
-import moment from "moment";
 import { EditOutlined } from "@ant-design/icons";
 import {
   APIcreateSession,
   APIgetAllRequestToSession,
   APIgetallSession,
   APIgetallacount,
-  APIgetallrequest,
-  APIgetallrequestbyStatus,
+  APIupdateSession,
 } from "../../api/api";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../redux/features/counterSlice";
-import { Option } from "antd/es/mentions";
-import dayjs, { Ls } from "dayjs";
+
+import dayjs from "dayjs";
 
 export default function ManageSession() {
   // const dateFormat = 'YYYY/MM/DD';
@@ -60,7 +55,7 @@ export default function ManageSession() {
     APIgetallSession().then((response) => {
       setData(response.data);
     });
-  };  
+  };
   const fetchAuctionRequestAgreed = async () => {
     APIgetAllRequestToSession().then((response) => {
       setRequestAuctionsAgreed(response?.data);
@@ -88,18 +83,32 @@ export default function ManageSession() {
     );
     values.id_auction_request = currentRequestID;
     console.log(values);
-    APIcreateSession(values)
-      .then((response) => {
-        if (response.status === 200) message.success("Successfully");
-        fetchData();
-      })
-      .catch((error) => {
-        console.log(error);
-        message.error("Something went wrong", error.response?.data);
-      })
-      .finally(() => {
-        setCurrentId(-1);
-      });
+    if (currentId > 0) {
+      APIupdateSession(values)
+        .then((response) => {
+          if (response.status === 200) message.success("Update Successfully");
+          fetchData();
+          setCurrentId(-1);
+        })
+        .catch((error) => {
+          console.log(error);
+          message.error("Something went wrong", error.response?.data);
+        })
+        .finally(() => {});
+    }
+    if (currentId == 0) {
+      APIcreateSession(values)
+        .then((response) => {
+          if (response.status === 200) message.success("Successfully");
+          setCurrentId(-1);
+          fetchData();
+        })
+        .catch((error) => {
+          console.log(error);
+          message.error("Something went wrong", error.response?.data);
+        })
+        .finally(() => {});
+    }
   };
 
   const handleSelection = (value) => {
@@ -116,9 +125,10 @@ export default function ManageSession() {
         }
       });
     }
+
     if (currentId > 0) {
       const current_session = data.find((item) => item?.id == currentId);
-      console.log(current_session.data);
+      console.log(current_session);
       form.setFieldsValue({
         id_session: current_session.id,
         staff_id: current_session.staffSession.id,
@@ -168,9 +178,10 @@ export default function ManageSession() {
     },
     {
       title: "Starting Price",
-
       key: "price",
-      render: (session) => session.auctionRequest.ultimateValuation.price,
+      render: (session) => {
+        session.auctionRequest?.ultimateValuation?.price;
+      },
     },
     {
       title: "Min Step Price",
@@ -240,7 +251,7 @@ export default function ManageSession() {
                     </>
                   ))}
                   {"   "}
-                  <strong>{request.ultimateValuation?.price}$</strong>
+                  <strong>{request?.ultimateValuation?.price}$</strong>
                 </Select.Option>
               );
             })}
@@ -280,7 +291,7 @@ export default function ManageSession() {
                   <strong>Name</strong> :{" "}
                   {currentSession?.auctionRequest?.jewelryname}
                   <strong>Price</strong> :{" "}
-                  {currentSession?.auctionRequest?.ultimateValuation.price}
+                  {currentSession?.auctionRequest?.ultimateValuation?.price}
                 </Row>
                 {currentSession?.auctionRequest?.resources.map((item) => (
                   <>
@@ -300,7 +311,7 @@ export default function ManageSession() {
                   {" "}
                   <strong>Name</strong> : {currentRequest?.jewelryname}{" "}
                   <strong>Price</strong> :{" "}
-                  {currentRequest?.ultimateValuation.price}
+                  {currentRequest?.ultimateValuation?.price}
                 </Row>
                 {currentRequest?.resources.map((item) => (
                   <>
