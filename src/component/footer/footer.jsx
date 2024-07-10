@@ -1,11 +1,9 @@
 import {
   EnvironmentOutlined,
-  FacebookOutlined,
-  InstagramOutlined,
+
   MailOutlined,
   PhoneOutlined,
-  TwitterOutlined,
-  YoutubeOutlined,
+ 
 } from "@ant-design/icons";
 import "./footer.scss";
 import { useNavigate } from "react-router-dom";
@@ -23,45 +21,8 @@ export default function footer() {
       <div className="footer-content">
         {" "}
         <h4>Serenity </h4>
-        <p>Uncover Radiant Beauty - Precious Gems at Our Auction House</p>
-        <div className="footer-logo">
-          <span
-            className="button-link"
-            onClick={() => {
-              console.log("111");
-              navigate("/homepage");
-            }}
-          >
-            <FacebookOutlined />
-          </span>
-          <span
-            className="button-link"
-            onClick={() => {
-              console.log("111");
-              navigate("/homepage");
-            }}
-          >
-            <InstagramOutlined />
-          </span>
-          <span
-            className="button-link"
-            onClick={() => {
-              console.log("111");
-              navigate("/homepage");
-            }}
-          >
-            <TwitterOutlined />
-          </span>
-          <span
-            className="span-link"
-            onClick={() => {
-              console.log("111");
-              navigate("/homepage");
-            }}
-          >
-            <YoutubeOutlined />
-          </span>
-        </div>
+        <p>Sparkle with every bid, where precious gems find new admirers.</p>
+        
       </div>
       <div className="footer-content">
         <h4>Quick Links</h4>
@@ -100,10 +61,10 @@ export default function footer() {
         <h4> Contact Us</h4>
         <p>
           {" "}
-          <PhoneOutlined /> 424-947-9877
+          <PhoneOutlined /> 037-481-4009
         </p>
         <p>
-          <MailOutlined /> Luminary.@gmail.com
+          <MailOutlined /> truongtltse173154@fpt.edu.vn
         </p>
         <p>
           <EnvironmentOutlined /> Lô E2a-7, Đường D1, Đ. D1, Long Thạnh Mỹ, Thành Phố Thủ Đức, Hồ Chí Minh 700000

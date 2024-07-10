@@ -18,7 +18,7 @@ import ManageRequest from "./page/manageRequest/index";
 import ManageSession from "./page/manageSession/index";
 import ActiveHistory from "./page/ActiveHistory/ActiveHistory";
 import AuctionRequestSell from "./page/AuctionRequestSell/AuctionRequestSell";
-
+import BidAmoutHistory from "./page/BidAmoutHistory/BidAmoutHistory"
 import Bidding from "./page/bidding/Bidding";
 import WalletHistory from "./page/WalletHistory/WalletHistory";
 import RequestSellHistory from "./page/HistoryRequsestSell/RequestSellHistory";
@@ -88,10 +88,10 @@ export default function App() {
         //   path: "/Wallet/Withdrawal",
         //   element: <WithdrawalHistory />,
         // },
-        // {
-        //   path: "/Wallet/Deposit",
-        //   element: <DepositHistory />,
-        // },
+        {
+          path: "/Wallet/BidAmoutHistory",
+          element: <BidAmoutHistory />,
+        },
         {
           path: "/Wallet/History",
           element: <WalletHistory />,
