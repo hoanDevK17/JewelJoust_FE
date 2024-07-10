@@ -45,7 +45,7 @@ import moment from "moment";
         dataIndex: "Method",
         key: "Method",
       },{
-        title: "DEPOSIT",
+        title: "TYPE",
         dataIndex: "transaction_type",
         key: "Method",
       },
