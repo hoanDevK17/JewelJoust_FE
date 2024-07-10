@@ -39,7 +39,6 @@
 
 //   // edit avatar
 
-
 //   // edit password
 //   const showDrawer = () => {
 //     setOpen(true);
@@ -430,8 +429,7 @@ export default function Profile() {
   };
 
   const handleChangePass = (values) => {
-    console.log(user.token);
-    APIChangePassword(values.oldPassword, values.newPassword, user.token)
+    APIChangePassword(values.oldPassword, values.newPassword)
       .then((rs) => {
         if (rs.data == "Change password Successfully") {
           messageApi.open({
@@ -668,13 +666,13 @@ export default function Profile() {
                               title="Confirm Submission"
                               description="Are you sure you want to update your profile?"
                               onConfirm={form.submit}
-                              onCancel={() => message.error("Submission cancelled")}
+                              onCancel={() =>
+                                message.error("Submission cancelled")
+                              }
                               okText="Yes"
                               cancelText="No"
                             >
-                              <Button type="primary">
-                                Submit
-                              </Button>
+                              <Button type="primary">Submit</Button>
                             </Popconfirm>
                           </Form.Item>
                         </Form>
@@ -692,9 +690,7 @@ export default function Profile() {
                   okText="Yes"
                   cancelText="No"
                 >
-                  <Button type="primary">
-                    Submit
-                  </Button>
+                  <Button type="primary">Submit</Button>
                 </Popconfirm>
               </Form.Item>
             </Form>

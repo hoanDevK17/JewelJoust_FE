@@ -54,47 +54,6 @@ export default function MyCarousel() {
   useEffect(() => {
     fetchData();
   }, []);
-  // return data?.length > 0 ? (
-  //   <div className="slider-container">
-  //     <Slider {...settings}>
-  //       {data?.map((session, index) => {
-  //         return (
-  //           <div
-  //             className="cards"
-  //             key={index}
-  //             onClick={() => {
-  //               console.log("oke");
-  //               navigate(`/detail/${session.id}`);
-  //             }}
-  //           >
-  //             <Card sx={{ maxWidth: 345 }}>
-  //               <CardActionArea>
-  //                 <CardMedia
-  //                   component="img"
-  //                   height="140"
-  //                   image={session.auctionRequest.resources[0]?.path}
-  //                   alt="green iguana"
-  //                 />
-  //                 <CardContent>
-  //                   <Typography gutterBottom variant="h1" component="div">
-  //                     {session.name}
-  //                   </Typography>
-  //                   <Typography variant="body2" color="text.secondary">
-  //                     {session.description}
-  //                   </Typography>
-  //                 </CardContent>
-  //               </CardActionArea>
-  //             </Card>
-  //           </div>
-  //         );
-  //       })}
-  //     </Slider>
-  //   </div>
-  // ) : (
-  //   <>
-  //     <div>There is no available product at the moment </div>
-  //   </>
-  // );
   return (
     <>
       {isLoading ? (
@@ -146,6 +105,7 @@ export default function MyCarousel() {
       ) : (
         <div>There is no available product at the moment</div>
       )}
+
     </>
   );
 }

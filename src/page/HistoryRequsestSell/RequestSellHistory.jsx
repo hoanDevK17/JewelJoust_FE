@@ -498,7 +498,7 @@ function RequestSellHistory() {
                   <Row gutter={[16, 16]} style={{ paddingTop: "10px" }}>
                     <Col span={12}>
                       <p>
-                        <strong>Initial Price:</strong>{" "}
+                        <strong>Desired Price:</strong>{" "}
                         {currentRequest?.jewelryinitialprice}
                       </p>
                     </Col>
@@ -529,8 +529,7 @@ function RequestSellHistory() {
                       >
                         {currentRequest?.jewelrydescription}
                       </div>
-                      {currentRequest?.status === "REJECTED" ? (
-
+                      {/* {currentRequest?.status === "REJECTED" ? (
                         <Row gutter={[16, 16]} style={{ paddingTop: "10px" }}>
                           <Col span={24}>
                             <p>
@@ -550,7 +549,6 @@ function RequestSellHistory() {
                           </Col>
                         </Row>
                       ) : (
-
                         <Row gutter={[16, 16]} style={{ paddingTop: "10px" }}>
                           <Col span={24}>
                             <p>
@@ -565,11 +563,11 @@ function RequestSellHistory() {
                                 backgroundColor: "#f9f9f9",
                               }}
                             >
-                              {currentRequest?.initialValuations.price}
+                              {currentRequest?.initialValuations?.price}
                             </div>
                           </Col>
                         </Row>
-                      )}
+                      )} */}
                     </Col>
                   </Row>
                 </Col>
