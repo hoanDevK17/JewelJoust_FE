@@ -12,9 +12,10 @@ import {
   Col,
   Image,
   DatePicker,
+  Upload,
 } from "antd";
 import { useForm } from "antd/es/form/Form";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, UploadOutlined } from "@ant-design/icons";
 import {
   APIcreateSession,
   APIgetAllRequestToSession,
@@ -24,6 +25,8 @@ import {
 } from "../../api/api";
 
 import dayjs from "dayjs";
+import uploadFile from "../../assets/hook/useUpload";
+
 
 export default function ManageSession() {
   // const dateFormat = 'YYYY/MM/DD';
@@ -76,6 +79,17 @@ export default function ManageSession() {
       setStaffs(optionStaff);
     });
   };
+  const use = async (file) => {
+    try {
+      const imageUrl = await uploadFile(file);
+      file.url = imageUrl;
+      setUrlJewelry((urlJewelry) => [...urlJewelry, file]);
+      messageApi.success(`${file.name} file uploaded successfully`);
+    } catch (error) {
+      console.error("Upload failed:", error);
+      messageApi.error(`${file.name} file upload failed.`);
+    }
+  };
   const onFinish = async (values) => {
     console.log(
       dayjs(values.range_time[0]).format("YYYY-MM-DDTHH:mm"),
@@ -113,6 +127,17 @@ export default function ManageSession() {
 
   const handleSelection = (value) => {
     setCurrentRequestID(value);
+  };
+
+  const props = {
+    name: "file",
+    headers: {
+      authorization: "authorization-text",
+      accept: "image/png, image/jpeg, .doc, .docx, .xml, .pdf",
+    },
+    onChange(info) {
+      use(info.file.originFileObj);
+    },
   };
   useEffect(() => {
     if (currentId === 0) {
@@ -501,6 +526,20 @@ export default function ManageSession() {
                   format="YYYY-MM-DD HH:mm"
                 />
               </Form.Item>
+              <Form.Item
+                    className="input-conten"
+                    label="Upload image of your jewelry and certificate"
+                    name="imgjewerly"
+                  >
+                    <Upload {...props} fileList={urlJewelry}>
+                      <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                    </Upload>
+                  </Form.Item>
+                  <div style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}>
+                    {urlJewelry.map((file, index) => (
+                      <Image key={index} width={"calc(33% - 16px)"} src={file.url} />
+                    ))}
+                  </div>
 
               {/* <Form.Item
                 wrapperCol={{
