@@ -1,10 +1,10 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://jeweljoust.online:8080/api/",
-  // baseURL: "http://localhost:8080/api/",
+  // baseURL: "http://jeweljoust.online:8080/api/",
+  baseURL: "http://localhost:8080/api/",
 
-  headers: {
+  headers: {  
     "Content-Type": "application/json",
     "X-Requested-With": "XMLHttpRequest",
   },

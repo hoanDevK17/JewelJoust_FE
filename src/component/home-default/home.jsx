@@ -8,7 +8,11 @@ import {
 import "./home.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logout, selectUser } from "../../redux/features/counterSlice";
+import {
+  logout,
+  refreshBalance,
+  selectUser,
+} from "../../redux/features/counterSlice";
 
 import { Avatar, Dropdown, Space } from "antd";
 import { useState } from "react";
@@ -80,10 +84,11 @@ export default function HomePage({ children }) {
   ];
   const handleRefreshBalance = () => {
     setIsRefreshBalance(true);
-    APIrefreshBalance(user.token)
+    APIrefreshBalance()
       .then((rs) => {
         if (rs.status === 200) {
-          user.wallet.balance = JSON.stringify(rs.data);
+          // user.wallet.balance = JSON.stringify(rs.data);
+          dispatch(refreshBalance(rs.data));
         }
       })
       .catch((error) => {
@@ -93,8 +98,7 @@ export default function HomePage({ children }) {
         setIsRefreshBalance(false);
       });
   };
-  const balance = user?.wallet?.balance;
-  const formattedBalance = Number(balance).toFixed(2);
+
   return (
     <div className="home-default">
       <div className="home-page-header">
@@ -171,13 +175,11 @@ export default function HomePage({ children }) {
                       onClick={(e) => e.preventDefault()}
                       style={{ fontSize: "16px" }}
                     >
-                      Balance: {(formattedBalance)}$
+                      Balance: {Number(user?.wallet?.balance).toFixed(2)}$
                     </span>
                   </div>
                 ) : (
-                  <>
-                   
-                  </>
+                  <></>
                 )}
               </div>
               <Dropdown
