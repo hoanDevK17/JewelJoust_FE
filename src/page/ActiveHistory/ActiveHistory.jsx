@@ -20,30 +20,15 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 //   };
 // }
 export const items = [
+ 
   {
     key: "1",
-    icon: <MailOutlined />,
-    label: "Wallet Usage History",
-    path: "/",
-  },  
-  {
-    key: "2",
     icon: <CalendarOutlined />,
     label: "Request Sell History",
     path: "/RequestSell",
   },
-  {
-    key: "3",
-    label: "Registration Session History",
-    icon: <AppstoreOutlined />,
-    path: "/RegistrationSession",
-  },
-  {
-    key: "4",
-    label: "Navigation Three",
-    icon: <SettingOutlined />,
-    path: "/",
-  },
+  
+  
 ];
 export const ActiveHistory = () => {
   const location = useLocation();
