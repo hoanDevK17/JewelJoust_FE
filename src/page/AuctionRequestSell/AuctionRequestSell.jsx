@@ -161,6 +161,7 @@ export default function AuctionRequestSell() {
                           fontWeight: "600",
                           lineHeight: "normal",
                           width: "100%",
+                        
                           textAlign: "center",
                         }}
                       >

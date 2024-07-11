@@ -63,6 +63,8 @@ export const ActiveHistory = () => {
         <Menu
           style={{
             width: 256,
+            height:"fit-content",
+            borderRadius:"10px"
           }}
           defaultSelectedKeys={["1"]}
           defaultOpenKeys={["1"]}
