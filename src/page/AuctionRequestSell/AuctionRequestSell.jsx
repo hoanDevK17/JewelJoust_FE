@@ -1,6 +1,16 @@
-
 import React, { useState } from "react";
-import { Button, Form, Image, Input, Popconfirm, Spin, Typography, Upload, message } from "antd";
+import {
+  Button,
+  Form,
+  Image,
+  Input,
+  Modal,
+  Popconfirm,
+  Spin,
+  Typography,
+  Upload,
+  message,
+} from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -11,6 +21,8 @@ import Footer from "../../component/footer/footer.jsx";
 import HomePage from "../../component/home-default/home.jsx";
 import { APIauctionrequestsell } from "../../api/api.js";
 import "./createBidRequest.scss";
+import { useStyleRegister } from "antd/es/theme/internal.js";
+import { useTheme } from "@emotion/react";
 export default function AuctionRequestSell() {
   const { TextArea } = Input;
   const [isLoading, setIsLoading] = useState(false);
@@ -75,9 +87,17 @@ export default function AuctionRequestSell() {
   };
 
   const cancel = () => {
-    message.error('Cancelled request');
+    message.error("Cancelled request");
   };
-
+  const [isModalOpen, setIsModalOpen] = useState([false, false]);
+  
+  const token = useTheme();
+  const toggleModal = (idx, target) => {
+    setIsModalOpen((p) => {
+      p[idx] = target;
+      return [...p];
+    });
+  };
   return (
     <>
       {contextHolder}
@@ -105,25 +125,53 @@ export default function AuctionRequestSell() {
                     className="input-conten"
                     label="Jewerly name"
                     name="jewelryname"
-                    rules={[{ required: true, message: "This box cannot be left blank" }]}
+                    rules={[
+                      {
+                        required: true,
+                        message: "This box cannot be left blank",
+                      },
+                    ]}
                   >
-                    <Input className="input-box" type="text" placeholder="Enter your Jewerly name" />
+                    <Input
+                      className="input-box"
+                      type="text"
+                      placeholder="Enter your Jewerly name"
+                    />
                   </Form.Item>
                   <Form.Item
                     className="input-conten"
                     label="Describe:"
                     name="jewelrydescription"
-                    rules={[{ required: true, message: "This box cannot be left blank" }]}
+                    rules={[
+                      {
+                        required: true,
+                        message: "This box cannot be left blank",
+                      },
+                    ]}
                   >
-                    <TextArea rows={4} className="input-box" type="text" placeholder="Enter Describe" />
+                    <TextArea
+                      rows={4}
+                      className="input-box"
+                      type="text"
+                      placeholder="Enter Describe"
+                    />
                   </Form.Item>
                   <Form.Item
                     className="input-conten"
                     label="Desired Price($)"
                     name="jewelryinitialprice"
-                    rules={[{ required: true, message: "This box cannot be left blank" }]}
+                    rules={[
+                      {
+                        required: true,
+                        message: "This box cannot be left blank",
+                      },
+                    ]}
                   >
-                    <Input className="input-box" type="number" placeholder="Enter your jewelry desired price" />
+                    <Input
+                      className="input-box"
+                      type="number"
+                      placeholder="Enter your jewelry desired price"
+                    />
                   </Form.Item>
                   <Form.Item
                     className="input-conten"
@@ -134,12 +182,89 @@ export default function AuctionRequestSell() {
                       <Button icon={<UploadOutlined />}>Click to Upload</Button>
                     </Upload>
                   </Form.Item>
-                  <div style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}>
+                  <div
+                    style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}
+                  >
                     {urlJewelry.map((file, index) => (
-                      <Image key={index} width={"calc(33% - 16px)"} src={file.url} />
+                      <Image
+                        key={index}
+                        width={"calc(33% - 16px)"}
+                        src={file.url}
+                      />
                     ))}
                   </div>
                   <Form.Item>
+                    <span
+                      className="Request-Sell-History AuctionRules"
+                      onClick={() => toggleModal(0, true)}
+                    >
+                      Auction Rules
+                    </span>
+                    <Modal
+                      style={{marginTop: "0"}}
+                      open={isModalOpen[0]}
+                      onOk={() => toggleModal(0, false)}
+                      onCancel={() => toggleModal(0, false)}
+                      footer=" "
+                      width={"fit-content"}
+                  
+                      
+                    >
+                     <>
+                        <div className="container">
+                          <h1>1. Product Registration</h1>
+                          <p>
+                            1.1 Sellers must create an account and provide
+                            verification information before registering a
+                            product.
+                          </p>
+                          <p>
+                            1.2 Sellers must provide detailed information about
+                            the product, including:
+                          </p>
+                          <ul>
+                            <li>Product name</li>
+                            <li>Detailed description</li>
+                            <li>High-quality images of the product</li>
+                            <li>Legal documents of the product</li>
+                            <li>Starting price</li>
+                          </ul>
+
+                          <h1>2. Auction Management</h1>
+                          <p>
+                            2.1 Sellers can monitor their auction requests
+                            through the auction request history page.
+                          </p>
+
+                          <h1>3. Auction Conclusion</h1>
+                          <p>
+                            3.1 The auction ends when the auction time is over.
+                          </p>
+                          <p>
+                            3.2 The highest bidder will be notified and must
+                            make the payment within 48 hours.
+                          </p>
+
+                          <h1>4. Payment and Transaction Fees</h1>
+                          <p>4.2 Sellers must pay a 2% transaction fee.</p>
+                          <p>
+                            4.3 Sellers will receive the money after the system
+                            confirms the successful payment.
+                          </p>
+
+                          <h1>5. Additional Regulations</h1>
+                          <p>
+                            5.1 Users (sellers and bidders) must comply with the
+                            systems rules and terms.
+                          </p>
+                          <p>
+                            5.2 The system reserves the right to change the
+                            rules and fee schedule at any time and will notify
+                            users before they take effect.
+                          </p>
+                        </div>
+                      </>
+                    </Modal>
                     <Popconfirm
                       title="Confirm sell request"
                       description="Are you sure to submit this request?"
@@ -161,7 +286,7 @@ export default function AuctionRequestSell() {
                           fontWeight: "600",
                           lineHeight: "normal",
                           width: "100%",
-                        
+
                           textAlign: "center",
                         }}
                       >
