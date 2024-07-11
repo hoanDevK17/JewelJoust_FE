@@ -43,9 +43,9 @@ export default function HomePage({ children }) {
 
     {
       key: "2",
-      label: "Request Sell History",
+      label: "Active History",
       onClick: () => {
-        navigate("/ActiveHistory/RequestSell");
+        navigate("/ActiveHistory");
       },
     },
 
@@ -98,11 +98,7 @@ export default function HomePage({ children }) {
         setIsRefreshBalance(false);
       });
   };
-  
-    // Function to format number with spaces
-    const formatNumber = (num) => {
-      return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-    };
+
   return (
     <div className="home-default">
       <div className="home-page-header">
@@ -162,14 +158,7 @@ export default function HomePage({ children }) {
                   Welcome: {user?.fullname}
                 </span>
                 {isMember ? (
-                  <div className="user-wallet" style={{ alignItems: "center" }}>
-                    {
-                      <PlusOutlined
-                        onClick={() => {
-                          navigate("/Wallet/History");
-                        }}
-                      />
-                    }
+                  <div className="user-wallet" style={{ alignItems: "center" }}>               
                     {isRefreshBalance ? (
                       <LoadingOutlined />
                     ) : (
@@ -179,7 +168,7 @@ export default function HomePage({ children }) {
                       onClick={(e) => e.preventDefault()}
                       style={{ fontSize: "16px" }}
                     >
-                      Balance: {formatNumber(Number(user?.wallet?.balance))}$
+                      Balance: {Number(user?.wallet?.balance).toFixed(2)}$
                     </span>
                   </div>
                 ) : (
