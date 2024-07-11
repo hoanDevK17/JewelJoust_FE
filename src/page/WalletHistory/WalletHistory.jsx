@@ -117,7 +117,6 @@ export default function WalletHistory() {
       "Deposit " + convertedAmount.toFixed(2)
     )
       .then(() => {
-        message.success("Deposit added successfully" + values.amount);
         fetchData(); // Load lại danh sách giao dịch sau khi thêm thành công
         message.success(
           "Deposit added successfully: " + convertedAmount.toFixed(2) + "$"

@@ -6,17 +6,7 @@ import Footer from "../../component/footer/footer.jsx";
 import "./detail.scss";
 import MyCarousel from "../carousel/Carousel.jsx";
 import { Col, Container } from "react-bootstrap";
-import {
-  Button,
-  Input,
-  Popconfirm,
-  Row,
-  Tabs,
-  message,
-  Form,
-  Flex,
-  InputNumber,
-} from "antd";
+import { Button, Row, Tabs, message, Form, InputNumber } from "antd";
 import {
   APIBidding,
   APIgetSessionByID,
@@ -45,15 +35,13 @@ export default function Detail() {
       children: <h6>{product?.description}</h6>,
     },
   ];
-  const [mainImage, setMainImage] = useState(
-    product?.auctionRequest?.resources[0].path
-  );
+  const [mainImage, setMainImage] = useState(product?.resources[0]?.path);
   // let price = product.price.toLocaleString();
   // let profileCost = product.profileCost.toLocaleString();
   // let jump = product.jump.toLocaleString();
   // let depositFee = product.depositFee.toLocaleString();
   const handleTab = (index) => {
-    setMainImage(product?.auctionRequest?.resources[index].path);
+    setMainImage(product?.resources[index]?.path);
   };
   const handleRegisAuction = (values) => {
     if (user != null) {
@@ -77,9 +65,11 @@ export default function Detail() {
     APIBidding(product?.id, values.bidAmount)
       .then((response) => {
         console.log(response);
+        message.success("Successfully bidding for the auction session");
       })
       .catch((error) => {
         console.log(error);
+        message.error(error.response?.data);
       })
       .finally(() => {});
   };
@@ -92,7 +82,6 @@ export default function Detail() {
     }
     APIgetSessionByID(params.id, id_user)
       .then((response) => {
-        console.log(response);
         setProduct(response.data);
       })
       .catch((error) => {
@@ -102,7 +91,11 @@ export default function Detail() {
   }, [location]);
 
   useEffect(() => {
-    setMainImage(product?.auctionRequest?.resources[0].path);
+    setMainImage(() => {
+      return product?.resources[0]?.path != null
+        ? product?.resources[0]?.path
+        : "";
+    });
   }, [product]);
   console.log(mainImage);
   return (
@@ -111,10 +104,10 @@ export default function Detail() {
         <Container fluid>
           <Row className="justify-content-xl-center">
             <Col xl={1}>
-              {product?.auctionRequest?.resources.map((img, index) => {
+              {product?.resources.map((img, index) => {
                 return (
                   <img
-                    src={img.path}
+                    src={img?.path && img?.path}
                     key={index}
                     style={{
                       width: "90%",
@@ -130,7 +123,7 @@ export default function Detail() {
             </Col>
             <Col xl={6}>
               <img
-                src={mainImage}
+                src={mainImage && mainImage}
                 style={{
                   maxWidth: "800px",
                   width: "100%",
@@ -163,6 +156,7 @@ export default function Detail() {
               <h6>Profile Cost:</h6> <h4>{product?.feeAmount}$</h4>
               <h6>Step Price:</h6> <h4>{product?.minStepPrice}$</h4>
               <h6>Deposit Fee:</h6> <h4>{product?.depositAmount}$</h4>
+              <h6>Highest Bid Price:</h6> <h4>{product?.highestPrice}$</h4>
               {/* <h6>Auction Form:</h6> <h4>{product?.hinhThuc}</h4> */}
               {/* <h6>Leap:</h6> <h4>{jump}$</h4> */}
               <div className="button-outside">

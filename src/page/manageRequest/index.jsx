@@ -264,8 +264,7 @@ export default function ManageRequest() {
   };
 
   const onFinishReceived = () => {
-    console.log(currentId, token);
-    APIshipment(currentId, token)
+    APIshipment(currentId)
       .then(() => {
         message.success("Successfully");
         fetchData();

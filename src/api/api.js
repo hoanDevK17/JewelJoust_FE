@@ -116,7 +116,7 @@ export const APIgetallSessionByStatus = (status) =>
   api.get(`auctionSessions/${status}`);
 export const APIgetSessionByID = (id_sesion, id_user) =>
   api.get(`auctionSessions/detail/${id_sesion}?idUser=${id_user}`);
-export const APIcreateSession = (values) =>
+export const APIcreateSession = (values, path) =>
   api.post("auctionSessions", {
     auction_request_id: values.id_auction_request,
     staff_id: values.staff_id,
@@ -127,9 +127,9 @@ export const APIcreateSession = (values) =>
     name_session: values.name_session,
     name_jewelry: values.name_jewelry,
     description: values.description,
-    resourceSession: [],
+    resourceSession: path,
   });
-export const APIupdateSession = (values) =>
+export const APIupdateSession = (values, path) =>
   api.put(`auctionSessions/${values.id_session}`, {
     auction_request_id: values.id_auction_request,
     staff_id: values.staff_id,
@@ -140,7 +140,7 @@ export const APIupdateSession = (values) =>
     name_session: values.name_session,
     name_jewelry: values.name_jewelry,
     description: values.description,
-    resourceSession: [],
+    resourceSession: path,
     status: "BIDDING",
   });
 // Register the attend session
