@@ -23,9 +23,9 @@ export default function WalletHistory() {
       key: "amount",
     },
     {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
+      title: "TYPE",
+      dataIndex: "transaction_type",
+      key: "Method",
     },
     {
       title: "Date",
@@ -145,7 +145,7 @@ export default function WalletHistory() {
             backgroundColor: "#fff9e8",
             paddingTop: "50vh",
           }}
-        />
+        ></Spin>
       ) : (
         <div>
           <div
@@ -156,244 +156,232 @@ export default function WalletHistory() {
               marginBottom: "10px",
             }}
           >
-            <div>Username: {user.username}</div>{" "}
-            {/* Hiển thị username từ state */}
-            <div>Full Name: {user?.fullname}</div>{" "}
-            {/* Hiển thị full name từ state */}
-            <div>Email: {user.email}</div> {/* Hiển thị email từ state */}
+            <div>Username: {user?.username}</div>
+            <div>Full Name: {user?.fullname}</div>
+            <div>Email: {user?.email}</div>
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <div>Balance: {user.wallet.balance}</div>{" "}
-              {/* Hiển thị số dư từ state */}
-              <div>Username: {user?.username}</div>
-              <div>Full Name: {user?.fullname}</div>
-              <div>Email: {user?.email}</div>
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "10px" }}
-              >
-                <div>Số dư: {formattedBalance}</div>
-
-                <PlusCircleOutlined
-                  type="primary"
-                  onClick={showAddModal}
-                  style={{
-                    backgroundColor: "#1677ff",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "5px",
-                    padding: "6px 12px",
-                    fontSize: "16px",
-                    cursor: "pointer",
-                    height: "35px",
-                    lineHeight: "23px",
-                  }}
-                />
-                <MinusCircleOutlined
-                  type="primary"
-                  onClick={showSubtractModal}
-                  style={{
-                    backgroundColor: "#1677ff",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "5px",
-                    padding: "6px 12px",
-                    fontSize: "16px",
-                    cursor: "pointer",
-                    height: "35px",
-                    lineHeight: "23px",
-                  }}
-                />
-              </div>
+              <div>Balance: {(formattedBalance)}</div>
+              <PlusCircleOutlined
+                type="primary"
+                onClick={showAddModal}
+                style={{
+                  backgroundColor: "#1677ff",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "5px",
+                  padding: "6px 12px",
+                  fontSize: "16px",
+                  cursor: "pointer",
+                  height: "35px",
+                  lineHeight: "23px",
+                }}
+              />
+              <MinusCircleOutlined
+                type="primary"
+                onClick={showSubtractModal}
+                style={{
+                  backgroundColor: "#1677ff",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "5px",
+                  padding: "6px 12px",
+                  fontSize: "16px",
+                  cursor: "pointer",
+                  height: "35px",
+                  lineHeight: "23px",
+                }}
+              />
             </div>
-            <Modal
-              width={1200}
-              title="Add Money"
-              visible={isAddModalVisible}
-              onOk={handleAddOk}
-              onCancel={handleAddCancel}
-            >
-              <>
-                <p>
-                  <ArrowLeftOutlined onClick={handleAddCancel} /> Banking
-                </p>
-                <div style={{ display: "flex", gap: 100 }}>
-                  <Form
-                    name="deposit_form"
-                    layout="vertical"
-                    onFinish={onFinishAdd}
-                    style={{
-                      width: "100%",
-                      padding: 20,
-                      border: "solid 1px",
-                      borderRadius: 10,
-                      maxWidth: "350px",
-                    }}
-                  >
-                    <h1>Amount</h1>
-                    <Form.Item
-                      name="amount"
-                      rules={[
-                        { required: true, message: "Please input the amount!" },
-                      ]}
-                    >
-                      <Input
-                        size="large"
-                        type="number"
-                        value={amount}
-                        onChange={handleAmountChange}
-                        suffix="VND(k)"
-                      />
-                    </Form.Item>
-                    <p>= {convertedAmount.toFixed(2)} $</p>
-                    <p>The Unit Of Calculation is: 25.24$</p>
-                    <p>Conversion Amount: {convertedAmount.toFixed(2)} $</p>
-
-                    <Form.Item
-                      style={{ display: "flex", justifyContent: "center" }}
-                    >
-                      <Button
-                        type="primary"
-                        htmlType="submit"
-                        style={{ width: "100%" }}
-                      >
-                        Submit
-                      </Button>
-                    </Form.Item>
-                  </Form>
-                  <div>
-                    <div style={{ marginTop: 20 }}>
-                      <h1>Payment Guide</h1>
-                      <p>1. Fill in the deposit amount &gt; click submit.</p>
-                      <p>
-                        2. Please transfer correct bank information and fill in
-                        the correct payment gateway content displayed.
-                      </p>
-                      <p>
-                        3. Points will be automatically updated to your account
-                        after 2-3 minutes of depositing. In case of refusal,
-                        please contact customer service.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </>
-            </Modal>
-            <Modal
-              width={1200}
-              title="Subtract Money"
-              visible={isSubtractModalVisible}
-              onOk={handleSubtractOk}
-              onCancel={handleSubtractCancel}
-            >
-              <>
-                <p>
-                  <ArrowLeftOutlined onClick={handleSubtractCancel} /> Banking
-                </p>
-                <div style={{ display: "flex", gap: 100 }}>
-                  <Form
-                    name="deposit_form"
-                    layout="vertical"
-                    onFinish={onFinishSubtract}
-                    style={{
-                      width: "100%",
-                      padding: 20,
-                      border: "solid 1px",
-                      borderRadius: 10,
-                      maxWidth: "500px",
-                    }}
-                  >
-                    <h1>Amount</h1>
-                    <Form.Item
-                      name="amount"
-                      rules={[
-                        { required: true, message: "Please input the amount!" },
-                      ]}
-                    >
-                      <Input size="large" suffix="VND(k)" />
-                      <Input
-                        size="large"
-                        type="number"
-                        value={amount}
-                        onChange={handleAmountSub}
-                        suffix="$"
-                      />
-                    </Form.Item>
-                    <p>= {convertedAmount.toFixed(2)} VND(k)</p>
-                    <p>The Unit Of Calculation is: 25.24$</p>
-                    <p>
-                      Conversion Amount: {convertedAmount.toFixed(2)} VND(k)
-                    </p>
-                    <Form.Item
-                      label="Bank Name"
-                      name="bankName"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input the bank name!",
-                        },
-                      ]}
-                      style={{ width: "100%" }}
-                    >
-                      <Input />
-                    </Form.Item>
-                    <Form.Item
-                      label="Account Number"
-                      name="accountNumber"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input the account number!",
-                        },
-                      ]}
-                      style={{ width: "100%" }}
-                    >
-                      <Input />
-                    </Form.Item>
-                    <Form.Item
-                      label="Recipient Name"
-                      name="recipientName"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input the recipient name!",
-                        },
-                      ]}
-                      style={{ width: "100%" }}
-                    >
-                      <Input />
-                    </Form.Item>
-                    <Form.Item
-                      style={{ display: "flex", justifyContent: "center" }}
-                    >
-                      <Button
-                        type="primary"
-                        htmlType="submit"
-                        style={{ width: "100%" }}
-                      >
-                        Submit
-                      </Button>
-                    </Form.Item>
-                  </Form>
-                  <div>
-                    <div style={{ marginTop: 20 }}>
-                      <h1>Payment Guide</h1>
-                      <p>1. Fill in the deposit amount &gt; click submit.</p>
-                      <p>
-                        2. Please transfer correct bank information and fill in
-                        the correct payment gateway content displayed.
-                      </p>
-                      <p>
-                        3. Points will be automatically updated to your account
-                        after 2-3 minutes of depositing. In case of refusal,
-                        please contact customer service.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </>
-            </Modal>
           </div>
-          <Table columns={columns} dataSource={data} rowKey="id" />{" "}
-          {/* Hiển thị bảng */}
+          <Modal
+            width={1200}
+            title="Add Money"
+            visible={isAddModalVisible}
+            onOk={handleAddOk}
+            onCancel={handleAddCancel}
+          >
+            <>
+              {" "}
+              <p>
+                <ArrowLeftOutlined onClick={handleAddCancel} /> Banking
+              </p>
+              <div style={{ display: "flex", gap: 100 }}>
+                <Form
+                  name="deposit_form"
+                  layout="vertical"
+                  onFinish={onFinishAdd}
+                  style={{
+                    width: "100%",
+                    padding: 20,
+                    border: "solid 1px",
+                    borderRadius: 10,
+                    maxWidth: "350px",
+                  }}
+                >
+                  <h1>Amount</h1>
+                  <Form.Item
+                    name="amount"
+                    rules={[
+                      { required: true, message: "Please input the amount!" },
+                    ]}
+                  >
+                    <Input
+                      size="large"
+                      type="number"
+                      value={amount}
+                      onChange={handleAmountChange}
+                      suffix="VND(k)"
+                    />
+                  </Form.Item>
+                  <p>= {convertedAmount.toFixed(2)} $</p>
+                  <p>The Unit Of Calculation is: 25.24$</p>
+                  <p>Conversion Amount: {convertedAmount.toFixed(2)} $</p>
+
+                  <Form.Item
+                    style={{ display: "flex", justifyContent: "center" }}
+                  >
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      style={{ width: "100%" }}
+                    >
+                      Submit
+                    </Button>
+                  </Form.Item>
+                </Form>
+                <div>
+                  <div style={{ marginTop: 20 }}>
+                    <h1>Payment Guide</h1>
+                    <p>1. Fill in the deposit amount &gt; click submit.</p>
+                    <p>
+                      2. Please transfer correct bank information and fill in
+                      the correct payment gateway content displayed.
+                    </p>
+                    <p>
+                      3. Points will be automatically updated to your account
+                      after 2-3 minutes of depositing. In case of refusal,
+                      please contact customer service.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </>
+          </Modal>
+          <Modal
+            width={1200}
+            title="Subtract Money"
+            visible={isSubtractModalVisible}
+            onOk={handleSubtractOk}
+            onCancel={handleSubtractCancel}
+          >
+            <>
+              {" "}
+              <p>
+                <ArrowLeftOutlined onClick={handleSubtractCancel} /> Banking
+              </p>
+              <div style={{ display: "flex", gap: 100 }}>
+                <Form
+                  name="deposit_form"
+                  layout="vertical"
+                  onFinish={onFinishSubtract}
+                  style={{
+                    width: "100%",
+                    padding: 20,
+                    border: "solid 1px",
+                    borderRadius: 10,
+                    maxWidth: "500px",
+                  }}
+                >
+                  <h1>Amount</h1>
+                  <Form.Item
+                    name="amount"
+                    rules={[
+                      { required: true, message: "Please input the amount!" },
+                    ]}
+                  >
+                    <Input
+                      size="large"
+                      type="number"
+                      value={amount}
+                      onChange={handleAmountSub}
+                      suffix="$"
+                    />
+                  </Form.Item>
+                  <p>= {convertedAmount.toFixed(2)} VND(k)</p>
+                  <p>The Unit Of Calculation is: 25.24$</p>
+                  <p>Conversion Amount: {convertedAmount.toFixed(2)} VND(k)</p>
+                  <Form.Item
+                    label="Bank Name"
+                    name="bankName"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input the bank name!",
+                      },
+                    ]}
+                    style={{ width: "100%" }}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    label="Account Number"
+                    name="accountNumber"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input the account number!",
+                      },
+                    ]}
+                    style={{ width: "100%" }}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    label="Recipient Name"
+                    name="recipientName"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input the recipient name!",
+                      },
+                    ]}
+                    style={{ width: "100%" }}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    style={{ display: "flex", justifyContent: "center" }}
+                  >
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      style={{ width: "100%" }}
+                    >
+                      Submit
+                    </Button>
+                  </Form.Item>
+                </Form>
+                <div>
+                  <div style={{ marginTop: 20 }}>
+                    <h1>Payment Guide</h1>
+                    <p>1. Fill in the deposit amount &gt; click submit.</p>
+                    <p>
+                      2. Please transfer correct bank information and fill in
+                      the correct payment gateway content displayed.
+                    </p>
+                    <p>
+                      3. Points will be automatically updated to your account
+                      after 2-3 minutes of depositing. In case of refusal,
+                      please contact customer service.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </>
+          </Modal>
+          <div style={{ width: "100%" }}>
+            <Table dataSource={data} columns={columns} />
+          </div>
         </div>
       )}
     </>

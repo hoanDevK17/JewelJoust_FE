@@ -129,6 +129,8 @@ import moment from "moment";
     useEffect(() => {
       fetchData();
     }, []);
+
+    
     return (
       <>
         {isLoading ? (
@@ -154,7 +156,7 @@ import moment from "moment";
               <div>Full Name: {user?.fullname}</div>
               <div>Email: {user?.email}</div>
               <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <div>Số dư: {(formattedBalance)}</div>
+                <div>Balance: {(formattedBalance)}</div>
                 <PlusCircleOutlined
                   type="primary"
                   onClick={showAddModal}
