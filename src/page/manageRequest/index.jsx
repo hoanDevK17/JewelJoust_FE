@@ -607,7 +607,7 @@ export default function ManageRequest() {
                   </Col>
                   <Col span={8}>
                     <p>
-                      <strong>Initial Price:</strong>
+                      <strong>Desired Price: </strong>$
                       {currentRequest?.jewelryinitialprice}
                     </p>
                   </Col>

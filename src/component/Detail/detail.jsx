@@ -82,6 +82,7 @@ export default function Detail() {
     }
     APIgetSessionByID(params.id, id_user)
       .then((response) => {
+        console.log(response);
         setProduct(response.data);
       })
       .catch((error) => {

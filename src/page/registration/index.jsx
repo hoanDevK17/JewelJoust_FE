@@ -75,7 +75,9 @@ export default function Registration() {
     if (hasUpperCase && hasLowerCase && hasSpecialChar) {
       return Promise.resolve();
     }
-    return Promise.reject("Password must have one uppercase, lowercase letter and one special character.");
+    return Promise.reject(
+      "Password must have one uppercase, lowercase letter and one special character."
+    );
   };
 
   return (
@@ -98,10 +100,7 @@ export default function Registration() {
                 Enter your details to register your account !
               </p>
             </div>
-            <button className="buttion-regis-google">
-              <img className="google-icon" src="public/IconGoogle.svg" alt="" />
-              <p className="regis-google-text">Continue With Google</p>
-            </button>
+
             <div className="boxs-conten">
               <Form
                 autoComplete="off"
@@ -110,7 +109,8 @@ export default function Registration() {
                   span: 24,
                 }}
                 wrapperCol={{
-                  span: 24}}
+                  span: 24,
+                }}
                 onFinish={regis}
               >
                 <Form.Item
@@ -139,7 +139,7 @@ export default function Registration() {
                       required: true,
                     },
                     {
-                      validator: passwordValidator
+                      validator: passwordValidator,
                     },
                   ]}
                   hasFeedback
@@ -189,7 +189,7 @@ export default function Registration() {
                     },
                   ]}
                   hasFeedback
-                  >
+                >
                   <Input
                     className="conten-mess"
                     type="text"

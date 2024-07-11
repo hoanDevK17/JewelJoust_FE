@@ -451,6 +451,9 @@ function RequestSellHistory() {
             onCancel={() => {
               setCurrentId(-1);
             }}
+            onOk={() => {
+              setCurrentId(-1);
+            }}
           >
             <div>{renderSteps(currentRequest?.status)}</div>
             <div
