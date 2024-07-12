@@ -17,7 +17,7 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 import uploadFile from "../../assets/hook/useUpload";
 import { useForm } from "antd/es/form/Form";
-import Footer from "../../component/footer/footer.jsx";
+
 import HomePage from "../../component/home-default/home.jsx";
 import { APIauctionrequestsell } from "../../api/api.js";
 import "./createBidRequest.scss";
@@ -90,7 +90,7 @@ export default function AuctionRequestSell() {
     message.error("Cancelled request");
   };
   const [isModalOpen, setIsModalOpen] = useState([false, false]);
-  
+
   const token = useTheme();
   const toggleModal = (idx, target) => {
     setIsModalOpen((p) => {
@@ -201,16 +201,14 @@ export default function AuctionRequestSell() {
                       Auction Rules
                     </span>
                     <Modal
-                      style={{marginTop: "0"}}
+                      style={{ marginTop: "0" }}
                       open={isModalOpen[0]}
                       onOk={() => toggleModal(0, false)}
                       onCancel={() => toggleModal(0, false)}
                       footer=" "
                       width={"fit-content"}
-                  
-                      
                     >
-                     <>
+                      <>
                         <div className="container">
                           <h1>1. Product Registration</h1>
                           <p>
@@ -316,7 +314,6 @@ export default function AuctionRequestSell() {
                 </Form>
               </div>
             </div>
-            <Footer />
           </div>
         </HomePage>
       )}

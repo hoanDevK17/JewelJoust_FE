@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import HomePage from "../home-default/home";
-import Footer from "../../component/footer/footer.jsx";
+
 import "./detail.scss";
 import MyCarousel from "../carousel/Carousel.jsx";
 import { Col, Container } from "react-bootstrap";
-import { Button, Row, Tabs, message, Form, InputNumber } from "antd";
+import { Button, Row, Tabs, message, Form, InputNumber, Statistic } from "antd";
 import {
   APIBidding,
   APIgetSessionByID,
@@ -32,6 +32,7 @@ export default function Detail() {
   const [mainImage, setMainImage] = useState(product?.resources[0]?.path);
   const [timeLeft, setTimeLeft] = useState({});
 
+  const { Countdown } = Statistic;
   const calculateTimeLeft = () => {
     const targetTime =
       product?.status === "BIDDING"
@@ -69,7 +70,16 @@ export default function Detail() {
     {
       key: "1",
       label: "Jewelry Details",
-      children: <h6>{product?.description}</h6>,
+      children: (
+        <>
+          <h6>{product?.description} </h6>
+          <h6>
+            {" "}
+            Time : {`${dayjs(product?.start_time).format("D MMMM h:mmA")}`} -
+            {`${dayjs(product?.end_time).format("D MMMM h:mmA")}`}
+          </h6>
+        </>
+      ),
     },
   ];
 
@@ -193,23 +203,7 @@ export default function Detail() {
               <h4>{product?.nameJewelry}</h4>
               <h6>Start Price:</h6>{" "}
               <h4>{product?.auctionRequest.ultimateValuation.price}$</h4>
-              <h6>Start Time:</h6>
-              <h4>
-                {dayjs(product?.start_time).format("HH:mm ")}
-                {dayjs(product?.start_time).format(" DD-MM-YYYY")}
-              </h4>
-              <h6>End Time:</h6>
-              <h4>
-                {dayjs(product?.end_time).format("HH:mm ")}
-                {dayjs(product?.end_time).format(" DD-MM-YYYY")}
-              </h4>
-              <h4>{`${dayjs(product?.start_time).format(
-                "D MMMM h:mmA"
-              )}`}</h4>
-              <h6>End Time:</h6>
-              <h4>{`${dayjs(product?.end_time).format(
-                "D MMMM h:mmA"
-              )}`}</h4>
+              <h6> </h6> <h4></h4>
               <h6>Profile Cost:</h6> <h4>{product?.feeAmount}$</h4>
               <h6>Step Price:</h6> <h4>{product?.minStepPrice}$</h4>
               <h6>Deposit Fee:</h6> <h4>{product?.depositAmount}$</h4>
@@ -380,7 +374,6 @@ export default function Detail() {
             </Col>
           </Row>
         </Container>
-        <Footer />
       </HomePage>
     </div>
   );

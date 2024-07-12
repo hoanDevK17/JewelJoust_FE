@@ -3,12 +3,11 @@ import HomePage from "../../component/home-default/home.jsx";
 import React, { useEffect, useState } from "react";
 import "./body.scss";
 import Content from "../../component/content/content.jsx";
-import Search from "antd/es/transfer/search.js";
-import CardItem from "../../component/card/card.jsx";
+
 import MyCarousel from "../../component/carousel/Carousel.jsx";
 import HeadCarousel from "../../component/header-carousel/headCarousel.jsx";
 import { Col, Container, Row } from "react-bootstrap";
-import { ContainerFilled } from "@ant-design/icons";
+
 import { APIgetallSessionByStatus } from "../../api/api.js";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";

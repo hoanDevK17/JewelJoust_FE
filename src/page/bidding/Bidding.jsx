@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Products } from "../../share-data/productData";
 import { Button, Col, Container, Form, Row, Table } from "react-bootstrap";
 import HomePage from "../../component/home-default/home";
-import Footer from "../../component/footer/footer.jsx";
+
 import { useParams } from "react-router-dom";
 import { APIgetSessionByID } from "../../api/api.js";
 import styled from "styled-components";
@@ -162,8 +162,7 @@ export default function Bidding() {
             </Table>
           </Col>
         </Row>
-      </Container>
-      <Footer />
+      </Container>  
     </HomePage>
   );
 }
