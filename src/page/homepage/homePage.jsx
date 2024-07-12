@@ -3,21 +3,17 @@ import HomePage from "../../component/home-default/home.jsx";
 import React, { useEffect, useState } from "react";
 import "./body.scss";
 import Content from "../../component/content/content.jsx";
-
+import Search from "antd/es/transfer/search.js";
+import CardItem from "../../component/card/card.jsx";
 import MyCarousel from "../../component/carousel/Carousel.jsx";
 import HeadCarousel from "../../component/header-carousel/headCarousel.jsx";
 import { Col, Container, Row } from "react-bootstrap";
-
+import { ContainerFilled, LoadingOutlined } from "@ant-design/icons";
 import { APIgetallSessionByStatus } from "../../api/api.js";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
+import { Space, Spin } from "antd";
+import { Box, Card, CardActionArea, CardContent, CardMedia, Typography } from "@mui/material";
 export default function Home() {
   const onSearch = (value, _e, info) => console.log(info?.source, value);
   const [data, setData] = useState();
@@ -71,7 +67,7 @@ export default function Home() {
   return (
     <div>
       <HomePage>
-        <Container fluid style={{marginBottom:"30px"}}>
+        <Container fluid style={{ marginBottom: "30px" }}>
           <Row className="justify-content-xl-center">
             <Col xl={11}>
               {/* Sang code chỗ này nha */}
@@ -81,55 +77,86 @@ export default function Home() {
                 btnContent="View all sessions"
                 linkURL="/sessions"
               />
-              <div className="table">
-                {/* <Table columns={columns} dataSource={data} onChange={onChange} /> */}
-                <TableContainer component={Paper}>
-                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell align={"left"}>Session </TableCell>
-                        <TableCell align="left">Jewelry </TableCell>
-                        <TableCell align="left">Initial price</TableCell>
-                        <TableCell align="left">Time</TableCell>
-                        <TableCell align="left">Status</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {data?.map((session, index) => (
-                        <TableRow
-                          hover
-                          key={index}
-                          sx={{
-                            "&:last-child td, &:last-child th": { border: 0 },
-                          }}
-                          onClick={() => {
-                            navigate(`/detail/${session.id}`);
-                          }}
-                        >
-                          <TableCell component="th" scope="session">
-                            {session.nameSession}
-                          </TableCell>
-                          <TableCell align="left">
-                            {session.auctionRequest.jewelryname}
-                          </TableCell>
-                          <TableCell align="left">
-                            {session.auctionRequest.ultimateValuation.price}$
-                          </TableCell>
-                          <TableCell align="left">
-                            {`${dayjs(session.start_time).format(
-                              "D MMMM h:mmA"
-                            )} -
-                              ${dayjs(session.end_time).format(
-                                "D MMMM h:mmA"
-                              )}`}
-                          </TableCell>
-                          <TableCell align="left">{session.status}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </div>
+              <Row className="justify-content-xl-center">
+                <Col xl={12}>
+                  <div>
+                    <Search
+                      placeholder="Search Jewelries"
+                      onSearch={onSearch}
+                      style={{
+                        width: 200,
+                      }}
+                    />
+                  </div>
+                  {isLoading ? (
+                    <Container>
+                      <Row className="justify-content-xl-center">
+                        <Col xl={1}>
+                          <Space>
+                            <Spin
+                              indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />}
+                            />
+                          </Space>
+                        </Col>
+                      </Row>
+                    </Container>
+                  ) : data?.length > 0 ? (
+
+                    <div className="slider-container" style={{ display: "flex", justifyContent: "space-evenly", gap: "10px" }}>
+                      {data?.slice(0, 4).map((session, index) => {
+                        return (
+                          <div
+                            className="cards"
+                            style={{ width: "100%" }}
+                            key={index}
+                          >
+                            <Card sx={{ width: "100%" }}>
+                              <CardActionArea>
+                                <CardMedia
+                                  component="img"
+                                  height="140"
+                                  image={session.resources[0]?.path}
+                                  alt="session image"
+                                />
+                                <CardContent>
+                                  <Typography gutterBottom variant="h1" component="div">
+                                    <h5>{session.nameSession}</h5>
+                                  </Typography>
+                                  <Typography variant="body2" color="text.secondary">
+                                    <h6>
+                                      {dayjs(session.start_time).format("D MMMM h:mmA")} -{" "}
+                                      {dayjs(session.end_time).format("D MMMM h:mmA")}
+                                    </h6>
+                                  </Typography>
+                                  <Typography variant="body2" color="text.secondary">
+                                    <h6>
+                                      Price:{" "}
+                                      {session?.auctionRequest.ultimateValuation.price}$
+                                    </h6>
+                                  </Typography>
+                                  <Box display="flex" justifyContent="center" mt={2}>
+                                    <button
+                                      className="button-num1"
+                                      onClick={() => {
+                                        console.log("oke");
+                                        navigate(`/detail/${session.id}`);
+                                      }}
+                                    >
+                                      <p>Register</p>
+                                    </button>
+                                  </Box>
+                                </CardContent>
+                              </CardActionArea>
+                            </Card>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div>There is no available product at the moment</div>
+                  )}
+                </Col>
+              </Row>
               <Content title="PRE-AUCTION" />
               <div></div>
               <MyCarousel />

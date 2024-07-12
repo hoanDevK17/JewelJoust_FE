@@ -96,7 +96,7 @@ export default function AuctionRequestSell() {
   };
   const [isModalOpen, setIsModalOpen] = useState([false, false]);
 
-  const token = useTheme();
+  
   const toggleModal = (idx, target) => {
     setIsModalOpen((p) => {
       p[idx] = target;
@@ -229,7 +229,8 @@ export default function AuctionRequestSell() {
                     >
                       <>
                         <div className="container">
-                          <h1>1. Product Registration</h1>
+                          <h1>Auction Rules</h1>
+                          <h2>1. Product Registration</h2>
                           <p>
                             1.1 Sellers must create an account and provide
                             verification information before registering a
@@ -247,13 +248,13 @@ export default function AuctionRequestSell() {
                             <li>Starting price</li>
                           </ul>
 
-                          <h1>2. Auction Management</h1>
+                          <h2>2. Auction Management</h2>
                           <p>
                             2.1 Sellers can monitor their auction requests
                             through the auction request history page.
                           </p>
 
-                          <h1>3. Auction Conclusion</h1>
+                          <h2>3. Auction Conclusion</h2>
                           <p>
                             3.1 The auction ends when the auction time is over.
                           </p>
@@ -262,14 +263,14 @@ export default function AuctionRequestSell() {
                             make the payment within 48 hours.
                           </p>
 
-                          <h1>4. Payment and Transaction Fees</h1>
+                          <h2>4. Payment and Transaction Fees</h2>
                           <p>4.2 Sellers must pay a 2% transaction fee.</p>
                           <p>
                             4.3 Sellers will receive the money after the system
                             confirms the successful payment.
                           </p>
 
-                          <h1>5. Additional Regulations</h1>
+                          <h2>5. Additional Regulations</h2>
                           <p>
                             5.1 Users (sellers and bidders) must comply with the
                             systems rules and terms.

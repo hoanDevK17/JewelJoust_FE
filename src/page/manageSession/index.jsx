@@ -78,7 +78,7 @@ export default function ManageSession() {
       setRequestAuctionsAgreed(response?.data);
     }).catch((error) => {
       console.log(error);
-      message.error("Something went wrong");
+      message.error("Something went wrong1");
     });
   };
   const fetchStaff = async () => {
