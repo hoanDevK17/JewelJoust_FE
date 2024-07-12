@@ -80,7 +80,7 @@ export default function MyCarousel() {
               return (
                 <div
                   className="cards"
-                  style={{ width: "200px" }}
+                  style={{ width: "100%" }}
                   key={index}
 
                 >
