@@ -167,6 +167,7 @@ export const APIDeposit = (walletId, amount, description) =>
   });
 export const APIgetTransactions = () => api.get("transactions");
 export const APIgetTransactionsWithDrawal = () => api.get("transactions/withdraw");
+export const APIgetTransactionsWithDrawalConfirm = (id) => api.put("transactions/withdraw/confirm", id);
 export const APICreateQR = (amount) =>
   api.post("wallet/createUrl", { amount: amount });
 export const APIWithDrawal = (

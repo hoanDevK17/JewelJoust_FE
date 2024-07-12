@@ -1,9 +1,23 @@
 import { useEffect, useState } from "react";
-import { APIgetTransactionsWithDrawal } from "../../api/api";
+import { APIgetTransactionsWithDrawal, APIgetTransactionsWithDrawalConfirm } from "../../api/api";
 import { Button, Spin, Table } from "antd";
-import { EditOutlined } from "@ant-design/icons";
+import { CheckOutlined} from "@ant-design/icons";
+
 
 export default function WalletHistory() {
+    const handleConfirm =(record)=>{
+        console.log(record.id);
+        APIgetTransactionsWithDrawalConfirm(record.id).then((response) => {
+            console.log(response);
+            fetchData()
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally(() => {
+            setIsLoading(false);
+          });
+    }
   const columns = [
     {
       title: "ID",
@@ -38,16 +52,15 @@ export default function WalletHistory() {
       render: (status) => (status ? status : "N/A"), // Hiển thị "N/A" nếu không có trạng thái
     },
     {
-        title: "Edit",
+        title: "Confirm",
         render: (value, record) => (
           <Button
             type="primary"
-            onClick={() => {
-              console.log(record.id);
-              
-            }}
+            style={{ background: record.status === 'PENDING' ? 'green' : 'gray' }}
+            onClick={() => handleConfirm(record)}
+            disabled={record.status !== 'PENDING'}
           >
-            <EditOutlined />
+            <CheckOutlined />
           </Button>
         ),
       },
@@ -56,7 +69,7 @@ export default function WalletHistory() {
   const [data, setData] = useState([]);
  
   const fetchData = async () => {
-    setIsLoading(true); // Bắt đầu tải dữ liệu
+    setIsLoading(true); 
     APIgetTransactionsWithDrawal()
       .then((response) => {
         console.log(response);
@@ -66,7 +79,7 @@ export default function WalletHistory() {
         console.log(error);
       })
       .finally(() => {
-        setIsLoading(false); // Kết thúc tải dữ liệu
+        setIsLoading(false);
       });
   };
 
@@ -93,7 +106,7 @@ export default function WalletHistory() {
         
        
           <div style={{ width: "100%" }}>
-            <Table dataSource={data} columns={columns} />
+            <Table dataSource={data} columns={columns}  />
           </div>
         
       )}

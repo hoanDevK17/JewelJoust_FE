@@ -15,7 +15,7 @@ import {
   MinusCircleOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
-import { APICreateQR, APIgetAllBidding } from "../../api/api";
+import { APICreateQR, APIgetAllBidding, APIWithDrawal } from "../../api/api";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 import moment from "moment";
@@ -103,18 +103,38 @@ export default function WalletHistory() {
 
   const onFinishAdd = (values) => {
     console.log("oki" + convertedAmount.toFixed(2));
-
+    // console.log(user?.wallet?.id, values.amount, "Deposit " + values.amount);
     APICreateQR(values.amount)
       .then((response) => {
+        console.log(response);
         window.open(response.data);
       })
       .catch((error) => {
         console.log(error);
+        message.error("Something went wrong");
       });
+    handleAddOk();
   };
 
   const onFinishSubtract = (values) => {
-    console.log("Subtract values:", values);
+    console.log("Subtract values:",  values.bankName,
+      values.accountNumber,
+      values.recipientName,
+      values.amount);
+    APIWithDrawal(
+      values.bankName,
+      values.accountNumber,
+      values.recipientName,
+      values.amount
+    )
+      .then((response) => {
+        console.log(response);
+        message.success("Create a successful money order")
+      })
+      .catch((error) => {
+        console.log(error);
+        message.error("Something went wrong");
+      });
     handleSubtractOk();
   };
   const balance = user?.wallet?.balance;
