@@ -259,7 +259,6 @@ function RegistrationSessionHistory() {
           </Col>
         </Row>
       </Container>
-      <Footer/>
       </HomePage>
     </>
   );
