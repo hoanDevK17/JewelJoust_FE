@@ -17,8 +17,15 @@ import {
 import { Avatar, Dropdown, Space } from "antd";
 import { useState } from "react";
 import { APIrefreshBalance } from "../../api/api";
+import useRealtime from "../../assets/hook/useRealTime";
 
 export default function HomePage({ children }) {
+  useRealtime(async (body) => {
+    
+    if (body.body == "addBid") {
+      await handleRefreshBalance();
+    }
+  });
   const navigate = useNavigate();
   const handleClick = () => {
     navigate("/");
@@ -82,6 +89,7 @@ export default function HomePage({ children }) {
       },
     },
   ];
+  
   const handleRefreshBalance = () => {
     setIsRefreshBalance(true);
     APIrefreshBalance()

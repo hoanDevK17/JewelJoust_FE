@@ -14,10 +14,10 @@ function useRealtime(callback) {
   useEffect(() => {
     const onConnected = () => {
       console.log("WebSocket connected");
-      stomp.subscribe(`/topic/sendBid`, (message) => {
+      stomp.subscribe(`/topic/JewelJoust`, (message) => {
         console.log(message);
         callback && callback(message);
-      }); 
+      });
     };
     stomp.connect({}, onConnected, null);
   }, []);

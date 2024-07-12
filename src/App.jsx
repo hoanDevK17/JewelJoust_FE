@@ -10,7 +10,7 @@ import ResetPass from "./page/resetPass/resetPass";
 import Detail from "./component/Detail/detail";
 import ScrollToTop from "./component/Scroll-to-Top/scroll";
 import Acount from "./page/manageAcount/index";
-import RegisterAuction from "./page/RegisterAuction";
+
 import HomePage from "./page/homepage/homePage";
 import Wallet from "./page/Wallet/Wallet";
 import Profile from "./page/profile/profile";
@@ -18,7 +18,7 @@ import ManageRequest from "./page/manageRequest/index";
 import ManageSession from "./page/manageSession/index";
 import ActiveHistory from "./page/ActiveHistory/ActiveHistory";
 import AuctionRequestSell from "./page/AuctionRequestSell/AuctionRequestSell";
-import BidAmoutHistory from "./page/BidAmoutHistory/BidAmoutHistory"
+import BidAmoutHistory from "./page/BidAmoutHistory/BidAmoutHistory";
 import Bidding from "./page/bidding/Bidding";
 import WalletHistory from "./page/WalletHistory/WalletHistory";
 import RequestSellHistory from "./page/HistoryRequsestSell/RequestSellHistory";
@@ -133,15 +133,11 @@ export default function App() {
         </ScrollToTop>
       ),
     },
-    {
-      path: "/RegisterAuction/:id",
-      element: <RegisterAuction />,
-    },
+
     {
       path: "/bidding/:id",
       element: <Bidding />,
     },
-   
   ]);
 
   useRealtime((data) => {

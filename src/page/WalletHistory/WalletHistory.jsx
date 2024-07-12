@@ -5,7 +5,7 @@ import {
   MinusCircleOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
-import { APIDeposit, APIgetTransactions } from "../../api/api"; // Sửa đổi chỗ này để thêm APIgetTransactions
+import { APICreateQR, APIDeposit, APIgetTransactions } from "../../api/api"; // Sửa đổi chỗ này để thêm APIgetTransactions
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
@@ -108,22 +108,16 @@ export default function WalletHistory() {
     setIsSubtractModalVisible(false);
   };
 
-  const onFinishAdd = () => {
+  const onFinishAdd = (values) => {
     console.log("oki" + convertedAmount.toFixed(2));
     // console.log(user?.wallet?.id, values.amount, "Deposit " + values.amount);
-    APIDeposit(
-      user?.wallet?.id,
-      convertedAmount.toFixed(2),
-      "Deposit " + convertedAmount.toFixed(2)
-    )
-      .then(() => {
-        fetchData(); // Load lại danh sách giao dịch sau khi thêm thành công
-        message.success(
-          "Deposit added successfully: " + convertedAmount.toFixed(2) + "$"
-        );
+    APICreateQR(values.amount)
+      .then((response) => {
+        console.log(response);
+        window.open(response.data);
       })
       .catch((error) => {
-        message.error("Something went wrong", error);
+        console.log(error);
       });
     handleAddOk();
   };
@@ -160,7 +154,7 @@ export default function WalletHistory() {
             <div>Full Name: {user?.fullname}</div>
             <div>Email: {user?.email}</div>
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <div>Balance: {(formattedBalance)}</div>
+              <div>Balance: {formattedBalance}</div>
               <PlusCircleOutlined
                 type="primary"
                 onClick={showAddModal}

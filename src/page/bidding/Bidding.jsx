@@ -6,6 +6,8 @@ import Footer from "../../component/footer/footer.jsx";
 import { useParams } from "react-router-dom";
 import { APIgetSessionByID } from "../../api/api.js";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/features/counterSlice.js";
 export default function Bidding() {
   const product = Products.find((obj) => {
     return obj.id == 1;
@@ -16,7 +18,7 @@ export default function Bidding() {
   };
   let price = product.price.toLocaleString();
   let jump = product.jump.toLocaleString();
-
+  const user = useSelector(selectUser);
   const [highestBid, setHighestBid] = useState(product.price);
   const [bidAmount, setBidAmount] = useState("");
   const [error, setError] = useState("");
@@ -49,8 +51,13 @@ export default function Bidding() {
   };
 
   const fetchData = async () => {
-    console.log(params?.id);
-    APIgetSessionByID(params?.id).then((response) => {
+    var id_user;
+    if (user != null) {
+      id_user = user.id;
+    } else {
+      id_user = -1;
+    }
+    APIgetSessionByID(params?.id, id_user).then((response) => {
       console.log(response);
       setData(response.data);
     });

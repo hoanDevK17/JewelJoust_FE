@@ -112,7 +112,6 @@ export default function WalletHistory() {
 
     APICreateQR(values.amount)
       .then((response) => {
-        console.log(response);
         window.open(response.data);
       })
       .catch((error) => {

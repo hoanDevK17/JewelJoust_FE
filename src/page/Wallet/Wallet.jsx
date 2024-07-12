@@ -15,7 +15,8 @@ export const itemWallet = [
     icon: <HistoryOutlined />,
     label: "Transaction history",
     path: "/History",
-  },{
+  },
+  {
     key: "2",
     icon: <HistoryOutlined />,
     label: "Bid Amount history",

@@ -41,15 +41,17 @@ export default function MyCarousel() {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const fetchData = async () => {
-    setIsLoading(true)
-    APIgetallSessionByStatus("INITIALIZED").then((response) => {
-      console.log(response);
-      setData(response.data);
-      setIsLoading(false);
-    }).catch((error) => {
-      console.error(error)
-      setIsLoading(false);
-    });
+    setIsLoading(true);
+    APIgetallSessionByStatus("PENDINGPAYMENT")
+      .then((response) => {
+        console.log(response);
+        setData(response.data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setIsLoading(false);
+      });
   };
   useEffect(() => {
     fetchData();
@@ -60,9 +62,11 @@ export default function MyCarousel() {
         <Container>
           <Row className="justify-content-xl-center">
             <Col xl={1}>
-            <Space>
-            <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
-            </Space>
+              <Space>
+                <Spin
+                  indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />}
+                />
+              </Space>
             </Col>
           </Row>
         </Container>
@@ -105,7 +109,6 @@ export default function MyCarousel() {
       ) : (
         <div>There is no available product at the moment</div>
       )}
-
     </>
   );
 }
