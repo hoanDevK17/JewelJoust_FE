@@ -9,12 +9,16 @@ import { Button, Row, Tabs, message, Form, InputNumber, Statistic } from "antd";
 import {
   APIBidding,
   APIgetSessionByID,
+  APIrefreshBalance,
   APIRegistrations,
 } from "../../api/api.js";
 import dayjs from "dayjs";
 import { useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../redux/features/counterSlice.js";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  refreshBalance,
+  selectUser,
+} from "../../redux/features/counterSlice.js";
 import useRealtime from "../../assets/hook/useRealTime.jsx";
 import duration from "dayjs/plugin/duration";
 import Content from "../content/content.jsx";
@@ -53,7 +57,7 @@ export default function Detail() {
       seconds: duration.seconds(),
     };
   };
-
+  const dispatch = useDispatch();
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
@@ -110,6 +114,12 @@ export default function Detail() {
       .then((response) => {
         console.log(response);
         message.success("Successfully bidding for the auction session");
+        APIrefreshBalance().then((rs) => {
+          if (rs.status === 200) {
+            // user.wallet.balance = JSON.stringify(rs.data);
+            dispatch(refreshBalance(rs.data));
+          }
+        });
       })
       .catch((error) => {
         console.log(error);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Form,
@@ -23,6 +23,7 @@ import { APIauctionrequestsell } from "../../api/api.js";
 import "./createBidRequest.scss";
 import { useStyleRegister } from "antd/es/theme/internal.js";
 import { useTheme } from "@emotion/react";
+import { isFulfilled } from "@reduxjs/toolkit";
 export default function AuctionRequestSell() {
   const { TextArea } = Input;
   const [isLoading, setIsLoading] = useState(false);
@@ -56,30 +57,34 @@ export default function AuctionRequestSell() {
   };
 
   const submit = (cbr) => {
-    setIsLoading(true);
-    let path = urlJewelry.map((file) => ({ path: file.url }));
+    if (user != null) {
+      setIsLoading(true);
+      let path = urlJewelry.map((file) => ({ path: file.url }));
 
-    APIauctionrequestsell(
-      cbr.jewelryname,
-      cbr.jewelrydescription,
-      cbr.jewelryinitialprice,
-      path
-    )
-      .then((rs) => {
-        if (rs.status === 200) {
-          message.success("Requested file was successfully");
-          form.resetFields();
-          setUrlJewelry([]);
-        } else {
-          messageApi.error(`Something went wrong`);
-        }
-      })
-      .catch((error) => {
-        messageApi.error(`Something went wrong`, error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      APIauctionrequestsell(
+        cbr.jewelryname,
+        cbr.jewelrydescription,
+        cbr.jewelryinitialprice,
+        path
+      )
+        .then((rs) => {
+          if (rs.status === 200) {
+            message.success("Requested file was successfully");
+            form.resetFields();
+            setUrlJewelry([]);
+          } else {
+            messageApi.error(`Something went wrong`);
+          }
+        })
+        .catch((error) => {
+          messageApi.error(`Something went wrong`, error);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    } else {
+      message.error("Please login to send request");
+    }
   };
 
   const confirm = () => {
@@ -98,6 +103,17 @@ export default function AuctionRequestSell() {
       return [...p];
     });
   };
+  useEffect(() => {
+    if (user == null) {
+      const result = window.confirm(
+        "Please login to send request Sell. Do you want to login ?"
+      );
+
+      if (result) {
+        navigate("/login");
+      }
+    }
+  });
   return (
     <>
       {contextHolder}
@@ -133,6 +149,7 @@ export default function AuctionRequestSell() {
                     ]}
                   >
                     <Input
+                      readOnly={user == null}
                       className="input-box"
                       type="text"
                       placeholder="Enter your Jewerly name"
@@ -150,6 +167,7 @@ export default function AuctionRequestSell() {
                     ]}
                   >
                     <TextArea
+                      readOnly={user == null}
                       rows={4}
                       className="input-box"
                       type="text"
@@ -168,6 +186,7 @@ export default function AuctionRequestSell() {
                     ]}
                   >
                     <Input
+                      readOnly={user == null}
                       className="input-box"
                       type="number"
                       placeholder="Enter your jewelry desired price"

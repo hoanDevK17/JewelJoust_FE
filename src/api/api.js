@@ -160,6 +160,7 @@ export const APIDeposit = (walletId, amount, description) =>
 export const APIgetTransactions = () => api.get("transactions");
 export const APICreateQR = (amount) =>
   api.post("wallet/createUrl", { amount: amount });
+export const APIResponseDeposit = (url) => api.put("wallet/VnpayResponse", url);
 //auction-confirmation-api
 export const APIAuctionConfirmation = (id) =>
   api.put(`auctionConfirmation/confirmed`, { id: id });
@@ -167,7 +168,9 @@ export const APIAuctionRejected = (id) =>
   api.put(`auctionConfirmation/rejected`, { id: id });
 // Bidding
 export const APIBidding = (id_session, price) =>
-  api.post(`auctionBid`, {
+  api.post(`auctionBids`, {
     id_session: id_session,
     price: price,
   });
+  export const APIgetAllBidding = () =>
+    api.get(`auctionBids`);
