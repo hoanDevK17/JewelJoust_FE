@@ -10,7 +10,7 @@ export default function HeadCarousel() {
                 <div >
                     <img src="https://dam.bluenile.com/images/public/20446/5_loose_diamonds_in_varying_cuts_and_1_round_engagement_ring.jpeg" alt="" />
                     <div style={{ position: "absolute", zIndex: "10000", top: "85px" }}>
-                        <h1 className="annouce">Auction Registeration</h1>
+                        <h2 className="annouce">Auction Registeration</h2>
                         <div className='inside-item' >
                             <button className='button-num1' onClick={() => {
                                 navigate('/registration')
@@ -23,7 +23,7 @@ export default function HeadCarousel() {
                 <div>
                     <img src="https://dam.bluenile.com/images/public/21095/Blue%20Nile%20Diamond%20Jewelry.jpeg" alt="" />
                     <div style={{ position: "absolute", zIndex: "10000", top: "85px" }}>
-                        <h1 className="annouce2">View  All Jewelries</h1>
+                        <h2 className="annouce2">View  All Jewelries</h2>
                         <div className='inside-item2' >
                             <button className='button-num2' onClick={() => {
                                 navigate('/sessions')
