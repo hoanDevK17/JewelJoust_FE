@@ -24,7 +24,7 @@ import WalletHistory from "./page/WalletHistory/WalletHistory";
 import RequestSellHistory from "./page/HistoryRequsestSell/RequestSellHistory";
 import RegistrationSessionHistory from "./page/HistoryRegistrationSession";
 import useRealtime from "./assets/hook/useRealTime";
-
+import Payment from "./page/Payment/Payment";
 export default function App() {
   const router = createBrowserRouter([
     {
@@ -137,6 +137,10 @@ export default function App() {
     {
       path: "/bidding/:id",
       element: <Bidding />,
+    },
+    {
+      path: "/payment",
+      element: <Payment />,
     },
   ]);
 
