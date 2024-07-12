@@ -262,7 +262,7 @@ export default function Acount() {
               { whitespace: true },
             ]}
           >
-            <Input />
+            <Input readOnly />
           </Form.Item>
 
           {currentId > 0 ? (

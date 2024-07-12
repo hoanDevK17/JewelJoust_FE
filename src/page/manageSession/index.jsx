@@ -18,8 +18,6 @@ import {
 import { useForm } from "antd/es/form/Form";
 import { EditOutlined, UploadOutlined } from "@ant-design/icons";
 import {
-  APIContinue,
-  APIStop,
   APIcreateSession,
   APIgetAllRequestToSession,
   APIgetallSession,
@@ -101,37 +99,6 @@ export default function ManageSession() {
       message.error("Something went wrong");
     });
   };
-
-  const handleStop = async () => {
-    APIStop(currentSession.id)
-    .then((rs) => {
-      console.log(rs);
-      message.success("Successfully");
-      fetchData();
-    })
-    .catch((error) => {
-      message.error("Something went wrong", error);
-    })
-    .finally(() => {
-      setCurrentId(-1);
-    });
-  }
-
-  const handleContinue = async () => {
-    APIContinue(currentSession.id)
-    .then((rs) => {
-      console.log(rs);
-      message.success("Successfully");
-      fetchData();
-    })
-    .catch((error) => {
-      message.error("Something went wrong", error);
-    })
-    .finally(() => {
-      setCurrentId(-1);
-    });
-  }
-
   const use = async (file) => {
     try {
       const imageUrl = await uploadFile(file);
@@ -235,11 +202,6 @@ export default function ManageSession() {
       // setUrlJewelry([]);
     }
   }, [currentId]);
-
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  }; 
-
 
   const columns = [
     {
@@ -423,124 +385,27 @@ export default function ManageSession() {
                         />
                       </>
                     ))}
-
-                    {"   "}
-                    <strong>{request?.ultimateValuation?.price}$</strong>
-                  </Select.Option>
-                );
-              })}
-            </Select>
-          </Col>
-          { user?.role ==="MANAGER" && 
-            <Button
-              type="primary"
-              onClick={() => {
-                if (currentRequestID > 0) {
-                  setCurrentId(0);
-                } else {
-                  message.error("Please choose session");
-                }
-              }}
-              size="large"
-            >
-              Add new Session
-            </Button>
-          }
-        </Row>
-        <Modal
-          title={`${currentId > 0 ? "Edit" : "Add"} Session`}
-          open={currentId >= 0}
-          onOk={() => {
-            if (user?.role !== "MANAGER") {
-              message.error("You do not have permission to perform this action.");
-              return;
-            }
-            form.submit();
-          }}
-          onCancel={() => {
-            form.resetFields();
-            setCurrentId(-1);
-          }}
-          width={1120}
-        >
-          <h6>Information Request</h6>
-          <Row wrap={false}>
-            <Col style={{ marginBottom: "24px" }} span={8}>
-              {currentId > 0 ? (
-                <>
-                  <Row>
-                    ID Request : {currentSession?.auctionRequest?.id}{" "}
-                    <strong>Name</strong> :{" "}
-                    {currentSession?.auctionRequest?.jewelryname}
-                    <strong>Price</strong> :{" "}
-                    {currentSession?.auctionRequest?.ultimateValuation?.price}
-                  </Row>
-                  {currentSession?.auctionRequest?.resources.map((item) => (
-                    <>
-                      <Image
-                        src={item.path}
-                        width={"calc(50% - 16px)"}
-                        style={{
-                          padding: "10px",
-                        }}
-                      />
-                    </>
-                  ))}
-                </>
-              ) : (
-                <>
-                  <Row>
-                    {" "}
-                    <strong>Name</strong> : {currentRequest?.jewelryname}{" "}
-                    <strong>Price</strong> :{" "}
-                    {currentRequest?.ultimateValuation?.price}
-                  </Row>
-                  {currentRequest?.resources.map((item) => (
-                    <>
-                      <Image
-                        src={item.path}
-                        width={"calc(50% - 16px)"}
-                        style={{
-                          padding: "10px",
-                        }}
-                      />
-                    </>
-                  ))}
-                </>
-              )}
-            </Col>
-
-            <Col span={16}>
-              <Form
-                form={form}
-                name="basic"
-                hideRequiredMark
-                labelCol={{
-                  span: 8,
-                }}
-                wrapperCol={{
-                  span: 16,
-                }}
-                style={{
-                  maxWidth: 600,
-                }}
-                initialValues={{
-                  remember: true,
-                }}
-                onFinish={onFinish}
-                onValuesChange={() => {
-                  form.validateFields(["startDateTime", "endDateTime"]);
-                }}
-                autoComplete="off"
-              >
-                <div style={{ display: "flex", gap: "24px", justifyContent: "center", marginBottom: "24px"}}>
-                <strong>Status</strong> : {currentSession?.status}{" "}
-                </div>
-                {currentId > 0 && (
-                  <Form.Item label="ID Session" name="id_session">
-                    <Input readOnly />
-                  </Form.Item>
-
+                  </>
+                ) : (
+                  <>
+                    <Row>
+                      {" "}
+                      <strong>Name</strong> : {currentRequest?.jewelryname}{" "}
+                      <strong>Price</strong> :{" "}
+                      {currentRequest?.ultimateValuation?.price}
+                    </Row>
+                    {currentRequest?.resources.map((item) => (
+                      <>
+                        <Image
+                          src={item.path}
+                          width={"calc(50% - 16px)"}
+                          style={{
+                            padding: "10px",
+                          }}
+                        />
+                      </>
+                    ))}
+                  </>
                 )}
               </Col>
 
@@ -744,84 +609,13 @@ export default function ManageSession() {
                   span: 16,
                 }}
               ></Form.Item> */}
-
-              </Form>
-            </Col>
-          </Row>
-          <div 
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-              marginTop: "16px",
-            }}>
-            {currentSession?.status === "PENDINGPAYMENT" && (
-              <Form
-                name="basic"
-                labelCol={{
-                  span: 8,
-                }}
-                wrapperCol={{
-                  span: 16,
-                }}
-                style={{
-                  display: "flex",
-                  gap: "16px",
-                  justifyContent: "center",
-                  maxWidth: 500,
-                }}
-                initialValues={{
-                  remember: true,
-                }}
-                onFinish={handleStop}
-                onFinishFailed={onFinishFailed}
-                autoComplete="off"
-              >
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  disabled={user?.role !== "STAFF"}
-                >
-                  STOP
-                </Button>
-              </Form>
-            )}
-            {currentSession?.status === "STOP" && (
-              <Form
-                name="basic"
-                labelCol={{
-                  span: 8,
-                }}
-                wrapperCol={{
-                  span: 16,
-                }}
-                style={{
-                  display: "flex",
-                  gap: "16px",
-                  justifyContent: "center",
-                  maxWidth: 500,
-                }}
-                initialValues={{
-                  remember: true,
-                }}
-                onFinish={handleContinue}
-                onFinishFailed={onFinishFailed}
-                autoComplete="off"
-              >
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  disabled={user?.role !== "STAFF"}
-                >
-                  CONTINUE
-                </Button>
-              </Form>
-            )}
-          </div>
-        </Modal>
-        <Table dataSource={data} columns={columns} />
-      </div>
-
+                </Form>
+              </Col>
+            </Row>
+          </Modal>
+          <Table dataSource={data} columns={columns} />
+        </div>
+      )}
     </>
   );
 }
