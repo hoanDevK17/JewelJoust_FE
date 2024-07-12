@@ -231,7 +231,8 @@ const formatSetConvertedAmount =(num)=> {
                     />
                   </Form.Item>
                   <p>= {formatSetConvertedAmount(convertedAmount)} $</p>
-                  <p>The Unit Of Calculation is: 25.24$</p>
+                  <p>The Unit Of Calculation is: </p>
+                  <p>1$ = 25.24 VND(k)</p>
                   <p>Conversion Amount: {formatSetConvertedAmount(convertedAmount)} $</p>
 
                   <Form.Item
@@ -305,7 +306,8 @@ const formatSetConvertedAmount =(num)=> {
                     />
                   </Form.Item>
                   <p>= {formatSetConvertedAmount(convertedAmount)} VND(k)</p>
-                  <p>The Unit Of Calculation is: 25.24$</p>
+                  <p>The Unit Of Calculation is: </p>
+                  <p>1$ = 25.24 VND(k)</p>
                   <p>Conversion Amount: {formatSetConvertedAmount(convertedAmount)} VND(k)</p>
                   <Form.Item
                     label="Bank Name"

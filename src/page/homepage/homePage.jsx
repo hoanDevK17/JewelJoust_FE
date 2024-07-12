@@ -183,7 +183,7 @@ export default function Home() {
                                         navigate(`/detail/${session.id}`);
                                       }}
                                     >
-                                      <p>Register</p>
+                                      <p style={{fontSize:"15px"}}>Register</p>
                                     </button>
                                   </Box>
                                 </CardContent>
