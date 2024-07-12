@@ -19,7 +19,7 @@ import ManageSession from "./page/manageSession/index";
 import ActiveHistory from "./page/ActiveHistory/ActiveHistory";
 import AuctionRequestSell from "./page/AuctionRequestSell/AuctionRequestSell";
 import BidAmoutHistory from "./page/BidAmoutHistory/BidAmoutHistory";
-
+import WithDrawal from "./page/withdrawal/withdrawal";
 import WalletHistory from "./page/WalletHistory/WalletHistory";
 import RequestSellHistory from "./page/HistoryRequsestSell/RequestSellHistory";
 import RegistrationSessionHistory from "./page/HistoryRegistrationSession";
@@ -111,6 +111,10 @@ export default function App() {
         {
           path: "/dashboard/category",
           element: <Category />,
+        },
+        {
+          path: "/dashboard/withdrawal",
+          element: <WithDrawal />,
         },
         {
           path: "/dashboard/acount",
