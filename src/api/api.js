@@ -5,10 +5,16 @@ export const APIlogin = (userName, passWord) =>
   api.post("login", { username: userName, password: passWord });
 export const APIForgotpass = (email) =>
   api.post("forgot-password", { email: email });
-export const APIResetPass = (password,token) =>
-  api.post("reset-password", { password: password },{  headers: {
-    Authorization: `Bearer ${token}`
-  }});
+export const APIResetPass = (password, token) =>
+  api.post(
+    "reset-password",
+    { password: password },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 
 export const APIChangePassword = (oldPassword, newPassword) =>
   api.put("account/changePassword", {
@@ -160,8 +166,21 @@ export const APIDeposit = (walletId, amount, description) =>
     description: description,
   });
 export const APIgetTransactions = () => api.get("transactions");
+export const APIgetTransactionsWithDrawal = () => api.get("transactions/withdraw");
 export const APICreateQR = (amount) =>
   api.post("wallet/createUrl", { amount: amount });
+export const APIWithDrawal = (
+  bankName,
+  accountNumber,
+  arecipientName,
+  amount
+) =>
+  api.post("transactions/withdraw", {
+    bankName: bankName,
+    accountNumber: accountNumber,
+    recipientName: arecipientName,
+    amountWithDraw: amount,
+  });
 export const APIResponseDeposit = (url) => api.put("wallet/VnpayResponse", url);
 //auction-confirmation-api
 export const APIAuctionConfirmation = (id) =>
@@ -174,9 +193,6 @@ export const APIBidding = (id_session, price) =>
     id_session: id_session,
     price: price,
   });
-  export const APIgetAllBidding = () =>
-    api.get(`auctionBids`);
-  export const APIStop = (id) =>
-    api.put(`auctionSessions/stop`,id);
-  export const APIContinue = (id) =>
-    api.put(`auctionSessions/continue`,id);
+export const APIgetAllBidding = () => api.get(`auctionBids`);
+export const APIStop = (id) => api.put(`auctionSessions/stop`, id);
+export const APIContinue = (id) => api.put(`auctionSessions/continue`, id);
