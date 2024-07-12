@@ -79,6 +79,15 @@ export default function Home() {
               />
               <Row className="justify-content-xl-center">
                 <Col xl={12}>
+                  <div>
+                    <Search
+                      placeholder="Search Jewelries"
+                      onSearch={onSearch}
+                      style={{
+                        width: 200,
+                      }}
+                    />
+                  </div>
                   {isLoading ? (
                     <Container>
                       <Row className="justify-content-xl-center">
@@ -92,7 +101,8 @@ export default function Home() {
                       </Row>
                     </Container>
                   ) : data?.length > 0 ? (
-                    <div className="slider-container" style={{ display: "flex", justifyContent: "space-evenly",gap:"10px" }}>
+
+                    <div className="slider-container" style={{ display: "flex", justifyContent: "space-evenly", gap: "10px" }}>
                       {data?.slice(0, 4).map((session, index) => {
                         return (
                           <div
