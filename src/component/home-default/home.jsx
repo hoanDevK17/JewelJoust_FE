@@ -18,10 +18,10 @@ import { Avatar, Dropdown, Space } from "antd";
 import { useState } from "react";
 import { APIrefreshBalance } from "../../api/api";
 import useRealtime from "../../assets/hook/useRealTime";
+import Footer from "../footer/footer";
 
 export default function HomePage({ children }) {
   useRealtime(async (body) => {
-    
     if (body.body == "addBid") {
       await handleRefreshBalance();
     }
@@ -89,7 +89,7 @@ export default function HomePage({ children }) {
       },
     },
   ];
-  
+
   const handleRefreshBalance = () => {
     setIsRefreshBalance(true);
     APIrefreshBalance()
@@ -106,7 +106,9 @@ export default function HomePage({ children }) {
         setIsRefreshBalance(false);
       });
   };
-  const formattedBalance = (num)=>{return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');}; 
+  const formattedBalance = (num) => {
+    return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  };
   return (
     <div className="home-default">
       <div className="home-page-header">
@@ -220,7 +222,10 @@ export default function HomePage({ children }) {
           )}
         </div>
       </div>
-      <div className="home-page-body">{children}</div>
+      <div style={{ margin: "auto", maxWidth: "1200px" }}>
+        <div className="home-page-body">{children}</div>
+      </div>
+      <Footer />
     </div>
   );
 }

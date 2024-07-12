@@ -18,6 +18,7 @@ export default function MyCarousel() {
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 3,
+
     responsive: [
       {
         breakpoint: 768,
@@ -79,18 +80,19 @@ export default function MyCarousel() {
               return (
                 <div
                   className="cards"
+                  style={{ width: "200px" }}
                   key={index}
                   onClick={() => {
                     console.log("oke");
                     navigate(`/detail/${session.id}`);
                   }}
                 >
-                  <Card sx={{ maxWidth: 345 }}>
+                  <Card sx={{ width: "100%" }}>
                     <CardActionArea>
                       <CardMedia
                         component="img"
                         height="140"
-                        image={session.auctionRequest.resources[0]?.path}
+                        image={session.resources[0]?.path}
                         alt="session image"
                       />
                       <CardContent>

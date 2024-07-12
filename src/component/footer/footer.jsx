@@ -1,13 +1,13 @@
 import {
   EnvironmentOutlined,
-
   MailOutlined,
   PhoneOutlined,
- 
 } from "@ant-design/icons";
 import "./footer.scss";
 import { useNavigate } from "react-router-dom";
-export default function footer() {
+
+export default function Footer() {
+  const navigate = useNavigate();
   const handleClick = () => {
     navigate("/");
     window.scrollTo({
@@ -15,23 +15,17 @@ export default function footer() {
       behavior: "smooth",
     });
   };
-  const navigate = useNavigate();
+
   return (
     <div className="footer">
       <div className="footer-content">
         {" "}
         <h4>Serenity </h4>
         <p>Sparkle with every bid, where precious gems find new admirers.</p>
-        
       </div>
       <div className="footer-content">
         <h4>Quick Links</h4>
-        <span
-          className="button-link"
-          onClick={
-            handleClick
-          }
-        >
+        <span className="button-link" onClick={handleClick}>
           Home
         </span>
         <span
@@ -40,8 +34,8 @@ export default function footer() {
             navigate("/sessions");
             window.scrollTo({
               top: 0,
-              behavior: 'smooth'
-          });
+              behavior: "smooth",
+            });
           }}
         >
           Jewelry Auction
@@ -55,7 +49,6 @@ export default function footer() {
         >
           Products
         </span>
-      
       </div>
       <div className="footer-content">
         <h4> Contact Us</h4>
@@ -67,7 +60,8 @@ export default function footer() {
           <MailOutlined /> truongtltse173154@fpt.edu.vn
         </p>
         <p>
-          <EnvironmentOutlined /> Lô E2a-7, Đường D1, Đ. D1, Long Thạnh Mỹ, Thành Phố Thủ Đức, Hồ Chí Minh 700000
+          <EnvironmentOutlined /> Lô E2a-7, Đường D1, Đ. D1, Long Thạnh Mỹ,
+          Thành Phố Thủ Đức, Hồ Chí Minh 700000
         </p>
       </div>
     </div>

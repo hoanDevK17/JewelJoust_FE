@@ -40,13 +40,12 @@
     justify-content: end;
     align-items: center;
     gap: 20px;
-    span:hover  {
+    span:hover {
       cursor: pointer;
     }
-   span:active{
-    color: rgb(63, 180, 184);
-   }
-   
+    span:active {
+      color: rgb(63, 180, 184);
+    }
   }
   .home-page-login {
     display: flex;
@@ -55,13 +54,13 @@
     gap: 20px;
   }
   .home-page-body {
+  
     // min-height: 100vh;
     margin-top: 100px;
     // padding: 80px;
     // background-color: red;
   }
 }
-
 
 // .wallet-check{
 //   justify-content: center;

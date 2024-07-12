@@ -131,20 +131,8 @@ export default function Home() {
                   </Table>
                 </TableContainer>
               </div>
-              <Content
-                title="PRE-AUCTION"
-                btnContent="View all jewelries"
-                linkURL="/login"
-              />
-              <div>
-                <Search
-                  placeholder="Search Jewelries"
-                  onSearch={onSearch}
-                  style={{
-                    width: 200,
-                  }}
-                />
-              </div>
+              <Content title="PRE-AUCTION" />
+              <div></div>
               <MyCarousel />
               {/* <div>
                 <Content
@@ -170,7 +158,6 @@ export default function Home() {
             </Col>
           </Row>
         </Container>
-        <Footer />
       </HomePage>
     </>
   );

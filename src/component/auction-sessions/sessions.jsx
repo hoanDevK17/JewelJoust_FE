@@ -15,7 +15,7 @@ import Paper from "@mui/material/Paper";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 export default function AuctionSession() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const fetchData = async () => {
@@ -40,7 +40,16 @@ export default function AuctionSession() {
     <>
       <HomePage>
         <Container fluid style={{ marginBottom: "20px" }}>
-          <h2 style={{ display: "flex", justifyContent: "center", color: "gray", marginBottom: "10px" }}>Jewelry Auction Sessions</h2>
+          <h2
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              color: "gray",
+              marginBottom: "10px",
+            }}
+          >
+            Jewelry Auction Sessions
+          </h2>
           <Row className="justify-content-xl-center">
             <Col xl={11}>
               <TableContainer component={Paper}>
@@ -87,7 +96,6 @@ export default function AuctionSession() {
             </Col>
           </Row>
         </Container>
-        <Footer />
       </HomePage>
     </>
   );
