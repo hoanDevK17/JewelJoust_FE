@@ -99,7 +99,8 @@ const Dashboard = () => {
     }
     if (role === "STAFF") {
       setItems([
-        getItem("Request", "request", <TeamOutlined />)
+        getItem("Request", "request", <TeamOutlined />),
+        getItem("Session", "session", <HeartOutlined />),
       ]);
     }
   }, []);

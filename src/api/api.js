@@ -172,5 +172,12 @@ export const APIBidding = (id_session, price) =>
     id_session: id_session,
     price: price,
   });
+
+export const APIStop = (id) => 
+  api.put(`auctionSessions/stop`, id);
+export const APIContinue = (id) =>
+  api.put(`auctionSessions/continue`, id);
+
   export const APIgetAllBidding = () =>
     api.get(`auctionBids`);
+
