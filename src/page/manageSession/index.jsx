@@ -59,6 +59,36 @@ export default function ManageSession() {
     return current && current < dayjs().startOf("day");
   };
   const [isLoading, setIsLoading] = useState(false);
+  const handleStop = async () => {
+    APIStop(currentSession.id)
+      .then((rs) => {
+        console.log(rs);
+        message.success("Successfully");
+        fetchData();
+      })
+      .catch((error) => {
+        message.error("Something went wrong", error);
+      })
+      .finally(() => {
+        setCurrentId(-1);
+      });
+  };
+
+  const handleContinue = async () => {
+    APIContinue(currentSession.id)
+      .then((rs) => {
+        console.log(rs);
+        message.success("Successfully");
+        fetchData();
+      })
+      .catch((error) => {
+        message.error("Something went wrong", error);
+      })
+      .finally(() => {
+        setCurrentId(-1);
+      });
+  };
+
   const fetchData = async () => {
     setIsLoading(true);
     APIgetallSession()
@@ -74,30 +104,37 @@ export default function ManageSession() {
       });
   };
   const fetchAuctionRequestAgreed = async () => {
-    APIgetAllRequestToSession().then((response) => {
-      setRequestAuctionsAgreed(response?.data);
-    }).catch((error) => {
-      console.log(error);
-      message.error("Something went wrong1");
-    });
+    APIgetAllRequestToSession()
+      .then((response) => {
+        setRequestAuctionsAgreed(response?.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        message.error("Something went wrong1");
+      });
   };
   const fetchStaff = async () => {
-    APIgetallacount().then((response) => {
-      var optionStaff = [];
-      response.data.forEach((account) => {
-        if (account.role == "STAFF") {
-          optionStaff = [
-            ...optionStaff,
-            { value: account.id, label: `${account.id}. ${account.username}` },
-          ];
-        }
-      });
+    APIgetallacount()
+      .then((response) => {
+        var optionStaff = [];
+        response.data.forEach((account) => {
+          if (account.role == "STAFF") {
+            optionStaff = [
+              ...optionStaff,
+              {
+                value: account.id,
+                label: `${account.id}. ${account.username}`,
+              },
+            ];
+          }
+        });
 
-      setStaffs(optionStaff);
-    }).catch((error) => {
-      console.log(error);
-      message.error("Something went wrong");
-    });
+        setStaffs(optionStaff);
+      })
+      .catch((error) => {
+        console.log(error);
+        message.error("Something went wrong");
+      });
   };
   const use = async (file) => {
     try {
@@ -612,6 +649,76 @@ export default function ManageSession() {
                 </Form>
               </Col>
             </Row>
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "16px",
+              }}
+            >
+              {currentSession?.status === "PENDINGPAYMENT" && (
+                <Form
+                  name="basic"
+                  labelCol={{
+                    span: 8,
+                  }}
+                  wrapperCol={{
+                    span: 16,
+                  }}
+                  style={{
+                    display: "flex",
+                    gap: "16px",
+                    justifyContent: "center",
+                    maxWidth: 500,
+                  }}
+                  initialValues={{
+                    remember: true,
+                  }}
+                  onFinish={handleStop}
+                  autoComplete="off"
+                >
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    disabled={user?.role !== "STAFF"}
+                  >
+                    STOP
+                  </Button>
+                </Form>
+              )}
+              {currentSession?.status === "STOP" && (
+                <Form
+                  name="basic"
+                  labelCol={{
+                    span: 8,
+                  }}
+                  wrapperCol={{
+                    span: 16,
+                  }}
+                  style={{
+                    display: "flex",
+                    gap: "16px",
+                    justifyContent: "center",
+                    maxWidth: 500,
+                  }}
+                  initialValues={{
+                    remember: true,
+                  }}
+                  onFinish={handleContinue}
+                  autoComplete="off"
+                >
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    disabled={user?.role !== "STAFF"}
+                  >
+                    CONTINUE
+                  </Button>
+                </Form>
+              )}
+            </div>
+
           </Modal>
           <Table dataSource={data} columns={columns} />
         </div>
