@@ -39,7 +39,7 @@ const Dashboard = () => {
   const location = useLocation();
   const currentURI =
     location.pathname.split("/")[location.pathname.split("/").length - 1];
-  const role = "Admin";
+  const role = user.role;
 
   const dataOpen = JSON.parse(localStorage.getItem("keys")) ?? [];
 
@@ -84,12 +84,22 @@ const Dashboard = () => {
     //   ]);
     // }
 
-    if (role === "Admin") {
+    if (role === "ADMIN") {
       setItems([
-        getItem("Category", "category", <AppstoreAddOutlined />),
         getItem("Acount", "acount", <ProfileOutlined />),
         getItem("Request", "request", <TeamOutlined />),
         getItem("Session", "session", <HeartOutlined />),
+      ]);
+    }
+    if (role === "MANAGER") {
+      setItems([     
+        getItem("Request", "request", <TeamOutlined />),
+        getItem("Session", "session", <HeartOutlined />),
+      ]);
+    }
+    if (role === "STAFF") {
+      setItems([
+        getItem("Request", "request", <TeamOutlined />)
       ]);
     }
   }, []);
