@@ -13,6 +13,7 @@ import {
   Image,
   DatePicker,
   Upload,
+  Spin,
 } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { EditOutlined, UploadOutlined } from "@ant-design/icons";
@@ -57,15 +58,27 @@ export default function ManageSession() {
     // Can not select days before today and today
     return current && current < dayjs().startOf("day");
   };
-
+  const [isLoading, setIsLoading] = useState(false);
   const fetchData = async () => {
-    APIgetallSession().then((response) => {
-      setData(response.data);
-    });
+    setIsLoading(true);
+    APIgetallSession()
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        message.error("Something went wrong");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
   const fetchAuctionRequestAgreed = async () => {
     APIgetAllRequestToSession().then((response) => {
       setRequestAuctionsAgreed(response?.data);
+    }).catch((error) => {
+      console.log(error);
+      message.error("Something went wrong");
     });
   };
   const fetchStaff = async () => {
@@ -81,6 +94,9 @@ export default function ManageSession() {
       });
 
       setStaffs(optionStaff);
+    }).catch((error) => {
+      console.log(error);
+      message.error("Something went wrong");
     });
   };
   const use = async (file) => {
@@ -258,21 +274,31 @@ export default function ManageSession() {
   return (
     <>
       {contextHolder}
-      <div>
-        <Row justify={"center"} gutter={[16, 16]}>
-          <p style={{ textAlign: "center" }}>Add session</p>
+      {isLoading ? (
+        <Spin
+          style={{
+            height: "100vh",
+            width: "100%",
 
-          <Col>
-            <Select
-              placeholder="Auction RequestID"
-              allowClear
-              showSearch
-              size={"large"}
-              style={{ minWidth: 600 }}
-              listHeight={1000}
-              onSelect={handleSelection}
-            >
-              {/* {requestAuctionsAgreed?.map((request) => {
+            paddingTop: "calc(50vh - 150px)",
+          }}
+        />
+      ) : (
+        <div>
+          <Row justify={"center"} gutter={[16, 16]}>
+            <p style={{ textAlign: "center" }}>Add session</p>
+
+            <Col>
+              <Select
+                placeholder="Auction RequestID"
+                allowClear
+                showSearch
+                size={"large"}
+                style={{ minWidth: 600 }}
+                listHeight={1000}
+                onSelect={handleSelection}
+              >
+                {/* {requestAuctionsAgreed?.map((request) => {
                 console.log("a");
                 return (
                   <>
@@ -281,310 +307,315 @@ export default function ManageSession() {
                 );
               })} */}
 
-              {requestAuctionsAgreed?.map((request, index) => {
-                return (
-                  <Select.Option key={index} value={request.id}>
-                    {request.jewelryname}
-                    {"   "}
-                    {request.resources?.map((resource) => (
+                {requestAuctionsAgreed?.map((request, index) => {
+                  return (
+                    <Select.Option key={index} value={request.id}>
+                      {request.jewelryname}
+                      {"   "}
+                      {request.resources?.map((resource) => (
+                        <>
+                          <Image
+                            src={resource.path}
+                            preview={false}
+                            height={32}
+                          />
+                        </>
+                      ))}
+                      {"   "}
+                      <strong>{request?.ultimateValuation?.price}$</strong>
+                    </Select.Option>
+                  );
+                })}
+              </Select>
+            </Col>
+            {user?.role === "MANAGER" && (
+              <Button
+                type="primary"
+                onClick={() => {
+                  if (currentRequestID > 0) {
+                    setCurrentId(0);
+                  } else {
+                    message.error("Please choose session");
+                  }
+                }}
+                size="large"
+              >
+                Add new Session
+              </Button>
+            )}
+          </Row>
+          <Modal
+            title={`${currentId > 0 ? "Edit" : "Add"} Session`}
+            open={currentId >= 0}
+            onOk={() => {
+              if (user?.role !== "MANAGER") {
+                message.error(
+                  "You do not have permission to perform this action."
+                );
+                return;
+              }
+              form.submit();
+            }}
+            onCancel={() => {
+              form.resetFields();
+              setCurrentId(-1);
+            }}
+            width={1120}
+          >
+            <h6>Information Request</h6>
+            <Row wrap={false}>
+              <Col style={{ marginBottom: "24px" }} span={8}>
+                {currentId > 0 ? (
+                  <>
+                    <Row>
+                      ID Request : {currentSession?.auctionRequest?.id}{" "}
+                      <strong>Name</strong> :{" "}
+                      {currentSession?.auctionRequest?.jewelryname}
+                      <strong>Price</strong> :{" "}
+                      {currentSession?.auctionRequest?.ultimateValuation?.price}
+                    </Row>
+                    {currentSession?.auctionRequest?.resources.map((item) => (
                       <>
                         <Image
-                          src={resource.path}
-                          preview={false}
-                          height={32}
+                          src={item.path}
+                          width={"calc(50% - 16px)"}
+                          style={{
+                            padding: "10px",
+                          }}
                         />
                       </>
                     ))}
-                    {"   "}
-                    <strong>{request?.ultimateValuation?.price}$</strong>
-                  </Select.Option>
-                );
-              })}
-            </Select>
-          </Col>
-          { user?.role ==="MANAGER" && 
-            <Button
-              type="primary"
-              onClick={() => {
-                if (currentRequestID > 0) {
-                  setCurrentId(0);
-                } else {
-                  message.error("Please choose session");
-                }
-              }}
-              size="large"
-            >
-              Add new Session
-            </Button>
-          }
-        </Row>
-        <Modal
-          title={`${currentId > 0 ? "Edit" : "Add"} Session`}
-          open={currentId >= 0}
-          onOk={() => {
-            if (user?.role !== "MANAGER") {
-              message.error("You do not have permission to perform this action.");
-              return;
-            }
-            form.submit();
-          }}
-          onCancel={() => {
-            form.resetFields();
-            setCurrentId(-1);
-          }}
-          width={1120}
-        >
-          <h6>Information Request</h6>
-          <Row wrap={false}>
-            <Col style={{ marginBottom: "24px" }} span={8}>
-              {currentId > 0 ? (
-                <>
-                  <Row>
-                    ID Request : {currentSession?.auctionRequest?.id}{" "}
-                    <strong>Name</strong> :{" "}
-                    {currentSession?.auctionRequest?.jewelryname}
-                    <strong>Price</strong> :{" "}
-                    {currentSession?.auctionRequest?.ultimateValuation?.price}
-                  </Row>
-                  {currentSession?.auctionRequest?.resources.map((item) => (
-                    <>
-                      <Image
-                        src={item.path}
-                        width={"calc(50% - 16px)"}
-                        style={{
-                          padding: "10px",
-                        }}
-                      />
-                    </>
-                  ))}
-                </>
-              ) : (
-                <>
-                  <Row>
-                    {" "}
-                    <strong>Name</strong> : {currentRequest?.jewelryname}{" "}
-                    <strong>Price</strong> :{" "}
-                    {currentRequest?.ultimateValuation?.price}
-                  </Row>
-                  {currentRequest?.resources.map((item) => (
-                    <>
-                      <Image
-                        src={item.path}
-                        width={"calc(50% - 16px)"}
-                        style={{
-                          padding: "10px",
-                        }}
-                      />
-                    </>
-                  ))}
-                </>
-              )}
-            </Col>
-
-            <Col span={16}>
-              <Form
-                form={form}
-                name="basic"
-                hideRequiredMark
-                labelCol={{
-                  span: 8,
-                }}
-                wrapperCol={{
-                  span: 16,
-                }}
-                style={{
-                  maxWidth: 600,
-                }}
-                initialValues={{
-                  remember: true,
-                }}
-                onFinish={onFinish}
-                onValuesChange={() => {
-                  form.validateFields(["startDateTime", "endDateTime"]);
-                }}
-                autoComplete="off"
-              >
-                {currentId > 0 && (
-                  <Form.Item label="ID Session" name="id_session">
-                    <Input readOnly />
-                  </Form.Item>
+                  </>
+                ) : (
+                  <>
+                    <Row>
+                      {" "}
+                      <strong>Name</strong> : {currentRequest?.jewelryname}{" "}
+                      <strong>Price</strong> :{" "}
+                      {currentRequest?.ultimateValuation?.price}
+                    </Row>
+                    {currentRequest?.resources.map((item) => (
+                      <>
+                        <Image
+                          src={item.path}
+                          width={"calc(50% - 16px)"}
+                          style={{
+                            padding: "10px",
+                          }}
+                        />
+                      </>
+                    ))}
+                  </>
                 )}
-                <Form.Item
-                  label="Name Session"
-                  name="name_session"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input name session!",
-                    },
-                    { whitespace: true },
-                  ]}
-                >
-                  <Input />
-                </Form.Item>
+              </Col>
 
-                <Form.Item
-                  label="Jewelry Name"
-                  name="name_jewelry"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input jewelry name!",
-                    },
-                    { whitespace: true },
-                  ]}
+              <Col span={16}>
+                <Form
+                  form={form}
+                  name="basic"
+                  hideRequiredMark
+                  labelCol={{
+                    span: 8,
+                  }}
+                  wrapperCol={{
+                    span: 16,
+                  }}
+                  style={{
+                    maxWidth: 600,
+                  }}
+                  initialValues={{
+                    remember: true,
+                  }}
+                  onFinish={onFinish}
+                  onValuesChange={() => {
+                    form.validateFields(["startDateTime", "endDateTime"]);
+                  }}
+                  autoComplete="off"
                 >
-                  <Input />
-                </Form.Item>
+                  {currentId > 0 && (
+                    <Form.Item label="ID Session" name="id_session">
+                      <Input readOnly />
+                    </Form.Item>
+                  )}
+                  <Form.Item
+                    label="Name Session"
+                    name="name_session"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input name session!",
+                      },
+                      { whitespace: true },
+                    ]}
+                  >
+                    <Input />
+                  </Form.Item>
 
-                <Form.Item
-                  label="Description"
-                  name="description"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input Description !",
-                    },
-                  ]}
-                >
-                  <Input />
-                </Form.Item>
+                  <Form.Item
+                    label="Jewelry Name"
+                    name="name_jewelry"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input jewelry name!",
+                      },
+                      { whitespace: true },
+                    ]}
+                  >
+                    <Input />
+                  </Form.Item>
 
-                <Form.Item hidden name="id_auction_request">
-                  {/* <Input value={currentRequestID}></Input> */}
-                </Form.Item>
+                  <Form.Item
+                    label="Description"
+                    name="description"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input Description !",
+                      },
+                    ]}
+                  >
+                    <Input />
+                  </Form.Item>
 
-                <Form.Item
-                  label="Min Step Price"
-                  name="min_stepPrice"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input min step price!",
-                    },
-                    { whitespace: true },
-                  ]}
-                >
-                  <Input type="number" />
-                </Form.Item>
+                  <Form.Item hidden name="id_auction_request">
+                    {/* <Input value={currentRequestID}></Input> */}
+                  </Form.Item>
 
-                <Form.Item
-                  label="Deposit Amount"
-                  name="deposit_amount"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input Deposit Amount!",
-                    },
-                    { whitespace: true },
-                  ]}
-                >
-                  <Input type="number" />
-                </Form.Item>
-                <Form.Item
-                  label="Staff"
-                  name="staff_id"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input Staff ID!",
-                    },
-                  ]}
-                >
-                  <Select
-                    showSearch
-                    placeholder="Select a person"
-                    filterOption={(input, staff) => {
-                      return (staff?.label ?? "")
-                        .toLowerCase()
-                        .includes(input.toLowerCase());
-                    }}
-                    options={staffs}
-                  ></Select>
-                </Form.Item>
+                  <Form.Item
+                    label="Min Step Price"
+                    name="min_stepPrice"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input min step price!",
+                      },
+                      { whitespace: true },
+                    ]}
+                  >
+                    <Input type="number" />
+                  </Form.Item>
 
-                <Form.Item
-                  label="Range Time"
-                  name="range_time"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input Range Time!",
-                    },
-                    // { whitespace: true },
-                    // {
-                    // pattern:
-                    //   /^202[0-9]-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1])) (([0-1][0-9])|(2[0-3])):([0-5][0-9])$/,
-                    // message: "Invalid date format! (YYYY-MM-DD HH:mm)",
-                    // },
-                    // ({ getFieldValue }) => ({
-                    //   validator(_, value) {
-                    //     if (!value || !getFieldValue("start_time")) {
-                    //       return Promise.resolve();
-                    //     }
-                    //     const start = moment(
-                    //       getFieldValue("start_time"),
-                    //       "YYYY-MM-DD HH:mm"
-                    //     );
-                    //     const end = moment(value, "YYYY-MM-DD HH:mm");
-                    //     if (end.isBefore(start)) {
-                    //       return Promise.reject(
-                    //         new Error(
-                    //           "The end date and time must be after the start date"
-                    //         )
-                    //       );
-                    //     }
-                    //     return Promise.resolve();
-                    //   },
-                    // }),
-                  ]}
-                >
-                  {/* <Input placeholder="YYYY-MM-DD HH:mm" /> */}
+                  <Form.Item
+                    label="Deposit Amount"
+                    name="deposit_amount"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input Deposit Amount!",
+                      },
+                      { whitespace: true },
+                    ]}
+                  >
+                    <Input type="number" />
+                  </Form.Item>
+                  <Form.Item
+                    label="Staff"
+                    name="staff_id"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input Staff ID!",
+                      },
+                    ]}
+                  >
+                    <Select
+                      showSearch
+                      placeholder="Select a person"
+                      filterOption={(input, staff) => {
+                        return (staff?.label ?? "")
+                          .toLowerCase()
+                          .includes(input.toLowerCase());
+                      }}
+                      options={staffs}
+                    ></Select>
+                  </Form.Item>
 
-                  <RangePicker
-                    style={{ width: "100%" }}
-                    disabledDate={disabledDate}
-                    showTime={{
-                      hideDisabledOptions: true,
-                      defaultValue: [
-                        dayjs("00:00", "HH:mm"),
-                        dayjs("11:59", "HH:mm"),
-                      ],
-                    }}
-                    format="YYYY-MM-DD HH:mm"
-                  />
-                </Form.Item>
-                <Form.Item
-                  className="input-conten"
-                  label="Upload image of your jewelry and certificate"
-                  name="imgjewerly"
-                >
-                  <Upload {...props} fileList={urlJewelry}>
-                    <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                  </Upload>
-                </Form.Item>
-                <div style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}>
-                  {urlJewelry?.map((file, index) => (
-                    <Image
-                      key={index}
-                      width={"calc(33% - 16px)"}
-                      src={file.path}
+                  <Form.Item
+                    label="Range Time"
+                    name="range_time"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input Range Time!",
+                      },
+                      // { whitespace: true },
+                      // {
+                      // pattern:
+                      //   /^202[0-9]-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1])) (([0-1][0-9])|(2[0-3])):([0-5][0-9])$/,
+                      // message: "Invalid date format! (YYYY-MM-DD HH:mm)",
+                      // },
+                      // ({ getFieldValue }) => ({
+                      //   validator(_, value) {
+                      //     if (!value || !getFieldValue("start_time")) {
+                      //       return Promise.resolve();
+                      //     }
+                      //     const start = moment(
+                      //       getFieldValue("start_time"),
+                      //       "YYYY-MM-DD HH:mm"
+                      //     );
+                      //     const end = moment(value, "YYYY-MM-DD HH:mm");
+                      //     if (end.isBefore(start)) {
+                      //       return Promise.reject(
+                      //         new Error(
+                      //           "The end date and time must be after the start date"
+                      //         )
+                      //       );
+                      //     }
+                      //     return Promise.resolve();
+                      //   },
+                      // }),
+                    ]}
+                  >
+                    {/* <Input placeholder="YYYY-MM-DD HH:mm" /> */}
+
+                    <RangePicker
+                      style={{ width: "100%" }}
+                      disabledDate={disabledDate}
+                      showTime={{
+                        hideDisabledOptions: true,
+                        defaultValue: [
+                          dayjs("00:00", "HH:mm"),
+                          dayjs("11:59", "HH:mm"),
+                        ],
+                      }}
+                      format="YYYY-MM-DD HH:mm"
                     />
-                  ))}
-                </div>
+                  </Form.Item>
+                  <Form.Item
+                    className="input-conten"
+                    label="Upload image of your jewelry and certificate"
+                    name="imgjewerly"
+                  >
+                    <Upload {...props} fileList={urlJewelry}>
+                      <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                    </Upload>
+                  </Form.Item>
+                  <div
+                    style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}
+                  >
+                    {urlJewelry?.map((file, index) => (
+                      <Image
+                        key={index}
+                        width={"calc(33% - 16px)"}
+                        src={file.path}
+                      />
+                    ))}
+                  </div>
 
-                {/* <Form.Item
+                  {/* <Form.Item
                 wrapperCol={{
                   offset: 8,
                   span: 16,
                 }}
               ></Form.Item> */}
-              </Form>
-            </Col>
-          </Row>
-        </Modal>
-        <Table dataSource={data} columns={columns} />
-      </div>
+                </Form>
+              </Col>
+            </Row>
+          </Modal>
+          <Table dataSource={data} columns={columns} />
+        </div>
+      )}
     </>
   );
 }

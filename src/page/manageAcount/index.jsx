@@ -183,6 +183,9 @@ export default function Acount() {
   const fetchData = async () => {
     await APIgetallacount().then((response) => {
       setData(response.data);
+    }).catch((error) => {
+      console.log(error);
+      message.error("Something went wrong");
     });
   };
 

@@ -101,14 +101,7 @@ export default function WalletHistory() {
 
   const onFinishAdd = (values) => {
     console.log("oki" + convertedAmount.toFixed(2));
-    // console.log(user?.wallet?.id, values.amount, "Deposit " + values.amount);
-    // APIDeposit(user?.wallet?.id, convertedAmount.toFixed(2) , "Deposit " + convertedAmount.toFixed(2))
-    //   .then(() => {
-    //     message.success("Deposit added successfully: " + convertedAmount.toFixed(2) + "$");
-    //   })
-    //   .catch((error) => {
-    //     message.error("Something went wrong", error);
-    //   });
+    
 
     APICreateQR(values.amount)
       .then((response) => {
@@ -131,7 +124,11 @@ export default function WalletHistory() {
     APIgetTransactions().then((response) => {
       console.log(response);
       setData(response.data);
-    });
+    }).catch((error) => {
+        console.log(error);
+        message.error("Something went wrong");
+      })
+      
   };
   useEffect(() => {
     fetchData();
