@@ -5,19 +5,23 @@ import { Button, Form, Input, message } from "antd";
 import { APIForgotpass } from "../../api/api";
 export default function ForgotPass() {
   const [errorMessage, setErrorMessage] = useState("");
+  const [isSubmit, setIsSubmit] = useState(false);
   const handleSubmit = (value) => {
-    APIForgotpass(value.email)
-      .then((response) => {
-        console.log("response", response);
-        if (response.status == "200") {
-          message.success("Sent email reset password successfully");
-        }
-      })
-      .catch((error) => {
-        console.log("error", error);
-        setErrorMessage("Gửi mail thất bại");
-      })
-      .finally(() => {});
+    if (!isSubmit) {
+      APIForgotpass(value.email)
+        .then((response) => {
+          console.log("response", response);
+          if (response.status == "200") {
+            message.success("Sent email reset password successfully");
+            setIsSubmit(true);
+          }
+        })
+        .catch((error) => {
+          console.log("error", error);
+          setErrorMessage("Gửi mail thất bại");
+        })
+        .finally(() => {});
+    }
   };
   return (
     <AuthenTemplate>

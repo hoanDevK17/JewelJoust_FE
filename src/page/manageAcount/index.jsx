@@ -181,12 +181,14 @@ export default function Acount() {
   const [data, setData] = useState([]);
 
   const fetchData = async () => {
-    await APIgetallacount().then((response) => {
-      setData(response.data);
-    }).catch((error) => {
-      console.log(error);
-      message.error("Something went wrong");
-    });
+    await APIgetallacount()
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        message.error("Something went wrong");
+      });
   };
 
   useEffect(() => {
@@ -213,10 +215,11 @@ export default function Acount() {
 
   return (
     <div>
-     { user?.role ==="ADMIN" && 
-     <Button type="primary" onClick={() => setCurrentId(0)}>
-        Add new Acount
-      </Button>}
+      {user?.role === "ADMIN" && (
+        <Button type="primary" onClick={() => setCurrentId(0)}>
+          Add new Acount
+        </Button>
+      )}
       <Modal
         title={`${currentId > 0 ? "Edit" : "Add"} account`}
         open={currentId >= 0}
@@ -262,7 +265,9 @@ export default function Acount() {
               { whitespace: true },
             ]}
           >
-            <Input readOnly />
+            <Input
+              readOnly={currentId === 0 && user.role == "ADMIN" ? false : true}
+            />
           </Form.Item>
 
           {currentId > 0 ? (
