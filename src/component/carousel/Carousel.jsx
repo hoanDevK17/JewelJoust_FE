@@ -3,8 +3,8 @@ import Slider from "react-slick";
 import "./carousel.scss";
 import { Products } from "../../share-data/productData";
 import { Link, useNavigate } from "react-router-dom";
-import { Card, CardActionArea, CardContent, CardMedia } from "@mui/material";
-import { Space, Spin, Typography } from "antd";
+import { Box, Card, CardActionArea, CardContent, CardMedia } from "@mui/material";
+import { Button, Space, Spin, Typography } from "antd";
 import { APIgetallSessionByStatus } from "../../api/api";
 import { Col, Container, Row } from "react-bootstrap";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -82,10 +82,7 @@ export default function MyCarousel() {
                   className="cards"
                   style={{ width: "200px" }}
                   key={index}
-                  onClick={() => {
-                    console.log("oke");
-                    navigate(`/detail/${session.id}`);
-                  }}
+
                 >
                   <Card sx={{ width: "100%" }}>
                     <CardActionArea>
@@ -111,6 +108,17 @@ export default function MyCarousel() {
                             {session?.auctionRequest.ultimateValuation.price}$
                           </h6>
                         </Typography>
+                        <Box display="flex" justifyContent="center" mt={2}>
+                          <button
+                            className="button-num1"
+                            onClick={() => {
+                              console.log("oke");
+                              navigate(`/detail/${session.id}`);
+                            }}
+                          >
+                            <p>Register</p>
+                          </button>
+                        </Box>
                       </CardContent>
                     </CardActionArea>
                   </Card>
