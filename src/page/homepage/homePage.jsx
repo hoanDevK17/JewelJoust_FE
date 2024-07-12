@@ -70,9 +70,9 @@ export default function Home() {
     console.log("params", pagination, filters, sorter, extra);
   };
   return (
-    <>
+    <div>
       <HomePage>
-        <Container fluid>
+        <Container fluid style={{marginBottom:"30px"}}>
           <Row className="justify-content-xl-center">
             <Col xl={11}>
               {/* Sang code chỗ này nha */}
@@ -172,6 +172,6 @@ export default function Home() {
         </Container>
         <Footer />
       </HomePage>
-    </>
+    </div>
   );
 }
