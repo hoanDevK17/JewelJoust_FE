@@ -135,8 +135,8 @@ export default function App() {
     },
 
     {
-      path: "/bidding/:id",
-      element: <Bidding />,
+      path: "/bidding",
+      element: <RegistrationSessionHistory />,
     },
     {
       path: "/payment",
