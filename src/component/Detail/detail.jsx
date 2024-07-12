@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { Products } from "../../share-data/productData";
+import { useParams } from "react-router-dom";
 import HomePage from "../home-default/home";
 import Footer from "../../component/footer/footer.jsx";
 import "./detail.scss";
@@ -17,26 +16,53 @@ import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice.js";
 import useRealtime from "../../assets/hook/useRealTime.jsx";
+import duration from 'dayjs/plugin/duration';
+dayjs.extend(duration);
 export default function Detail() {
 
   useRealtime(async (body) => {
-    
     if (body.body == "addBid") {
       await fetch();
     }
   });
 
-  // const navigate = useNavigate();
   const params = useParams();
   const [product, setProduct] = useState();
   const user = useSelector(selectUser);
-  // const product = Products.find((obj) => {
-  //   return obj.id == userName.id;
-  // });
   let location = useLocation();
+  const [mainImage, setMainImage] = useState(product?.resources[0]?.path);
+  const [timeLeft, setTimeLeft] = useState({});
+
+  const calculateTimeLeft = () => {
+    const targetTime = product?.status === "BIDDING" ? dayjs(product?.end_time) : dayjs(product?.start_time);
+    const now = dayjs();
+    const diff = targetTime.diff(now);
+
+    if (diff <= 0) {
+      return {};
+    }
+
+    const duration = dayjs.duration(diff);
+    return {
+      days: duration.days(),
+      hours: duration.hours(),
+      minutes: duration.minutes(),
+      seconds: duration.seconds(),
+    };
+  };
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [product]);
+
   const onChange = (key) => {
     console.log(key);
   };
+
   const items = [
     {
       key: "1",
@@ -44,14 +70,11 @@ export default function Detail() {
       children: <h6>{product?.description}</h6>,
     },
   ];
-  const [mainImage, setMainImage] = useState(product?.resources[0]?.path);
-  // let price = product.price.toLocaleString();
-  // let profileCost = product.profileCost.toLocaleString();
-  // let jump = product.jump.toLocaleString();
-  // let depositFee = product.depositFee.toLocaleString();
+
   const handleTab = (index) => {
     setMainImage(product?.resources[index]?.path);
   };
+
   const handleRegisAuction = (values) => {
     if (user != null) {
       APIRegistrations(params.id, values.bidAmount)
@@ -64,12 +87,12 @@ export default function Detail() {
         .catch((error) => {
           console.log(error);
           message.error(error?.response?.data);
-        })
-        .finally(() => {});
+        });
     } else {
       message.error("You need to login to register for the auction session");
     }
   };
+
   const handleBidSubmit = (values) => {
     APIBidding(product?.id, values.bidAmount)
       .then((response) => {
@@ -79,8 +102,7 @@ export default function Detail() {
       .catch((error) => {
         console.log(error);
         message.error(error.response?.data);
-      })
-      .finally(() => {});
+      });
   };
 
   const fetch = () => {
@@ -97,8 +119,7 @@ export default function Detail() {
       })
       .catch((error) => {
         console.log(error);
-      })
-      .finally(() => {});
+      });
   };
 
   useEffect(() => {
@@ -112,7 +133,12 @@ export default function Detail() {
         : "";
     });
   }, [product]);
-  console.log(mainImage);
+
+  const formatTimeLeft = () => {
+    const { days, hours, minutes, seconds } = timeLeft;
+    return `${days || 0}d ${hours || 0}h ${minutes || 0}m ${seconds || 0}s`;
+  };
+
   return (
     <div>
       <HomePage>
@@ -173,20 +199,42 @@ export default function Detail() {
               <h6>Step Price:</h6> <h4>{product?.minStepPrice}$</h4>
               <h6>Deposit Fee:</h6> <h4>{product?.depositAmount}$</h4>
               <h6>Highest Bid Price:</h6> <h4>{product?.highestPrice}$</h4>
-              {/* <h6>Auction Form:</h6> <h4>{product?.hinhThuc}</h4> */}
-              {/* <h6>Leap:</h6> <h4>{jump}$</h4> */}
-              <div className="button-outside">
-                {/* <Button onClick={handleRegisAuction}className="button-detail">
-                  <h6>
-                   Auction Register
-                  </h6>
-                </Button> */}
 
+              {/* <div>
+                {Object.keys(timeLeft).length > 0 && (
+                  <div style={{ marginBottom: "20px" }}>
+                    <h6>Time Left:</h6>
+                    <h4>{formatTimeLeft()}</h4>
+                  </div>
+                )}
+              </div> */}
+              {product?.status === "BIDDING" && (
+                <>
+                  <div>
+                    {Object.keys(timeLeft).length > 0 && (
+                      <div style={{ marginBottom: "20px" }}>
+                        <h6>This session will end in:</h6>
+                        <h4>{formatTimeLeft()}</h4>
+                      </div>
+                    )}
+                  </div>
+                </>
+              )} 
+              {product?.status ==="INITIALIZED" &&(
+                <div>
+                  {Object.keys(timeLeft).length > 0 && (
+                    <div style={{ marginBottom: "20px" }}>
+                      <h6>This session will start in:</h6>
+                      <h4>{formatTimeLeft()}</h4>
+                    </div>
+                  )}
+                </div>
+              )}
+              <div className="button-outside">
                 {product?.register ? (
                   <>
                     {product.status == "BIDDING" && (
                       <>
-                        {" "}
                         <Form onFinish={handleBidSubmit}>
                           <Form.Item
                             label={
@@ -239,55 +287,55 @@ export default function Detail() {
                   <>
                     {(product?.status == "INITIALIZED" ||
                       product?.status == "BIDDING") && (
-                      <Form onFinish={handleRegisAuction}>
-                        <Form.Item
-                          label={
-                            <span style={{ fontWeight: "bold", fontSize: 16 }}>
-                              Bid Amount ($)
-                            </span>
-                          }
-                          name="bidAmount"
-                          style={{
-                            width: 500,
-                          }}
-                          rules={[
-                            {
-                              required: true,
-                              message: "Please input your bid amount!",
-                            },
-                            {
-                              type: "number",
-                              min: product?.auctionRequest.ultimateValuation
-                                .price,
-                              message:
-                                "Please enter price higher than " +
-                                product?.auctionRequest.ultimateValuation
-                                  .price +
-                                "$",
-                            },
-                          ]}
-                        >
-                          <InputNumber
-                            size="large"
-                            style={{ width: "100%" }}
-                            placeholder="Enter bid amount"
-                            min={0}
-                            step={1}
-                          />
-                        </Form.Item>
-                        <Button htmlType="submit" className="button-detail">
-                          Auction Register
-                        </Button>
-                      </Form>
-                    )}
+                        <Form onFinish={handleRegisAuction}>
+                          <Form.Item
+                            label={
+                              <span style={{ fontWeight: "bold", fontSize: 16 }}>
+                                Bid Amount ($)
+                              </span>
+                            }
+                            name="bidAmount"
+                            style={{
+                              width: 500,
+                            }}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please input your bid amount!",
+                              },
+                              {
+                                type: "number",
+                                min: product?.auctionRequest.ultimateValuation
+                                  .price,
+                                message:
+                                  "Please enter price higher than " +
+                                  product?.auctionRequest.ultimateValuation
+                                    .price +
+                                  "$",
+                              },
+                            ]}
+                          >
+                            <InputNumber
+                              size="large"
+                              style={{ width: "100%" }}
+                              placeholder="Enter bid amount"
+                              min={0}
+                              step={1}
+                            />
+                          </Form.Item>
+                          <Button htmlType="submit" className="button-detail">
+                            Auction Register
+                          </Button>
+                        </Form>
+                      )}
                   </>
                 )}
                 {(product?.status == "FINISH" ||
                   product?.status == "PENDINGPAYMENT") && (
-                  <p style={{ color: "blue", fontStyle: "italic" }}>
-                    This session is finish
-                  </p>
-                )}
+                    <p style={{ color: "blue", fontStyle: "italic" }}>
+                      This session is finished
+                    </p>
+                  )}
               </div>
             </Col>
           </Row>
