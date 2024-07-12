@@ -27,9 +27,13 @@ export default function WalletHistory() {
       key: "id",
     },
     {
-      title: "Amount",
+      title: "Amount ($)",
       dataIndex: "bid_price",
       key: "amount",
+      render: (text) => {
+        const formattedAmount = Number(text).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        return formattedAmount;
+      }
     },
     {
       title: "Bid Time",
