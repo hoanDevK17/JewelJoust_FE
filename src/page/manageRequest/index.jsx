@@ -58,6 +58,7 @@ export default function ManageRequest() {
   const [form] = useForm();
   const [currentRequest, setCurrentRequest] = useState();
   const [isRejected, setIsRejected] = useState(false);
+  const user = useSelector(selectUser);
 
   const onFinishrejected = async (values) => {
     APIrejectedauctionrequestsell(currentId, values.reason, token)
@@ -670,17 +671,23 @@ export default function ManageRequest() {
               </Col>
             </Row>
           </div>
-
           {currentRequest?.status === "PENDING" && (
             <>
               <Row>
                 <h6 style={{ marginRight: "12px" }}>Valuation</h6>
-
-                <Switch
-                  unCheckedChildren="Reject"
-                  checkedChildren="Valuation"
-                  onChange={handelFormPending}
-                />
+                {user?.role === "STAFF" ? (
+                  <Switch
+                    unCheckedChildren="Reject"
+                    checkedChildren="Valuation"
+                    onChange={handelFormPending}
+                  />
+                ) : (
+                  <Switch
+                    unCheckedChildren="Reject"
+                    checkedChildren="Valuation"
+                    disabled
+                  />
+                )}
               </Row>
               {!isRejected ? (
                 <Form
@@ -717,9 +724,9 @@ export default function ManageRequest() {
                     ]}
                     hasFeedback
                   >
-                    <Input />
+                    <Input readOnly={user?.role !== "STAFF"} />
                   </Form.Item>
-                  <Button type="primary" htmlType="submit">
+                  <Button type="primary" htmlType="submit" disabled={user?.role !== "STAFF"}>
                     Reject
                   </Button>
                 </Form>
@@ -758,16 +765,15 @@ export default function ManageRequest() {
                     ]}
                     hasFeedback
                   >
-                    <Input />
+                    <Input readOnly={user?.role !== "STAFF"} />
                   </Form.Item>
-                  <Button type="primary" htmlType="submit">
+                  <Button type="primary" htmlType="submit" disabled={user?.role !== "STAFF"}>
                     Valuation
                   </Button>
                 </Form>
               )}
             </>
           )}
-
           {currentRequest?.initialValuations != null && (
             <>
               <h5>Initial Valuation:</h5>
@@ -883,7 +889,7 @@ export default function ManageRequest() {
                 onFinish={onFinishReceived}
                 autoComplete="off"
               >
-                <Button type="primary" htmlType="submit">
+                <Button type="primary" htmlType="submit" disabled={user?.role !== "STAFF"}>
                   Received
                 </Button>
               </Form>
@@ -896,6 +902,7 @@ export default function ManageRequest() {
                 unCheckedChildren="Valuation"
                 checkedChildren="Reject"
                 onChange={handelFormPending}
+                disabled={user?.role !== "STAFF"}
               />
               {isRejected ? (
                 <Form
@@ -932,9 +939,9 @@ export default function ManageRequest() {
                     ]}
                     hasFeedback
                   >
-                    <Input />
+                    <Input disabled={user?.role !== "STAFF"} />
                   </Form.Item>
-                  <Button type="primary" htmlType="submit">
+                  <Button type="primary" htmlType="submit" disabled={user?.role !== "STAFF"}>
                     Reject
                   </Button>
                 </Form>
@@ -973,15 +980,16 @@ export default function ManageRequest() {
                     ]}
                     hasFeedback
                   >
-                    <Input />
+                    <Input disabled={user?.role !== "STAFF"} />
                   </Form.Item>
-                  <Button type="primary" htmlType="submit">
+                  <Button type="primary" htmlType="submit" disabled={user?.role !== "STAFF"}>
                     Valuation
                   </Button>
                 </Form>
               )}
             </>
           )}
+
 
           {currentRequest?.ultimateValuation && (
             <>
@@ -1026,7 +1034,7 @@ export default function ManageRequest() {
                         </p>
                       </Col>
                     </div>
-                    {currentRequest?.status == "REVIEW" && (
+                    {currentRequest?.status === "REVIEW" && (
                       <>
                         <div
                           style={{
@@ -1041,6 +1049,7 @@ export default function ManageRequest() {
                             unCheckedChildren="Reject"
                             checkedChildren="Accept"
                             onChange={handelFormPending}
+                            disabled={user?.role !== "MANAGER"}
                           />
                         </div>
                         <div
@@ -1086,9 +1095,13 @@ export default function ManageRequest() {
                                 ]}
                                 hasFeedback
                               >
-                                <Input />
+                                <Input disabled={user?.role !== "MANAGER"} />
                               </Form.Item>
-                              <Button type="primary" htmlType="submit">
+                              <Button
+                                type="primary"
+                                htmlType="submit"
+                                disabled={user?.role !== "MANAGER"}
+                              >
                                 Reject
                               </Button>
                             </Form>
@@ -1114,14 +1127,18 @@ export default function ManageRequest() {
                               onFinishFailed={onFinishFailed}
                               autoComplete="off"
                             >
-                              <Button type="primary" htmlType="submit">
+                              <Button
+                                type="primary"
+                                htmlType="submit"
+                                disabled={user?.role !== "MANAGER"}
+                              >
                                 Accept
                               </Button>
                             </Form>
                           )}
                         </div>
                       </>
-                    )}                   
+                    )}              
                   </>
                 )}
               </Row>
