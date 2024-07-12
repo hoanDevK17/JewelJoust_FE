@@ -182,6 +182,7 @@ export default function Detail() {
                   maxWidth: "800px",
                   width: "100%",
                   maxHeight: "800px",
+                  height:"500px",
                   objectFit: "cover",
                 }}
               />

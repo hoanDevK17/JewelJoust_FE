@@ -93,7 +93,6 @@ export default function Home() {
                     </Container>
                   ) : data?.length > 0 ? (
                     <div className="slider-container" style={{ display: "flex", justifyContent: "space-evenly",gap:"10px" }}>
-
                       {data?.slice(0, 4).map((session, index) => {
                         return (
                           <div
