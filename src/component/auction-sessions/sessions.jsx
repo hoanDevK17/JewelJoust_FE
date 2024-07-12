@@ -13,7 +13,9 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
 export default function AuctionSession() {
+  const navigate = useNavigate()
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const fetchData = async () => {
@@ -37,7 +39,8 @@ export default function AuctionSession() {
   return (
     <>
       <HomePage>
-        <Container fluid>
+        <Container fluid style={{ marginBottom: "20px" }}>
+          <h2 style={{ display: "flex", justifyContent: "center", color: "gray", marginBottom: "10px" }}>Jewelry Auction Sessions</h2>
           <Row className="justify-content-xl-center">
             <Col xl={11}>
               <TableContainer component={Paper}>
@@ -54,9 +57,13 @@ export default function AuctionSession() {
                   <TableBody>
                     {data?.map((session, index) => (
                       <TableRow
+                        hover
                         key={index}
                         sx={{
                           "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                        onClick={() => {
+                          navigate(`/detail/${session.id}`);
                         }}
                       >
                         <TableCell component="th" scope="session">
