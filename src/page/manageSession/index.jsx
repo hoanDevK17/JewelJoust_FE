@@ -26,6 +26,8 @@ import {
 
 import dayjs from "dayjs";
 import uploadFile from "../../assets/hook/useUpload";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/features/counterSlice";
 
 export default function ManageSession() {
   // const dateFormat = 'YYYY/MM/DD';
@@ -50,6 +52,7 @@ export default function ManageSession() {
   const { RangePicker } = DatePicker;
   const [messageApi, contextHolder] = message.useMessage();
   const [urlJewelry, setUrlJewelry] = useState([]);
+  const user = useSelector(selectUser);
   const disabledDate = (current) => {
     // Can not select days before today and today
     return current && current < dayjs().startOf("day");
@@ -299,24 +302,32 @@ export default function ManageSession() {
               })}
             </Select>
           </Col>
-          <Button
-            type="primary"
-            onClick={() => {
-              if (currentRequestID > 0) {
-                setCurrentId(0);
-              } else {
-                message.error("Please choose session");
-              }
-            }}
-            size="large"
-          >
-            Add new Session
-          </Button>
+          { user?.role ==="MANAGER" && 
+            <Button
+              type="primary"
+              onClick={() => {
+                if (currentRequestID > 0) {
+                  setCurrentId(0);
+                } else {
+                  message.error("Please choose session");
+                }
+              }}
+              size="large"
+            >
+              Add new Session
+            </Button>
+          }
         </Row>
         <Modal
           title={`${currentId > 0 ? "Edit" : "Add"} Session`}
           open={currentId >= 0}
-          onOk={() => form.submit()}
+          onOk={() => {
+            if (user?.role !== "MANAGER") {
+              message.error("You do not have permission to perform this action.");
+              return;
+            }
+            form.submit();
+          }}
           onCancel={() => {
             form.resetFields();
             setCurrentId(-1);

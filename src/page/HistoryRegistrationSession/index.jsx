@@ -6,10 +6,13 @@ import {
   EditOutlined,
   LoadingOutlined,
 } from "@ant-design/icons";
-import { Button, Col, Modal, Row, Spin, Steps, Table, Tag } from "antd";
+import Footer from "../../component/footer/footer.jsx";
+import { Button, Modal, Spin, Steps, Table, Tag } from "antd";
 
 import { APIHistoryRegisSession } from "../../api/api";
 import dayjs from "dayjs";
+import { Container,Row,Col } from "react-bootstrap";
+import HomePage from "../../component/home-default/home";
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -214,7 +217,7 @@ function RegistrationSessionHistory() {
         console.log(response.data);
       })
       .catch((error) => {
-        console.log("conccac");
+        console.log(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -233,21 +236,30 @@ function RegistrationSessionHistory() {
 
   return (
     <>
-      {isLoading ? (
-        <Spin style={{ width: "100%" }}></Spin>
-      ) : (
-        <>
-          <Modal
-            title={`Detail Information`}
-            open={currentId >= 0}
-            onCancel={() => {
-              setCurrentId(-1);
-            }}
-          ></Modal>
+    <HomePage>
+      <Container fluid>
+        <Row className="justify-content-xl-center">
+          <Col xl={11}>
 
-          <Table columns={columns(setCurrentId)} dataSource={data} />
-        </>
-      )}
+            {isLoading ? (
+              <Spin style={{ width: "100%" }}></Spin>
+            ) : (
+              <>
+                <Modal
+                  title={`Detail Information`}
+                  open={currentId >= 0}
+                  onCancel={() => {
+                    setCurrentId(-1);
+                  }}
+                ></Modal>
+
+                <Table columns={columns(setCurrentId)} dataSource={data} />
+              </>
+            )}
+          </Col>
+        </Row>
+      </Container>
+      </HomePage>
     </>
   );
 }

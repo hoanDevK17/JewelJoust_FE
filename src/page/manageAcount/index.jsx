@@ -9,6 +9,8 @@ import {
   APIgetallacount,
   APIregishaverole,
 } from "../../api/api";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/features/counterSlice";
 
 export default function Acount() {
   // console.log(user)
@@ -20,13 +22,12 @@ export default function Acount() {
   //   `${dayjs(value).startOf('week').format(weekFormat)} ~ ${dayjs(value)
   //     .endOf('week')
   //     .format(weekFormat)}`;
-
   // id >= 0
 
   const [currentId, setCurrentId] = useState(-1);
   const [currentIdDate, setCurrentIdDate] = useState(0);
   const [form] = useForm();
-
+  const user = useSelector(selectUser);
   const onFinish = async (values) => {
     values.birthday = dayjs(values.birthday).format(`YYYY-MM-DD`);
     console.log(
@@ -209,13 +210,20 @@ export default function Acount() {
 
   return (
     <div>
-      <Button type="primary" onClick={() => setCurrentId(0)}>
+     { user?.role ==="ADMIN" && 
+     <Button type="primary" onClick={() => setCurrentId(0)}>
         Add new Acount
-      </Button>
+      </Button>}
       <Modal
         title={`${currentId > 0 ? "Edit" : "Add"} account`}
         open={currentId >= 0}
-        onOk={() => form.submit()}
+        onOk={() => {
+          if (user?.role !== "ADMIN") {
+            message.error("You do not have permission to perform this action.");
+            return;
+          }
+          form.submit();
+        }}
         onCancel={() => {
           form.resetFields();
           setCurrentId(-1);
@@ -251,7 +259,7 @@ export default function Acount() {
               { whitespace: true },
             ]}
           >
-            <Input />
+            <Input readOnly />
           </Form.Item>
 
           {currentId > 0 ? (
