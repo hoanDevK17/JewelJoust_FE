@@ -718,6 +718,7 @@ export default function ManageSession() {
                 </Form>
               )}
             </div>
+
           </Modal>
           <Table dataSource={data} columns={columns} />
         </div>
