@@ -74,7 +74,7 @@ export default function AuctionSession() {
                     </TableBody>
                   </Table>
                 </TableContainer>
-              </div>
+              
             </Col>
           </Row>
         </Container>
