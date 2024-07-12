@@ -15,11 +15,7 @@ import {
   MinusCircleOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
-import {
-  APICreateQR,
-  APIgetAllBidding,
-
-} from "../../api/api";
+import { APICreateQR, APIgetAllBidding } from "../../api/api";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 import moment from "moment";
@@ -44,9 +40,11 @@ export default function WalletHistory() {
     {
       title: "Auction Sessions",
       // Thay 'method' bằng trường tương ứng trong 'accountRegistration'
-      dataIndex: "accountRegistration",
-      key: "session",
-      // render: (text) => (text)
+      dataIndex: "auctionRegistration",
+      key: "auctionRegistration",
+
+      render: (auctionRegistration) =>
+        auctionRegistration.auctionSession?.nameSession,
     },
 
     {

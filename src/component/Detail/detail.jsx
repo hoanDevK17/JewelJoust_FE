@@ -244,7 +244,6 @@ export default function Detail() {
               <h6> </h6> <h4></h4>
               <h6>Profile Cost:</h6> <h4>{product?.feeAmount}$</h4>
               <h6>Step Price:</h6> <h4>{product?.minStepPrice}$</h4>
-              <h6>Deposit Fee:</h6> <h4>{product?.depositAmount}$</h4>
               <h6>Highest Bid Price:</h6> <h4>{formattedBalance(Number(product?.highestPrice))}$</h4>
               {/* <div>
                 {Object.keys(timeLeft).length > 0 && (
