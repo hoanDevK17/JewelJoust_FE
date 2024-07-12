@@ -40,14 +40,19 @@ export default function Footer() {
         >
           Jewelry Auction
         </span>
+       
         <span
           className="button-link"
           onClick={() => {
             console.log("111");
-            navigate("/homepage");
+            navigate("/ConditionsAndServices");
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth",
+            });
           }}
         >
-          Products
+         Conditions And Services
         </span>
       </div>
       <div className="footer-content">

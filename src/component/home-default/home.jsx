@@ -53,6 +53,10 @@ export default function HomePage({ children }) {
       label: "Active History",
       onClick: () => {
         navigate("/ActiveHistory/RequestSell");
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
       },
     },
 
@@ -61,6 +65,10 @@ export default function HomePage({ children }) {
       label: "Wallet",
       onClick: () => {
         navigate("/Wallet/History");
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
       },
     },
     {
@@ -69,6 +77,7 @@ export default function HomePage({ children }) {
       onClick: () => {
         dispatch(logout());
         navigate("/");
+
       },
     },
   ];
@@ -78,6 +87,10 @@ export default function HomePage({ children }) {
       label: "Dashborad",
       onClick: () => {
         navigate("/dashboard");
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
       },
     },
     {
@@ -214,7 +227,9 @@ export default function HomePage({ children }) {
                 className="button-link"
                 onClick={() => {
                   navigate("/registration");
+                  
                 }}
+                
               >
                 Sign Up
               </span>
