@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import HomePage from "../../component/home-default/home";
 import {
-  AppstoreOutlined,
   CalendarOutlined,
-
-  MailOutlined,
-  SettingOutlined,
 } from "@ant-design/icons";
 import { Card, Menu } from "antd";
 
@@ -20,15 +16,12 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 //   };
 // }
 export const items = [
- 
   {
     key: "1",
     icon: <CalendarOutlined />,
     label: "Request Sell History",
     path: "/RequestSell",
   },
-  
-  
 ];
 export const ActiveHistory = () => {
   const location = useLocation();
@@ -44,8 +37,10 @@ export const ActiveHistory = () => {
     const selectedItem = items.find((item) => item.path === currentPath);
 
     if (selectedItem) {
+
       setCurrentItem(selectedItem);
     } else {
+      console.log("Oke");
       setCurrentItem(items[0]);
     }
   }, [location.pathname]);
@@ -63,8 +58,8 @@ export const ActiveHistory = () => {
         <Menu
           style={{
             width: 256,
-            height:"fit-content",
-            borderRadius:"10px"
+            height: "fit-content",
+            borderRadius: "10px",
           }}
           defaultSelectedKeys={["1"]}
           defaultOpenKeys={["1"]}

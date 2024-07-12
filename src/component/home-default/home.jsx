@@ -45,7 +45,7 @@ export default function HomePage({ children }) {
       key: "2",
       label: "Active History",
       onClick: () => {
-        navigate("/ActiveHistory");
+        navigate("/ActiveHistory/RequestSell");
       },
     },
 
@@ -158,7 +158,7 @@ export default function HomePage({ children }) {
                   Welcome: {user?.fullname}
                 </span>
                 {isMember ? (
-                  <div className="user-wallet" style={{ alignItems: "center" }}>               
+                  <div className="user-wallet" style={{ alignItems: "center" }}>
                     {isRefreshBalance ? (
                       <LoadingOutlined />
                     ) : (

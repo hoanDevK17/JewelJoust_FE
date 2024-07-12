@@ -173,8 +173,8 @@ export default function ManageSession() {
         min_stepPrice: current_session.minStepPrice,
         deposit_amount: current_session.depositAmount,
         range_time: [
-          dayjs(current_session.start_time, "YYYY-MM-DD HH:mm"),
-          dayjs(current_session.end_time, "YYYY-MM-DD HH:mm"),
+          dayjs(current_session.start_time),
+          dayjs(current_session.end_time),
         ],
       });
       setCurrentSession(current_session);
