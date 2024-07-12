@@ -177,6 +177,9 @@ export default function Detail() {
       return [...p];
     });
   };
+  const formattedBalance = (num) => {
+    return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  };
   return (
     <div>
       <HomePage>
@@ -237,12 +240,12 @@ export default function Detail() {
               </h6>
               <h4>{product?.nameJewelry}</h4>
               <h6>Start Price:</h6>{" "}
-              <h4>{product?.auctionRequest.ultimateValuation.price}$</h4>
+              <h4>{formattedBalance(Number(product?.auctionRequest.ultimateValuation.price))}$</h4>
               <h6> </h6> <h4></h4>
               <h6>Profile Cost:</h6> <h4>{product?.feeAmount}$</h4>
               <h6>Step Price:</h6> <h4>{product?.minStepPrice}$</h4>
               <h6>Deposit Fee:</h6> <h4>{product?.depositAmount}$</h4>
-              <h6>Highest Bid Price:</h6> <h4>{product?.highestPrice}$</h4>
+              <h6>Highest Bid Price:</h6> <h4>{formattedBalance(Number(product?.highestPrice))}$</h4>
               {/* <div>
                 {Object.keys(timeLeft).length > 0 && (
                   <div style={{ marginBottom: "20px" }}>
