@@ -18,6 +18,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 export default function Home() {
   const onSearch = (value, _e, info) => console.log(info?.source, value);
   const [data, setData] = useState();
@@ -116,7 +117,7 @@ export default function Home() {
                             {session.auctionRequest.ultimateValuation.price}$
                           </TableCell>
                           <TableCell align="right">
-                            {session.start_time}
+                          {dayjs(session?.start_time).format("HH:mm ")}{dayjs(session?.start_time).format(" DD-MM-YYYY")}
                           </TableCell>
                           <TableCell align="right">{session.status}</TableCell>
                         </TableRow>
