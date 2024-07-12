@@ -171,3 +171,8 @@ export const APIBidding = (id_session, price) =>
     id_session: id_session,
     price: price,
   });
+// stop and continue
+export const APIStop = (id) => 
+  api.put(`auctionSessions/stop`, id);
+export const APIContinue = (id) =>
+  api.put(`auctionSessions/continue`, id);

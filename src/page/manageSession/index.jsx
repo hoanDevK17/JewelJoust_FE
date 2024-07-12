@@ -17,6 +17,8 @@ import {
 import { useForm } from "antd/es/form/Form";
 import { EditOutlined, UploadOutlined } from "@ant-design/icons";
 import {
+  APIContinue,
+  APIStop,
   APIcreateSession,
   APIgetAllRequestToSession,
   APIgetallSession,
@@ -83,6 +85,37 @@ export default function ManageSession() {
       setStaffs(optionStaff);
     });
   };
+
+  const handleStop = async () => {
+    APIStop(currentSession.id)
+    .then((rs) => {
+      console.log(rs);
+      message.success("Successfully");
+      fetchData();
+    })
+    .catch((error) => {
+      message.error("Something went wrong", error);
+    })
+    .finally(() => {
+      setCurrentId(-1);
+    });
+  }
+
+  const handleContinue = async () => {
+    APIContinue(currentSession.id)
+    .then((rs) => {
+      console.log(rs);
+      message.success("Successfully");
+      fetchData();
+    })
+    .catch((error) => {
+      message.error("Something went wrong", error);
+    })
+    .finally(() => {
+      setCurrentId(-1);
+    });
+  }
+
   const use = async (file) => {
     try {
       const imageUrl = await uploadFile(file);
@@ -186,6 +219,11 @@ export default function ManageSession() {
       // setUrlJewelry([]);
     }
   }, [currentId]);
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  }; 
+
 
   const columns = [
     {
@@ -404,6 +442,9 @@ export default function ManageSession() {
                 }}
                 autoComplete="off"
               >
+                <div style={{ display: "flex", gap: "24px", justifyContent: "center", marginBottom: "24px"}}>
+                <strong>Status</strong> : {currentSession?.status}{" "}
+                </div>
                 {currentId > 0 && (
                   <Form.Item label="ID Session" name="id_session">
                     <Input readOnly />
@@ -582,6 +623,76 @@ export default function ManageSession() {
               </Form>
             </Col>
           </Row>
+          <div 
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "16px",
+            }}>
+            {currentSession?.status === "PENDINGPAYMENT" && (
+              <Form
+                name="basic"
+                labelCol={{
+                  span: 8,
+                }}
+                wrapperCol={{
+                  span: 16,
+                }}
+                style={{
+                  display: "flex",
+                  gap: "16px",
+                  justifyContent: "center",
+                  maxWidth: 500,
+                }}
+                initialValues={{
+                  remember: true,
+                }}
+                onFinish={handleStop}
+                onFinishFailed={onFinishFailed}
+                autoComplete="off"
+              >
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  disabled={user?.role !== "STAFF"}
+                >
+                  STOP
+                </Button>
+              </Form>
+            )}
+            {currentSession?.status === "STOP" && (
+              <Form
+                name="basic"
+                labelCol={{
+                  span: 8,
+                }}
+                wrapperCol={{
+                  span: 16,
+                }}
+                style={{
+                  display: "flex",
+                  gap: "16px",
+                  justifyContent: "center",
+                  maxWidth: 500,
+                }}
+                initialValues={{
+                  remember: true,
+                }}
+                onFinish={handleContinue}
+                onFinishFailed={onFinishFailed}
+                autoComplete="off"
+              >
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  disabled={user?.role !== "STAFF"}
+                >
+                  CONTINUE
+                </Button>
+              </Form>
+            )}
+          </div>
         </Modal>
         <Table dataSource={data} columns={columns} />
       </div>
