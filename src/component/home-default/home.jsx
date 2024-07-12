@@ -98,7 +98,7 @@ export default function HomePage({ children }) {
         setIsRefreshBalance(false);
       });
   };
-
+  const formattedBalance = (num)=>{return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');}; 
   return (
     <div className="home-default">
       <div className="home-page-header">
@@ -168,7 +168,7 @@ export default function HomePage({ children }) {
                       onClick={(e) => e.preventDefault()}
                       style={{ fontSize: "16px" }}
                     >
-                      Balance: {Number(user?.wallet?.balance).toFixed(2)}$
+                      Balance: {formattedBalance(user?.wallet?.balance)}$
                     </span>
                   </div>
                 ) : (
