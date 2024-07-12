@@ -88,11 +88,11 @@ export default function Home() {
                   <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                       <TableRow>
-                        <TableCell>Session </TableCell>
-                        <TableCell align="right">Jewelry </TableCell>
-                        <TableCell align="right">Initial price</TableCell>
-                        <TableCell align="right">Start time</TableCell>
-                        <TableCell align="right">Status</TableCell>
+                        <TableCell align={"left"}>Session </TableCell>
+                        <TableCell align="left">Jewelry </TableCell>
+                        <TableCell align="left">Initial price</TableCell>
+                        <TableCell align="left">Time</TableCell>
+                        <TableCell align="left">Status</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -110,16 +110,21 @@ export default function Home() {
                           <TableCell component="th" scope="session">
                             {session.nameSession}
                           </TableCell>
-                          <TableCell align="right">
+                          <TableCell align="left">
                             {session.auctionRequest.jewelryname}
                           </TableCell>
-                          <TableCell align="right">
+                          <TableCell align="left">
                             {session.auctionRequest.ultimateValuation.price}$
                           </TableCell>
-                          <TableCell align="right">
-                          {dayjs(session?.start_time).format("HH:mm ")}{dayjs(session?.start_time).format(" DD-MM-YYYY")}
+                          <TableCell align="left">
+                            {`${dayjs(session.start_time).format(
+                              "D MMMM h:mmA"
+                            )} -
+                              ${dayjs(session.end_time).format(
+                                "D MMMM h:mmA"
+                              )}`}
                           </TableCell>
-                          <TableCell align="right">{session.status}</TableCell>
+                          <TableCell align="left">{session.status}</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>

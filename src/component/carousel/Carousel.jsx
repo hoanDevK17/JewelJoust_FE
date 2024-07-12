@@ -9,6 +9,7 @@ import { APIgetallSessionByStatus } from "../../api/api";
 import { Col, Container, Row } from "react-bootstrap";
 import { LoadingOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
+import { formatDate } from "../../utils/dateUtils";
 export default function MyCarousel() {
   const navigate = useNavigate();
   const settings = {
@@ -47,7 +48,7 @@ export default function MyCarousel() {
         console.log(response);
         setData(response.data);
         setIsLoading(false);
-        console.log(data)
+        console.log(data);
       })
       .catch((error) => {
         console.error(error);
@@ -94,13 +95,19 @@ export default function MyCarousel() {
                       />
                       <CardContent>
                         <Typography gutterBottom variant="h1" component="div">
-                         <h5>{session.nameSession}</h5>
+                          <h5>{session.nameSession}</h5>
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                        <h6>Start time: {dayjs(session?.start_time).format("HH:mm ")}{dayjs(session?.start_time).format(" DD-MM-YYYY")}</h6>
+                          <h6>
+                            {dayjs(session.start_time).format("D MMMM h:mmA")} -{" "}
+                            {dayjs(session.end_time).format("D MMMM h:mmA")}
+                          </h6>
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                       <h6>Price: {session?.auctionRequest.ultimateValuation.price}$</h6>
+                          <h6>
+                            Price:{" "}
+                            {session?.auctionRequest.ultimateValuation.price}$
+                          </h6>
                         </Typography>
                       </CardContent>
                     </CardActionArea>
