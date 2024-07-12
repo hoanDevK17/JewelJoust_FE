@@ -200,6 +200,14 @@ export default function Detail() {
                 {" "}
                 Item: {product?.id}
               </h6>
+              <h6
+                style={{
+                  color: "grey",
+                }}
+              >
+                {" "}
+                Session: {product?.nameSession}
+              </h6>
               <h4>{product?.nameJewelry}</h4>
               <h6>Start Price:</h6>{" "}
               <h4>{product?.auctionRequest.ultimateValuation.price}$</h4>
@@ -295,55 +303,55 @@ export default function Detail() {
                   <>
                     {(product?.status == "INITIALIZED" ||
                       product?.status == "BIDDING") && (
-                      <Form onFinish={handleRegisAuction}>
-                        <Form.Item
-                          label={
-                            <span style={{ fontWeight: "bold", fontSize: 16 }}>
-                              Bid Amount ($)
-                            </span>
-                          }
-                          name="bidAmount"
-                          style={{
-                            width: 500,
-                          }}
-                          rules={[
-                            {
-                              required: true,
-                              message: "Please input your bid amount!",
-                            },
-                            {
-                              type: "number",
-                              min: product?.auctionRequest.ultimateValuation
-                                .price,
-                              message:
-                                "Please enter price higher than " +
-                                product?.auctionRequest.ultimateValuation
-                                  .price +
-                                "$",
-                            },
-                          ]}
-                        >
-                          <InputNumber
-                            size="large"
-                            style={{ width: "100%" }}
-                            placeholder="Enter bid amount"
-                            min={0}
-                            step={1}
-                          />
-                        </Form.Item>
-                        <Button htmlType="submit" className="button-detail">
-                          Auction Register
-                        </Button>
-                      </Form>
-                    )}
+                        <Form onFinish={handleRegisAuction}>
+                          <Form.Item
+                            label={
+                              <span style={{ fontWeight: "bold", fontSize: 16 }}>
+                                Bid Amount ($)
+                              </span>
+                            }
+                            name="bidAmount"
+                            style={{
+                              width: 500,
+                            }}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please input your bid amount!",
+                              },
+                              {
+                                type: "number",
+                                min: product?.auctionRequest.ultimateValuation
+                                  .price,
+                                message:
+                                  "Please enter price higher than " +
+                                  product?.auctionRequest.ultimateValuation
+                                    .price +
+                                  "$",
+                              },
+                            ]}
+                          >
+                            <InputNumber
+                              size="large"
+                              style={{ width: "100%" }}
+                              placeholder="Enter bid amount"
+                              min={0}
+                              step={1}
+                            />
+                          </Form.Item>
+                          <Button htmlType="submit" className="button-detail">
+                            Auction Register
+                          </Button>
+                        </Form>
+                      )}
                   </>
                 )}
                 {(product?.status == "FINISH" ||
                   product?.status == "PENDINGPAYMENT") && (
-                  <p style={{ color: "blue", fontStyle: "italic" }}>
-                    This session is finished
-                  </p>
-                )}
+                    <p style={{ color: "blue", fontStyle: "italic" }}>
+                      This session is finished
+                    </p>
+                  )}
               </div>
             </Col>
           </Row>
