@@ -825,8 +825,8 @@ export default function ManageRequest() {
                 }}
               >
                 <p>
-                  <strong>Reason:</strong>
-                  {currentRequest?.initialValuations.reason}
+                  <strong>Reason: </strong>
+                  {currentRequest?.reasonReject}
                 </p>
               </div>
             </Col>
