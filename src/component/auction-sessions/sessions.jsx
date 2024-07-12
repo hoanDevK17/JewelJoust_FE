@@ -35,51 +35,9 @@ export default function AuctionSession() {
   useEffect(() => {
     fetchData();
   }, []);
-  
+
   return (
     <>
-      <HomePage>
-
-
-        <Container fluid >
-          <Row className="justify-content-xl-center">
-            <Col xl={11}>
-                <TableContainer component={Paper}>
-                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Session </TableCell>
-                        <TableCell align="right">Jewelry </TableCell>
-                        <TableCell align="right">Initial price</TableCell>
-                        <TableCell align="right">Start time</TableCell>
-                        <TableCell align="right">Status</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {data?.map((session, index) => (
-                   
-                        <TableRow
-                          key={index}
-                          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                          <TableCell component="th" scope="session">
-                            {session.nameSession}
-                          </TableCell>
-                          <TableCell align="right">{session.auctionRequest.jewelryname}</TableCell>
-                          <TableCell align="right">{session.auctionRequest.ultimateValuation.price}$</TableCell>
-                          <TableCell align="right">{session.start_time}</TableCell>
-                          <TableCell align="right">{session.status}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-        <Footer />
-      </HomePage>
     </>
 
   )
