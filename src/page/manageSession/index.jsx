@@ -18,6 +18,8 @@ import {
 import { useForm } from "antd/es/form/Form";
 import { EditOutlined, UploadOutlined } from "@ant-design/icons";
 import {
+  APIContinue,
+  APIStop,
   APIcreateSession,
   APIgetAllRequestToSession,
   APIgetallSession,
@@ -67,6 +69,7 @@ export default function ManageSession() {
         fetchData();
       })
       .catch((error) => {
+        console.log(error);
         message.error("Something went wrong", error);
       })
       .finally(() => {
@@ -82,6 +85,7 @@ export default function ManageSession() {
         fetchData();
       })
       .catch((error) => {
+        console.log(error);
         message.error("Something went wrong", error);
       })
       .finally(() => {
@@ -718,7 +722,6 @@ export default function ManageSession() {
                 </Form>
               )}
             </div>
-
           </Modal>
           <Table dataSource={data} columns={columns} />
         </div>
