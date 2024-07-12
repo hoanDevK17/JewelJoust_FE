@@ -130,6 +130,7 @@ export default function Detail() {
                       marginBottom: "10px",
                       borderRadius: "8px",
                       cursor: "pointer",
+                      objectFit: "cover",
                     }}
                     onClick={() => handleTab(index)}
                   />
