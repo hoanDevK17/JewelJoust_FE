@@ -6,9 +6,9 @@ import {
   EditOutlined,
   LoadingOutlined,
 } from "@ant-design/icons";
-import { Button, Col, Modal, Row, Spin, Steps, Table, Tag } from "antd";
+import { Button, Col, Form, message, Modal, Row, Spin, Steps, Switch, Table, Tag } from "antd";
 
-import { APIgetallrequest, APIgetallrequestUser } from "../../api/api";
+import { APIAuctionConfirmation, APIAuctionRejected, APIgetallrequest, APIgetallrequestUser } from "../../api/api";
 import dayjs from "dayjs";
 import "./index.scss";
 
@@ -410,10 +410,14 @@ const columns = (setCurrentId) => [
 
 function RequestSellHistory() {
   const [data, setData] = useState();
-
   const [currentId, setCurrentId] = useState(-1);
   const [currentRequest, setCurrentRequest] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [isRejected, setIsRejected] = useState(false);
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -428,6 +432,40 @@ function RequestSellHistory() {
         setIsLoading(false);
       });
   };
+
+  const handelFormPending = (checked) => {
+    setIsRejected(checked);
+  };
+
+  const handelAutionComfirmation = async (value) => {
+    APIAuctionConfirmation(currentId)
+    .then((rs) => {
+      console.log(rs);
+      message.success("Successfully");
+      fetchData();
+    })
+    .catch((error) => {
+      message.error("Something went wrong", error);
+    })
+    .finally(() => {
+      setCurrentId(-1);
+    });
+  }
+
+  const handelAutionRejected = async (value) => {
+    APIAuctionRejected(currentId)
+    .then((rs) => {
+      console.log(rs);
+      message.success("Successfully");
+      fetchData();
+    })
+    .catch((error) => {
+      message.error("Something went wrong", error);
+    })
+    .finally(() => {
+      setCurrentId(-1);
+    });
+  }
 
   useEffect(() => {
     if (currentId > 0) {
@@ -532,6 +570,88 @@ function RequestSellHistory() {
                       >
                         {currentRequest?.jewelrydescription}
                       </div>
+                      {currentRequest?.status == "APPROVED" && (
+                      <>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "12px",
+                          }}
+                        >
+                          <h6 style={{ marginRight: "12px" }}>CONFIRMED</h6>
+                          <Switch
+                              
+                            unCheckedChildren="Accept"
+                            checkedChildren="Reject"
+                            onChange={handelFormPending}
+                          />
+                        </div>
+                        <div
+                          style={{
+                            width: "100%",
+                            display: "flex",
+                            justifyContent: "center",
+                            marginTop: "16px",
+                          }}
+                        >
+                          {!isRejected ? (
+                            <Form
+                            name="basic"
+                            labelCol={{
+                              span: 8,
+                            }}
+                            wrapperCol={{
+                              span: 16,
+                            }}
+                            style={{
+                              display: "flex",
+                              gap: "16px",
+                              justifyContent: "center",
+                              maxWidth: 500,
+                            }}
+                            initialValues={{
+                              remember: true,
+                            }}
+                            onFinish={handelAutionComfirmation}
+                            onFinishFailed={onFinishFailed}
+                            autoComplete="off"
+                          >
+                            <Button type="primary" htmlType="submit">
+                              Accept
+                            </Button>
+                          </Form>
+                          ) : (
+                            <Form
+                              name="basic"
+                              labelCol={{
+                                span: 8,
+                              }}
+                              wrapperCol={{
+                                span: 16,
+                              }}
+                              style={{
+                                display: "flex",
+                                gap: "16px",
+                                justifyContent: "center",
+                                maxWidth: 500,
+                              }}
+                              initialValues={{
+                                remember: true,
+                              }}
+                              onFinish={handelAutionRejected}
+                              onFinishFailed={onFinishFailed}
+                              autoComplete="off"
+                            >
+                              <Button type="primary" htmlType="submit">
+                                Rejected
+                              </Button>
+                            </Form>
+                          )}
+                        </div>
+                      </>
+                    )}
                       {/* {currentRequest?.status === "REJECTED" ? (
                         <Row gutter={[16, 16]} style={{ paddingTop: "10px" }}>
                           <Col span={24}>
