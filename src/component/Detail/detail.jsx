@@ -25,7 +25,6 @@ export default function Detail() {
       await fetch();
     }
   });
-
   const params = useParams();
   const [product, setProduct] = useState();
   const user = useSelector(selectUser);
@@ -192,9 +191,9 @@ export default function Detail() {
               <h6>Start Price:</h6>{" "}
               <h4>{product?.auctionRequest.ultimateValuation.price}$</h4>
               <h6>Start Time:</h6>
-              <h4> {dayjs(product?.start_time).format("YYYY-MM-DD HH-mm")}</h4>
+              <h4>{dayjs(product?.start_time).format("HH:mm ")}{dayjs(product?.start_time).format(" DD-MM-YYYY")}</h4>
               <h6>End Time:</h6>
-              <h4>{dayjs(product?.end_time).format("YYYY-MM-DD HH-mm")}</h4>
+              <h4>{dayjs(product?.end_time).format("HH:mm ")}{dayjs(product?.end_time).format(" DD-MM-YYYY")}</h4>
               <h6>Profile Cost:</h6> <h4>{product?.feeAmount}$</h4>
               <h6>Step Price:</h6> <h4>{product?.minStepPrice}$</h4>
               <h6>Deposit Fee:</h6> <h4>{product?.depositAmount}$</h4>
