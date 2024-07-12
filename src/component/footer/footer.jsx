@@ -62,7 +62,7 @@ export default function Footer() {
           <PhoneOutlined /> 037-481-4009
         </p>
         <p>
-          <MailOutlined /> truongtltse173154@fpt.edu.vn
+          <MailOutlined /> jeweljoust@gmail.com
         </p>
         <p>
           <EnvironmentOutlined /> Lô E2a-7, Đường D1, Đ. D1, Long Thạnh Mỹ,

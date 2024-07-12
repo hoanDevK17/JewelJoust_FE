@@ -420,10 +420,7 @@ export default function Detail() {
                   3.1 The buyer with the highest bid at the end of the auction
                   will be declared the winner.
                 </p>
-                <p>
-                  3.2 The winning buyer will be notified and must make the
-                  payment within 48 hours.
-                </p>
+                
 
                 <h2>4. Payment and Transaction Fees</h2>
                 <p>
@@ -431,33 +428,21 @@ export default function Detail() {
                   accepted payment methods.
                 </p>
                 <p>
-                  4.2 Payment must be completed within 5 business days from the
-                  auction end date.
+                4.2 When investing, you will receive a refund after the initial investment
                 </p>
-                <p>
-                  4.3 Buyers are responsible for any transaction fees associated
-                  with their payment method.
-                </p>
+               
 
-                <h2>5. Shipping and Delivery</h2>
-                <p>
-                  5.1 Upon receiving payment, the seller will ship the item to
-                  the buyer within 7-10 business days.
-                </p>
-                <p>
-                  5.2 Shipping costs will be added to the item value and must be
-                  covered by the buyer.
-                </p>
+                
 
-                <h2>6. Additional Regulations</h2>
-                <p>6.1 Buyers must comply with the systems rules and terms.</p>
+                <h2>5. Additional Regulations</h2>
+                <p>5.1 Buyers must comply with the systems rules and terms.</p>
                 <p>
-                  6.2 The system reserves the right to change the rules and fee
+                  5.2 The system reserves the right to change the rules and fee
                   schedule at any time and will notify users before they take
                   effect.
                 </p>
                 <p>
-                  6.3 Buyers are responsible for maintaining the security of
+                  5.3 Buyers are responsible for maintaining the security of
                   their account information and are liable for any activity that
                   occurs under their account.
                 </p>
