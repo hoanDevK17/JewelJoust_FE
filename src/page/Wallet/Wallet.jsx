@@ -2,13 +2,13 @@ import { Card, Menu } from "antd";
 import HomePage from "../../component/home-default/home";
 import "./Wallet.scss"; // Import the SCSS file
 import { Outlet, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import {
-  CalendarOutlined,
+
   HistoryOutlined,
-  MailOutlined,
+
 } from "@ant-design/icons";
-import { APIgetTransactions } from "../../api/api";
+
 export const itemWallet = [
   {
     key: "1",

@@ -3,13 +3,19 @@ import Slider from "react-slick";
 import "./carousel.scss";
 import { Products } from "../../share-data/productData";
 import { Link, useNavigate } from "react-router-dom";
-import { Box, Card, CardActionArea, CardContent, CardMedia } from "@mui/material";
-import { Button, Space, Spin, Typography } from "antd";
+import {
+  Box,
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+} from "@mui/material";
+import {  Space, Spin, Typography } from "antd";
 import { APIgetallSessionByStatus } from "../../api/api";
 import { Col, Container, Row } from "react-bootstrap";
 import { LoadingOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
-import { formatDate } from "../../utils/dateUtils";
+
 export default function MyCarousel() {
   const navigate = useNavigate();
   const settings = {
@@ -44,7 +50,7 @@ export default function MyCarousel() {
   const [isLoading, setIsLoading] = useState(true);
   const fetchData = async () => {
     setIsLoading(true);
-    APIgetallSessionByStatus("PENDINGPAYMENT")
+    APIgetallSessionByStatus("INITIALIZED")
       .then((response) => {
         console.log(response);
         setData(response.data);
@@ -78,12 +84,7 @@ export default function MyCarousel() {
           <Slider {...settings}>
             {data?.map((session, index) => {
               return (
-                <div
-                  className="cards"
-                  style={{ width: "100%" }}
-                  key={index}
-
-                >
+                <div className="cards" style={{ width: "100%" }} key={index}>
                   <Card sx={{ width: "100%" }}>
                     <CardActionArea>
                       <CardMedia

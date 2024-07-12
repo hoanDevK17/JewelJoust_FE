@@ -5,8 +5,8 @@ import {
   MinusCircleOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
-import { APICreateQR, APIDeposit, APIgetTransactions } from "../../api/api"; // Sửa đổi chỗ này để thêm APIgetTransactions
-import { useNavigate } from "react-router-dom";
+import { APICreateQR, APIgetTransactions } from "../../api/api"; // Sửa đổi chỗ này để thêm APIgetTransactions
+
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 
@@ -42,8 +42,6 @@ export default function WalletHistory() {
   ];
 
   const [data, setData] = useState([]);
-
-  const navigate = useNavigate();
   const user = useSelector(selectUser);
 
   const fetchData = async () => {

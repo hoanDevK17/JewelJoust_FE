@@ -21,9 +21,7 @@ import { useForm } from "antd/es/form/Form";
 import HomePage from "../../component/home-default/home.jsx";
 import { APIauctionrequestsell } from "../../api/api.js";
 import "./createBidRequest.scss";
-import { useStyleRegister } from "antd/es/theme/internal.js";
-import { useTheme } from "@emotion/react";
-import { isFulfilled } from "@reduxjs/toolkit";
+
 export default function AuctionRequestSell() {
   const { TextArea } = Input;
   const [isLoading, setIsLoading] = useState(false);

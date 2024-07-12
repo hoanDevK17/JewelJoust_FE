@@ -13,7 +13,14 @@ import { APIgetallSessionByStatus } from "../../api/api.js";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { Space, Spin } from "antd";
-import { Box, Card, CardActionArea, CardContent, CardMedia, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+  Typography,
+} from "@mui/material";
 export default function Home() {
   const onSearch = (value, _e, info) => console.log(info?.source, value);
   const [data, setData] = useState();
@@ -21,7 +28,7 @@ export default function Home() {
   const navigate = useNavigate();
   const fetchData = async () => {
     setIsLoading(true);
-    APIgetallSessionByStatus("PENDINGPAYMENT")
+    APIgetallSessionByStatus("BIDDING")
       .then((response) => {
         console.log(response);
         setData(response.data);
@@ -94,15 +101,26 @@ export default function Home() {
                         <Col xl={1}>
                           <Space>
                             <Spin
-                              indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />}
+                              indicator={
+                                <LoadingOutlined
+                                  style={{ fontSize: 48 }}
+                                  spin
+                                />
+                              }
                             />
                           </Space>
                         </Col>
                       </Row>
                     </Container>
                   ) : data?.length > 0 ? (
-
-                    <div className="slider-container" style={{ display: "flex", justifyContent: "space-evenly", gap: "10px" }}>
+                    <div
+                      className="slider-container"
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-evenly",
+                        gap: "10px",
+                      }}
+                    >
                       {data?.slice(0, 4).map((session, index) => {
                         return (
                           <div
@@ -119,22 +137,45 @@ export default function Home() {
                                   alt="session image"
                                 />
                                 <CardContent>
-                                  <Typography gutterBottom variant="h1" component="div">
+                                  <Typography
+                                    gutterBottom
+                                    variant="h1"
+                                    component="div"
+                                  >
                                     <h5>{session.nameSession}</h5>
                                   </Typography>
-                                  <Typography variant="body2" color="text.secondary">
+                                  <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                  >
                                     <h6>
-                                      {dayjs(session.start_time).format("D MMMM h:mmA")} -{" "}
-                                      {dayjs(session.end_time).format("D MMMM h:mmA")}
+                                      {dayjs(session.start_time).format(
+                                        "D MMMM h:mmA"
+                                      )}{" "}
+                                      -{" "}
+                                      {dayjs(session.end_time).format(
+                                        "D MMMM h:mmA"
+                                      )}
                                     </h6>
                                   </Typography>
-                                  <Typography variant="body2" color="text.secondary">
+                                  <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                  >
                                     <h6>
                                       Price:{" "}
-                                      {session?.auctionRequest.ultimateValuation.price}$
+                                      {
+                                        session?.auctionRequest
+                                          .ultimateValuation.price
+                                      }
+                                      $
                                     </h6>
                                   </Typography>
-                                  <Box display="flex" justifyContent="center" mt={2}>
+                                  <Box
+                                    display="flex"
+                                    justifyContent="center"
+                                    mt={2}
+                                  >
                                     <button
                                       className="button-num1"
                                       onClick={() => {

@@ -12,21 +12,23 @@ export default function ResetPass() {
   const [form] = useForm();
 
   const handleSubmit = (user) => {
-    APIResetPass(user.password).then((rs) => {
-      if (rs.status === 200) {
-        // navigate('/homepage')
-        // alert("Change Password succeesfully")
-        success();
-        setTimeout(() => {
-          navigate("/homepage");
-        }, 1500);
-      } else {
-        error();
-      }
-    }).catch((error) => {
-      console.log(error);
-      message.error("Something went wrong");
-    });
+    APIResetPass(user.password, searchParams.get("token"))
+      .then((rs) => {
+        if (rs.status === 200) {
+          // navigate('/homepage')
+          // alert("Change Password succeesfully")
+          success();
+          setTimeout(() => {
+            navigate("/homepage");
+          }, 1500);
+        } else {
+          error();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        message.error("Something went wrong");
+      });
   };
   const [messageApi, contextHolder] = message.useMessage();
   const success = () => {

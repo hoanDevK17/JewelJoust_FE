@@ -1,4 +1,3 @@
-
 import HomePage from "../../component/home-default/home.jsx";
 import React, { useEffect, useState } from "react";
 
@@ -14,6 +13,8 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
+import { Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 export default function AuctionSession() {
   const navigate = useNavigate();
   const [data, setData] = useState();
@@ -38,65 +39,71 @@ export default function AuctionSession() {
 
   return (
     <>
-      <HomePage>
-        <Container fluid style={{ marginBottom: "20px" }}>
-          <h2
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              color: "gray",
-              marginBottom: "10px",
-            }}
-          >
-            Jewelry Auction Sessions
-          </h2>
-          <Row className="justify-content-xl-center">
-            <Col xl={11}>
-              <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Session </TableCell>
-                      <TableCell align="right">Jewelry </TableCell>
-                      <TableCell align="right">Initial price</TableCell>
-                      <TableCell align="right">Start time</TableCell>
-                      <TableCell align="right">Status</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {data?.map((session, index) => (
-                      <TableRow
-                        hover
-                        key={index}
-                        sx={{
-                          "&:last-child td, &:last-child th": { border: 0 },
-                        }}
-                        onClick={() => {
-                          navigate(`/detail/${session.id}`);
-                        }}
-                      >
-                        <TableCell component="th" scope="session">
-                          {session.nameSession}
-                        </TableCell>
-                        <TableCell align="right">
-                          {session.auctionRequest.jewelryname}
-                        </TableCell>
-                        <TableCell align="right">
-                          {session.auctionRequest.ultimateValuation.price}$
-                        </TableCell>
-                        <TableCell align="right">
-                          {dayjs(session.start_time).format("YYYY-MM-DD HH-mm")}
-                        </TableCell>
-                        <TableCell align="right">{session.status}</TableCell>
+      {isLoading ? (
+        <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
+      ) : (
+        <HomePage>
+          <Container fluid style={{ marginBottom: "20px" }}>
+            <h2
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                color: "gray",
+                marginBottom: "10px",
+              }}
+            >
+              Jewelry Auction Sessions
+            </h2>
+            <Row className="justify-content-xl-center">
+              <Col xl={11}>
+                <TableContainer component={Paper}>
+                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Session </TableCell>
+                        <TableCell align="right">Jewelry </TableCell>
+                        <TableCell align="right">Initial price</TableCell>
+                        <TableCell align="right">Start time</TableCell>
+                        <TableCell align="right">Status</TableCell>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Col>
-          </Row>
-        </Container>
-      </HomePage>
+                    </TableHead>
+                    <TableBody>
+                      {data?.map((session, index) => (
+                        <TableRow
+                          hover
+                          key={index}
+                          sx={{
+                            "&:last-child td, &:last-child th": { border: 0 },
+                          }}
+                          onClick={() => {
+                            navigate(`/detail/${session.id}`);
+                          }}
+                        >
+                          <TableCell component="th" scope="session">
+                            {session.nameSession}
+                          </TableCell>
+                          <TableCell align="right">
+                            {session.auctionRequest.jewelryname}
+                          </TableCell>
+                          <TableCell align="right">
+                            {session.auctionRequest.ultimateValuation.price}$
+                          </TableCell>
+                          <TableCell align="right">
+                            {dayjs(session.start_time).format(
+                              "YYYY-MM-DD HH-mm"
+                            )}
+                          </TableCell>
+                          <TableCell align="right">{session.status}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Col>
+            </Row>
+          </Container>
+        </HomePage>
+      )}
     </>
   );
 }

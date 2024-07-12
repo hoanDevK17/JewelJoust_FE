@@ -5,8 +5,10 @@ export const APIlogin = (userName, passWord) =>
   api.post("login", { username: userName, password: passWord });
 export const APIForgotpass = (email) =>
   api.post("forgot-password", { email: email });
-export const APIResetPass = (password) =>
-  api.post("reset-password", { password: password });
+export const APIResetPass = (password,token) =>
+  api.post("reset-password", { password: password },{  headers: {
+    Authorization: `Bearer ${token}`
+  }});
 
 export const APIChangePassword = (oldPassword, newPassword) =>
   api.put("account/changePassword", {
@@ -43,7 +45,7 @@ export const APIregis = (
     birthday: birthday,
   });
 export const APIgetallacount = () => api.get("account");
-export const APIgetallacountbyRole = (role) => api.get(`account/${role}`);
+export const APIgetallacountbyRole = (role) => api.get(`account/role/${role}`);
 export const APIregishaverole = (
   userName,
   passWord,

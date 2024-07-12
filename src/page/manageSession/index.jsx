@@ -24,6 +24,7 @@ import {
   APIgetAllRequestToSession,
   APIgetallSession,
   APIgetallacount,
+  APIgetallacountbyRole,
   APIupdateSession,
 } from "../../api/api";
 
@@ -118,7 +119,7 @@ export default function ManageSession() {
       });
   };
   const fetchStaff = async () => {
-    APIgetallacount()
+    APIgetallacountbyRole("STAFF")
       .then((response) => {
         var optionStaff = [];
         response.data.forEach((account) => {
@@ -132,7 +133,6 @@ export default function ManageSession() {
             ];
           }
         });
-
         setStaffs(optionStaff);
       })
       .catch((error) => {

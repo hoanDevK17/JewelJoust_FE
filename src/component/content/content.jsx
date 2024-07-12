@@ -1,8 +1,8 @@
-import { Button } from "antd";
+
 import React from "react";
 import "./content.scss";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+
 export default function Content({ title, btnContent, linkURL }) {
   const navigate = useNavigate();
   return (

@@ -8,8 +8,7 @@ import {
   Table,
   message,
 } from "antd";
-import { TinyColor } from "@ctrl/tinycolor";
-import { useNavigate } from "react-router-dom";
+
 import { useEffect, useState } from "react";
 import {
   ArrowLeftOutlined,
@@ -19,7 +18,7 @@ import {
 import {
   APICreateQR,
   APIgetAllBidding,
-  APIgetTransactions,
+
 } from "../../api/api";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
