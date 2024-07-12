@@ -122,6 +122,7 @@ const formatSetConvertedAmount =(num)=> {
       })
       .catch((error) => {
         console.log(error);
+        message.error("Something went wrong");
       });
     handleAddOk();
   };
