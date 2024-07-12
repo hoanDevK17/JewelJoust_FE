@@ -16,7 +16,16 @@ import dayjs from "dayjs";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice.js";
+import useRealtime from "../../assets/hook/useRealTime.jsx";
 export default function Detail() {
+
+  useRealtime(async (body) => {
+    
+    if (body.body == "addBid") {
+      await fetch();
+    }
+  });
+
   // const navigate = useNavigate();
   const params = useParams();
   const [product, setProduct] = useState();
@@ -73,7 +82,8 @@ export default function Detail() {
       })
       .finally(() => {});
   };
-  useEffect(() => {
+
+  const fetch = () => {
     var id_user;
     if (user != null) {
       id_user = user.id;
@@ -89,6 +99,10 @@ export default function Detail() {
         console.log(error);
       })
       .finally(() => {});
+  };
+
+  useEffect(() => {
+    fetch();
   }, [location]);
 
   useEffect(() => {

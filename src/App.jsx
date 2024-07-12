@@ -23,6 +23,7 @@ import Bidding from "./page/bidding/Bidding";
 import WalletHistory from "./page/WalletHistory/WalletHistory";
 import RequestSellHistory from "./page/HistoryRequsestSell/RequestSellHistory";
 import RegistrationSessionHistory from "./page/HistoryRegistrationSession";
+import useRealtime from "./assets/hook/useRealTime";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -142,6 +143,10 @@ export default function App() {
     },
    
   ]);
+
+  useRealtime((data) => {
+    console.log(data);
+  });
 
   return <RouterProvider router={router} />;
 }
