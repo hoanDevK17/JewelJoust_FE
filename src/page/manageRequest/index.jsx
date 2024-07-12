@@ -13,6 +13,7 @@ import {
   Tag,
   Image,
   message,
+  Spin,
 } from "antd";
 
 import { useForm } from "antd/es/form/Form";
@@ -58,6 +59,9 @@ export default function ManageRequest() {
   const [form] = useForm();
   const [currentRequest, setCurrentRequest] = useState();
   const [isRejected, setIsRejected] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
+
   const user = useSelector(selectUser);
 
   const onFinishrejected = async (values) => {
@@ -253,11 +257,20 @@ export default function ManageRequest() {
   ];
 
   const fetchData = async () => {
-    await APIgetallrequest(token).then((response) => {
-      if (response.status == 200) {
-        setData(response.data);
-      }
-    });
+    setIsLoading(true);
+    await APIgetallrequest(token)
+      .then((response) => {
+        if (response.status == 200) {
+          setData(response.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        message.error("Something went wrong");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const handelFormPending = (checked) => {
@@ -569,6 +582,16 @@ export default function ManageRequest() {
   }, [currentId]);
   return (
     <>
+      {isLoading ? (
+        <Spin
+          style={{
+            height: "100vh",
+            width: "100%",
+
+            paddingTop: "calc(50vh - 150px)",
+          }}
+        />
+      ) : ( 
       <div>
         <Modal
           width={850}
@@ -1147,6 +1170,7 @@ export default function ManageRequest() {
         </Modal>
         <Table dataSource={data} columns={columns} />
       </div>
-    </>
+       )} </>
   );
 }
+  

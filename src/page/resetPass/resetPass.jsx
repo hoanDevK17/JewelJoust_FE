@@ -23,6 +23,9 @@ export default function ResetPass() {
       } else {
         error();
       }
+    }).catch((error) => {
+      console.log(error);
+      message.error("Something went wrong");
     });
   };
   const [messageApi, contextHolder] = message.useMessage();

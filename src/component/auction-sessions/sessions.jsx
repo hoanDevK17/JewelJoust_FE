@@ -1,4 +1,4 @@
-import Footer from "../../component/footer/footer.jsx";
+
 import HomePage from "../../component/home-default/home.jsx";
 import React, { useEffect, useState } from "react";
 

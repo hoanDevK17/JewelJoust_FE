@@ -480,7 +480,14 @@ function RequestSellHistory() {
   return (
     <>
       {isLoading ? (
-        <Spin style={{ width: "100%" }}></Spin>
+         <Spin
+         style={{
+           height: "100vh",
+           width: "100%",
+           backgroundColor: "#fff9e8",
+           paddingTop: "50vh",
+         }}
+       ></Spin>
       ) : (
         <>
           <Modal

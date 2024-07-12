@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Products } from "../../share-data/productData";
 import { Button, Col, Container, Form, Row, Table } from "react-bootstrap";
 import HomePage from "../../component/home-default/home";
-import Footer from "../../component/footer/footer.jsx";
+
 import { useParams } from "react-router-dom";
 import { APIgetSessionByID } from "../../api/api.js";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice.js";
+import { message } from "antd";
 export default function Bidding() {
   const product = Products.find((obj) => {
     return obj.id == 1;
@@ -60,6 +61,9 @@ export default function Bidding() {
     APIgetSessionByID(params?.id, id_user).then((response) => {
       console.log(response);
       setData(response.data);
+    }).catch((error) => {
+      console.log(error);
+      message.error("Something went wrong");
     });
   };
   useEffect(() => {
@@ -162,8 +166,7 @@ export default function Bidding() {
             </Table>
           </Col>
         </Row>
-      </Container>
-      <Footer />
+      </Container>  
     </HomePage>
   );
 }

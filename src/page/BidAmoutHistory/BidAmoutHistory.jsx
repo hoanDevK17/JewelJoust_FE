@@ -16,7 +16,11 @@ import {
   MinusCircleOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
-import { APICreateQR, APIgetTransactions } from "../../api/api";
+import {
+  APICreateQR,
+  APIgetAllBidding,
+  APIgetTransactions,
+} from "../../api/api";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 import moment from "moment";
@@ -25,34 +29,31 @@ export default function WalletHistory() {
     {
       title: "ID",
       dataIndex: "id",
-      key: "ID",
+      key: "id",
     },
     {
       title: "Amount",
-      dataIndex: "amount",
-      key: "Amount",
+      dataIndex: "bid_price",
+      key: "amount",
     },
-
     {
-      title: "Request Date",
-      dataIndex: "date",
-      key: "RequestDate",
+      title: "Bid Time",
+      dataIndex: "bid_time",
+      key: "date",
       render: (text) => moment(text).format("YYYY-MM-DD HH:mm"),
     },
     {
-      title: "Method",
-      dataIndex: "Method",
-      key: "Method",
+      title: "Auction Sessions",
+      // Thay 'method' bằng trường tương ứng trong 'accountRegistration'
+      dataIndex: "accountRegistration",
+      key: "session",
+      // render: (text) => (text)
     },
-    {
-      title: "TYPE",
-      dataIndex: "transaction_type",
-      key: "Method",
-    },
+
     {
       title: "Status",
       dataIndex: "status",
-      key: "Status",
+      key: "status",
     },
   ];
 
@@ -101,14 +102,6 @@ export default function WalletHistory() {
 
   const onFinishAdd = (values) => {
     console.log("oki" + convertedAmount.toFixed(2));
-    // console.log(user?.wallet?.id, values.amount, "Deposit " + values.amount);
-    // APIDeposit(user?.wallet?.id, convertedAmount.toFixed(2) , "Deposit " + convertedAmount.toFixed(2))
-    //   .then(() => {
-    //     message.success("Deposit added successfully: " + convertedAmount.toFixed(2) + "$");
-    //   })
-    //   .catch((error) => {
-    //     message.error("Something went wrong", error);
-    //   });
 
     APICreateQR(values.amount)
       .then((response) => {
@@ -128,10 +121,15 @@ export default function WalletHistory() {
   const [data, setData] = useState([]);
 
   const fetchData = async () => {
-    APIgetTransactions().then((response) => {
-      console.log(response);
-      setData(response.data);
-    });
+    APIgetAllBidding()
+      .then((response) => {
+        console.log(response);
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        message.error("Something went wrong");
+      });
   };
   useEffect(() => {
     fetchData();

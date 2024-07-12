@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Form,
@@ -17,12 +17,13 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 import uploadFile from "../../assets/hook/useUpload";
 import { useForm } from "antd/es/form/Form";
-import Footer from "../../component/footer/footer.jsx";
+
 import HomePage from "../../component/home-default/home.jsx";
 import { APIauctionrequestsell } from "../../api/api.js";
 import "./createBidRequest.scss";
 import { useStyleRegister } from "antd/es/theme/internal.js";
 import { useTheme } from "@emotion/react";
+import { isFulfilled } from "@reduxjs/toolkit";
 export default function AuctionRequestSell() {
   const { TextArea } = Input;
   const [isLoading, setIsLoading] = useState(false);
@@ -56,30 +57,34 @@ export default function AuctionRequestSell() {
   };
 
   const submit = (cbr) => {
-    setIsLoading(true);
-    let path = urlJewelry.map((file) => ({ path: file.url }));
+    if (user != null) {
+      setIsLoading(true);
+      let path = urlJewelry.map((file) => ({ path: file.url }));
 
-    APIauctionrequestsell(
-      cbr.jewelryname,
-      cbr.jewelrydescription,
-      cbr.jewelryinitialprice,
-      path
-    )
-      .then((rs) => {
-        if (rs.status === 200) {
-          message.success("Requested file was successfully");
-          form.resetFields();
-          setUrlJewelry([]);
-        } else {
-          messageApi.error(`Something went wrong`);
-        }
-      })
-      .catch((error) => {
-        messageApi.error(`Something went wrong`, error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      APIauctionrequestsell(
+        cbr.jewelryname,
+        cbr.jewelrydescription,
+        cbr.jewelryinitialprice,
+        path
+      )
+        .then((rs) => {
+          if (rs.status === 200) {
+            message.success("Requested file was successfully");
+            form.resetFields();
+            setUrlJewelry([]);
+          } else {
+            messageApi.error(`Something went wrong`);
+          }
+        })
+        .catch((error) => {
+          messageApi.error(`Something went wrong`, error);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    } else {
+      message.error("Please login to send request");
+    }
   };
 
   const confirm = () => {
@@ -90,14 +95,25 @@ export default function AuctionRequestSell() {
     message.error("Cancelled request");
   };
   const [isModalOpen, setIsModalOpen] = useState([false, false]);
+
   
-  const token = useTheme();
   const toggleModal = (idx, target) => {
     setIsModalOpen((p) => {
       p[idx] = target;
       return [...p];
     });
   };
+  useEffect(() => {
+    if (user == null) {
+      const result = window.confirm(
+        "Please login to send request Sell. Do you want to login ?"
+      );
+
+      if (result) {
+        navigate("/login");
+      }
+    }
+  });
   return (
     <>
       {contextHolder}
@@ -133,6 +149,7 @@ export default function AuctionRequestSell() {
                     ]}
                   >
                     <Input
+                      readOnly={user == null}
                       className="input-box"
                       type="text"
                       placeholder="Enter your Jewerly name"
@@ -150,6 +167,7 @@ export default function AuctionRequestSell() {
                     ]}
                   >
                     <TextArea
+                      readOnly={user == null}
                       rows={4}
                       className="input-box"
                       type="text"
@@ -168,6 +186,7 @@ export default function AuctionRequestSell() {
                     ]}
                   >
                     <Input
+                      readOnly={user == null}
                       className="input-box"
                       type="number"
                       placeholder="Enter your jewelry desired price"
@@ -201,18 +220,17 @@ export default function AuctionRequestSell() {
                       Auction Rules
                     </span>
                     <Modal
-                      style={{marginTop: "0"}}
+                      style={{ marginTop: "0" }}
                       open={isModalOpen[0]}
                       onOk={() => toggleModal(0, false)}
                       onCancel={() => toggleModal(0, false)}
                       footer=" "
                       width={"fit-content"}
-                  
-                      
                     >
-                     <>
+                      <>
                         <div className="container">
-                          <h1>1. Product Registration</h1>
+                          <h1>Auction Rules</h1>
+                          <h2>1. Product Registration</h2>
                           <p>
                             1.1 Sellers must create an account and provide
                             verification information before registering a
@@ -230,13 +248,13 @@ export default function AuctionRequestSell() {
                             <li>Starting price</li>
                           </ul>
 
-                          <h1>2. Auction Management</h1>
+                          <h2>2. Auction Management</h2>
                           <p>
                             2.1 Sellers can monitor their auction requests
                             through the auction request history page.
                           </p>
 
-                          <h1>3. Auction Conclusion</h1>
+                          <h2>3. Auction Conclusion</h2>
                           <p>
                             3.1 The auction ends when the auction time is over.
                           </p>
@@ -245,14 +263,14 @@ export default function AuctionRequestSell() {
                             make the payment within 48 hours.
                           </p>
 
-                          <h1>4. Payment and Transaction Fees</h1>
+                          <h2>4. Payment and Transaction Fees</h2>
                           <p>4.2 Sellers must pay a 2% transaction fee.</p>
                           <p>
                             4.3 Sellers will receive the money after the system
                             confirms the successful payment.
                           </p>
 
-                          <h1>5. Additional Regulations</h1>
+                          <h2>5. Additional Regulations</h2>
                           <p>
                             5.1 Users (sellers and bidders) must comply with the
                             systems rules and terms.
@@ -316,7 +334,6 @@ export default function AuctionRequestSell() {
                 </Form>
               </div>
             </div>
-            <Footer />
           </div>
         </HomePage>
       )}

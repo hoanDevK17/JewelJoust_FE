@@ -25,6 +25,7 @@ import RequestSellHistory from "./page/HistoryRequsestSell/RequestSellHistory";
 import RegistrationSessionHistory from "./page/HistoryRegistrationSession";
 import useRealtime from "./assets/hook/useRealTime";
 import Payment from "./page/Payment/Payment";
+import ConditionsAndServices from "./page/conditionsAndServices/conditionsAndServices";
 export default function App() {
   const router = createBrowserRouter([
     {
@@ -39,6 +40,10 @@ export default function App() {
     {
       path: "/registration",
       element: <Registration />,
+    },
+    {
+      path: "/ConditionsAndServices",
+      element: <ConditionsAndServices />,
     },
     {
       path: "/forgotpassword",
@@ -136,7 +141,7 @@ export default function App() {
 
     {
       path: "/bidding",
-      element: <RegistrationSessionHistory />,
+      element: <RegistrationSessionHistory/>,
     },
     {
       path: "/payment",
