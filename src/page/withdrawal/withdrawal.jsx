@@ -25,7 +25,7 @@ export default function WalletHistory() {
       key: "id",
     },
     {
-      title: "Amount ($)",
+      title: "Amount",
       dataIndex: "amount",
       key: "amount",
       render: (text) => {

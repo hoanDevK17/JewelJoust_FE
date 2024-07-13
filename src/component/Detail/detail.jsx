@@ -286,7 +286,7 @@ export default function Detail() {
                               <span
                                 style={{ fontWeight: "bold", fontSize: 16 }}
                               >
-                                Bid Amount ($)
+                                Bid Amount
                               </span>
                             }
                             name="bidAmount"
@@ -336,7 +336,7 @@ export default function Detail() {
                           <Form.Item
                             label={
                               <span style={{ fontWeight: "bold", fontSize: 16 }}>
-                                Bid Amount ($)
+                                Bid Amount
                               </span>
                             }
                             name="bidAmount"
