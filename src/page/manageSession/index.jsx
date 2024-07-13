@@ -652,7 +652,7 @@ export default function ManageSession() {
                 marginTop: "16px",
               }}
             >
-              {currentSession?.status === "PENDINGPAYMENT" && (
+              {currentSession?.status === "BIDDING" && (
                 <Form
                   name="basic"
                   labelCol={{
