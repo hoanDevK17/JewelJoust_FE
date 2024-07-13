@@ -27,7 +27,7 @@ export default function WalletHistory() {
       key: "id",
     },
     {
-      title: "Amount ($)",
+      title: "Amount ",
       dataIndex: "bid_price",
       key: "amount",
       render: (text) => {
