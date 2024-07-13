@@ -1168,7 +1168,7 @@ export default function ManageRequest() {
             </>
           )}
         </Modal>
-        <Table dataSource={data} columns={columns} />
+        <Table dataSource={data} columns={columns}  size="middle" />
       </div>
        )} </>
   );

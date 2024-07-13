@@ -5,10 +5,16 @@ export const APIlogin = (userName, passWord) =>
   api.post("login", { username: userName, password: passWord });
 export const APIForgotpass = (email) =>
   api.post("forgot-password", { email: email });
-export const APIResetPass = (password,token) =>
-  api.post("reset-password", { password: password },{  headers: {
-    Authorization: `Bearer ${token}`
-  }});
+export const APIResetPass = (password, token) =>
+  api.post(
+    "reset-password",
+    { password: password },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 
 export const APIChangePassword = (oldPassword, newPassword) =>
   api.put("account/changePassword", {
@@ -45,6 +51,8 @@ export const APIregis = (
     birthday: birthday,
   });
 export const APIgetallacount = () => api.get("account");
+export const APIgetallacountPaging = (page, size) =>
+  api.get(`accounts/paging?page=${page}&size=${size}`);
 export const APIgetallacountbyRole = (role) => api.get(`account/role/${role}`);
 export const APIregishaverole = (
   userName,
@@ -174,9 +182,6 @@ export const APIBidding = (id_session, price) =>
     id_session: id_session,
     price: price,
   });
-  export const APIgetAllBidding = () =>
-    api.get(`auctionBids`);
-  export const APIStop = (id) =>
-    api.put(`auctionSessions/stop`,id);
-  export const APIContinue = (id) =>
-    api.put(`auctionSessions/continue`,id);
+export const APIgetAllBidding = () => api.get(`auctionBids`);
+export const APIStop = (id) => api.put(`auctionSessions/stop`, id);
+export const APIContinue = (id) => api.put(`auctionSessions/continue`, id);

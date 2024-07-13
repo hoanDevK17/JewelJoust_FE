@@ -37,6 +37,7 @@ export default function WalletHistory() {
       key: "date",
       render: (text) => moment(text).format("YYYY-MM-DD HH:mm"),
     },
+
     {
       title: "Auction Sessions",
       // Thay 'method' bằng trường tương ứng trong 'accountRegistration'
@@ -377,7 +378,7 @@ export default function WalletHistory() {
             </>
           </Modal>
           <div style={{ width: "100%" }}>
-            <Table dataSource={data} columns={columns} />
+            <Table dataSource={data} columns={columns}  size="middle"/>
           </div>
         </div>
       )}

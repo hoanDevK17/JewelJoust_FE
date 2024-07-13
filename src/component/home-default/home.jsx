@@ -1,9 +1,4 @@
-import {
-  LoadingOutlined,
-
-  RedoOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { LoadingOutlined, RedoOutlined, UserOutlined } from "@ant-design/icons";
 
 import "./home.scss";
 import { useNavigate } from "react-router-dom";
@@ -77,7 +72,6 @@ export default function HomePage({ children }) {
       onClick: () => {
         dispatch(logout());
         navigate("/");
-
       },
     },
   ];
@@ -227,9 +221,7 @@ export default function HomePage({ children }) {
                 className="button-link"
                 onClick={() => {
                   navigate("/registration");
-                  
                 }}
-                
               >
                 Sign Up
               </span>

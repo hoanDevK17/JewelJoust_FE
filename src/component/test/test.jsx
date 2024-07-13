@@ -125,7 +125,7 @@ export default function Category() {
 
 
       </Modal>
-      <Table dataSource={data} columns={columns} />
+      <Table dataSource={data} columns={columns}  size="middle"/>
     </div>
   );
 }
