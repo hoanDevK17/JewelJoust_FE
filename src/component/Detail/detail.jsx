@@ -366,12 +366,14 @@ export default function Detail() {
                             },
                             {
                               type: "number",
-                              min: product?.auctionRequest.ultimateValuation
-                                .price,
+                              min:
+                                product?.auctionRequest.ultimateValuation
+                                  .price + product?.minStepPrice,
                               message:
                                 "Please enter price higher than " +
-                                product?.auctionRequest.ultimateValuation
+                                (product?.auctionRequest.ultimateValuation
                                   .price +
+                                  product?.minStepPrice) +
                                 "$",
                             },
                           ]}
@@ -471,10 +473,13 @@ export default function Detail() {
                         },
                         {
                           type: "number",
-                          min: product?.auctionRequest.ultimateValuation.price,
+                          min:
+                            product?.auctionRequest.ultimateValuation.price +
+                            product?.minStepPrice,
                           message:
                             "Please enter price higher than " +
-                            product?.auctionRequest.ultimateValuation.price +
+                            (product?.auctionRequest.ultimateValuation.price +
+                              product?.minStepPrice) +
                             "$",
                         },
                       ]}
@@ -507,7 +512,7 @@ export default function Detail() {
               </p>
             )}
 
-            <BidsList bids={auctionBids} />
+            {auctionBids != null && <BidsList bids={auctionBids} />}
           </Flex>
 
           <Modal
