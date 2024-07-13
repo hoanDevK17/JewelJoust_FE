@@ -69,12 +69,12 @@ export default function WalletHistory() {
   const handleAmountChange = (e) => {
     const value = e.target.value;
     setAmount(value);
-    setConvertedAmount(value ? value / 25.238 : 0);
+    setConvertedAmount(value ? value / 25238 : 0);
   };
   const handleAmountSub = (e) => {
     const value = e.target.value;
     setAmount(value);
-    setConvertedAmount(value ? value * 25.238 : 0);
+    setConvertedAmount(value ? value * 25238 : 0);
   };
 
   const showAddModal = () => {
