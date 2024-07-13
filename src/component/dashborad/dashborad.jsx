@@ -102,8 +102,8 @@ const Dashboard = () => {
     if (role === "STAFF") {
       setItems([
         getItem("Request", "request", <TeamOutlined />),
-        getItem("Approve Withdrawal", "withdrawal", <ArrowUpOutlined  />)
-        
+        getItem("Session", "session", <HeartOutlined />),
+        getItem("Approve Withdrawal", "withdrawal", <ArrowUpOutlined  />),
       ]);
     }
   }, []);
