@@ -14,7 +14,7 @@ export default function HeadCarousel() {
           />
           <div style={{ position: "absolute", zIndex: "10000", top: "85px" }}>
             <h2 className="annouce">Auction Registeration</h2>
-            <div className="inside-item">
+            {/* <div className="inside-item">
               <button
                 className="button-num1"
                 onClick={() => {
@@ -23,7 +23,7 @@ export default function HeadCarousel() {
               >
                 <p>Register</p>
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
         <div>
@@ -34,14 +34,14 @@ export default function HeadCarousel() {
           <div style={{ position: "absolute", zIndex: "10000", top: "85px" }}>
             <h2 className="annouce2">View All Jewelries</h2>
             <div className="inside-item2">
-              <button
+              {/* <button
                 className="button-num2"
                 onClick={() => {
                   navigate("/sessions");
                 }}
               >
                 <p>View</p>
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
