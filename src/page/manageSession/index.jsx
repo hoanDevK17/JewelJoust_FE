@@ -23,7 +23,6 @@ import {
   APIcreateSession,
   APIgetAllRequestToSession,
   APIgetallSession,
-
   APIgetallacountbyRole,
   APIupdateSession,
 } from "../../api/api";
@@ -109,14 +108,16 @@ export default function ManageSession() {
       });
   };
   const fetchAuctionRequestAgreed = async () => {
-    APIgetAllRequestToSession()
-      .then((response) => {
-        setRequestAuctionsAgreed(response?.data);
-      })
-      .catch((error) => {
-        console.log(error);
-        message.error("Something went wrong1");
-      });
+    if (user?.role == "MANAGER") {
+      APIgetAllRequestToSession()
+        .then((response) => {
+          setRequestAuctionsAgreed(response?.data);
+        })
+        .catch((error) => {
+          console.log(error);
+          message.error("Something went wrong1");
+        });
+    }
   };
   const fetchStaff = async () => {
     APIgetallacountbyRole("STAFF")

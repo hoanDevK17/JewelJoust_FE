@@ -1,52 +1,38 @@
+import dayjs from "dayjs";
 import React from "react";
 
 const BidsList = ({ bids }) => {
-  console.log(bids);
-  bids = [
-    {
-      id: 1,
-      name: "Dave",
-      time: "1 min ago",
-      amount: "19,324.030",
-      status: "Highest bid",
-      imageUrl:
-        "https://letstryai.com/wp-content/uploads/2023/11/stable-diffusion-avatar-prompt-example-2.jpg", // replace with actual image URL
-    },
-    {
-      id: 2,
-      name: "Jess",
-      time: "1 min ago",
-      amount: "19,324.010",
-      status: "Almost there",
-      imageUrl:
-        "https://letstryai.com/wp-content/uploads/2023/11/stable-diffusion-avatar-prompt-example-2.jpg", // replace with actual image URL
-    },
-    {
-      id: 3,
-      name: "Monica",
-      time: "7 min ago",
-      amount: "18,000.101",
-      status: "It was so close",
-      imageUrl:
-        "https://letstryai.com/wp-content/uploads/2023/11/stable-diffusion-avatar-prompt-example-2.jpg", // replace with actual image URL
-    },
-  ];
+  if (Array.isArray(bids)) {
+    bids.sort((a, b) => b.id - a.id);
+    if (bids.length >= 3) {
+      bids = bids.slice(0, 3);
+    }
+  }
 
   return (
     <div style={styles.bidsContainer}>
       <div style={styles.header}>
         <h2 style={styles.headerTitle}>Bids</h2>
-        <button style={styles.seeAllButton}>See All</button>
       </div>
       {bids?.map((bid) => (
         <div key={bid.id} style={styles.bidItem}>
-          <img src={bid.imageUrl} alt={bid.name} style={styles.bidImage} />
+          <img
+            src={
+              "https://letstryai.com/wp-content/uploads/2023/11/stable-diffusion-avatar-prompt-example-2.jpg"
+            }
+            alt={bid.name}
+            style={styles.bidImage}
+          />
           <div style={styles.bidInfo}>
-            <h4 style={styles.bidName}>{bid.name}</h4>
-            <p style={styles.bidTime}>{bid.time}</p>
+            <h4 style={styles.bidName}>
+              {bid.auctionRegistration.accountRegistration.username}
+            </h4>
+            <p style={styles.bidTime}>
+              ${dayjs(bid.bid_time).format("D MMMM h:mmA")}
+            </p>
           </div>
           <div style={styles.bidAmount}>
-            <p style={styles.bidPrice}>${bid.amount}</p>
+            <p style={styles.bidPrice}>${bid.bid_price}</p>
             <p style={styles.bidStatus}>{bid.status}</p>
           </div>
         </div>
@@ -57,6 +43,7 @@ const BidsList = ({ bids }) => {
 
 const styles = {
   bidsContainer: {
+    marginTop: "50px",
     width: "300px",
     backgroundColor: "#AD9470",
     borderRadius: "15px",
