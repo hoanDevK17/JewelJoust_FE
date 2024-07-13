@@ -5,7 +5,7 @@ import {
   MinusCircleOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
-import { APICreateQR, APIgetTransactions } from "../../api/api"; // Sửa đổi chỗ này để thêm APIgetTransactions
+import { APICreateQR, APIgetTransactions, APIWithDrawal } from "../../api/api"; // Sửa đổi chỗ này để thêm APIgetTransactions
 
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
@@ -21,6 +21,12 @@ export default function WalletHistory() {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
+      render: (text) => {
+        const formattedAmount = Number(text)
+          .toFixed(2)
+          .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        return formattedAmount;
+      },
     },
     {
       title: "TYPE",
@@ -82,12 +88,12 @@ export default function WalletHistory() {
   const handleAmountChange = (e) => {
     const value = e.target.value;
     setAmount(value);
-    setConvertedAmount(value ? value / 25.238 : 0);
+    setConvertedAmount(value ? value / 25238 : 0);
   };
   const handleAmountSub = (e) => {
     const value = e.target.value;
     setAmount(value);
-    setConvertedAmount(value ? value * 25.238 : 0);
+    setConvertedAmount(value ? value * 25238 : 0);
   };
 
   const showAddModal = () => {
@@ -130,7 +136,24 @@ export default function WalletHistory() {
   };
 
   const onFinishSubtract = (values) => {
-    console.log("Subtract values:", values);
+    console.log("Subtract values:",  values.bankName,
+      values.accountNumber,
+      values.recipientName,
+      values.amount);
+    APIWithDrawal(
+      values.bankName,
+      values.accountNumber,
+      values.recipientName,
+      values.amount
+    )
+      .then((response) => {
+        console.log(response);
+        message.success("Create a successful money order")
+      })
+      .catch((error) => {
+        console.log(error);
+        message.error("Something went wrong");
+      });
     handleSubtractOk();
   };
   const balance = user?.wallet?.balance;
@@ -233,12 +256,12 @@ export default function WalletHistory() {
                       type="number"
                       value={amount}
                       onChange={handleAmountChange}
-                      suffix="VND(k)"
+                      suffix="VND"
                     />
                   </Form.Item>
                   <p>= {formatSetConvertedAmount(convertedAmount)} $</p>
                   <p>The Unit Of Calculation is: </p>
-                  <p>1$ = 25.24 VND(k)</p>
+                  <p>1$ = 25.24 VND</p>
                   <p>
                     Conversion Amount:{" "}
                     {formatSetConvertedAmount(convertedAmount)} $
@@ -314,12 +337,13 @@ export default function WalletHistory() {
                       suffix="$"
                     />
                   </Form.Item>
-                  <p>= {formatSetConvertedAmount(convertedAmount)} VND(k)</p>
+                  <p>= {formatSetConvertedAmount(convertedAmount)} VND</p>
                   <p>The Unit Of Calculation is: </p>
-                  <p>1$ = 25.24 VND(k)</p>
+                  <p>1$ = 25.24 VND</p>
                   <p>
                     Conversion Amount:{" "}
-                    {formatSetConvertedAmount(convertedAmount)} VND(k)
+                    {formatSetConvertedAmount(convertedAmount)} VND
+
                   </p>
                   <Form.Item
                     label="Bank Name"

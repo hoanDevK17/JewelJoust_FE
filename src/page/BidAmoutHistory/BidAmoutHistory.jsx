@@ -15,7 +15,7 @@ import {
   MinusCircleOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
-import { APICreateQR, APIgetAllBidding } from "../../api/api";
+import { APICreateQR, APIgetAllBidding, APIWithDrawal } from "../../api/api";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 import moment from "moment";
@@ -27,9 +27,13 @@ export default function WalletHistory() {
       key: "id",
     },
     {
-      title: "Amount",
+      title: "Amount ",
       dataIndex: "bid_price",
       key: "amount",
+      render: (text) => {
+        const formattedAmount = Number(text).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        return formattedAmount;
+      }
     },
     {
       title: "Bid Time",
@@ -66,12 +70,12 @@ export default function WalletHistory() {
   const handleAmountChange = (e) => {
     const value = e.target.value;
     setAmount(value);
-    setConvertedAmount(value ? value / 25.238 : 0);
+    setConvertedAmount(value ? value / 25238 : 0);
   };
   const handleAmountSub = (e) => {
     const value = e.target.value;
     setAmount(value);
-    setConvertedAmount(value ? value * 25.238 : 0);
+    setConvertedAmount(value ? value * 25238 : 0);
   };
 
   const showAddModal = () => {
@@ -100,18 +104,38 @@ export default function WalletHistory() {
 
   const onFinishAdd = (values) => {
     console.log("oki" + convertedAmount.toFixed(2));
-
+    // console.log(user?.wallet?.id, values.amount, "Deposit " + values.amount);
     APICreateQR(values.amount)
       .then((response) => {
+        console.log(response);
         window.open(response.data);
       })
       .catch((error) => {
         console.log(error);
+        message.error("Something went wrong");
       });
+    handleAddOk();
   };
 
   const onFinishSubtract = (values) => {
-    console.log("Subtract values:", values);
+    console.log("Subtract values:",  values.bankName,
+      values.accountNumber,
+      values.recipientName,
+      values.amount);
+    APIWithDrawal(
+      values.bankName,
+      values.accountNumber,
+      values.recipientName,
+      values.amount
+    )
+      .then((response) => {
+        console.log(response);
+        message.success("Create a successful money order")
+      })
+      .catch((error) => {
+        console.log(error);
+        message.error("Something went wrong");
+      });
     handleSubtractOk();
   };
   const balance = user?.wallet?.balance;
@@ -228,11 +252,12 @@ export default function WalletHistory() {
                       type="number"
                       value={amount}
                       onChange={handleAmountChange}
-                      suffix="VND(k)"
+                      suffix="VND"
                     />
                   </Form.Item>
                   <p>= {convertedAmount.toFixed(2)} $</p>
-                  <p>The Unit Of Calculation is: 25.24$</p>
+                  <p>The Unit Of Calculation is:</p>
+                  <p>1$ = 25.24 VND</p>
                   <p>Conversion Amount: {convertedAmount.toFixed(2)} $</p>
 
                   <Form.Item
@@ -305,9 +330,10 @@ export default function WalletHistory() {
                       suffix="$"
                     />
                   </Form.Item>
-                  <p>= {convertedAmount.toFixed(2)} VND(k)</p>
-                  <p>The Unit Of Calculation is: 125.24$</p>
-                  <p>Conversion Amount: {convertedAmount.toFixed(2)} VND(k)</p>
+                  <p>= {convertedAmount.toFixed(2)} VND</p>
+                  <p>The Unit Of Calculation is: </p>
+                  <p>1$ = 25.24 VND</p>
+                  <p>Conversion Amount: {convertedAmount.toFixed(2)} VND</p>
                   <Form.Item
                     label="Bank Name"
                     name="bankName"

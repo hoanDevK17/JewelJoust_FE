@@ -25,7 +25,7 @@ export default function HomePage({ children }) {
   const handleClick = () => {
     navigate("/");
     window.scrollTo({
-      to: 0,
+      top: 0,
       behavior: "smooth",
     });
   };

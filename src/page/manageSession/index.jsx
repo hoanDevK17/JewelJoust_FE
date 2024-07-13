@@ -326,65 +326,56 @@ export default function ManageSession() {
         />
       ) : (
         <div>
-          <Row justify={"center"} gutter={[16, 16]}>
-            <p style={{ textAlign: "center" }}>Add session</p>
-
-            <Col>
-              <Select
-                placeholder="Auction RequestID"
-                allowClear
-                showSearch
-                size={"large"}
-                style={{ minWidth: 600 }}
-                listHeight={1000}
-                onSelect={handleSelection}
-              >
-                {/* {requestAuctionsAgreed?.map((request) => {
-                console.log("a");
-                return (
-                  <>
-                  
-                  </>
-                );
-              })} */}
-
-                {requestAuctionsAgreed?.map((request, index) => {
-                  return (
-                    <Select.Option key={index} value={request.id}>
-                      {request.jewelryname}
-                      {"   "}
-                      {request.resources?.map((resource) => (
-                        <>
+          {user?.role === "MANAGER" && (
+            <Row justify={"center"} gutter={[16, 16]}>
+              <p style={{ textAlign: "center" }}>Add session</p>
+              <Col>
+                <Select
+                  placeholder="Auction RequestID"
+                  allowClear
+                  showSearch
+                  size={"large"}
+                  style={{ minWidth: 600 }}
+                  listHeight={1000}
+                  onSelect={handleSelection}
+                >
+                  {requestAuctionsAgreed?.map((request, index) => {
+                    return (
+                      <Select.Option key={index} value={request.id}>
+                        {request.jewelryname}
+                        {"   "}
+                        {request.resources?.map((resource) => (
                           <Image
+                            key={resource.id}
                             src={resource.path}
                             preview={false}
                             height={32}
                           />
-                        </>
-                      ))}
-                      {"   "}
-                      <strong>{request?.ultimateValuation?.price}$</strong>
-                    </Select.Option>
-                  );
-                })}
-              </Select>
-            </Col>
-            {user?.role === "MANAGER" && (
-              <Button
-                type="primary"
-                onClick={() => {
-                  if (currentRequestID > 0) {
-                    setCurrentId(0);
-                  } else {
-                    message.error("Please choose session");
-                  }
-                }}
-                size="large"
-              >
-                Add new Session
-              </Button>
-            )}
-          </Row>
+                        ))}
+                        {"   "}
+                        <strong>{request?.ultimateValuation?.price}$</strong>
+                      </Select.Option>
+                    );
+                  })}
+                </Select>
+              </Col>
+              {user?.role === "MANAGER" && (
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    if (currentRequestID > 0) {
+                      setCurrentId(0);
+                    } else {
+                      message.error("Please choose session");
+                    }
+                  }}
+                  size="large"
+                >
+                  Add new Session
+                </Button>
+              )}
+            </Row>
+          )}
           <Modal
             title={`${currentId > 0 ? "Edit" : "Add"} Session`}
             open={currentId >= 0}
@@ -661,7 +652,7 @@ export default function ManageSession() {
                 marginTop: "16px",
               }}
             >
-              {currentSession?.status === "PENDINGPAYMENT" && (
+              {currentSession?.status === "BIDDING" && (
                 <Form
                   name="basic"
                   labelCol={{

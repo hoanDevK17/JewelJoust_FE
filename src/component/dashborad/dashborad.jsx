@@ -5,6 +5,7 @@ import {
   TeamOutlined,
 
   LogoutOutlined,
+  ArrowUpOutlined,
 } from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
@@ -89,6 +90,7 @@ const Dashboard = () => {
         getItem("Acount", "acount", <ProfileOutlined />),
         getItem("Request", "request", <TeamOutlined />),
         getItem("Session", "session", <HeartOutlined />),
+       
       ]);
     }
     if (role === "MANAGER") {
@@ -99,7 +101,9 @@ const Dashboard = () => {
     }
     if (role === "STAFF") {
       setItems([
-        getItem("Request", "request", <TeamOutlined />)
+        getItem("Request", "request", <TeamOutlined />),
+        getItem("Session", "session", <HeartOutlined />),
+        getItem("Approve Withdrawal", "withdrawal", <ArrowUpOutlined  />),
       ]);
     }
   }, []);
