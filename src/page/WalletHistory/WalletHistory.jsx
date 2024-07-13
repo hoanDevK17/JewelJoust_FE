@@ -251,12 +251,12 @@ export default function WalletHistory() {
                       type="number"
                       value={amount}
                       onChange={handleAmountChange}
-                      suffix="VND(k)"
+                      suffix="VND"
                     />
                   </Form.Item>
                   <p>= {formatSetConvertedAmount(convertedAmount)} $</p>
                   <p>The Unit Of Calculation is: </p>
-                  <p>1$ = 25.24 VND(k)</p>
+                  <p>1$ = 25.24 VND</p>
                   <p>
                     Conversion Amount:{" "}
                     {formatSetConvertedAmount(convertedAmount)} $
@@ -332,12 +332,12 @@ export default function WalletHistory() {
                       suffix="$"
                     />
                   </Form.Item>
-                  <p>= {formatSetConvertedAmount(convertedAmount)} VND(k)</p>
+                  <p>= {formatSetConvertedAmount(convertedAmount)} VND</p>
                   <p>The Unit Of Calculation is: </p>
-                  <p>1$ = 25.24 VND(k)</p>
+                  <p>1$ = 25.24 VND</p>
                   <p>
                     Conversion Amount:{" "}
-                    {formatSetConvertedAmount(convertedAmount)} VND(k)
+                    {formatSetConvertedAmount(convertedAmount)} VND
                   </p>
                   <Form.Item
                     label="Bank Name"
