@@ -3,6 +3,8 @@ import { api } from "../config/axios";
 
 export const APIlogin = (userName, passWord) =>
   api.post("login", { username: userName, password: passWord });
+export const APIloginWithToken = () =>
+  api.post("loginWithToken");
 export const APIForgotpass = (email) =>
   api.post("forgot-password", { email: email });
 export const APIResetPass = (password, token) =>

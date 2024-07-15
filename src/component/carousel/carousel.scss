@@ -2,51 +2,7 @@
 @import url(https://fonts.gstatic.com);
 @import url(https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap);
 
-
 .slider-container {
-    font-family: "Poppins";
-    margin-top: 20px;
-    margin-left: 20px;
-
-    img {
-        width: 100%;
-        height: 200px;
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
-        margin-bottom: 20px;
-    }
-
-    .slick-next:before {
-        color: black;
-    }
-
-    .slick-prev:before {
-        color: black;
-    }
-
-    .cards {
-        .button-num1 {
-            width: 50%;
-            height: 30px;
-            color: black;
-            background-color: white;
-            font-size: 10px;
-            border-radius: 8px;
-            border: 1px solid black;
-            display: flex;
-            justify-content: center;
-            align-content: center;
-        }
-        .button-num1:hover {
-            background-color: darkgray;
-            color: lightslategrey;
-            border-radius: 8px;
-            animation-duration: 5s;
-            -webkit-transition: all 500ms ease;
-            -moz-transition: all 500ms ease;
-            -ms-transition: all 500ms ease;
-            -o-transition: all 500ms ease;
-            transition: all 500ms ease;
-        }
-    }
+  font-family: "Poppins";
+  margin-top: 20px;
 }

@@ -21,7 +21,7 @@ export default function AuctionSession() {
   const [isLoading, setIsLoading] = useState(true);
   const fetchData = async () => {
     setIsLoading(true);
-    APIgetallSessionByStatus("PENDINGPAYMENT")
+    APIgetallSessionByStatus("FINISH")
       .then((response) => {
         console.log(response);
         setData(response.data);
@@ -55,7 +55,7 @@ export default function AuctionSession() {
               Jewelry Auction Sessions
             </h2>
             <Row className="justify-content-xl-center">
-              <Col xl={11}>
+              <Col xl={12}>
                 <TableContainer component={Paper}>
                   <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
