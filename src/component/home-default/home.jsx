@@ -150,7 +150,7 @@ export default function HomePage({ children }) {
               });
             }}
           >
-            Jewelry Auction
+            AuctionSession
           </span>
           <span
             className="button-link"
@@ -172,7 +172,7 @@ export default function HomePage({ children }) {
               {" "}
               <div className="user_wallet_all">
                 <span style={{ display: "flex", justifyContent: "flex-end" }}>
-                  Welcome: {user?.fullname}
+                  Hi👋{"  "} {user?.fullname}
                 </span>
                 {isMember ? (
                   <div className="user-wallet" style={{ alignItems: "center" }}>
@@ -229,7 +229,7 @@ export default function HomePage({ children }) {
           )}
         </div>
       </div>
-      <div style={{ margin: "auto", maxWidth: "1200px" }}>
+      <div style={{ margin: "auto", maxWidth: "1200px", flex: 1 }}>
         <div className="home-page-body">{children}</div>
       </div>
       <Footer />

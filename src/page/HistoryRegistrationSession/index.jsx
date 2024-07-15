@@ -11,7 +11,7 @@ import { Button, Modal, Spin, Steps, Table, Tag } from "antd";
 
 import { APIHistoryRegisSession } from "../../api/api";
 import dayjs from "dayjs";
-import { Container,Row,Col } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import HomePage from "../../component/home-default/home";
 
 const formatDate = (dateString) => {
@@ -236,29 +236,28 @@ function RegistrationSessionHistory() {
 
   return (
     <>
-    <HomePage>
-      <Container fluid>
-        <Row className="justify-content-xl-center">
-          <Col xl={11}>
+      <HomePage>
+        <Container fluid>
+          <Row className="justify-content-xl-center">
+            <Col xl={12}>
+              {isLoading ? (
+                <Spin style={{ width: "100%" }}></Spin>
+              ) : (
+                <>
+                  <Modal
+                    title={`Detail Information`}
+                    open={currentId >= 0}
+                    onCancel={() => {
+                      setCurrentId(-1);
+                    }}
+                  ></Modal>
 
-            {isLoading ? (
-              <Spin style={{ width: "100%" }}></Spin>
-            ) : (
-              <>
-                <Modal
-                  title={`Detail Information`}
-                  open={currentId >= 0}
-                  onCancel={() => {
-                    setCurrentId(-1);
-                  }}
-                ></Modal>
-
-                <Table columns={columns(setCurrentId)} dataSource={data} />
-              </>
-            )}
-          </Col>
-        </Row>
-      </Container>
+                  <Table columns={columns(setCurrentId)} dataSource={data} />
+                </>
+              )}
+            </Col>
+          </Row>
+        </Container>
       </HomePage>
     </>
   );

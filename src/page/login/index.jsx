@@ -3,11 +3,11 @@ import "./index.scss";
 import { Button, Form, Input, Spin } from "antd";
 import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "../../config/axios";
-import { APIlogin } from "../../api/api";
+import { APIlogin, APIloginWithToken } from "../../api/api";
 import { useDispatch } from "react-redux";
-import { login } from "../../redux/features/counterSlice";
+import { login, logout } from "../../redux/features/counterSlice";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../config/firebase";
 export default function Login() {
@@ -67,6 +67,29 @@ export default function Login() {
       console.log(err);
     }
   };
+  useEffect(() => {
+    if (localStorage.getItem("token") != null) {
+      setIsLoading(true);
+      APIloginWithToken()
+        .then((response) => {
+          if (!response.data == "") {
+            dispatch(login(response.data));
+            localStorage.setItem("token", response.data.token);
+            response.data.role == "MEMBER"
+              ? navigate("/homepage")
+              : navigate("/dashboard");
+          } else {
+            dispatch(logout());
+          }
+        })
+        .catch((error) => {
+          dispatch(logout());
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+  });
   return (
     <>
       {isLoading ? (
