@@ -126,6 +126,8 @@ export const APIRejectUltimate = (id, reason) =>
 export const APIgetallSession = () => api.get("auctionSessions");
 export const APIgetallSessionByStatus = (status) =>
   api.get(`auctionSessions/${status}`);
+export const APIgetallSessionByName = (name) =>
+  api.get(`auctionSessions/name/${name}`);
 export const APIgetSessionByID = (id_sesion, id_user) =>
   api.get(`auctionSessions/detail/${id_sesion}?userId=${id_user}`);
 export const APIcreateSession = (values, path) =>

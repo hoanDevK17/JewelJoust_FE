@@ -4,7 +4,7 @@ import HomePage from "../home-default/home";
 
 import "./detail.scss";
 import MyCarousel from "../carousel/Carousel.jsx";
-import { Col, Container } from "react-bootstrap";
+
 import {
   Button,
   Row,
@@ -15,6 +15,8 @@ import {
   Statistic,
   Modal,
   Flex,
+  Col,
+  Spin,
 } from "antd";
 import {
   APIBidding,
@@ -45,6 +47,7 @@ export default function Detail() {
   const [product, setProduct] = useState();
   const [auctionBids, setAuctionBids] = useState();
   const user = useSelector(selectUser);
+  const [isLoading, setIsLoading] = useState(true);
   let location = useLocation();
   const [mainImage, setMainImage] = useState(product?.resources[0]?.path);
 
@@ -121,6 +124,7 @@ export default function Detail() {
   };
   console.log("rerender");
   const fetch = () => {
+    setIsLoading(true);
     var id_user;
     if (user != null) {
       id_user = user.id;
@@ -134,6 +138,9 @@ export default function Detail() {
       })
       .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
     APIgetAllBiddingBySessionId(params.id).then((response) => {
       setAuctionBids(response.data);
@@ -168,30 +175,20 @@ export default function Detail() {
     return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   };
   return (
-    <div>
-      <HomePage>
-        <Container fluid>
-          <Row className="justify-content-xl-center">
-            <Col xl={1}>
-              {product?.resources.map((img, index) => {
-                return (
-                  <img
-                    src={img?.path && img?.path}
-                    key={index}
-                    style={{
-                      width: "90%",
-                      height: "70px",
-                      marginBottom: "10px",
-                      borderRadius: "8px",
-                      cursor: "pointer",
-                      objectFit: "cover",
-                    }}
-                    onClick={() => handleTab(index)}
-                  />
-                );
-              })}
-            </Col>
-            <Col xl={4}>
+    <>
+      {isLoading ? (
+        <Spin
+          style={{
+            height: "100vh",
+            width: "100%",
+            backgroundColor: "#fff9e8",
+            paddingTop: "50vh",
+          }}
+        ></Spin>
+      ) : (
+        <HomePage>
+          <Row gutter={24}>
+            <Col xs={12}>
               <img
                 src={mainImage && mainImage}
                 style={{
@@ -203,12 +200,7 @@ export default function Detail() {
                 }}
               />
             </Col>
-            <Col
-              xl={4}
-              style={{
-                marginLeft: "20px",
-              }}
-            >
+            <Col xs={6}>
               <h6
                 style={{
                   color: "grey",
@@ -236,20 +228,25 @@ export default function Detail() {
               <h6> </h6> <h4></h4>
               <h6>Profile Cost:</h6> <h4>{product?.feeAmount}$</h4>
               <h6>Step Price:</h6> <h4>{product?.minStepPrice}$</h4>
-              <h6>Highest Bid Price:</h6>{" "}
-              <h4>
-                <strong>
-                  {formattedBalance(Number(product?.highestPrice))}$
-                </strong>
-              </h4>
+              {product?.highestBid != null && (
+                <>
+                  <h6>Highest Bid Price:</h6>{" "}
+                  <h4>
+                    <strong>
+                      {formattedBalance(Number(product?.highestBid?.bid_price))}
+                      $
+                    </strong>
+                  </h4>
+                </>
+              )}
               {/* <div>
-                {Object.keys(timeLeft).length > 0 && (
-                  <div style={{ marginBottom: "20px" }}>
-                    <h6>Time Left:</h6>
-                    <h4>{formatTimeLeft()}</h4>
-                  </div>
-                )}
-              </div> */}
+              {Object.keys(timeLeft).length > 0 && (
+                <div style={{ marginBottom: "20px" }}>
+                  <h6>Time Left:</h6>
+                  <h4>{formatTimeLeft()}</h4>
+                </div>
+              )}
+            </div> */}
               {product?.status === "BIDDING" && (
                 <>
                   <div>
@@ -292,7 +289,30 @@ export default function Detail() {
                 Buyer Regulations
               </span>
             </Col>
+            <Col xs={6}>
+              {auctionBids != null && <BidsList bids={auctionBids} />}
+            </Col>
           </Row>
+
+          <Row>
+            {product?.resources.map((img, index) => {
+              return (
+                <img
+                  src={img?.path && img?.path}
+                  key={index}
+                  style={{
+                    height: "70px",
+                    marginBottom: "10px",
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                    objectFit: "cover",
+                  }}
+                  onClick={() => handleTab(index)}
+                />
+              );
+            })}
+          </Row>
+
           <Flex align="center" justify="center" gap={30}>
             {product?.register ? (
               <>
@@ -402,8 +422,6 @@ export default function Detail() {
                 This session is finished
               </p>
             )}
-
-            {auctionBids != null && <BidsList bids={auctionBids} />}
           </Flex>
 
           <Modal
@@ -498,8 +516,8 @@ export default function Detail() {
               <MyCarousel status={"INITIALIZED"} />
             </Col>
           </Row>
-        </Container>
-      </HomePage>
-    </div>
+        </HomePage>
+      )}
+    </>
   );
 }

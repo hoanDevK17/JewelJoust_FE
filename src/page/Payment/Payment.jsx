@@ -9,6 +9,7 @@ import {
 } from "../../api/api";
 import { refreshBalance } from "../../redux/features/counterSlice";
 import { useDispatch } from "react-redux";
+import dayjs from "dayjs";
 
 const DepositSuccessPage = () => {
   const location = useLocation();
@@ -87,7 +88,11 @@ const DepositSuccessPage = () => {
 
                     <div className="d-flex justify-content-between align-items-center">
                       <p className="mb-0">Time:</p>
-                      <p className="mb-0">07/12/2024 15:30</p>
+                      <p className="mb-0">
+                        {dayjs(20240716194931).format(
+                          "YYYY-MM-DDTHH:mm:ss.SSSZ"
+                        )}
+                      </p>
                     </div>
                     <a href="/" className="btn btn-primary mt-4">
                       Home Page
