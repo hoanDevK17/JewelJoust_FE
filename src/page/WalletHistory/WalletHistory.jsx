@@ -136,10 +136,13 @@ export default function WalletHistory() {
   };
 
   const onFinishSubtract = (values) => {
-    console.log("Subtract values:",  values.bankName,
+    console.log(
+      "Subtract values:",
+      values.bankName,
       values.accountNumber,
       values.recipientName,
-      values.amount);
+      values.amount
+    );
     APIWithDrawal(
       values.bankName,
       values.accountNumber,
@@ -148,7 +151,7 @@ export default function WalletHistory() {
     )
       .then((response) => {
         console.log(response);
-        message.success("Create a successful money order")
+        message.success("Create a successful money order");
       })
       .catch((error) => {
         console.log(error);
@@ -156,11 +159,10 @@ export default function WalletHistory() {
       });
     handleSubtractOk();
   };
-  const balance = user?.wallet?.balance;
 
-  const formattedBalance = balance
-    .toFixed(2)
-    .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  const formattedBalance = (balance) => {
+    return balance.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  };
   return (
     <>
       {isLoading ? (
@@ -186,7 +188,9 @@ export default function WalletHistory() {
             <div>Full Name: {user?.fullname}</div>
             <div>Email: {user?.email}</div>
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <div>Balance: {formattedBalance}</div>
+              <div>
+                Balance: {formattedBalance(Number(user?.wallet?.balance))}
+              </div>
               <PlusCircleOutlined
                 type="primary"
                 onClick={showAddModal}
@@ -261,7 +265,7 @@ export default function WalletHistory() {
                   </Form.Item>
                   <p>= {formatSetConvertedAmount(convertedAmount)} $</p>
                   <p>The Unit Of Calculation is: </p>
-                  <p>1$ = 25.24 VND</p>
+                  <p>1$ = 25.240 VND</p>
                   <p>
                     Conversion Amount:{" "}
                     {formatSetConvertedAmount(convertedAmount)} $
@@ -339,11 +343,10 @@ export default function WalletHistory() {
                   </Form.Item>
                   <p>= {formatSetConvertedAmount(convertedAmount)} VND</p>
                   <p>The Unit Of Calculation is: </p>
-                  <p>1$ = 25.24 VND</p>
+                  <p>1$ = 25.240 VND</p>
                   <p>
                     Conversion Amount:{" "}
                     {formatSetConvertedAmount(convertedAmount)} VND
-
                   </p>
                   <Form.Item
                     label="Bank Name"
