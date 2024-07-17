@@ -179,7 +179,7 @@ export default function WalletHistory() {
           <div>Email: {user?.email}</div>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <div>
-              Balance: {formattedBalance(Number(user?.wallet?.balance))}
+              Balance: {formattedBalance(Number(user?.wallet?.balance))}$
             </div>
             <PlusCircleOutlined
               type="primary"

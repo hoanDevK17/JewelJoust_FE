@@ -185,7 +185,7 @@ export default function WalletHistory() {
           <div>Full Name: {user?.fullname}</div>
           <div>Email: {user?.email}</div>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <div>Balance: {formattedBalance}</div>
+            <div>Balance: {formattedBalance}$</div>
             <PlusCircleOutlined
               type="primary"
               onClick={showAddModal}
