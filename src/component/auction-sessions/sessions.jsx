@@ -58,13 +58,20 @@ export default function AuctionSession() {
   return (
     <>
       {isLoading ? (
-        <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
+        <Spin
+          style={{
+            height: "100vh",
+            width: "100%",
+            backgroundColor: "#fff9e8",
+            paddingTop: "50vh",
+          }}
+        />
       ) : (
         <HomePage>
          
           <div style={{ display: "flex", justifyContent: "end" }}>
             <Search
-              placeholder="Search again within sessions"
+              placeholder="Search by name sessions"
               onSearch={onSearch}
               size="middle"
               style={{ width: 400,marginBottom:"20px" }}
