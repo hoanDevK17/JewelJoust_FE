@@ -85,7 +85,7 @@ export default function WalletHistory() {
     return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   };
 
-  const handleAmountChange = (e) => {
+  const   handleAmountChange = (e) => {
     const value = e.target.value;
     setAmount(value);
     setConvertedAmount(value ? value / 25238 : 0);

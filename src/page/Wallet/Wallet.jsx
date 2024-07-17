@@ -49,7 +49,7 @@ export default function Wallet() {
           title={title}
           style={{
             width: "100%",
-            maxHeight: "800px ",
+            minHeight: "100vh",
           }}
         >
           <Outlet />
