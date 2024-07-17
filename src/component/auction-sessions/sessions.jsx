@@ -1,11 +1,7 @@
 import HomePage from "../../component/home-default/home.jsx";
 import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { 
-  APIgetallSession, 
-  APIgetallSessionByName, 
- 
-} from "../../api/api.js";
+import { APIgetallSession, APIgetallSessionByName } from "../../api/api.js";
 
 import dayjs from "dayjs";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -57,70 +53,72 @@ export default function AuctionSession() {
 
   return (
     <>
-      {isLoading ? (
-        <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
-      ) : (
-        <HomePage>
-         
-          <div style={{ display: "flex", justifyContent: "end" }}>
-            <Search
-              placeholder="Search again within sessions"
-              onSearch={onSearch}
-              size="middle"
-              style={{ width: 400,marginBottom:"20px" }}
-            />
-          </div>
+      <HomePage>
+        <div style={{ display: "flex", justifyContent: "end" }}>
+          <Search
+            placeholder="Search again within sessions"
+            onSearch={onSearch}
+            size="middle"
+            style={{ width: 400, marginBottom: "20px" }}
+          />
+        </div>
 
-          <Flex justify="flex-start" gap={30} wrap>
-            {data?.map((session, index) => {
-              return (
-                <Card
-                  key={index}
-                  hoverable
-                  style={{ width: "calc(33.33% - 20px)" }}
-                  cover={
-                    <img
-                      height={300}
-                      alt="example"
-                      src={session.resources[0]?.path}
-                    />
-                  }
-                >
-                  <Meta
-                    title={session.nameSession}
-                    description={
-                      <div style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "space-between",
-                          height: "100%",
-                        }}
-                      >
-                        <strong style={{ fontSize: "20px", color: "black" }}>
-                          {session?.auctionRequest.ultimateValuation.price}$
-                        </strong>
-                        <p style={paragraphStyle}>
-                          {dayjs(session.start_time).format("D MMMM h:mmA")} - 
-                          {dayjs(session.end_time).format("D MMMM h:mmA")}
-                          <br />
-                          {session.description}
-                        </p>
-                        <Button
-                          type="primary"
-                          danger={session.status === "BIDDING"}
-                          onClick={() => navigate(`/detail/${session.id}`)}
-                        >
-                          View Details
-                        </Button>
-                      </div>
+        <Flex justify="flex-start" gap={30} wrap>
+          {isLoading ? (
+            <Spin style={{ width: "100%" }}></Spin>
+          ) : (
+            <>
+              {data?.map((session, index) => {
+                return (
+                  <Card
+                    key={index}
+                    hoverable
+                    style={{ width: "calc(33.33% - 20px)" }}
+                    cover={
+                      <img
+                        height={300}
+                        alt="example"
+                        src={session.resources[0]?.path}
+                      />
                     }
-                  />
-                </Card>
-              );
-            })}
-          </Flex>
-        </HomePage>
-      )}
+                  >
+                    <Meta
+                      title={session.nameSession}
+                      description={
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "space-between",
+                            height: "100%",
+                          }}
+                        >
+                          <strong style={{ fontSize: "20px", color: "black" }}>
+                            {session?.auctionRequest.ultimateValuation.price}$
+                          </strong>
+                          <p style={paragraphStyle}>
+                            {dayjs(session.start_time).format("D MMMM h:mmA")} -
+                            {dayjs(session.end_time).format("D MMMM h:mmA")}
+                            <br />
+                            {session.description}
+                          </p>
+                          <Button
+                            type="primary"
+                            danger={session.status === "BIDDING"}
+                            onClick={() => navigate(`/detail/${session.id}`)}
+                          >
+                            View Details
+                          </Button>
+                        </div>
+                      }
+                    />
+                  </Card>
+                );
+              })}
+            </>
+          )}
+        </Flex>
+      </HomePage>
     </>
   );
 }
