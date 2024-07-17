@@ -26,7 +26,12 @@ const BidsList = ({ bids }) => {
           />
           <div style={styles.bidInfo}>
             <h4 style={styles.bidName}>
-              {bid.auctionRegistration.accountRegistration.username}
+              {bid.auctionRegistration.accountRegistration.username.length > 12
+                ? bid.auctionRegistration.accountRegistration.username.slice(
+                    0,
+                    12
+                  ) + "..."
+                : bid.auctionRegistration.accountRegistration.username}
             </h4>
             <p style={styles.bidTime}>
               ${dayjs(bid.bid_time).format("D MMMM h:mmA")}
