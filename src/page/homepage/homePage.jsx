@@ -8,22 +8,22 @@ import CardItem from "../../component/card/card.jsx";
 import MyCarousel from "../../component/carousel/Carousel.jsx";
 
 import { Col, Container, Row } from "react-bootstrap";
-import { ContainerFilled, LoadingOutlined } from "@ant-design/icons";
+
 import { APIgetallSessionByStatus } from "../../api/api.js";
 import { useNavigate } from "react-router-dom";
-import dayjs from "dayjs";
-import { Flex, Input, Space, Spin } from "antd";
-import {
-  Box,
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  Typography,
-} from "@mui/material";
+
+import { Flex, Input } from "antd";
+
 import CarouselAntd from "../../component/carouselAntd/carouselAntd.jsx";
 export default function Home() {
-  const onSearch = (value, _e, info) => console.log(info?.source, value);
+  const onSearch = (value, _e, info) => {
+    console.log(info?.source, value ,"search");
+
+    // Construct the URL with the search query parameter
+    const searchUrl = `/sessions?search=${encodeURIComponent(value)}`;
+    // Redirect to the constructed URL
+    navigate(searchUrl);
+  };
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
@@ -111,7 +111,7 @@ export default function Home() {
           <Content title="PRE-AUCTION" />
           <div></div>
           <MyCarousel status={"EXPIRED"} />
-        </Col>  
+        </Col>
       </HomePage>
     </div>
   );
