@@ -257,7 +257,7 @@ export default function WalletHistory() {
                   </Form.Item>
                   <p>= {convertedAmount.toFixed(2)} $</p>
                   <p>The Unit Of Calculation is:</p>
-                  <p>1$ = 25.24 VND</p>
+                  <p>1$ = 25.240 VND</p>
                   <p>Conversion Amount: {convertedAmount.toFixed(2)} $</p>
 
                   <Form.Item
@@ -332,7 +332,7 @@ export default function WalletHistory() {
                   </Form.Item>
                   <p>= {convertedAmount.toFixed(2)} VND</p>
                   <p>The Unit Of Calculation is: </p>
-                  <p>1$ = 25.24 VND</p>
+                  <p>1$ = 25.240 VND</p>
                   <p>Conversion Amount: {convertedAmount.toFixed(2)} VND</p>
                   <Form.Item
                     label="Bank Name"

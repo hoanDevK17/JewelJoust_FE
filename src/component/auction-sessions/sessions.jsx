@@ -1,24 +1,16 @@
 import HomePage from "../../component/home-default/home.jsx";
 import React, { useEffect, useState } from "react";
-
 import { Col, Container, Row } from "react-bootstrap";
-
-import {
-  APIgetallSession,
-  APIgetallSessionByName,
-  APIgetallSessionByStatus,
+import { 
+  APIgetallSession, 
+  APIgetallSessionByName, 
+ 
 } from "../../api/api.js";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+
 import dayjs from "dayjs";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { Button, Card, Flex, Spin } from "antd";
-import { FireOutlined, LoadingOutlined } from "@ant-design/icons";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { Button, Card, Spin, Input, Flex } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import Meta from "antd/es/card/Meta.js";
 import { paragraphStyle } from "../../utils/styleUtils.js";
 
@@ -27,38 +19,41 @@ export default function AuctionSession() {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
   let [searchParams, setSearchParams] = useSearchParams();
+
   const fetchData = async () => {
     setIsLoading(true);
     const name = searchParams.get("search");
-    // console.log(name);
 
     name !== null
       ? APIgetallSessionByName(name)
           .then((response) => {
-            console.log(response);
             setData(response.data);
             setIsLoading(false);
-            console.log(data);
           })
           .catch((error) => {
             console.error(error);
             setIsLoading(false);
           })
-      : APIgetallSession(name)
+      : APIgetallSession()
           .then((response) => {
-            console.log(response);
             setData(response.data);
             setIsLoading(false);
-            console.log(data);
           })
           .catch((error) => {
             console.error(error);
             setIsLoading(false);
           });
   };
+
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [searchParams]);
+
+  const { Search } = Input;
+  const onSearch = (value, _e, info) => {
+    const searchUrl = `/sessions?search=${encodeURIComponent(value)}`;
+    navigate(searchUrl);
+  };
 
   return (
     <>
@@ -66,6 +61,16 @@ export default function AuctionSession() {
         <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
       ) : (
         <HomePage>
+         
+          <div style={{ display: "flex", justifyContent: "end" }}>
+            <Search
+              placeholder="Search again within sessions"
+              onSearch={onSearch}
+              size="middle"
+              style={{ width: 400,marginBottom:"20px" }}
+            />
+          </div>
+
           <Flex justify="flex-start" gap={30} wrap>
             {data?.map((session, index) => {
               return (
@@ -84,36 +89,30 @@ export default function AuctionSession() {
                   <Meta
                     title={session.nameSession}
                     description={
-                      <>
-                        <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "space-between",
-                            height: "100%",
-                          }}
+                      <div style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "space-between",
+                          height: "100%",
+                        }}
+                      >
+                        <strong style={{ fontSize: "20px", color: "black" }}>
+                          {session?.auctionRequest.ultimateValuation.price}$
+                        </strong>
+                        <p style={paragraphStyle}>
+                          {dayjs(session.start_time).format("D MMMM h:mmA")} - 
+                          {dayjs(session.end_time).format("D MMMM h:mmA")}
+                          <br />
+                          {session.description}
+                        </p>
+                        <Button
+                          type="primary"
+                          danger={session.status === "BIDDING"}
+                          onClick={() => navigate(`/detail/${session.id}`)}
                         >
-                          <strong style={{ fontSize: "20px", color: "black" }}>
-                            {session?.auctionRequest.ultimateValuation.price}$
-                          </strong>
-                          <p style={paragraphStyle}>
-                            {" "}
-                            {dayjs(session.start_time).format("D MMMM h:mmA")} -
-                            {dayjs(session.end_time).format("D MMMM h:mmA")}
-                            <br />
-                            {session.description}
-                          </p>
-                          <Button
-                            type="primary"
-                            danger={session.status === "BIDDING"}
-                            onClick={() => {
-                              navigate(`/detail/${session.id}`);
-                            }}
-                          >
-                            View Details
-                          </Button>
-                        </div>
-                      </>
+                          View Details
+                        </Button>
+                      </div>
                     }
                   />
                 </Card>
