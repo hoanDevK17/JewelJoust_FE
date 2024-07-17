@@ -143,8 +143,12 @@ export default function WalletHistory() {
       });
     handleSubtractOk();
   };
-  const balance = user?.wallet?.balance;
-  const formattedBalance = Number(balance).toFixed(2);
+  
+  const balance = Number(user?.wallet?.balance);
+
+  const formattedBalance = balance
+    .toFixed(2)
+    .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   const [data, setData] = useState([]);
 
   const fetchData = async () => {
