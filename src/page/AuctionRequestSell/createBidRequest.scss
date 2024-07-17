@@ -1,9 +1,7 @@
 .createBidRequest {
   .form-creat-bid {
-    max-width: 600px;
-    width: calc(100% - 48px);
-    margin: auto;
     // height: 1000px;
+
     color: rebeccapurple;
   }
 }
@@ -27,7 +25,7 @@
 /* AuctionRules.css */
 
 .container {
-  font-family: 'Georgia', serif;
+  font-family: "Georgia", serif;
   max-width: 800px;
   margin: 0 auto;
   background-color: #fffaf0;
@@ -42,7 +40,7 @@
     margin-bottom: 25px;
     font-weight: bold;
   }
-  
+
   h2 {
     font-size: 22px;
     color: #6b4f4b;
@@ -57,13 +55,13 @@
     line-height: 1.6;
     margin-bottom: 20px;
   }
-  
+
   ul {
     list-style-type: disc;
     margin-left: 20px;
     margin-bottom: 20px;
   }
-  
+
   ul li {
     font-size: 18px;
     color: #4b3832;

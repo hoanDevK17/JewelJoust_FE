@@ -113,9 +113,12 @@ export default function HomePage({ children }) {
         setIsRefreshBalance(false);
       });
   };
-  const formattedBalance = (num) => {
-    return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-  };
+
+  const balance = Number(user?.wallet?.balance);
+
+  const formattedBalance = (Math.floor(balance * 100) / 100)
+    .toFixed(2)
+    .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   return (
     <div className="home-default">
       <div className="home-page-header">
@@ -150,7 +153,7 @@ export default function HomePage({ children }) {
               });
             }}
           >
-            Jewelry Auction
+            AuctionSession
           </span>
           <span
             className="button-link"
@@ -172,7 +175,7 @@ export default function HomePage({ children }) {
               {" "}
               <div className="user_wallet_all">
                 <span style={{ display: "flex", justifyContent: "flex-end" }}>
-                  Welcome: {user?.fullname}
+                  Hi👋{"  "} {user?.fullname}
                 </span>
                 {isMember ? (
                   <div className="user-wallet" style={{ alignItems: "center" }}>
@@ -185,7 +188,7 @@ export default function HomePage({ children }) {
                       onClick={(e) => e.preventDefault()}
                       style={{ fontSize: "16px" }}
                     >
-                      Balance: {formattedBalance(user?.wallet?.balance)}$
+                      Balance: {formattedBalance}$
                     </span>
                   </div>
                 ) : (
@@ -229,7 +232,7 @@ export default function HomePage({ children }) {
           )}
         </div>
       </div>
-      <div style={{ margin: "auto", maxWidth: "1200px" }}>
+      <div style={{ margin: "auto", maxWidth: "1200px", minWidth: "800px" }}>
         <div className="home-page-body">{children}</div>
       </div>
       <Footer />

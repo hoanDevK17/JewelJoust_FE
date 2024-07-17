@@ -3,7 +3,6 @@ import {
   ProfileOutlined,
   HeartOutlined,
   TeamOutlined,
-
   LogoutOutlined,
   ArrowUpOutlined,
 } from "@ant-design/icons";
@@ -11,7 +10,6 @@ import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectUser } from "../../redux/features/counterSlice";
-
 
 const { Header, Content, Sider } = Layout;
 
@@ -90,11 +88,10 @@ const Dashboard = () => {
         getItem("Acount", "acount", <ProfileOutlined />),
         getItem("Request", "request", <TeamOutlined />),
         getItem("Session", "session", <HeartOutlined />),
-       
       ]);
     }
     if (role === "MANAGER") {
-      setItems([     
+      setItems([
         getItem("Request", "request", <TeamOutlined />),
         getItem("Session", "session", <HeartOutlined />),
       ]);
@@ -103,7 +100,7 @@ const Dashboard = () => {
       setItems([
         getItem("Request", "request", <TeamOutlined />),
         getItem("Session", "session", <HeartOutlined />),
-        getItem("Approve Withdrawal", "withdrawal", <ArrowUpOutlined  />),
+        getItem("Approve Withdrawal", "withdrawal", <ArrowUpOutlined />),
       ]);
     }
   }, []);
@@ -198,11 +195,15 @@ const Dashboard = () => {
           style={{ margin: "0 16px", display: "flex", flexDirection: "column" }}
         >
           <Breadcrumb>
-            {location.pathname.split("/").map((path, index) => (
-              <Breadcrumb.Item key={path}>
-                {index === 0 ? path : <Link to={`/${path}`}>{path}</Link>}
-              </Breadcrumb.Item>
-            ))}
+            {location.pathname.split("/").map((path, index, paths) => {
+              const url = paths.slice(0, index + 1).join("/");
+              console.log(url);
+              return (
+                <Breadcrumb.Item key={path}>
+                  <span to={`/${url}`}>{path}</span>
+                </Breadcrumb.Item>
+              );
+            })}
           </Breadcrumb>
           <div
             style={{

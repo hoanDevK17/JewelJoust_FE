@@ -23,6 +23,7 @@ import {
 } from "../../api/api";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
+import { current } from "@reduxjs/toolkit";
 
 export default function Acount() {
   // console.log(user)
@@ -196,7 +197,7 @@ export default function Acount() {
   const [isLoading, setIsLoading] = useState(false);
   const fetchData = async (page) => {
     setIsLoading(true);
-    await APIgetallacountPaging(page, 8)
+    await APIgetallacountPaging(page, 3)
       .then((response) => {
         console.log(response);
         setTotalRow(response.data?.totalAccounts);
@@ -210,9 +211,9 @@ export default function Acount() {
         setIsLoading(false);
       });
   };
-  const onChangePaging = (page) => {
-    console.log(page);
-    setPageNumber(page);
+  const onChangePaging = (props) => {
+    console.log(props);
+    setPageNumber(props.current);
   };
   useEffect(() => {
     console.log(pageNumber);
@@ -448,14 +449,24 @@ export default function Acount() {
               ></Form.Item>
             </Form>
           </Modal>
-          <Table dataSource={data} columns={columns} pagination={false}  size="middle" />
-          <Pagination
+          <Table
+            dataSource={data}
+            columns={columns}
+            pagination={{
+              total: totalRow,
+              current: pageNumber,
+              pageSize: 3,
+            }}
+            size="middle"
+            onChange={onChangePaging}
+          />
+          {/* <Pagination
             // defaultCurrent={1}
             total={totalRow}
             pageSize={8}
             onChange={onChangePaging}
             current={pageNumber}
-          />
+          /> */}
           ;
         </div>
       )}

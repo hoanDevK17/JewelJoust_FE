@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import React from "react";
 
 const BidsList = ({ bids }) => {
+  console.log(bids);
   if (Array.isArray(bids)) {
     bids.sort((a, b) => b.id - a.id);
     if (bids.length >= 3) {
@@ -12,7 +13,7 @@ const BidsList = ({ bids }) => {
   return (
     <div style={styles.bidsContainer}>
       <div style={styles.header}>
-        <h2 style={styles.headerTitle}>Bids</h2>
+        <h2 style={styles.headerTitle}>Highest Bidding</h2>
       </div>
       {bids?.map((bid) => (
         <div key={bid.id} style={styles.bidItem}>

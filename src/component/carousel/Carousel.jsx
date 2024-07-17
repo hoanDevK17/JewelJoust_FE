@@ -1,25 +1,24 @@
 import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "./carousel.scss";
-import { Products } from "../../share-data/productData";
-import { Link, useNavigate } from "react-router-dom";
-import {
-  Box,
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-} from "@mui/material";
-import {  Space, Spin, Typography } from "antd";
+import { useNavigate } from "react-router-dom";
+import { Button, Card, Carousel, Col, Flex, Row, Spin } from "antd";
 import { APIgetallSessionByStatus } from "../../api/api";
-import { Col, Container, Row } from "react-bootstrap";
-import { LoadingOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
+import { FireOutlined } from "@ant-design/icons";
+import { paragraphStyle } from "../../utils/styleUtils";
+function chunkArray(array, size) {
+  const result = [];
+  for (let i = 0; i < array.length; i += size) {
+    result.push(array.slice(i, i + size));
+  }
+  return result;
+}
 
-export default function MyCarousel() {
+export default function MyCarousel({ status }) {
   const navigate = useNavigate();
   const settings = {
-    dots: true,
+    dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 3,
@@ -48,14 +47,16 @@ export default function MyCarousel() {
   };
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const { Meta } = Card;
   const fetchData = async () => {
     setIsLoading(true);
-    APIgetallSessionByStatus("INITIALIZED")
+    APIgetallSessionByStatus(status)
       .then((response) => {
         console.log(response);
-        setData(response.data);
+        // handle data to show
+
+        setData(chunkArray(response.data, 3));
         setIsLoading(false);
-        console.log(data);
       })
       .catch((error) => {
         console.error(error);
@@ -68,65 +69,91 @@ export default function MyCarousel() {
   return (
     <>
       {isLoading ? (
-        <Container>
-          <Row className="justify-content-xl-center">
-            <Col xl={1}>
-              <Space>
-                <Spin
-                  indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />}
-                />
-              </Space>
-            </Col>
-          </Row>
-        </Container>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "300px",
+          }}
+        >
+          <Spin />
+        </div>
       ) : data?.length > 0 ? (
         <div className="slider-container">
-          <Slider {...settings}>
-            {data?.map((session, index) => {
-              return (
-                <div className="cards" style={{ width: "100%" }} key={index}>
-                  <Card sx={{ width: "100%" }}>
-                    <CardActionArea>
-                      <CardMedia
-                        component="img"
-                        height="140"
-                        image={session.resources[0]?.path}
-                        alt="session image"
+          <Carousel arrows={true}>
+            {data?.map((items3, index3) => (
+              <div key={index3}>
+                <Flex justify="center" gap={30}>
+                  {items3.map((session, index) => (
+                    <Card
+                      key={index}
+                      hoverable
+                      style={{ width: "calc(33.33% - 20px)" }}
+                      cover={
+                        <img
+                          height={300}
+                          alt="example"
+                          src={session.resources[0]?.path}
+                        />
+                      }
+                    >
+                      <Meta
+                        title={session.nameSession}
+                        description={
+                          <>
+                            <div
+                              style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "space-between",
+                                height: "100%",
+                              }}
+                            >
+                              <strong
+                                style={{ fontSize: "20px", color: "black" }}
+                              >
+                                {
+                                  session?.auctionRequest.ultimateValuation
+                                    .price
+                                }
+                                $
+                              </strong>
+                              <p style={paragraphStyle}>
+                                {" "}
+                                {dayjs(session.start_time).format(
+                                  "D MMMM h:mmA"
+                                )}{" "}
+                                -
+                                {dayjs(session.end_time).format("D MMMM h:mmA")}
+                                <br />
+                                {session.description}
+                              </p>
+                              <Button
+                                type="primary"
+                                danger={session.status === "BIDDING"}
+                                onClick={() => {
+                                  navigate(`/detail/${session.id}`);
+                                }}
+                              >
+                                {session.status === "BIDDING" ? (
+                                  <>
+                                    Bidding Now <FireOutlined />
+                                  </>
+                                ) : (
+                                  "Register Auction"
+                                )}
+                              </Button>
+                            </div>
+                          </>
+                        }
                       />
-                      <CardContent>
-                        <Typography gutterBottom variant="h1" component="div">
-                          <h5>{session.nameSession}</h5>
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          <h6>
-                            {dayjs(session.start_time).format("D MMMM h:mmA")} -{" "}
-                            {dayjs(session.end_time).format("D MMMM h:mmA")}
-                          </h6>
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          <h6>
-                            Price:{" "}
-                            {session?.auctionRequest.ultimateValuation.price}$
-                          </h6>
-                        </Typography>
-                        <Box display="flex" justifyContent="center" mt={2}>
-                          <button
-                            className="button-num1"
-                            onClick={() => {
-                              console.log("oke");
-                              navigate(`/detail/${session.id}`);
-                            }}
-                          >
-                            <p style={{fontSize:"15px"}}>Register</p>
-                          </button>
-                        </Box>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
-                </div>
-              );
-            })}
-          </Slider>
+                    </Card>
+                  ))}
+                </Flex>
+              </div>
+            ))}
+          </Carousel>
         </div>
       ) : (
         <div>There is no available product at the moment</div>
