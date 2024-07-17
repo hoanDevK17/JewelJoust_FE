@@ -452,6 +452,7 @@ export default function Detail() {
               open={isModalOpen[0]}
               onOk={() => toggleModal(0, false)}
               onCancel={() => toggleModal(0, false)}
+              footer=" "
               width={"fit-content"}
             >
               <>
