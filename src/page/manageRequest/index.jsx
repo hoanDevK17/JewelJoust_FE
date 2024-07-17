@@ -839,7 +839,40 @@ export default function ManageRequest() {
               </div>
             </>
           )}
-
+          {currentRequest?.reasonReject != null && (
+            <>
+              <h5>Reason Reject:</h5>
+              <div
+                style={{
+                  padding: "20px",
+                  border: "1px solid #ccc",
+                  borderRadius: "8px",
+                  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                  backgroundColor: "#fff", // Màu nền
+                  marginBottom: "10px",
+                }}
+              >
+                <Row>
+                  <Col span={24}>
+                    <Row gutter={[0, 0]}>
+                      <Col span={8}>
+                        <p
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",                   
+                        }}>
+                          <strong>Date: </strong>
+                          {formatDate(
+                            currentRequest?.reasonReject
+                          )}
+                        </p>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              </div>
+            </>
+          )}
           {currentRequest?.status === "REJECTED" && (
             <Col span={12}>
               <div
@@ -860,7 +893,6 @@ export default function ManageRequest() {
               </div>
             </Col>
           )}
-
           {currentRequest?.status === "UNAPPROVED" && (
             <Col span={12}>
               <div
@@ -883,7 +915,6 @@ export default function ManageRequest() {
               </div>
             </Col>
           )}
-
           {currentRequest?.status === "CONFIRMED" && (
             <div
               style={{
@@ -918,7 +949,6 @@ export default function ManageRequest() {
               </Form>
             </div>
           )}
-
           {currentRequest?.status === "RECEIVED" && (
             <>
               <Switch
@@ -1012,8 +1042,6 @@ export default function ManageRequest() {
               )}
             </>
           )}
-
-
           {currentRequest?.ultimateValuation && (
             <>
               <h5>Ultimate Valuation:</h5>
