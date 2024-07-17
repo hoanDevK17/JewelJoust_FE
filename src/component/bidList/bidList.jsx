@@ -13,7 +13,7 @@ const BidsList = ({ bids }) => {
   return (
     <div style={styles.bidsContainer}>
       <div style={styles.header}>
-        <h2 style={styles.headerTitle}>History Bidding</h2>
+        <h2 style={styles.headerTitle}>Highest Bidding</h2>
       </div>
       {bids?.map((bid) => (
         <div key={bid.id} style={styles.bidItem}>

@@ -34,8 +34,6 @@ export default function Home() {
       .then((response) => {
         console.log(response);
         setData(response.data);
-        setIsLoading(false);
-        console.log(data);
       })
       .catch((error) => {
         console.error(error);
@@ -107,11 +105,11 @@ export default function Home() {
             btnContent="View all sessions"
             linkURL="/sessions"
           />
-          <MyCarousel status={"EXPIRED"} />
+          <MyCarousel status={"BIDDING"} />
           <Content title="PRE-AUCTION" />
           <div></div>
-          <MyCarousel status={"EXPIRED"} />
-        </Col>  
+          <MyCarousel status={"INITIALIZED"} />
+        </Col>
       </HomePage>
     </div>
   );

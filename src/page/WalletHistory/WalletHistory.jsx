@@ -136,10 +136,13 @@ export default function WalletHistory() {
   };
 
   const onFinishSubtract = (values) => {
-    console.log("Subtract values:",  values.bankName,
+    console.log(
+      "Subtract values:",
+      values.bankName,
       values.accountNumber,
       values.recipientName,
-      values.amount);
+      values.amount
+    );
     APIWithDrawal(
       values.bankName,
       values.accountNumber,
@@ -148,7 +151,7 @@ export default function WalletHistory() {
     )
       .then((response) => {
         console.log(response);
-        message.success("Create a successful money order")
+        message.success("Create a successful money order");
       })
       .catch((error) => {
         console.log(error);
@@ -166,10 +169,8 @@ export default function WalletHistory() {
       {isLoading ? (
         <Spin
           style={{
-            height: "100vh",
             width: "100%",
             backgroundColor: "#fff9e8",
-            paddingTop: "50vh",
           }}
         ></Spin>
       ) : (
@@ -343,7 +344,6 @@ export default function WalletHistory() {
                   <p>
                     Conversion Amount:{" "}
                     {formatSetConvertedAmount(convertedAmount)} VND
-
                   </p>
                   <Form.Item
                     label="Bank Name"

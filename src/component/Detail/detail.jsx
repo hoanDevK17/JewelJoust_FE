@@ -228,12 +228,14 @@ export default function Detail() {
               <h6> </h6> <h4></h4>
               <h6>Profile Cost:</h6> <h4>{product?.feeAmount}$</h4>
               <h6>Step Price:</h6> <h4>{product?.minStepPrice}$</h4>
-              {product?.highestBid != null && (
+              {product.three_highestBid?.length > 0 && (
                 <>
                   <h6>Highest Bid Price:</h6>{" "}
                   <h4>
                     <strong>
-                      {formattedBalance(Number(product?.highestBid?.bid_price))}
+                      {formattedBalance(
+                        Number(product.three_highestBid[0].bid_price)
+                      )}
                       $
                     </strong>
                   </h4>
@@ -290,7 +292,20 @@ export default function Detail() {
               </span>
             </Col>
             <Col xs={6}>
-              {auctionBids != null && <BidsList bids={auctionBids} />}
+              {product.three_highestBid?.length > 0 ? (
+                <BidsList bids={auctionBids} />
+              ) : (
+                <div
+                  style={{
+                    display: "flex",
+                    height: "100%",
+                    alignItems: "center",
+                  }}
+                >
+                  No bids have been placed on this item yet. Be the first to
+                  bid!
+                </div>
+              )}
             </Col>
           </Row>
 
@@ -313,12 +328,68 @@ export default function Detail() {
             })}
           </Row>
 
-          <Flex align="center" justify="center" gap={30}>
-            {product?.register ? (
-              <>
-                {product.status == "BIDDING" && (
-                  <>
-                    <Form onFinish={handleBidSubmit}>
+          <Col xs={24}>
+            <Flex
+              align="center"
+              justify="center"
+              gap={30}
+              style={{ width: "100%" }}
+            >
+              {product?.register ? (
+                <>
+                  {product.status == "BIDDING" && (
+                    <>
+                      <Form onFinish={handleBidSubmit}>
+                        <Form.Item
+                          label={
+                            <span style={{ fontWeight: "bold", fontSize: 16 }}>
+                              Bid Amount ($)
+                            </span>
+                          }
+                          name="bidAmount"
+                          style={{
+                            width: 500,
+                          }}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your bid amount!",
+                            },
+                          ]}
+                        >
+                          <InputNumber
+                            size="large"
+                            style={{ width: "100%" }}
+                            placeholder="Enter bid amount"
+                            min={
+                              product?.auctionRequest.ultimateValuation.price
+                            }
+                            step={1}
+                          />
+                        </Form.Item>{" "}
+                        <Button
+                          size="large"
+                          htmlType="submit"
+                          type="primary"
+                          style={{ marginTop: "10px" }}
+                        >
+                          Submit Bid
+                        </Button>
+                      </Form>
+                    </>
+                  )}
+
+                  {product.status == "INITIALIZED" && (
+                    <p style={{ color: "blue", fontStyle: "italic" }}>
+                      You have registered... awaiting auction.
+                    </p>
+                  )}
+                </>
+              ) : (
+                <>
+                  {(product?.status == "INITIALIZED" ||
+                    product?.status == "BIDDING") && (
+                    <Form onFinish={handleRegisAuction}>
                       <Form.Item
                         label={
                           <span style={{ fontWeight: "bold", fontSize: 16 }}>
@@ -334,188 +405,143 @@ export default function Detail() {
                             required: true,
                             message: "Please input your bid amount!",
                           },
+                          {
+                            type: "number",
+                            min:
+                              product?.auctionRequest.ultimateValuation.price +
+                              product?.minStepPrice,
+                            message:
+                              "Please enter price higher than " +
+                              (product?.auctionRequest.ultimateValuation.price +
+                                product?.minStepPrice) +
+                              "$",
+                          },
                         ]}
                       >
                         <InputNumber
                           size="large"
                           style={{ width: "100%" }}
                           placeholder="Enter bid amount"
-                          min={product?.auctionRequest.ultimateValuation.price}
+                          min={0}
                           step={1}
                         />
-                      </Form.Item>{" "}
+                      </Form.Item>
+
                       <Button
-                        size="large"
                         htmlType="submit"
+                        className="button-detail"
+                        style={{ marginLeft: "130px" }}
                         type="primary"
-                        style={{ marginTop: "10px" }}
                       >
-                        Submit Bid
+                        Auction Register
                       </Button>
                     </Form>
-                  </>
-                )}
+                  )}
+                </>
+              )}
+              {(product?.status == "FINISH" ||
+                product?.status == "PENDINGPAYMENT") && (
+                <p style={{ color: "blue", fontStyle: "italic" }}>
+                  This session is finished
+                </p>
+              )}
+            </Flex>
 
-                {product.status == "INITIALIZED" && (
-                  <p style={{ color: "blue", fontStyle: "italic" }}>
-                    You have registered... awaiting auction.
-                  </p>
-                )}
-              </>
-            ) : (
+            <Modal
+              style={{ marginTop: "0" }}
+              open={isModalOpen[0]}
+              onOk={() => toggleModal(0, false)}
+              onCancel={() => toggleModal(0, false)}
+              width={"fit-content"}
+            >
               <>
-                {(product?.status == "INITIALIZED" ||
-                  product?.status == "BIDDING") && (
-                  <Form onFinish={handleRegisAuction}>
-                    <Form.Item
-                      label={
-                        <span style={{ fontWeight: "bold", fontSize: 16 }}>
-                          Bid Amount ($)
-                        </span>
-                      }
-                      name="bidAmount"
-                      style={{
-                        width: 500,
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your bid amount!",
-                        },
-                        {
-                          type: "number",
-                          min:
-                            product?.auctionRequest.ultimateValuation.price +
-                            product?.minStepPrice,
-                          message:
-                            "Please enter price higher than " +
-                            (product?.auctionRequest.ultimateValuation.price +
-                              product?.minStepPrice) +
-                            "$",
-                        },
-                      ]}
-                    >
-                      <InputNumber
-                        size="large"
-                        style={{ width: "100%" }}
-                        placeholder="Enter bid amount"
-                        min={0}
-                        step={1}
-                      />
-                    </Form.Item>
+                <div className="container">
+                  <h1>Buyer Regulations</h1>
 
-                    <Button
-                      htmlType="submit"
-                      className="button-detail"
-                      style={{ marginLeft: "130px" }}
-                      type="primary"
-                    >
-                      Auction Register
-                    </Button>
-                  </Form>
-                )}
+                  <h2>1. Account Registration</h2>
+                  <p>
+                    1.1 Buyers must create an account and provide verification
+                    information before participating in an auction.
+                  </p>
+                  <p>
+                    1.2 Buyers must provide accurate and complete personal
+                    information during registration.
+                  </p>
+
+                  <h2>2. Bidding Process</h2>
+                  <p>
+                    2.1 Buyers can place bids on products through the auction
+                    interface.
+                  </p>
+                  <p>
+                    2.2 Each bid must be at least the minimum increment higher
+                    than the current bid.
+                  </p>
+                  <p>
+                    2.3 Buyers are responsible for ensuring their bids are
+                    placed correctly and cannot retract a bid once it is placed.
+                  </p>
+
+                  <h2>3. Winning an Auction</h2>
+                  <p>
+                    3.1 The buyer with the highest bid at the end of the auction
+                    will be declared the winner.
+                  </p>
+
+                  <h2>4. Payment and Transaction Fees</h2>
+                  <p>
+                    4.1 Buyers must pay for the auction item using one of the
+                    accepted payment methods.
+                  </p>
+                  <p>
+                    4.2 When investing, you will receive a refund after the
+                    initial investment
+                  </p>
+
+                  <h2>5. Additional Regulations</h2>
+                  <p>
+                    5.1 Buyers must comply with the systems rules and terms.
+                  </p>
+                  <p>
+                    5.2 The system reserves the right to change the rules and
+                    fee schedule at any time and will notify users before they
+                    take effect.
+                  </p>
+                  <p>
+                    5.3 Buyers are responsible for maintaining the security of
+                    their account information and are liable for any activity
+                    that occurs under their account.
+                  </p>
+                </div>
               </>
-            )}
-            {(product?.status == "FINISH" ||
-              product?.status == "PENDINGPAYMENT") && (
-              <p style={{ color: "blue", fontStyle: "italic" }}>
-                This session is finished
-              </p>
-            )}
-          </Flex>
-
-          <Modal
-            style={{ marginTop: "0" }}
-            open={isModalOpen[0]}
-            onOk={() => toggleModal(0, false)}
-            onCancel={() => toggleModal(0, false)}
-            width={"fit-content"}
-          >
-            <>
-              <div className="container">
-                <h1>Buyer Regulations</h1>
-
-                <h2>1. Account Registration</h2>
-                <p>
-                  1.1 Buyers must create an account and provide verification
-                  information before participating in an auction.
-                </p>
-                <p>
-                  1.2 Buyers must provide accurate and complete personal
-                  information during registration.
-                </p>
-
-                <h2>2. Bidding Process</h2>
-                <p>
-                  2.1 Buyers can place bids on products through the auction
-                  interface.
-                </p>
-                <p>
-                  2.2 Each bid must be at least the minimum increment higher
-                  than the current bid.
-                </p>
-                <p>
-                  2.3 Buyers are responsible for ensuring their bids are placed
-                  correctly and cannot retract a bid once it is placed.
-                </p>
-
-                <h2>3. Winning an Auction</h2>
-                <p>
-                  3.1 The buyer with the highest bid at the end of the auction
-                  will be declared the winner.
-                </p>
-
-                <h2>4. Payment and Transaction Fees</h2>
-                <p>
-                  4.1 Buyers must pay for the auction item using one of the
-                  accepted payment methods.
-                </p>
-                <p>
-                  4.2 When investing, you will receive a refund after the
-                  initial investment
-                </p>
-
-                <h2>5. Additional Regulations</h2>
-                <p>5.1 Buyers must comply with the systems rules and terms.</p>
-                <p>
-                  5.2 The system reserves the right to change the rules and fee
-                  schedule at any time and will notify users before they take
-                  effect.
-                </p>
-                <p>
-                  5.3 Buyers are responsible for maintaining the security of
-                  their account information and are liable for any activity that
-                  occurs under their account.
-                </p>
-              </div>
-            </>
-          </Modal>
-          <Row
-            className="justify-content-xl-center"
-            style={{
-              marginBottom: "20px",
-              marginTop: "40px",
-            }}
-          >
-            <Col xl={12}>
-              <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
-            </Col>
-          </Row>
-          <Row
-            className="justify-content-xl-center"
-            style={{
-              marginBottom: "20px",
-            }}
-          >
-            <Col xl={12}>
-              <Content
-                title="OTHER PRE-AUCTION"
-                btnContent="View all Sessions"
-                linkURL="/sessions"
-              />
-              <MyCarousel status={"INITIALIZED"} />
-            </Col>
-          </Row>
+            </Modal>
+            <Row
+              className="justify-content-xl-center"
+              style={{
+                marginBottom: "20px",
+                marginTop: "40px",
+              }}
+            >
+              <Col xl={24}>
+                <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+              </Col>
+            </Row>
+            <Row
+              className="justify-content-xl-center"
+              style={{
+                marginBottom: "20px",
+              }}
+            >
+              <Col xl={24}>
+                <Content
+                  title="OTHER PRE-AUCTION"
+                  btnContent="View all Sessions"
+                  linkURL="/sessions"
+                />
+                <MyCarousel status={"INITIALIZED"} />
+              </Col>
+            </Row>
+          </Col>
         </HomePage>
       )}
     </>

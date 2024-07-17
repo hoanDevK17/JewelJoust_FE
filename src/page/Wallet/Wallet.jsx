@@ -2,12 +2,8 @@ import { Card, Menu } from "antd";
 import HomePage from "../../component/home-default/home";
 import "./Wallet.scss"; // Import the SCSS file
 import { Outlet, useNavigate } from "react-router-dom";
-import {useState } from "react";
-import {
-
-  HistoryOutlined,
-
-} from "@ant-design/icons";
+import { useState } from "react";
+import { HistoryOutlined } from "@ant-design/icons";
 
 export const itemWallet = [
   {
@@ -55,7 +51,7 @@ export default function Wallet() {
           title={title}
           style={{
             width: "100%",
-            maxHeight: "100vh",
+            maxHeight: "800px ",
           }}
         >
           <Outlet />
