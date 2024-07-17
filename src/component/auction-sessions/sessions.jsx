@@ -56,7 +56,7 @@ export default function AuctionSession() {
       <HomePage>
         <div style={{ display: "flex", justifyContent: "end" }}>
           <Search
-            placeholder="Search again within sessions"
+            placeholder="Search Session or Jewelry"
             onSearch={onSearch}
             size="middle"
             style={{ width: 400, marginBottom: "20px" }}
@@ -65,7 +65,14 @@ export default function AuctionSession() {
 
         <Flex justify="flex-start" gap={30} wrap>
           {isLoading ? (
-            <Spin style={{ width: "100%" }}></Spin>
+            <Spin
+              style={{
+                height: "100vh",
+                width: "100%",
+                backgroundColor: "#fff9e8",
+                paddingTop: "50vh",
+              }}
+            />
           ) : (
             <>
               {data?.map((session, index) => {

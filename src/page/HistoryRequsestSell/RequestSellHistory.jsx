@@ -6,7 +6,7 @@ import {
   EditOutlined,
   LoadingOutlined,
 } from "@ant-design/icons";
-import { Button, Col, Form, message, Modal, Row, Spin, Steps, Switch, Table, Tag } from "antd";
+import { Button, Col, Form, Image, message, Modal, Row, Spin, Steps, Switch, Table, Tag } from "antd";
 
 import { APIAuctionConfirmation, APIAuctionRejected, APIgetallrequest, APIgetallrequestUser } from "../../api/api";
 import dayjs from "dayjs";
@@ -491,6 +491,7 @@ function RequestSellHistory() {
       ) : (
         <>
           <Modal
+            width={710}
             title={`Detail Information`}
             open={currentId >= 0}
             onCancel={() => {
@@ -502,21 +503,46 @@ function RequestSellHistory() {
           >
             <div>{renderSteps(currentRequest?.status)}</div>
             <div
-              style={{
-                padding: "20px",
-                border: "1px solid #ccc",
-                borderRadius: "8px",
-                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-                backgroundColor: "#fff", // Màu nền
-                marginBottom: "10px",
-              }}
+            style={{
+              padding: "20px",
+              border: "1px solid #ccc",
+              borderRadius: "8px",
+              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+              backgroundColor: "#fff", // Màu nền
+              marginBottom: "10px",
+            }}
             >
-              <Row gutter={[16, 16]}>
+              <Row gutter={[0, 0]}>
                 <Col span={24}>
-                  <Row gutter={[16, 16]}>
+                  <Row gutter={[0, 0]}>
+                    <Col span={8}>
+                      <p>
+                        <strong>ID Request:</strong> {currentRequest?.id}
+                      </p>
+                    </Col>
+
+                    <Col span={8}>
+                      <p>
+                        <strong>Status:</strong> {currentRequest?.status}
+                      </p>
+                    </Col>
+                    <Col span={8}>
+                      <p>
+                        <strong>Desired Price: </strong>$
+                        {currentRequest?.jewelryinitialprice}
+                      </p>
+                    </Col>
+                  </Row>
+                </Col>
+                <Col
+                  span={24}
+                  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.1)" }}
+                >
+                  <Row gutter={[0, 0]} style={{ paddingTop: "10px" }}>
                     <Col span={12}>
                       <p>
-                        <strong>ID:</strong> {currentRequest?.id}
+                        <strong>Request Date: </strong>
+                        {formatDate(currentRequest?.requestdate)}
                       </p>
                     </Col>
                     <Col span={12}>
@@ -526,42 +552,12 @@ function RequestSellHistory() {
                     </Col>
                   </Row>
                 </Col>
+
                 <Col
                   span={24}
                   style={{ borderTop: "1px solid rgba(0, 0, 0, 0.1)" }}
                 >
-                  <Row gutter={[16, 16]} style={{ paddingTop: "10px" }}>
-                    <Col span={23}>
-                      <p>
-                        <strong>Request Date: </strong>{" "}
-                        {formatDate(currentRequest?.requestdate)}
-                      </p>
-                    </Col>
-                  </Row>
-                </Col>
-                <Col
-                  span={24}
-                  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.1)" }}
-                >
-                  <Row gutter={[16, 16]} style={{ paddingTop: "10px" }}>
-                    <Col span={12}>
-                      <p>
-                        <strong>Desired Price:</strong>{" "}
-                        {currentRequest?.jewelryinitialprice}
-                      </p>
-                    </Col>
-                    <Col span={12}>
-                      <p>
-                        <strong>Status:</strong> {currentRequest?.status}
-                      </p>
-                    </Col>
-                  </Row>
-                </Col>
-                <Col
-                  span={24}
-                  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.1)" }}
-                >
-                  <Row gutter={[16, 16]} style={{ paddingTop: "10px" }}>
+                  <Row gutter={[0, 0]} style={{ paddingTop: "10px" }}>
                     <Col span={24}>
                       <p>
                         <strong>Description:</strong>
@@ -577,132 +573,246 @@ function RequestSellHistory() {
                       >
                         {currentRequest?.jewelrydescription}
                       </div>
-                      {currentRequest?.status == "APPROVED" && (
-                      <>
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            gap: "12px",
-                          }}
-                        >
-                          <h6 style={{ marginRight: "12px" }}>CONFIRMED</h6>
-                          <Switch
-                              
-                            unCheckedChildren="Accept"
-                            checkedChildren="Reject"
-                            onChange={handelFormPending}
-                          />
-                        </div>
-                        <div
-                          style={{
-                            width: "100%",
-                            display: "flex",
-                            justifyContent: "center",
-                            marginTop: "16px",
-                          }}
-                        >
-                          {!isRejected ? (
-                            <Form
-                            name="basic"
-                            labelCol={{
-                              span: 8,
-                            }}
-                            wrapperCol={{
-                              span: 16,
-                            }}
-                            style={{
-                              display: "flex",
-                              gap: "16px",
-                              justifyContent: "center",
-                              maxWidth: 500,
-                            }}
-                            initialValues={{
-                              remember: true,
-                            }}
-                            onFinish={handelAutionComfirmation}
-                            onFinishFailed={onFinishFailed}
-                            autoComplete="off"
-                          >
-                            <Button type="primary" htmlType="submit">
-                              Accept
-                            </Button>
-                          </Form>
-                          ) : (
-                            <Form
-                              name="basic"
-                              labelCol={{
-                                span: 8,
-                              }}
-                              wrapperCol={{
-                                span: 16,
-                              }}
-                              style={{
-                                display: "flex",
-                                gap: "16px",
-                                justifyContent: "center",
-                                maxWidth: 500,
-                              }}
-                              initialValues={{
-                                remember: true,
-                              }}
-                              onFinish={handelAutionRejected}
-                              onFinishFailed={onFinishFailed}
-                              autoComplete="off"
-                            >
-                              <Button type="primary" htmlType="submit">
-                                Rejected
-                              </Button>
-                            </Form>
-                          )}
-                        </div>
-                      </>
-                    )}
-                      {/* {currentRequest?.status === "REJECTED" ? (
-                        <Row gutter={[16, 16]} style={{ paddingTop: "10px" }}>
-                          <Col span={24}>
-                            <p>
-                              <strong>Reason of rejection:</strong>
-                            </p>
-                            <div
-                              style={{
-                                padding: "10px",
-                                border: "1px solid #ccc",
-                                borderRadius: "8px",
-                                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-                                backgroundColor: "#f9f9f9",
-                              }}
-                            >
-                              {currentRequest?.reasonReject}
-                            </div>
-                          </Col>
-                        </Row>
-                      ) : (
-                        <Row gutter={[16, 16]} style={{ paddingTop: "10px" }}>
-                          <Col span={24}>
-                            <p>
-                              <strong>Initial price:</strong>
-                            </p>
-                            <div
-                              style={{
-                                padding: "10px",
-                                border: "1px solid #ccc",
-                                borderRadius: "8px",
-                                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-                                backgroundColor: "#f9f9f9",
-                              }}
-                            >
-                              {currentRequest?.initialValuations?.price}
-                            </div>
-                          </Col>
-                        </Row>
-                      )} */}
                     </Col>
+                  </Row>
+                  <Row>
+                    {currentRequest?.resources?.map((img) => (
+                      <>
+                        <Image
+                          src={img.path}
+                          width={"calc(33% - 16px)"}
+                          style={{
+                            padding: "10px",
+                          }}
+                        />
+                      </>
+                    ))}
                   </Row>
                 </Col>
               </Row>
             </div>
+            {currentRequest?.initialValuations != null && (
+              <>
+                <h5>Initial Valuation:</h5>
+                <div
+                  style={{
+                    padding: "20px",
+                    border: "1px solid #ccc",
+                    borderRadius: "8px",
+                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                    backgroundColor: "#fff", // Màu nền
+                    marginBottom: "10px",
+                  }}
+                >
+                  <Row>
+                    <Col span={24}>
+                      <Row gutter={[0, 0]}>
+                        <Col span={8}>
+                          <p
+                          style={{
+                            display: "flex",
+                            justifyContent: "center"
+                          }}>
+                            <strong>Date: </strong>
+                            {formatDate(
+                              currentRequest?.initialValuations.initialdate
+                            )}
+                          </p>
+                        </Col>
+                        <Col span={8}>
+                          <p
+                          style={{
+                            display: "flex",
+                            justifyContent: "center"
+                          }}>
+                            <strong>Status: </strong>
+                            {currentRequest?.initialValuations.status}
+                          </p>
+                        </Col>
+                        <Col span={8}>
+                          <p
+                          style={{
+                            display: "flex",
+                            justifyContent: "center"
+                          }}>
+                            <strong>Price: </strong>
+                            {currentRequest?.initialValuations.price}
+                          </p>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                </div>
+              </>
+            )}
+            {currentRequest?.ultimateValuation != null && (
+              <>
+                <h5>Ultimate Valuation:</h5>
+                <div
+                  style={{
+                    padding: "20px",
+                    border: "1px solid #ccc",
+                    borderRadius: "8px",
+                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                    backgroundColor: "#fff", // Màu nền
+                    marginBottom: "10px",
+                  }}
+                >
+                  <Row>
+                    <Col span={24}>
+                      <Row gutter={[0, 0]}>
+                        <Col span={8}>
+                          <p
+                          style={{
+                            display: "flex",
+                            justifyContent: "center"
+                          }}>
+                            <strong>Date: </strong>
+                            {formatDate(
+                              currentRequest?.ultimateValuation.ultimatedate
+                            )}
+                          </p>
+                        </Col>
+                        <Col span={8}>
+                          <p
+                          style={{
+                            display: "flex",
+                            justifyContent: "center"
+                          }}>
+                            <strong>Status: </strong>
+                            {currentRequest?.ultimateValuation.status}
+                          </p>
+                        </Col>
+                        <Col span={8}>
+                          <p
+                          style={{
+                            display: "flex",
+                            justifyContent: "center"
+                          }}>
+                            <strong>Price: </strong>
+                            {currentRequest?.ultimateValuation.price}
+                          </p>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                </div>
+              </>
+            )}
+            {currentRequest?.reasonReject != null && (
+              <>
+                <h5>Reason Reject:</h5>
+                <div
+                  style={{
+                    padding: "20px",
+                    border: "1px solid #ccc",
+                    borderRadius: "8px",
+                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                    backgroundColor: "#fff", // Màu nền
+                    marginBottom: "10px",
+                  }}
+                >
+                  <Row>
+                    <Col span={24}>
+                      <Row gutter={[0, 0]}>
+                        <Col span={24}>
+                          <p
+                          style={{
+                            display: "flex",
+                            justifyContent: "center"
+                          }}>
+                            <strong>Reason:  </strong>
+                            {currentRequest?.reasonReject}
+                          </p>
+                        </Col>                 
+                      </Row>
+                    </Col>
+                  </Row>
+                </div>
+              </>
+            )} 
+            {currentRequest?.status == "APPROVED" && (
+              <>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "12px",
+                  }}
+                >
+                  <h6 style={{ marginRight: "12px" }}>CONFIRMED</h6>
+                  <Switch
+                      
+                    unCheckedChildren="Accept"
+                    checkedChildren="Reject"
+                    onChange={handelFormPending}
+                  />
+                </div>
+                <div
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: "16px",
+                  }}
+                >
+                  {!isRejected ? (
+                    <Form
+                    name="basic"
+                    labelCol={{
+                      span: 8,
+                    }}
+                    wrapperCol={{
+                      span: 16,
+                    }}
+                    style={{
+                      display: "flex",
+                      gap: "16px",
+                      justifyContent: "center",
+                      maxWidth: 500,
+                    }}
+                    initialValues={{
+                      remember: true,
+                    }}
+                    onFinish={handelAutionComfirmation}
+                    onFinishFailed={onFinishFailed}
+                    autoComplete="off"
+                  >
+                    <Button type="primary" htmlType="submit">
+                      Accept
+                    </Button>
+                  </Form>
+                  ) : (
+                    <Form
+                      name="basic"
+                      labelCol={{
+                        span: 8,
+                      }}
+                      wrapperCol={{
+                        span: 16,
+                      }}
+                      style={{
+                        display: "flex",
+                        gap: "16px",
+                        justifyContent: "center",
+                        maxWidth: 500,
+                      }}
+                      initialValues={{
+                        remember: true,
+                      }}
+                      onFinish={handelAutionRejected}
+                      onFinishFailed={onFinishFailed}
+                      autoComplete="off"
+                    >
+                      <Button type="primary" htmlType="submit">
+                        Rejected
+                      </Button>
+                    </Form>
+                  )}
+                </div>
+              </>
+            )}
           </Modal>
 
           <Table columns={columns(setCurrentId)} dataSource={data} />

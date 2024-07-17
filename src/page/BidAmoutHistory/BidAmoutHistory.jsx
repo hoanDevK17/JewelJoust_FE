@@ -143,10 +143,10 @@ export default function WalletHistory() {
       });
     handleSubtractOk();
   };
-  
+
   const balance = Number(user?.wallet?.balance);
 
-  const formattedBalance = balance
+  const formattedBalance = (Math.floor(balance * 100) / 100)
     .toFixed(2)
     .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   const [data, setData] = useState([]);
@@ -169,7 +169,12 @@ export default function WalletHistory() {
   useEffect(() => {
     fetchData();
   }, []);
-
+  const formatSetConvertedAmount = (num) => {
+    // Làm tròn xuống đến hai chữ số thập phân
+    let truncated = Math.floor(num * 100) / 100;
+    // Chuyển thành chuỗi với hai chữ số thập phân và thêm dấu cách cho các nhóm số hàng nghìn
+    return truncated.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  };
   return (
     <>
       <div>
@@ -185,7 +190,7 @@ export default function WalletHistory() {
           <div>Full Name: {user?.fullname}</div>
           <div>Email: {user?.email}</div>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <div>Balance: {formattedBalance}</div>
+            <div>Balance: {formattedBalance}$</div>
             <PlusCircleOutlined
               type="primary"
               onClick={showAddModal}
@@ -258,10 +263,10 @@ export default function WalletHistory() {
                     suffix="VND"
                   />
                 </Form.Item>
-                <p>= {convertedAmount.toFixed(2)} $</p>
+                <p>= {formatSetConvertedAmount(convertedAmount)} $</p>
                 <p>The Unit Of Calculation is:</p>
                 <p>1$ = 25.240 VND</p>
-                <p>Conversion Amount: {convertedAmount.toFixed(2)} $</p>
+                <p>Conversion Amount: {formatSetConvertedAmount(convertedAmount)} $</p>
 
                 <Form.Item
                   style={{ display: "flex", justifyContent: "center" }}
@@ -333,10 +338,10 @@ export default function WalletHistory() {
                     suffix="$"
                   />
                 </Form.Item>
-                <p>= {convertedAmount.toFixed(2)} VND</p>
+                <p>= {formatSetConvertedAmount(convertedAmount)} VND</p>
                 <p>The Unit Of Calculation is: </p>
                 <p>1$ = 25.240 VND</p>
-                <p>Conversion Amount: {convertedAmount.toFixed(2)} VND</p>
+                <p>Conversion Amount: {formatSetConvertedAmount(convertedAmount)} VND</p>
                 <Form.Item
                   label="Bank Name"
                   name="bankName"

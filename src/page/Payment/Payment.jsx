@@ -17,6 +17,7 @@ const DepositSuccessPage = () => {
   const [vnpAmount, setVnpAmount] = useState();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [formattedDate, setFormattedDate] = useState('');
   useEffect(() => {
     if (location.search?.length > 0) {
       APIResponseDeposit(location?.search)
@@ -45,7 +46,8 @@ const DepositSuccessPage = () => {
     const vnpBankCode = params.get("vnp_BankCode");
     const vnpCardType = params.get("vnp_CardType");
     const vnpOrderInfo = params.get("vnp_OrderInfo");
-    const vnpPayDate = params.get("vnp_PayDate");
+    const vnpPayDate = params.get("vnp_PayDate").slice(0, 12);
+    setFormattedDate(`${vnpPayDate.slice(0, 4)}-${vnpPayDate.slice(4, 6)}-${vnpPayDate.slice(6, 8)} ${vnpPayDate.slice(8, 10)}:${vnpPayDate.slice(10, 12)}`);
     const vnpResponseCode = params.get("vnp_ResponseCode");
     const vnpTmnCode = params.get("vnp_TmnCode");
     const vnpTransactionNo = params.get("vnp_TransactionNo");
@@ -80,7 +82,7 @@ const DepositSuccessPage = () => {
                     <h2 className="card-title">Deposit Successful</h2>
                     <Result
                       status="success"
-                      title={`Deposit Amount: ${vnpAmount}`}
+                      title={`Deposit Amount: ${vnpAmount}$`}
                     />
                     <p className="card-text">
                       Your transaction has been processed successfully.
@@ -89,9 +91,7 @@ const DepositSuccessPage = () => {
                     <div className="d-flex justify-content-between align-items-center">
                       <p className="mb-0">Time:</p>
                       <p className="mb-0">
-                        {dayjs(20240716194931).format(
-                          "YYYY-MM-DDTHH:mm:ss.SSSZ"
-                        )}
+                        {formattedDate}
                       </p>
                     </div>
                     <a href="/" className="btn btn-primary mt-4">

@@ -82,10 +82,13 @@ export default function WalletHistory() {
 
   const [convertedAmount, setConvertedAmount] = useState(0);
   const formatSetConvertedAmount = (num) => {
-    return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    // Làm tròn xuống đến hai chữ số thập phân
+    let truncated = Math.floor(num * 100) / 100;
+    // Chuyển thành chuỗi với hai chữ số thập phân và thêm dấu cách cho các nhóm số hàng nghìn
+    return truncated.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   };
 
-  const handleAmountChange = (e) => {
+  const   handleAmountChange = (e) => {
     const value = e.target.value;
     setAmount(value);
     setConvertedAmount(value ? value / 25238 : 0);
@@ -161,7 +164,10 @@ export default function WalletHistory() {
   };
 
   const formattedBalance = (balance) => {
-    return balance.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    // Làm tròn xuống đến hai chữ số thập phân
+    let truncated = Math.floor(balance * 100) / 100;
+    // Chuyển thành chuỗi với hai chữ số thập phân và thêm dấu cách cho các nhóm số hàng nghìn
+    return truncated.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   };
   return (
     <>
@@ -179,7 +185,7 @@ export default function WalletHistory() {
           <div>Email: {user?.email}</div>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <div>
-              Balance: {formattedBalance(Number(user?.wallet?.balance))}
+              Balance: {formattedBalance(Number(user?.wallet?.balance))}$
             </div>
             <PlusCircleOutlined
               type="primary"
