@@ -82,7 +82,10 @@ export default function WalletHistory() {
 
   const [convertedAmount, setConvertedAmount] = useState(0);
   const formatSetConvertedAmount = (num) => {
-    return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    // Làm tròn xuống đến hai chữ số thập phân
+    let truncated = Math.floor(num * 100) / 100;
+    // Chuyển thành chuỗi với hai chữ số thập phân và thêm dấu cách cho các nhóm số hàng nghìn
+    return truncated.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   };
 
   const   handleAmountChange = (e) => {
@@ -161,7 +164,10 @@ export default function WalletHistory() {
   };
 
   const formattedBalance = (balance) => {
-    return balance.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    // Làm tròn xuống đến hai chữ số thập phân
+    let truncated = Math.floor(balance * 100) / 100;
+    // Chuyển thành chuỗi với hai chữ số thập phân và thêm dấu cách cho các nhóm số hàng nghìn
+    return truncated.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   };
   return (
     <>

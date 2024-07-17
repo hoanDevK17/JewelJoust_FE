@@ -113,10 +113,10 @@ export default function HomePage({ children }) {
         setIsRefreshBalance(false);
       });
   };
-  
+
   const balance = Number(user?.wallet?.balance);
 
-  const formattedBalance = balance
+  const formattedBalance = (Math.floor(balance * 100) / 100)
     .toFixed(2)
     .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   return (
