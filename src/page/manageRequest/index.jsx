@@ -40,7 +40,8 @@ import { selectUser } from "../../redux/features/counterSlice";
 
 export default function ManageRequest() {
   const token = useSelector(selectUser)?.token;
-
+  const [totalRow, setTotalRow] = useState(0);
+  const [pageNumber, setPageNumber] = useState(1);
   // set format cho date
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -63,7 +64,14 @@ export default function ManageRequest() {
   const [isLoading, setIsLoading] = useState(false);
 
   const user = useSelector(selectUser);
-
+  const onChangePaging = (props) => {
+    console.log(props);
+    setPageNumber(props.current);
+  };
+  useEffect(() => {
+    console.log(pageNumber);
+    fetchData(pageNumber - 1);
+  }, [pageNumber]);
   const onFinishrejected = async (values) => {
     APIrejectedauctionrequestsell(currentId, values.reason, token)
       .then((response) => {
@@ -75,7 +83,7 @@ export default function ManageRequest() {
       .catch((error) => {
         console.error("Error logging in:", error);
       })
-      .finally(() => {});
+      .finally(() => { });
     setCurrentId(-1);
   };
   const onFinishsetappraisalprice = async (values) => {
@@ -93,7 +101,7 @@ export default function ManageRequest() {
       .catch((error) => {
         console.error("Error logging in:", error);
       })
-      .finally(() => {});
+      .finally(() => { });
 
     setCurrentId(-1);
   };
@@ -256,13 +264,13 @@ export default function ManageRequest() {
     },
   ];
 
-  const fetchData = async () => {
+  const fetchData = async (page) => {
     setIsLoading(true);
-    await APIgetallrequest(token)
+    await APIgetallrequest(page, 7)
       .then((response) => {
-        if (response.status == 200) {
-          setData(response.data);
-        }
+        console.log(response);
+        setTotalRow(response.data?.totalItems);
+        setData(response.data?.items);
       })
       .catch((error) => {
         console.log(error);
@@ -591,551 +599,268 @@ export default function ManageRequest() {
             paddingTop: "calc(50vh - 150px)",
           }}
         />
-      ) : ( 
-      <div>
-        <Modal
-          width={850}
-          title={`${currentId > 0 ? "Edit" : "Add"} request`}
-          open={currentId >= 0}
-          onOk={() => setCurrentId(-1)}
-          onCancel={() => {
-            form.resetFields();
-            setCurrentId(-1);
-          }}
-        >
-          <div>{renderSteps(currentRequest?.status)}</div>
-          <h5>Sell request: </h5>
-          <div
-            style={{
-              padding: "20px",
-              border: "1px solid #ccc",
-              borderRadius: "8px",
-              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-              backgroundColor: "#fff", // Màu nền
-              marginBottom: "10px",
+      ) : (
+        <div>
+          <Modal
+            width={850}
+            title={`${currentId > 0 ? "Edit" : "Add"} request`}
+            open={currentId >= 0}
+            onOk={() => setCurrentId(-1)}
+            onCancel={() => {
+              form.resetFields();
+              setCurrentId(-1);
             }}
           >
-            <Row gutter={[0, 0]}>
-              <Col span={24}>
-                <Row gutter={[0, 0]}>
-                  <Col span={8}>
-                    <p>
-                      <strong>ID Request:</strong> {currentRequest?.id}
-                    </p>
-                  </Col>
-
-                  <Col span={8}>
-                    <p>
-                      <strong>Status:</strong> {currentRequest?.status}
-                    </p>
-                  </Col>
-                  <Col span={8}>
-                    <p>
-                      <strong>Desired Price: </strong>$
-                      {currentRequest?.jewelryinitialprice}
-                    </p>
-                  </Col>
-                </Row>
-              </Col>
-              <Col
-                span={24}
-                style={{ borderTop: "1px solid rgba(0, 0, 0, 0.1)" }}
-              >
-                <Row gutter={[0, 0]} style={{ paddingTop: "10px" }}>
-                  <Col span={12}>
-                    <p>
-                      <strong>Request Date: </strong>
-                      {formatDate(currentRequest?.requestdate)}
-                    </p>
-                  </Col>
-                  <Col span={12}>
-                    <p>
-                      <strong>Name:</strong> {currentRequest?.jewelryname}
-                    </p>
-                  </Col>
-                </Row>
-              </Col>
-
-              <Col
-                span={24}
-                style={{ borderTop: "1px solid rgba(0, 0, 0, 0.1)" }}
-              >
-                <Row gutter={[0, 0]} style={{ paddingTop: "10px" }}>
-                  <Col span={24}>
-                    <p>
-                      <strong>Description:</strong>
-                    </p>
-                    <div
-                      style={{
-                        padding: "10px",
-                        border: "1px solid #ccc",
-                        borderRadius: "8px",
-                        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-                        backgroundColor: "#f9f9f9",
-                      }}
-                    >
-                      {currentRequest?.jewelrydescription}
-                    </div>
-                  </Col>
-                </Row>
-                <Row>
-                  {currentRequest?.resources?.map((img) => (
-                    <>
-                      <Image
-                        src={img.path}
-                        width={"calc(33% - 16px)"}
-                        style={{
-                          padding: "10px",
-                        }}
-                      />
-                    </>
-                  ))}
-                </Row>
-              </Col>
-            </Row>
-          </div>         
-          {currentRequest?.initialValuations != null && (
-            <>
-              <h5>Initial Valuation:</h5>
-              <div
-                style={{
-                  padding: "20px",
-                  border: "1px solid #ccc",
-                  borderRadius: "8px",
-                  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-                  backgroundColor: "#fff", // Màu nền
-                  marginBottom: "10px",
-                }}
-              >
-                <Row>
-                  <Col span={24}>
-                    <Row gutter={[0, 0]}>
-                      <Col span={8}>
-                        <p
-                        style={{
-                          display: "flex",
-                          justifyContent: "center"
-                        }}>
-                          <strong>Date: </strong>
-                          {formatDate(
-                            currentRequest?.initialValuations.initialdate
-                          )}
-                        </p>
-                      </Col>
-                      <Col span={8}>
-                        <p
-                        style={{
-                          display: "flex",
-                          justifyContent: "center"
-                        }}>
-                          <strong>Status: </strong>
-                          {currentRequest?.initialValuations.status}
-                        </p>
-                      </Col>
-                      <Col span={8}>
-                        <p
-                        style={{
-                          display: "flex",
-                          justifyContent: "center"
-                        }}>
-                          <strong>Price: </strong>
-                          {currentRequest?.initialValuations.price}
-                        </p>
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-              </div>
-            </>
-          )}
-          {currentRequest?.ultimateValuation != null && (
-            <>
-              <h5>Ultimate Valuation:</h5>
-              <div
-                style={{
-                  padding: "20px",
-                  border: "1px solid #ccc",
-                  borderRadius: "8px",
-                  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-                  backgroundColor: "#fff", // Màu nền
-                  marginBottom: "10px",
-                }}
-              >
-                <Row>
-                  <Col span={24}>
-                    <Row gutter={[0, 0]}>
-                      <Col span={8}>
-                        <p
-                        style={{
-                          display: "flex",
-                          justifyContent: "center"
-                        }}>
-                          <strong>Date: </strong>
-                          {formatDate(
-                            currentRequest?.ultimateValuation.ultimatedate
-                          )}
-                        </p>
-                      </Col>
-                      <Col span={8}>
-                        <p
-                        style={{
-                          display: "flex",
-                          justifyContent: "center"
-                        }}>
-                          <strong>Status: </strong>
-                          {currentRequest?.ultimateValuation.status}
-                        </p>
-                      </Col>
-                      <Col span={8}>
-                        <p
-                        style={{
-                          display: "flex",
-                          justifyContent: "center"
-                        }}>
-                          <strong>Price: </strong>
-                          {currentRequest?.ultimateValuation.price}
-                        </p>
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-              </div>
-            </>
-          )}
-          {currentRequest?.reasonReject != null && (
-            <>
-              <h5>Reason Reject:</h5>
-              <div
-                style={{
-                  padding: "20px",
-                  border: "1px solid #ccc",
-                  borderRadius: "8px",
-                  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-                  backgroundColor: "#fff", // Màu nền
-                  marginBottom: "10px",
-                }}
-              >
-                <Row>
-                  <Col span={24}>
-                    <Row gutter={[0, 0]}>
-                      <Col span={24}>
-                        <p
-                        style={{
-                          display: "flex",
-                          justifyContent: "center"
-                        }}>
-                          <strong>Reason:  </strong>
-                          {currentRequest?.reasonReject}
-                        </p>
-                      </Col>                 
-                    </Row>
-                  </Col>
-                </Row>
-              </div>
-            </>
-          )} 
-          {currentRequest?.status === "PENDING" && (
-            <>
-              <Row>
-                <h6 style={{ marginRight: "12px" }}>Valuation</h6>
-                {user?.role === "STAFF" ? (
-                  <Switch
-                    unCheckedChildren="Reject"
-                    checkedChildren="Valuation"
-                    onChange={handelFormPending}
-                  />
-                ) : (
-                  <Switch
-                    unCheckedChildren="Reject"
-                    checkedChildren="Valuation"
-                    disabled
-                  />
-                )}
-              </Row>
-              {!isRejected ? (
-                <Form
-                  name="basic"
-                  labelCol={{
-                    span: 8,
-                  }}
-                  wrapperCol={{
-                    span: 16,
-                  }}
-                  style={{
-                    display: "flex",
-                    gap: "16px",
-                    justifyContent: "center",
-                    maxWidth: 500,
-                  }}
-                  initialValues={{
-                    remember: true,
-                  }}
-                  onFinish={onFinishrejected}
-                  onFinishFailed={onFinishFailed}
-                  autoComplete="off"
-                >
-                  <Form.Item
-                    style={{ flexGrow: "1" }}
-                    label="Reason"
-                    name="reason"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input Reason !",
-                      },
-                      { whitespace: true },
-                    ]}
-                    hasFeedback
-                  >
-                    <Input readOnly={user?.role !== "STAFF"} />
-                  </Form.Item>
-                  <Button type="primary" htmlType="submit" disabled={user?.role !== "STAFF"}>
-                    Reject
-                  </Button>
-                </Form>
-              ) : (
-                <Form
-                  name="basic"
-                  labelCol={{
-                    span: 8,
-                  }}
-                  wrapperCol={{
-                    span: 16,
-                  }}
-                  style={{
-                    display: "flex",
-                    gap: "16px",
-                    maxWidth: 600,
-                    justifyContent: "center",
-                  }}
-                  initialValues={{
-                    remember: true,
-                  }}
-                  onFinish={onFinishsetappraisalprice}
-                  onFinishFailed={onFinishFailed}
-                  autoComplete="off"
-                >
-                  <Form.Item
-                    label="InitialValuation"
-                    name="price"
-                    style={{ flexGrow: "1" }}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input InitialValuation !",
-                      },
-                      { whitespace: true },
-                    ]}
-                    hasFeedback
-                  >
-                    <Input readOnly={user?.role !== "STAFF"} />
-                  </Form.Item>
-                  <Button type="primary" htmlType="submit" disabled={user?.role !== "STAFF"}>
-                    Valuation
-                  </Button>
-                </Form>
-              )}
-            </>
-          )}                        
-          {currentRequest?.status === "CONFIRMED" && (
+            <div>{renderSteps(currentRequest?.status)}</div>
+            <h5>Sell request: </h5>
             <div
               style={{
-                display: "flex",
-                justifyContent: "center",
-                marginTop: "16px",
+                padding: "20px",
+                border: "1px solid #ccc",
+                borderRadius: "8px",
+                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                backgroundColor: "#fff", // Màu nền
+                marginBottom: "10px",
               }}
             >
-              <Form
-                name="basic"
-                labelCol={{
-                  span: 8,
-                }}
-                wrapperCol={{
-                  span: 16,
-                }}
-                style={{
-                  maxWidth: 600,
-                  display: "flex",
-                  gap: "16px",
-                  justifyContent: "space-between",
-                }}
-                initialValues={{
-                  remember: true,
-                }}
-                onFinish={onFinishReceived}
-                autoComplete="off"
-              >
-                <Button type="primary" htmlType="submit" disabled={user?.role !== "STAFF"}>
-                  Received
-                </Button>
-              </Form>
+              <Row gutter={[0, 0]}>
+                <Col span={24}>
+                  <Row gutter={[0, 0]}>
+                    <Col span={8}>
+                      <p>
+                        <strong>ID Request:</strong> {currentRequest?.id}
+                      </p>
+                    </Col>
+
+                    <Col span={8}>
+                      <p>
+                        <strong>Status:</strong> {currentRequest?.status}
+                      </p>
+                    </Col>
+                    <Col span={8}>
+                      <p>
+                        <strong>Desired Price: </strong>$
+                        {currentRequest?.jewelryinitialprice}
+                      </p>
+                    </Col>
+                  </Row>
+                </Col>
+                <Col
+                  span={24}
+                  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.1)" }}
+                >
+                  <Row gutter={[0, 0]} style={{ paddingTop: "10px" }}>
+                    <Col span={12}>
+                      <p>
+                        <strong>Request Date: </strong>
+                        {formatDate(currentRequest?.requestdate)}
+                      </p>
+                    </Col>
+                    <Col span={12}>
+                      <p>
+                        <strong>Name:</strong> {currentRequest?.jewelryname}
+                      </p>
+                    </Col>
+                  </Row>
+                </Col>
+
+                <Col
+                  span={24}
+                  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.1)" }}
+                >
+                  <Row gutter={[0, 0]} style={{ paddingTop: "10px" }}>
+                    <Col span={24}>
+                      <p>
+                        <strong>Description:</strong>
+                      </p>
+                      <div
+                        style={{
+                          padding: "10px",
+                          border: "1px solid #ccc",
+                          borderRadius: "8px",
+                          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                          backgroundColor: "#f9f9f9",
+                        }}
+                      >
+                        {currentRequest?.jewelrydescription}
+                      </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    {currentRequest?.resources?.map((img) => (
+                      <>
+                        <Image
+                          src={img.path}
+                          width={"calc(33% - 16px)"}
+                          style={{
+                            padding: "10px",
+                          }}
+                        />
+                      </>
+                    ))}
+                  </Row>
+                </Col>
+              </Row>
             </div>
-          )}
-          {currentRequest?.status === "RECEIVED" && (
-            <>
-              <Switch
-                unCheckedChildren="Valuation"
-                checkedChildren="Reject"
-                onChange={handelFormPending}
-                disabled={user?.role !== "STAFF"}
-              />
-              {isRejected ? (
-                <Form
-                  name="basic"
-                  labelCol={{
-                    span: 8,
-                  }}
-                  wrapperCol={{
-                    span: 16,
-                  }}
+            {currentRequest?.initialValuations != null && (
+              <>
+                <h5>Initial Valuation:</h5>
+                <div
                   style={{
-                    maxWidth: 600,
-                    display: "flex",
-                    gap: "16px",
-                    justifyContent: "space-between",
+                    padding: "20px",
+                    border: "1px solid #ccc",
+                    borderRadius: "8px",
+                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                    backgroundColor: "#fff", // Màu nền
+                    marginBottom: "10px",
                   }}
-                  initialValues={{
-                    remember: true,
-                  }}
-                  onFinish={handleUltimateValuationReject}
-                  onFinishFailed={onFinishFailed}
-                  autoComplete="off"
                 >
-                  <Form.Item
-                    style={{ flexGrow: "1" }}
-                    label="Reason"
-                    name="reason"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input Reason !",
-                      },
-                      { whitespace: true },
-                    ]}
-                    hasFeedback
-                  >
-                    <Input disabled={user?.role !== "STAFF"} />
-                  </Form.Item>
-                  <Button type="primary" htmlType="submit" disabled={user?.role !== "STAFF"}>
-                    Reject
-                  </Button>
-                </Form>
-              ) : (
-                <Form
-                  name="basic"
-                  labelCol={{
-                    span: 8,
-                  }}
-                  wrapperCol={{
-                    span: 16,
-                  }}
+                  <Row>
+                    <Col span={24}>
+                      <Row gutter={[0, 0]}>
+                        <Col span={8}>
+                          <p
+                            style={{
+                              display: "flex",
+                              justifyContent: "center"
+                            }}>
+                            <strong>Date: </strong>
+                            {formatDate(
+                              currentRequest?.initialValuations.initialdate
+                            )}
+                          </p>
+                        </Col>
+                        <Col span={8}>
+                          <p
+                            style={{
+                              display: "flex",
+                              justifyContent: "center"
+                            }}>
+                            <strong>Status: </strong>
+                            {currentRequest?.initialValuations.status}
+                          </p>
+                        </Col>
+                        <Col span={8}>
+                          <p
+                            style={{
+                              display: "flex",
+                              justifyContent: "center"
+                            }}>
+                            <strong>Price: </strong>
+                            {currentRequest?.initialValuations.price}
+                          </p>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                </div>
+              </>
+            )}
+            {currentRequest?.ultimateValuation != null && (
+              <>
+                <h5>Ultimate Valuation:</h5>
+                <div
                   style={{
-                    maxWidth: 600,
-                    display: "flex",
-                    gap: "16px",
-                    justifyContent: "space-between",
+                    padding: "20px",
+                    border: "1px solid #ccc",
+                    borderRadius: "8px",
+                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                    backgroundColor: "#fff", // Màu nền
+                    marginBottom: "10px",
                   }}
-                  initialValues={{
-                    remember: true,
-                  }}
-                  onFinish={handleUltimateValuation}
-                  onFinishFailed={onFinishFailed}
-                  autoComplete="off"
                 >
-                  <Form.Item
-                    label="UltimateValuation"
-                    name="price"
-                    style={{ flexGrow: "1" }}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input UltimateValuation !",
-                      },
-                      { whitespace: true },
-                    ]}
-                    hasFeedback
-                  >
-                    <Input disabled={user?.role !== "STAFF"} />
-                  </Form.Item>
-                  <Button type="primary" htmlType="submit" disabled={user?.role !== "STAFF"}>
-                    Valuation
-                  </Button>
-                </Form>
-              )}
-            </>
-          )}
-          {currentRequest?.status === "REVIEW" && (
-            <>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "12px",
-                }}
-              >
-                <h6 style={{ marginRight: "12px" }}>Review</h6>
-                <Switch
-                  unCheckedChildren="Reject"
-                  checkedChildren="Accept"
-                  onChange={handelFormPending}
-                  disabled={user?.role !== "MANAGER"}
-                />
-              </div>
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                  marginTop: "16px",
-                }}
-              >
+                  <Row>
+                    <Col span={24}>
+                      <Row gutter={[0, 0]}>
+                        <Col span={8}>
+                          <p
+                            style={{
+                              display: "flex",
+                              justifyContent: "center"
+                            }}>
+                            <strong>Date: </strong>
+                            {formatDate(
+                              currentRequest?.ultimateValuation.ultimatedate
+                            )}
+                          </p>
+                        </Col>
+                        <Col span={8}>
+                          <p
+                            style={{
+                              display: "flex",
+                              justifyContent: "center"
+                            }}>
+                            <strong>Status: </strong>
+                            {currentRequest?.ultimateValuation.status}
+                          </p>
+                        </Col>
+                        <Col span={8}>
+                          <p
+                            style={{
+                              display: "flex",
+                              justifyContent: "center"
+                            }}>
+                            <strong>Price: </strong>
+                            {currentRequest?.ultimateValuation.price}
+                          </p>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                </div>
+              </>
+            )}
+            {currentRequest?.reasonReject != null && (
+              <>
+                <h5>Reason Reject:</h5>
+                <div
+                  style={{
+                    padding: "20px",
+                    border: "1px solid #ccc",
+                    borderRadius: "8px",
+                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                    backgroundColor: "#fff", // Màu nền
+                    marginBottom: "10px",
+                  }}
+                >
+                  <Row>
+                    <Col span={24}>
+                      <Row gutter={[0, 0]}>
+                        <Col span={24}>
+                          <p
+                            style={{
+                              display: "flex",
+                              justifyContent: "center"
+                            }}>
+                            <strong>Reason:  </strong>
+                            {currentRequest?.reasonReject}
+                          </p>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                </div>
+              </>
+            )}
+            {currentRequest?.status === "PENDING" && (
+              <>
+                <Row>
+                  <h6 style={{ marginRight: "12px" }}>Valuation</h6>
+                  {user?.role === "STAFF" ? (
+                    <Switch
+                      unCheckedChildren="Reject"
+                      checkedChildren="Valuation"
+                      onChange={handelFormPending}
+                    />
+                  ) : (
+                    <Switch
+                      unCheckedChildren="Reject"
+                      checkedChildren="Valuation"
+                      disabled
+                    />
+                  )}
+                </Row>
                 {!isRejected ? (
-                  <Form
-                    name="basic"
-                    labelCol={{
-                      span: 8,
-                    }}
-                    wrapperCol={{
-                      span: 16,
-                    }}
-                    style={{
-                      display: "flex",
-                      gap: "16px",
-                      justifyContent: "center",
-                      maxWidth: 600,
-                    }}
-                    initialValues={{
-                      remember: true,
-                    }}
-                    onFinish={handleRejectUltimateValuation}
-                    onFinishFailed={onFinishFailed}
-                    autoComplete="off"
-                  >
-                    <Form.Item
-                      style={{ flexGrow: "1" }}
-                      label="Reason"
-                      name="reason"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input Reason!",
-                        },
-                        { whitespace: true },
-                      ]}
-                      hasFeedback
-                    >
-                      <Input disabled={user?.role !== "MANAGER"} />
-                    </Form.Item>
-                    <Button
-                      type="primary"
-                      htmlType="submit"
-                      disabled={user?.role !== "MANAGER"}
-                    >
-                      Reject
-                    </Button>
-                  </Form>
-                ) : (
                   <Form
                     name="basic"
                     labelCol={{
@@ -1153,26 +878,315 @@ export default function ManageRequest() {
                     initialValues={{
                       remember: true,
                     }}
-                    onFinish={handleAcceptUltimateValuation}
+                    onFinish={onFinishrejected}
                     onFinishFailed={onFinishFailed}
                     autoComplete="off"
                   >
-                    <Button
-                      type="primary"
-                      htmlType="submit"
-                      disabled={user?.role !== "MANAGER"}
+                    <Form.Item
+                      style={{ flexGrow: "1" }}
+                      label="Reason"
+                      name="reason"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input Reason !",
+                        },
+                        { whitespace: true },
+                      ]}
+                      hasFeedback
                     >
-                      Accept
+                      <Input readOnly={user?.role !== "STAFF"} />
+                    </Form.Item>
+                    <Button type="primary" htmlType="submit" disabled={user?.role !== "STAFF"}>
+                      Reject
+                    </Button>
+                  </Form>
+                ) : (
+                  <Form
+                    name="basic"
+                    labelCol={{
+                      span: 8,
+                    }}
+                    wrapperCol={{
+                      span: 16,
+                    }}
+                    style={{
+                      display: "flex",
+                      gap: "16px",
+                      maxWidth: 600,
+                      justifyContent: "center",
+                    }}
+                    initialValues={{
+                      remember: true,
+                    }}
+                    onFinish={onFinishsetappraisalprice}
+                    onFinishFailed={onFinishFailed}
+                    autoComplete="off"
+                  >
+                    <Form.Item
+                      label="InitialValuation"
+                      name="price"
+                      style={{ flexGrow: "1" }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input InitialValuation !",
+                        },
+                        { whitespace: true },
+                      ]}
+                      hasFeedback
+                    >
+                      <Input readOnly={user?.role !== "STAFF"} />
+                    </Form.Item>
+                    <Button type="primary" htmlType="submit" disabled={user?.role !== "STAFF"}>
+                      Valuation
                     </Button>
                   </Form>
                 )}
+              </>
+            )}
+            {currentRequest?.status === "CONFIRMED" && (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "16px",
+                }}
+              >
+                <Form
+                  name="basic"
+                  labelCol={{
+                    span: 8,
+                  }}
+                  wrapperCol={{
+                    span: 16,
+                  }}
+                  style={{
+                    maxWidth: 600,
+                    display: "flex",
+                    gap: "16px",
+                    justifyContent: "space-between",
+                  }}
+                  initialValues={{
+                    remember: true,
+                  }}
+                  onFinish={onFinishReceived}
+                  autoComplete="off"
+                >
+                  <Button type="primary" htmlType="submit" disabled={user?.role !== "STAFF"}>
+                    Received
+                  </Button>
+                </Form>
               </div>
-            </>
-          )}
-        </Modal>
-        <Table dataSource={data} columns={columns}  size="middle" />
-      </div>
-       )} </>
+            )}
+            {currentRequest?.status === "RECEIVED" && (
+              <>
+                <Switch
+                  unCheckedChildren="Valuation"
+                  checkedChildren="Reject"
+                  onChange={handelFormPending}
+                  disabled={user?.role !== "STAFF"}
+                />
+                {isRejected ? (
+                  <Form
+                    name="basic"
+                    labelCol={{
+                      span: 8,
+                    }}
+                    wrapperCol={{
+                      span: 16,
+                    }}
+                    style={{
+                      maxWidth: 600,
+                      display: "flex",
+                      gap: "16px",
+                      justifyContent: "space-between",
+                    }}
+                    initialValues={{
+                      remember: true,
+                    }}
+                    onFinish={handleUltimateValuationReject}
+                    onFinishFailed={onFinishFailed}
+                    autoComplete="off"
+                  >
+                    <Form.Item
+                      style={{ flexGrow: "1" }}
+                      label="Reason"
+                      name="reason"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input Reason !",
+                        },
+                        { whitespace: true },
+                      ]}
+                      hasFeedback
+                    >
+                      <Input disabled={user?.role !== "STAFF"} />
+                    </Form.Item>
+                    <Button type="primary" htmlType="submit" disabled={user?.role !== "STAFF"}>
+                      Reject
+                    </Button>
+                  </Form>
+                ) : (
+                  <Form
+                    name="basic"
+                    labelCol={{
+                      span: 8,
+                    }}
+                    wrapperCol={{
+                      span: 16,
+                    }}
+                    style={{
+                      maxWidth: 600,
+                      display: "flex",
+                      gap: "16px",
+                      justifyContent: "space-between",
+                    }}
+                    initialValues={{
+                      remember: true,
+                    }}
+                    onFinish={handleUltimateValuation}
+                    onFinishFailed={onFinishFailed}
+                    autoComplete="off"
+                  >
+                    <Form.Item
+                      label="UltimateValuation"
+                      name="price"
+                      style={{ flexGrow: "1" }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input UltimateValuation !",
+                        },
+                        { whitespace: true },
+                      ]}
+                      hasFeedback
+                    >
+                      <Input disabled={user?.role !== "STAFF"} />
+                    </Form.Item>
+                    <Button type="primary" htmlType="submit" disabled={user?.role !== "STAFF"}>
+                      Valuation
+                    </Button>
+                  </Form>
+                )}
+              </>
+            )}
+            {currentRequest?.status === "REVIEW" && (
+              <>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "12px",
+                  }}
+                >
+                  <h6 style={{ marginRight: "12px" }}>Review</h6>
+                  <Switch
+                    unCheckedChildren="Reject"
+                    checkedChildren="Accept"
+                    onChange={handelFormPending}
+                    disabled={user?.role !== "MANAGER"}
+                  />
+                </div>
+                <div
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: "16px",
+                  }}
+                >
+                  {!isRejected ? (
+                    <Form
+                      name="basic"
+                      labelCol={{
+                        span: 8,
+                      }}
+                      wrapperCol={{
+                        span: 16,
+                      }}
+                      style={{
+                        display: "flex",
+                        gap: "16px",
+                        justifyContent: "center",
+                        maxWidth: 600,
+                      }}
+                      initialValues={{
+                        remember: true,
+                      }}
+                      onFinish={handleRejectUltimateValuation}
+                      onFinishFailed={onFinishFailed}
+                      autoComplete="off"
+                    >
+                      <Form.Item
+                        style={{ flexGrow: "1" }}
+                        label="Reason"
+                        name="reason"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input Reason!",
+                          },
+                          { whitespace: true },
+                        ]}
+                        hasFeedback
+                      >
+                        <Input disabled={user?.role !== "MANAGER"} />
+                      </Form.Item>
+                      <Button
+                        type="primary"
+                        htmlType="submit"
+                        disabled={user?.role !== "MANAGER"}
+                      >
+                        Reject
+                      </Button>
+                    </Form>
+                  ) : (
+                    <Form
+                      name="basic"
+                      labelCol={{
+                        span: 8,
+                      }}
+                      wrapperCol={{
+                        span: 16,
+                      }}
+                      style={{
+                        display: "flex",
+                        gap: "16px",
+                        justifyContent: "center",
+                        maxWidth: 500,
+                      }}
+                      initialValues={{
+                        remember: true,
+                      }}
+                      onFinish={handleAcceptUltimateValuation}
+                      onFinishFailed={onFinishFailed}
+                      autoComplete="off"
+                    >
+                      <Button
+                        type="primary"
+                        htmlType="submit"
+                        disabled={user?.role !== "MANAGER"}
+                      >
+                        Accept
+                      </Button>
+                    </Form>
+                  )}
+                </div>
+              </>
+            )}
+          </Modal>
+          <Table dataSource={data} columns={columns}
+            pagination={{
+              total: totalRow,
+              current: pageNumber,
+              pageSize: 7,
+            }}
+            size="middle"
+            onChange={onChangePaging} />
+        </div>
+      )} </>
   );
 }
-  
