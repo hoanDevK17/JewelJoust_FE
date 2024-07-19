@@ -55,6 +55,8 @@ export default function ManageSession() {
   const { RangePicker } = DatePicker;
   const [messageApi, contextHolder] = message.useMessage();
   const [urlJewelry, setUrlJewelry] = useState([]);
+  const [totalRow, setTotalRow] = useState(0);
+  const [pageNumber, setPageNumber] = useState(1);
   const user = useSelector(selectUser);
   const disabledDate = (current) => {
     // Can not select days before today and today
@@ -93,11 +95,13 @@ export default function ManageSession() {
       });
   };
 
-  const fetchData = async () => {
+  const fetchData = async (page) => {
     setIsLoading(true);
-    APIgetallSession()
+    APIgetallSession(page, 7)
       .then((response) => {
-        setData(response.data);
+        console.log(response);
+        setTotalRow(response.data?.totalItems);
+        setData(response.data?.items);
       })
       .catch((error) => {
         console.log(error);
@@ -107,6 +111,15 @@ export default function ManageSession() {
         setIsLoading(false);
       });
   };
+  const onChangePaging = (props) => {
+    console.log(props);
+    setPageNumber(props.current);
+  };
+  useEffect(() => {
+    console.log(pageNumber);
+    fetchData(pageNumber - 1);
+  }, [pageNumber]);
+
   const fetchAuctionRequestAgreed = async () => {
     if (user?.role == "MANAGER") {
       APIgetAllRequestToSession()
@@ -175,7 +188,7 @@ export default function ManageSession() {
           console.log(error);
           message.error("Something went wrong", error.response?.data);
         })
-        .finally(() => {});
+        .finally(() => { });
     }
     if (currentId == 0) {
       // let path = urlJewelry?.map((file) => ({ path: file.url }));
@@ -191,7 +204,7 @@ export default function ManageSession() {
           console.log(error);
           message.error("Something went wrong", error.response?.data);
         })
-        .finally(() => {});
+        .finally(() => { });
     }
   };
 
@@ -529,7 +542,7 @@ export default function ManageSession() {
                     <Input type="number" />
                   </Form.Item>
 
-                  <Form.Item
+                  {/* <Form.Item
                     label="Deposit Amount"
                     name="deposit_amount"
                     rules={[
@@ -541,7 +554,7 @@ export default function ManageSession() {
                     ]}
                   >
                     <Input type="number" />
-                  </Form.Item>
+                  </Form.Item> */}
                   <Form.Item
                     label="Staff"
                     name="staff_id"
@@ -715,7 +728,14 @@ export default function ManageSession() {
               )}
             </div>
           </Modal>
-          <Table dataSource={data} columns={columns} />
+          <Table dataSource={data} columns={columns} 
+           pagination={{
+             total: totalRow,
+             current: pageNumber,
+             pageSize: 7,
+           }}
+           size="middle"
+           onChange={onChangePaging}/>
         </div>
       )}
     </>
