@@ -40,12 +40,12 @@ dayjs.extend(duration);
 export default function Detail() {
   useRealtime(async (body) => {
     if (body.body == "addBid") {
-      await fetch();
+      await fetchRealTime();
     }
   });
   const params = useParams();
   const [product, setProduct] = useState();
-
+  const [highlight, setHighlight] = useState(false);
   const user = useSelector(selectUser);
   const [isLoading, setIsLoading] = useState(true);
   let location = useLocation();
@@ -146,7 +146,32 @@ export default function Detail() {
     //   setAuctionBids(response.data);
     // });
   };
+  const fetchRealTime = () => {
+    var id_user;
+    if (user != null) {
+      id_user = user.id;
+    } else {
+      id_user = -1;
+    }
+    APIgetSessionByID(params.id, id_user)
+      .then((response) => {
+        console.log(response);
+        setProduct(response.data);
+        setHighlight(true);
 
+        // Remove highlight after 10 seconds
+        setTimeout(() => {
+          setHighlight(false);
+        }, 3000 );
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {});
+    // APIgetAllBiddingBySessionId(params.id).then((response) => {
+    //   setAuctionBids(response.data);
+    // });
+  };
   useEffect(() => {
     fetch();
   }, [location]);
@@ -238,9 +263,9 @@ export default function Detail() {
                 <>
                   <h6>Highest Bid Price:</h6>{" "}
                   <h4>
-                    <strong>
+                    <strong style={{ color: highlight ? "red" : "black" }}>
                       {formattedBalance(
-                        Number(product.three_highestBid[0].bid_price)
+                        Number(product?.three_highestBid[0]?.bid_price)
                       )}
                       $
                     </strong>
@@ -367,10 +392,10 @@ export default function Detail() {
                             },
                             {
                               type: "number",
-                              min: product?.three_highestBid[0].bid_price,
+                              min: product?.three_highestBid[0]?.bid_price,
                               message:
                                 "Please input your bid amount at least " +
-                                (product?.three_highestBid[0].bid_price +
+                                (product?.three_highestBid[0]?.bid_price +
                                   product?.minStepPrice) +
                                 "$",
                             },
@@ -438,16 +463,18 @@ export default function Detail() {
                             type: "number",
                             min:
                               product?.status == "BIDDING" &&
-                              product.three_highestBid[0].bid_price > 0
-                                ? product.three_highestBid[0].bid_price
+                              product.three_highestBid[0]?.bid_price > 0
+                                ? product.three_highestBid[0]?.bid_price +
+                                  +product.minStepPrice
                                 : product?.auctionRequest.ultimateValuation
                                     .price + product?.minStepPrice,
 
                             message:
                               "Please enter price higher than " +
                               (product?.status == "BIDDING" &&
-                              product.three_highestBid[0].bid_price > 0
-                                ? product.three_highestBid[0].bid_price
+                              product.three_highestBid[0]?.bid_price > 0
+                                ? product.three_highestBid[0]?.bid_price +
+                                  product.minStepPrice
                                 : product?.auctionRequest.ultimateValuation
                                     .price + product?.minStepPrice) +
                               "$",
