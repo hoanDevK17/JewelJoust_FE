@@ -732,7 +732,7 @@ export default function ManageSession() {
            pagination={{
              total: totalRow,
              current: pageNumber,
-             pageSize: 7,
+             pageSize: 7 ,
            }}
            size="middle"
            onChange={onChangePaging}/>
