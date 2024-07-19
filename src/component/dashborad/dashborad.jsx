@@ -11,7 +11,7 @@ import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectUser } from "../../redux/features/counterSlice";
-import "./dashborad.scss";
+
 const { Header, Content, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -87,7 +87,7 @@ const Dashboard = () => {
     if (role === "ADMIN") {
       setItems([
         getItem("Acount", "acount", <ProfileOutlined />),
-        getItem("Request", "request", <TeamOutlined />),
+        getItem("Request", "request", <TeamOutlined />),  
         getItem("Session", "session", <HeartOutlined />),
         getItem("Statistical", "statistical", <ContainerOutlined />, [
           getItem("Revenue", "revenue"),
@@ -127,24 +127,16 @@ const Dashboard = () => {
     console.log(currentURI);
     handleSubMenuOpen([...openKeys, key]);
   }, [currentURI]);
-  const handleClick = () => {
-    navigate("/");
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
+
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider
-      style={{backgroundColor: "#CDC9C9"}}
         collapsible
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
-        // style={{ backgroundColor: "yellow" }}
       >
         <Menu
-        style={{backgroundColor: "#CDC9C9"}}
+          theme="dark"
           defaultSelectedKeys={["profile"]}
           mode="inline"
           selectedKeys={currentURI}
@@ -182,12 +174,7 @@ const Dashboard = () => {
               fontWeight: "bold",
             }}
           >
-           <img
-              src="/Logo.svg"
-              alt=""
-              style={{ maxHeight: "45px", maxWidth: "200px" }}
-              onClick={handleClick}
-            />
+            System of Auction Jewelry
             <LogoutOutlined
               type="primary"
               onClick={() => {
