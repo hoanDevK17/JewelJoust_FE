@@ -187,13 +187,13 @@ export default function Detail() {
         ></Spin>
       ) : (
         <HomePage>
-          <Row gutter={24}>
+          <Row gutter={24} style={{marginBottom:"10px"}}>
             <Col xs={12}>
               <img
                 src={mainImage && mainImage}
                 style={{
                   maxWidth: "800px",
-                  width: "100%",
+                  width: "600px",
                   maxHeight: "800px",
                   height: "500px",
                   objectFit: "cover",
@@ -321,6 +321,8 @@ export default function Detail() {
                     borderRadius: "8px",
                     cursor: "pointer",
                     objectFit: "cover",
+                    width:"70px",
+                    marginRight:"5px"
                   }}
                   onClick={() => handleTab(index)}
                 />
