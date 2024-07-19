@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-
   LogoutOutlined,
   ArrowUpOutlined,
   ContainerOutlined,
@@ -73,10 +72,10 @@ const Dashboard = () => {
     //   setItems([
     //     getItem("Category", "category"),
     //     getItem("Hồ sơ", "profile", <ProfileOutlined />),
-        // getItem("Club", "clubs", <HeartOutlined />, [
-        //   getItem("Time Slot", "time-slot"),
-        //   getItem("Promotion", "promotion"),
-        // ]),
+    // getItem("Club", "clubs", <HeartOutlined />, [
+    //   getItem("Time Slot", "time-slot"),
+    //   getItem("Promotion", "promotion"),
+    // ]),
     //     getItem("Booking", "booking", <CheckCircleOutlined />, [
     //       getItem("Court ID 1", "court-1"),
     //       getItem("Court ID 2", "court-2"),
@@ -93,7 +92,7 @@ const Dashboard = () => {
           getItem("Revenue", "revenue"),
           getItem("Session Statistics", "sessionstatistics"),
           getItem("Request Statistics", "requeststatistics"),
-          getItem("Acount Statistics", "acountstatistics"),       
+          getItem("Acount Statistics", "acountstatistics"),
         ]),
       ]);
     }
@@ -127,16 +126,24 @@ const Dashboard = () => {
     console.log(currentURI);
     handleSubMenuOpen([...openKeys, key]);
   }, [currentURI]);
-
+  const handleClick = () => {
+    navigate("/");
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider
+        style={{ backgroundColor: "#CDC9C9" }}
         collapsible
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
+        // style={{ backgroundColor: "yellow" }}
       >
         <Menu
-          theme="dark"
+          style={{ backgroundColor: "#CDC9C9" }}
           defaultSelectedKeys={["profile"]}
           mode="inline"
           selectedKeys={currentURI}
@@ -174,7 +181,12 @@ const Dashboard = () => {
               fontWeight: "bold",
             }}
           >
-            System of Auction Jewelry
+            <img
+              src="/Logo.svg"
+              alt=""
+              style={{ maxHeight: "45px", maxWidth: "200px" }}
+              onClick={handleClick}
+            />
             <LogoutOutlined
               type="primary"
               onClick={() => {
