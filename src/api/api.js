@@ -52,8 +52,10 @@ export const APIregis = (
     birthday: birthday,
   });
 export const APIgetallacount = () => api.get("account");
-export const APIgetallacountPaging = (page, size) =>
-  api.get(`accounts/paging?page=${page}&size=${size}`);
+export const APIgetallacountPaging = (page, size, sort) =>
+  api.get(`accounts/paging?page=${page}&size=${size}&sort=${sort}`);
+// export const APIgetallrequest = (page, size,sort) =>
+//   api.get(`auctionRequests/paging?page=${page}&size=${size}&sort=${sort}`);
 export const APIgetallacountbyRole = (role) => api.get(`account/role/${role}`);
 export const APIregishaverole = (
   userName,

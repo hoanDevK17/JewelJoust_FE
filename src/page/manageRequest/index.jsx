@@ -153,58 +153,6 @@ export default function ManageRequest() {
       title: "Request Status",
       dataIndex: "status",
       key: "status",
-      filterMode: "tree",
-      filters: [
-        {
-          text: "PENDING",
-          value: "PENDING",
-        },
-        {
-          text: "REJECTED",
-          value: "REJECTED",
-        },
-        {
-          text: "CONFIRMED",
-          value: "CONFIRMED",
-        },
-        {
-          text: "CANCEL",
-          value: "CANCEL",
-        },
-        {
-          text: "RECEIVED",
-          value: "RECEIVED",
-        },
-        {
-          text: "MISSED",
-          value: "MISSED",
-        },
-        {
-          text: "REVIEW",
-          value: "REVIEW",
-        },
-        {
-          text: "UNACCEPTED",
-          value: "UNACCEPTED",
-        },
-        {
-          text: "UNAPPROVED",
-          value: "UNAPPROVED",
-        },
-        {
-          text: "APPROVED",
-          value: "APPROVED",
-        },
-        {
-          text: "AGREED",
-          value: "AGREED",
-        },
-        {
-          text: "DECLINED",
-          value: "DECLINED",
-        },
-      ],
-      filterSearch: true,
       onFilter: (value, record) => record.status.includes(value),
       render: (text) => {
         let color = "";
