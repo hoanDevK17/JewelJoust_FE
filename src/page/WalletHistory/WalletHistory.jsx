@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 
 export default function WalletHistory() {
-  const [totalRow, setTotalRow] = useState(0);
+   const [totalRow, setTotalRow] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
   const onChangePaging = (props) => {
     console.log(props);

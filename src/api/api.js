@@ -126,8 +126,8 @@ export const APIRejectUltimate = (id, reason) =>
   api.put(`ultimateValuations/${id}/rejected`, { reason });
 // Session
 // export const APIgetallSession = () => api.get("auctionSessions");
-export const APIgetallSession = (page, size) =>
-  api.get(`auctionSessions/paging?page=${page}&size=${size}`);
+export const APIgetallSession = (page, size,sort) =>
+  api.get(`auctionSessions/paging?page=${page}&size=${size}&sort=${sort}`);
 export const APIgetallSessionByStatus = (status) =>
   api.get(`auctionSessions/${status}`);
 export const APIgetallSessionByName = (name, page, size, sort) =>
