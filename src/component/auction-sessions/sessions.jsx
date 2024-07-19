@@ -5,46 +5,51 @@ import { APIgetallSession, APIgetallSessionByName } from "../../api/api.js";
 
 import dayjs from "dayjs";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Button, Card, Spin, Input, Flex } from "antd";
+import { Button, Card, Spin, Input, Flex, Pagination, message } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import Meta from "antd/es/card/Meta.js";
 import { paragraphStyle } from "../../utils/styleUtils.js";
 
 export default function AuctionSession() {
   const navigate = useNavigate();
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
+  const [totalRow, setTotalRow] = useState(0);
+  const [pageNumber, setPageNumber] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-  let [searchParams, setSearchParams] = useSearchParams();
+  let [searchParams] = useSearchParams();
 
-  const fetchData = async () => {
+  const fetchData = async (page) => {
     setIsLoading(true);
     const name = searchParams.get("search");
 
-    name !== null
-      ? APIgetallSessionByName(name)
-          .then((response) => {
-            console.log(response);
-            setData(response.data.content);
-            setIsLoading(false);
-          })
-          .catch((error) => {
-            console.error(error);
-            setIsLoading(false);
-          })
-      : APIgetallSession()
-          .then((response) => {
-            console.log(response);
-            setData(response.data.content);
-            setIsLoading(false);
-          })
-          .catch((error) => {
-            console.error(error);
-            setIsLoading(false);
-          });
+    try {
+      let response;
+      if (name !== null) {
+        response = await APIgetallSessionByName(name);
+        setData(response.data.content);
+      } else {
+        response = await APIgetallSession(page, 3); 
+        setTotalRow(response.data?.totalItems);
+        setData(response.data?.items);
+      }
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+      message.error("Something went wrong");
+      setIsLoading(false);
+    }
+  };
+
+  const onChangePaging = (page) => {
+    setPageNumber(page);
   };
 
   useEffect(() => {
-    fetchData();
+    fetchData(pageNumber - 1);
+  }, [pageNumber]);
+
+  useEffect(() => {
+    fetchData(pageNumber - 1);
   }, [searchParams]);
 
   const { Search } = Input;
@@ -128,14 +133,19 @@ export default function AuctionSession() {
                   })}
                 </>
               ) : (
-                <>
-                  <p>There is no session at the moment</p>
-                </>
+                <p>There is no session at the moment</p>
               )}
-
             </>
           )}
         </Flex>
+
+        <Pagination
+          current={pageNumber}
+          pageSize={3} 
+          total={totalRow}
+          onChange={onChangePaging}
+          style={{ marginTop: "20px", textAlign: "center" }}
+        />
       </HomePage>
     </>
   );
