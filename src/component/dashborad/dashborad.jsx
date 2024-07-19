@@ -5,6 +5,7 @@ import {
   TeamOutlined,
   LogoutOutlined,
   ArrowUpOutlined,
+  ContainerOutlined,
 } from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
@@ -72,10 +73,10 @@ const Dashboard = () => {
     //   setItems([
     //     getItem("Category", "category"),
     //     getItem("Hồ sơ", "profile", <ProfileOutlined />),
-    //     getItem("Club", "clubs", <HeartOutlined />, [
-    //       getItem("Time Slot", "time-slot"),
-    //       getItem("Promotion", "promotion"),
-    //     ]),
+        // getItem("Club", "clubs", <HeartOutlined />, [
+        //   getItem("Time Slot", "time-slot"),
+        //   getItem("Promotion", "promotion"),
+        // ]),
     //     getItem("Booking", "booking", <CheckCircleOutlined />, [
     //       getItem("Court ID 1", "court-1"),
     //       getItem("Court ID 2", "court-2"),
@@ -88,6 +89,12 @@ const Dashboard = () => {
         getItem("Acount", "acount", <ProfileOutlined />),
         getItem("Request", "request", <TeamOutlined />),
         getItem("Session", "session", <HeartOutlined />),
+        getItem("Statistical", "statistical", <ContainerOutlined />, [
+          getItem("Revenue", "revenue"),
+          getItem("Session Statistics", "sessionstatistics"),
+          getItem("Request Statistics", "requeststatistics"),
+          getItem("Acount Statistics", "acountstatistics"),       
+        ]),
       ]);
     }
     if (role === "MANAGER") {

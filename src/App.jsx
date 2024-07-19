@@ -26,6 +26,12 @@ import RegistrationSessionHistory from "./page/HistoryRegistrationSession";
 import useRealtime from "./assets/hook/useRealTime";
 import Payment from "./page/Payment/Payment";
 import ConditionsAndServices from "./page/conditionsAndServices/conditionsAndServices";
+import AcountStatistics from "./page/AcountStatistics/AcountStatistics";
+import RequestStatistics from "./page/RequestStatistics/RequestStatistics";
+import SessionStatistics from "./page/SessionStatistics/SessionStatistics";
+import Revenues from "./page/Revenue/Revenue";
+
+
 export default function App() {
   const router = createBrowserRouter([
     {
@@ -89,11 +95,6 @@ export default function App() {
       path: "/Wallet",
       element: <Wallet />,
       children: [
-        // {
-
-        //   path: "/Wallet/Withdrawal",
-        //   element: <WithdrawalHistory />,
-        // },
         {
           path: "/Wallet/BidAmoutHistory",
           element: <BidAmoutHistory />,
@@ -127,7 +128,23 @@ export default function App() {
         {
           path: "/dashboard/session",
           element: <ManageSession />,
+        },   
+        {
+          path: "/dashboard/revenue",
+          element: <Revenues />,
         },
+        {
+          path: "/dashboard/sessionstatistics",
+          element: <SessionStatistics />,
+        },
+        {
+          path: "/dashboard/requeststatistics",
+          element: <RequestStatistics />,
+        },
+        {
+          path: "/dashboard/acountstatistics",
+          element: <AcountStatistics />,
+        },   
       ],
     },
     {
