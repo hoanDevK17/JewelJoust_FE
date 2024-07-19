@@ -45,7 +45,7 @@ export default function Detail() {
   });
   const params = useParams();
   const [product, setProduct] = useState();
-  const [auctionBids, setAuctionBids] = useState();
+
   const user = useSelector(selectUser);
   const [isLoading, setIsLoading] = useState(true);
   let location = useLocation();
@@ -142,9 +142,9 @@ export default function Detail() {
       .finally(() => {
         setIsLoading(false);
       });
-    APIgetAllBiddingBySessionId(params.id).then((response) => {
-      setAuctionBids(response.data);
-    });
+    // APIgetAllBiddingBySessionId(params.id).then((response) => {
+    //   setAuctionBids(response.data);
+    // });
   };
 
   useEffect(() => {
@@ -187,18 +187,24 @@ export default function Detail() {
         ></Spin>
       ) : (
         <HomePage>
-          <Row gutter={24} style={{marginBottom:"10px"}}>
+          <Row gutter={24} style={{ marginBottom: "10px", width: "1200px" }}>
             <Col xs={12}>
-              <img
-                src={mainImage && mainImage}
+              <div
                 style={{
-                  maxWidth: "800px",
-                  width: "600px",
-                  maxHeight: "800px",
+                  width: "100%",
                   height: "500px",
-                  objectFit: "cover",
                 }}
-              />
+              >
+                <img
+                  src={mainImage && mainImage}
+                  style={{
+                    width: "100%",
+                    maxHeight: "500px",
+
+                    objectFit: "cover",
+                  }}
+                />
+              </div>
             </Col>
             <Col xs={6}>
               <h6
@@ -293,7 +299,7 @@ export default function Detail() {
             </Col>
             <Col xs={6}>
               {product.three_highestBid?.length > 0 ? (
-                <BidsList bids={auctionBids} />
+                <BidsList bids={product.three_highestBid} />
               ) : (
                 <div
                   style={{
@@ -302,8 +308,10 @@ export default function Detail() {
                     alignItems: "center",
                   }}
                 >
-                 <h6>No bids have been placed on this item yet. Be the first to
-                 bid!</h6> 
+                  <h6>
+                    No bids have been placed on this item yet. Be the first to
+                    bid!
+                  </h6>
                 </div>
               )}
             </Col>
@@ -321,8 +329,8 @@ export default function Detail() {
                     borderRadius: "8px",
                     cursor: "pointer",
                     objectFit: "cover",
-                    width:"70px",
-                    marginRight:"5px"
+                    width: "70px",
+                    marginRight: "5px",
                   }}
                   onClick={() => handleTab(index)}
                 />
@@ -357,15 +365,34 @@ export default function Detail() {
                               required: true,
                               message: "Please input your bid amount!",
                             },
+                            {
+                              type: "number",
+                              min: product?.three_highestBid[0].bid_price,
+                              message:
+                                "Please input your bid amount at least " +
+                                (product?.three_highestBid[0].bid_price +
+                                  product?.minStepPrice) +
+                                "$",
+                            },
+                            // {
+                            //   validator: (rule, value) => {
+                            //     const minBid =
+                            //       product?.three_highestBid[0].bid_price +
+                            //       product?.minStepPrice;
+                            //     if (value < minBid) {
+                            //       return Promise.reject(
+                            //         `Bid amount must be at least ${minBid}$`
+                            //       );
+                            //     }
+                            //     return Promise.resolve();
+                            //   },
+                            // },
                           ]}
                         >
                           <InputNumber
                             size="large"
                             style={{ width: "100%" }}
                             placeholder="Enter bid amount"
-                            min={
-                              product?.auctionRequest.ultimateValuation.price
-                            }
                             step={1}
                           />
                         </Form.Item>{" "}
@@ -410,12 +437,19 @@ export default function Detail() {
                           {
                             type: "number",
                             min:
-                              product?.auctionRequest.ultimateValuation.price +
-                              product?.minStepPrice,
+                              product?.status == "BIDDING" &&
+                              product.three_highestBid[0].bid_price > 0
+                                ? product.three_highestBid[0].bid_price
+                                : product?.auctionRequest.ultimateValuation
+                                    .price + product?.minStepPrice,
+
                             message:
                               "Please enter price higher than " +
-                              (product?.auctionRequest.ultimateValuation.price +
-                                product?.minStepPrice) +
+                              (product?.status == "BIDDING" &&
+                              product.three_highestBid[0].bid_price > 0
+                                ? product.three_highestBid[0].bid_price
+                                : product?.auctionRequest.ultimateValuation
+                                    .price + product?.minStepPrice) +
                               "$",
                           },
                         ]}
