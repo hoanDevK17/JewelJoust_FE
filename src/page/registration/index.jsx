@@ -305,9 +305,9 @@ export default function Registration() {
                       fontStyle: "normal",
                       fontWeight: "600",
                       lineHeight: "normal",
-                      width: "100%",
+                      width: "80%",
                       textAlign: "center",
-                      height: "69px",
+                      height: "40px",
                     }}
                   >
                     Register
