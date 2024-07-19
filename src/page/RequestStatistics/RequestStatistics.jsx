@@ -1,131 +1,53 @@
 import { useEffect, useState } from "react";
-import { Button, Modal, Form, Input, Table } from 'antd';
+import { Button, Modal, Form, Input, Table } from "antd";
 import axios from "axios";
+import { Pie } from "react-chartjs-2";
 
 export default function RequestStatistics() {
-const [isModalOpen, setIsModalOpen] = useState(false);
-    const showModal = () => {
-        setIsModalOpen(true);
-    };
-    const handleOk = () => {
-        setIsModalOpen(false);
-    };
-    const handleCancel = () => {
-        setIsModalOpen(false);
-    };
-    const onFinish = async (values) => {
-        console.log('Success:', values);
-        const response = await axios.post("https://665d6f09e88051d604068e77.mockapi.io/category", values);
-            setData([...data, response.data]);
-            setIsModalOpen(false);
-            console.log(response);
-      };
-    const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-      };
-      
-    const columns = [
-        {
-          title: 'ID',
-          dataIndex: 'id',
-          key: 'id',
-        },
-        {
-          title: 'Category Name',
-          dataIndex: 'categoryName',
-          key: 'categoryname',
-        },
-        {
-            title: 'Action',
-            render: (value) => (
-                <Button onClick={ () => {
-                    handleDelate(value)
-                }} danger type="primary">
-                    Delete
-                </Button>
-            )
-        }
-    ];
+  const data = {
+    labels: ["Red", "Blue", "Yellow"],
+    datasets: [
+      {
+        label: "Votes",
+        data: [12, 19, 3],
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
 
-const [data, setData] = useState ([]);
+  const options = {
+    responsive: true,
+    maintainAspectRatio: true, // Cho phép kích thước tùy chỉnh,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+    },
+  };
 
-const fetchData = async () => {
-    const response = await axios.get("https://665d6f09e88051d604068e77.mockapi.io/category");
-    console.log(response.data); 
-    setData(response.data);
-};
-
-    useEffect(() => {
-    fetchData();
-}, []);
-
-const handleDelate = () =>{
-    // console.log(value);
-    // const response = axios.delete(
-    //     `https://665d6f09e88051d604068e77.mockapi.io/category/${value.id}`
-    // );
-    // // lọc ra tất cả data loại bỏ data vừa bị xoá
-    // setData(data.filter((data) => data.id != value.id));
-};
-
-
-return (
-<div>
-     <Button type="primary" onClick={showModal}>
-    Add new category
-  </Button>
-  <Modal 
-  footer={false}
-  title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-    
-    
-  <Form
-    name="basic"
-    labelCol={{
-    span: 8,
-    }}
-    wrapperCol={{
-    span: 16,
-    }}
-    style={{
-    maxWidth: 600,
-    }}
-    initialValues={{
-    remember: true,
-    }}
-    onFinish={onFinish}
-    onFinishFailed={onFinishFailed}
-    autoComplete="off"
->
-    <Form.Item
-    label="Category Name"
-    name="categoryName"
-    rules={[
-        {
-        required: true,
-        message: 'Please input your category name!',
-        },
-    ]}
-    >
-    <Input />
-    </Form.Item>
-
-    <Form.Item
-    wrapperCol={{
-        offset: 8,
-        span: 16,
-    }}
-    >
-    <Button type="primary" htmlType="submit">
-        Submit
-    </Button>
-    </Form.Item>
-</Form>
-
-
-
-  </Modal>
-  <Table dataSource={data} columns={columns}  size="middle"/>
-</div>
-);
+  return (
+    <div>
+      <h2
+        style={{
+          position: "relative",
+          width: "80%",
+          height: "400px",
+          margin: " 0 auto",
+        }}
+      >
+        Pie Chart
+      </h2>
+      <Pie data={data} options={options}  />
+    </div>
+  );
 }
