@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
 import {
-  ProfileOutlined,
-  HeartOutlined,
-  TeamOutlined,
+
   LogoutOutlined,
   ArrowUpOutlined,
   ContainerOutlined,
-  AreaChartOutlined,
   ContactsOutlined,
   SolutionOutlined,
 } from "@ant-design/icons";
@@ -103,13 +100,13 @@ const Dashboard = () => {
     if (role === "MANAGER") {
       setItems([
         getItem("Request", "request", <SolutionOutlined />),
-        getItem("Session", "session", <HeartOutlined />),
+        getItem("Session", "session", "🔨"),
       ]);
     }
     if (role === "STAFF") {
       setItems([
         getItem("Request", "request", <SolutionOutlined />),
-        getItem("Session", "session", <HeartOutlined />),
+        getItem("Session", "session", "🔨"),
         getItem("Approve Withdrawal", "withdrawal", <ArrowUpOutlined />),
       ]);
     }
