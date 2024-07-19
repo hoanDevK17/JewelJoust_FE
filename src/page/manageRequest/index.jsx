@@ -42,7 +42,8 @@ export default function ManageRequest() {
   const token = useSelector(selectUser)?.token;
   const [totalRow, setTotalRow] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
-  // set format cho date
+  const sort = 'id,desc';
+  const pageSize = 7;
   const formatDate = (dateString) => {
     const date = new Date(dateString);
 
@@ -110,9 +111,11 @@ export default function ManageRequest() {
   };
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
+      title: "No.",
+      key: "index",
+      render: (_, __, index) => {
+        return (pageNumber - 1) * pageSize + index;
+      },
     },
     {
       title: "Jewerly Name",
@@ -266,11 +269,11 @@ export default function ManageRequest() {
 
   const fetchData = async (page) => {
     setIsLoading(true);
-    await APIgetallrequest(page, 7)
+    await APIgetallrequest(page, pageSize, sort)
       .then((response) => {
         console.log(response);
-        setTotalRow(response.data?.totalItems);
-        setData(response.data?.items);
+        setTotalRow(response.data?.totalElements);
+        setData(response.data?.content);
       })
       .catch((error) => {
         console.log(error);
@@ -1182,7 +1185,7 @@ export default function ManageRequest() {
             pagination={{
               total: totalRow,
               current: pageNumber,
-              pageSize: 7,
+              pageSize: pageSize,
             }}
             size="middle"
             onChange={onChangePaging} />
