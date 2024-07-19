@@ -77,7 +77,8 @@ export const APIregishaverole = (
     phone: phone,
     status: "ACTIVE",
   });
-export const APIgetallrequest = () => api.get("auctionRequests");
+export const APIgetallrequest = (page, size) =>
+  api.get(`auctionRequests/paging?page=${page}&size=${size}`);
 export const APIgetallrequestbyStatus = (status) =>
   api.get(`auctionRequests/${status}`);
 export const APIgetAllRequestToSession = () =>
