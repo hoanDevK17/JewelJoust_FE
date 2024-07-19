@@ -16,6 +16,8 @@ export default function AuctionSession() {
   const [totalRow, setTotalRow] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
+  const sort = 'id,desc';
+  const pageSize = 3;
   let [searchParams] = useSearchParams();
 
   const fetchData = async (page) => {
@@ -25,10 +27,11 @@ export default function AuctionSession() {
     try {
       let response;
       if (name !== null) {
-        response = await APIgetallSessionByName(name);
+        response = await APIgetallSessionByName(name, page, pageSize, sort);
         setData(response.data.content);
+        setTotalRow(response.data?.totalElements);
       } else {
-        response = await APIgetallSession(page, 3); 
+        response = await APIgetallSession(page,pageSize);
         setTotalRow(response.data?.totalItems);
         setData(response.data?.items);
       }
@@ -141,7 +144,7 @@ export default function AuctionSession() {
 
         <Pagination
           current={pageNumber}
-          pageSize={3} 
+          pageSize={pageSize}
           total={totalRow}
           onChange={onChangePaging}
           style={{ marginTop: "20px", textAlign: "center" }}
