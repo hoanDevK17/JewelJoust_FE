@@ -130,8 +130,8 @@ export const APIgetallSession = (page, size) =>
   api.get(`auctionSessions/paging?page=${page}&size=${size}`);
 export const APIgetallSessionByStatus = (status) =>
   api.get(`auctionSessions/${status}`);
-export const APIgetallSessionByName = (name) =>
-  api.get(`auctionSessions/name/${name}?page=0&size=1`);
+export const APIgetallSessionByName = (name,page,size,sort) =>
+  api.get(`auctionSessions/name/${name}?page=${page}&size=${size}&sort=${sort}`);
 export const APIgetSessionByID = (id_sesion, id_user) =>
   api.get(`auctionSessions/detail/${id_sesion}?userId=${id_user}`);
 export const APIcreateSession = (values, path) =>
