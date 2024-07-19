@@ -128,9 +128,11 @@ export default function Acount() {
 
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
+      title: "No.",
+      key: "index",
+      render: (_, __, index) => {
+        return (pageNumber - 1) * pageSize + index;
+      },
     },
     {
       title: "User Name",
@@ -198,7 +200,7 @@ export default function Acount() {
   const [isLoading, setIsLoading] = useState(false);
   const fetchData = async (page) => {
     setIsLoading(true);
-    await APIgetallacountPaging(page, pageSize,sort)
+    await APIgetallacountPaging(page, pageSize, sort)
       .then((response) => {
         console.log(response);
         setTotalRow(response.data?.totalElements);
