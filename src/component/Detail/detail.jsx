@@ -302,8 +302,8 @@ export default function Detail() {
                     alignItems: "center",
                   }}
                 >
-                  No bids have been placed on this item yet. Be the first to
-                  bid!
+                 <h6>No bids have been placed on this item yet. Be the first to
+                 bid!</h6> 
                 </div>
               )}
             </Col>
