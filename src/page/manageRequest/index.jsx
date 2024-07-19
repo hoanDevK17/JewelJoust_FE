@@ -270,7 +270,7 @@ export default function ManageRequest() {
       .then((response) => {
         console.log(response);
         setTotalRow(response.data?.totalItems);
-        setData(response.data?.items.sort((a,b)=>b.id - a.id));
+        setData(response.data?.items);
       })
       .catch((error) => {
         console.log(error);
