@@ -5,12 +5,13 @@ import {
   TeamOutlined,
   LogoutOutlined,
   ArrowUpOutlined,
+  ContainerOutlined,
 } from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectUser } from "../../redux/features/counterSlice";
-
+import "./dashborad.scss";
 const { Header, Content, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -72,10 +73,10 @@ const Dashboard = () => {
     //   setItems([
     //     getItem("Category", "category"),
     //     getItem("Hồ sơ", "profile", <ProfileOutlined />),
-    //     getItem("Club", "clubs", <HeartOutlined />, [
-    //       getItem("Time Slot", "time-slot"),
-    //       getItem("Promotion", "promotion"),
-    //     ]),
+        // getItem("Club", "clubs", <HeartOutlined />, [
+        //   getItem("Time Slot", "time-slot"),
+        //   getItem("Promotion", "promotion"),
+        // ]),
     //     getItem("Booking", "booking", <CheckCircleOutlined />, [
     //       getItem("Court ID 1", "court-1"),
     //       getItem("Court ID 2", "court-2"),
@@ -88,6 +89,12 @@ const Dashboard = () => {
         getItem("Acount", "acount", <ProfileOutlined />),
         getItem("Request", "request", <TeamOutlined />),
         getItem("Session", "session", <HeartOutlined />),
+        getItem("Statistical", "statistical", <ContainerOutlined />, [
+          getItem("Revenue", "revenue"),
+          getItem("Session Statistics", "sessionstatistics"),
+          getItem("Request Statistics", "requeststatistics"),
+          getItem("Acount Statistics", "acountstatistics"),       
+        ]),
       ]);
     }
     if (role === "MANAGER") {
@@ -120,16 +127,24 @@ const Dashboard = () => {
     console.log(currentURI);
     handleSubMenuOpen([...openKeys, key]);
   }, [currentURI]);
-
+  const handleClick = () => {
+    navigate("/");
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider
+      style={{backgroundColor: "#CDC9C9"}}
         collapsible
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
+        // style={{ backgroundColor: "yellow" }}
       >
         <Menu
-          theme="dark"
+        style={{backgroundColor: "#CDC9C9"}}
           defaultSelectedKeys={["profile"]}
           mode="inline"
           selectedKeys={currentURI}
@@ -167,7 +182,12 @@ const Dashboard = () => {
               fontWeight: "bold",
             }}
           >
-            System of Auction Jewelry
+           <img
+              src="/Logo.svg"
+              alt=""
+              style={{ maxHeight: "45px", maxWidth: "200px" }}
+              onClick={handleClick}
+            />
             <LogoutOutlined
               type="primary"
               onClick={() => {

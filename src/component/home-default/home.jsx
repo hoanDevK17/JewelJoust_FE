@@ -80,7 +80,7 @@ export default function HomePage({ children }) {
       key: "1",
       label: "Dashborad",
       onClick: () => {
-        navigate("/dashboard");
+        navigate("/dashboard/acount");
         window.scrollTo({
           top: 0,
           behavior: "smooth",

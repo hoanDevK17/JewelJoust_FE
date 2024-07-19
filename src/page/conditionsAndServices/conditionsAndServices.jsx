@@ -18,7 +18,6 @@ const TermsAndConditions = () => {
       <h2>Auction Process</h2>
       <p><strong>Bidding:</strong> Users can place bids online through our website interface. Each bid must be at least the minimum increment higher than the current bid.</p>
       <p><strong>Auction End:</strong> The auction will end at the designated time. The user with the highest bid at the end of the auction will be the winner.</p>
-      <p><strong>Payment:</strong> The winner must pay for the auction item within 5 business days from the auction end date. We accept payment methods including credit cards, bank transfers, and other online payment methods.</p>
       <p><strong>Shipping:</strong> Upon receiving payment, we will ship the item to the buyer within 7-10 business days. Shipping costs will be added to the item value.</p>
       
       <h2>User Responsibilities</h2>
