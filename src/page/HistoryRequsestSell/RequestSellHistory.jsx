@@ -410,61 +410,73 @@ const columns = (setCurrentId) => [
 
 function RequestSellHistory() {
   const [data, setData] = useState();
+  const [totalRow, setTotalRow] = useState(0);
+  const [pageNumber, setPageNumber] = useState(1);
   const [currentId, setCurrentId] = useState(-1);
   const [currentRequest, setCurrentRequest] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [isRejected, setIsRejected] = useState(false);
-
+  const onChangePaging = (props) => {
+    console.log(props);
+    setPageNumber(props.current);
+  };
+  useEffect(() => {
+    console.log(pageNumber);
+    fetchData(pageNumber - 1);
+  }, [pageNumber]);
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
-  const fetchData = async () => {
+  const fetchData = async (page) => {
     setIsLoading(true);
-    await APIgetallrequest()
+    await APIgetallrequest(page, 7)
       .then((response) => {
-        setData(response.data.sort((a, b) => b.id - a.id));
+        console.log(response);
+        setTotalRow(response.data?.totalItems);
+        setData(response.data?.items.sort((a, b) => b.id - a.id));
       })
       .catch((error) => {
         console.log(error);
+        message.error("Something went wrong");
       })
       .finally(() => {
         setIsLoading(false);
       });
   };
-
+  // setData(response.data.sort((a, b) => b.id - a.id));
   const handelFormPending = (checked) => {
     setIsRejected(checked);
   };
 
   const handelAutionComfirmation = async (value) => {
     APIAuctionConfirmation(currentId)
-    .then((rs) => {
-      console.log(rs);
-      message.success("Successfully");
-      fetchData();
-    })
-    .catch((error) => {
-      message.error("Something went wrong", error);
-    })
-    .finally(() => {
-      setCurrentId(-1);
-    });
+      .then((rs) => {
+        console.log(rs);
+        message.success("Successfully");
+        fetchData();
+      })
+      .catch((error) => {
+        message.error("Something went wrong", error);
+      })
+      .finally(() => {
+        setCurrentId(-1);
+      });
   }
 
   const handelAutionRejected = async (value) => {
     APIAuctionRejected(currentId)
-    .then((rs) => {
-      console.log(rs);
-      message.success("Successfully");
-      fetchData();
-    })
-    .catch((error) => {
-      message.error("Something went wrong", error);
-    })
-    .finally(() => {
-      setCurrentId(-1);
-    });
+      .then((rs) => {
+        console.log(rs);
+        message.success("Successfully");
+        fetchData();
+      })
+      .catch((error) => {
+        message.error("Something went wrong", error);
+      })
+      .finally(() => {
+        setCurrentId(-1);
+      });
   }
 
   useEffect(() => {
@@ -480,14 +492,14 @@ function RequestSellHistory() {
   return (
     <>
       {isLoading ? (
-         <Spin
-         style={{
-           height: "100vh",
-           width: "100%",
-           backgroundColor: "#fff9e8",
-           paddingTop: "50vh",
-         }}
-       ></Spin>
+        <Spin
+          style={{
+            height: "100vh",
+            width: "100%",
+            backgroundColor: "#fff9e8",
+            paddingTop: "50vh",
+          }}
+        ></Spin>
       ) : (
         <>
           <Modal
@@ -503,14 +515,14 @@ function RequestSellHistory() {
           >
             <div>{renderSteps(currentRequest?.status)}</div>
             <div
-            style={{
-              padding: "20px",
-              border: "1px solid #ccc",
-              borderRadius: "8px",
-              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-              backgroundColor: "#fff", // Màu nền
-              marginBottom: "10px",
-            }}
+              style={{
+                padding: "20px",
+                border: "1px solid #ccc",
+                borderRadius: "8px",
+                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                backgroundColor: "#fff", // Màu nền
+                marginBottom: "10px",
+              }}
             >
               <Row gutter={[0, 0]}>
                 <Col span={24}>
@@ -609,10 +621,10 @@ function RequestSellHistory() {
                       <Row gutter={[0, 0]}>
                         <Col span={8}>
                           <p
-                          style={{
-                            display: "flex",
-                            justifyContent: "center"
-                          }}>
+                            style={{
+                              display: "flex",
+                              justifyContent: "center"
+                            }}>
                             <strong>Date: </strong>
                             {formatDate(
                               currentRequest?.initialValuations.initialdate
@@ -621,20 +633,20 @@ function RequestSellHistory() {
                         </Col>
                         <Col span={8}>
                           <p
-                          style={{
-                            display: "flex",
-                            justifyContent: "center"
-                          }}>
+                            style={{
+                              display: "flex",
+                              justifyContent: "center"
+                            }}>
                             <strong>Status: </strong>
                             {currentRequest?.initialValuations.status}
                           </p>
                         </Col>
                         <Col span={8}>
                           <p
-                          style={{
-                            display: "flex",
-                            justifyContent: "center"
-                          }}>
+                            style={{
+                              display: "flex",
+                              justifyContent: "center"
+                            }}>
                             <strong>Price: </strong>
                             {currentRequest?.initialValuations.price}
                           </p>
@@ -663,10 +675,10 @@ function RequestSellHistory() {
                       <Row gutter={[0, 0]}>
                         <Col span={8}>
                           <p
-                          style={{
-                            display: "flex",
-                            justifyContent: "center"
-                          }}>
+                            style={{
+                              display: "flex",
+                              justifyContent: "center"
+                            }}>
                             <strong>Date: </strong>
                             {formatDate(
                               currentRequest?.ultimateValuation.ultimatedate
@@ -675,20 +687,20 @@ function RequestSellHistory() {
                         </Col>
                         <Col span={8}>
                           <p
-                          style={{
-                            display: "flex",
-                            justifyContent: "center"
-                          }}>
+                            style={{
+                              display: "flex",
+                              justifyContent: "center"
+                            }}>
                             <strong>Status: </strong>
                             {currentRequest?.ultimateValuation.status}
                           </p>
                         </Col>
                         <Col span={8}>
                           <p
-                          style={{
-                            display: "flex",
-                            justifyContent: "center"
-                          }}>
+                            style={{
+                              display: "flex",
+                              justifyContent: "center"
+                            }}>
                             <strong>Price: </strong>
                             {currentRequest?.ultimateValuation.price}
                           </p>
@@ -717,20 +729,20 @@ function RequestSellHistory() {
                       <Row gutter={[0, 0]}>
                         <Col span={24}>
                           <p
-                          style={{
-                            display: "flex",
-                            justifyContent: "center"
-                          }}>
+                            style={{
+                              display: "flex",
+                              justifyContent: "center"
+                            }}>
                             <strong>Reason:  </strong>
                             {currentRequest?.reasonReject}
                           </p>
-                        </Col>                 
+                        </Col>
                       </Row>
                     </Col>
                   </Row>
                 </div>
               </>
-            )} 
+            )}
             {currentRequest?.status == "APPROVED" && (
               <>
                 <div
@@ -743,7 +755,7 @@ function RequestSellHistory() {
                 >
                   <h6 style={{ marginRight: "12px" }}>CONFIRMED</h6>
                   <Switch
-                      
+
                     unCheckedChildren="Accept"
                     checkedChildren="Reject"
                     onChange={handelFormPending}
@@ -759,30 +771,30 @@ function RequestSellHistory() {
                 >
                   {!isRejected ? (
                     <Form
-                    name="basic"
-                    labelCol={{
-                      span: 8,
-                    }}
-                    wrapperCol={{
-                      span: 16,
-                    }}
-                    style={{
-                      display: "flex",
-                      gap: "16px",
-                      justifyContent: "center",
-                      maxWidth: 500,
-                    }}
-                    initialValues={{
-                      remember: true,
-                    }}
-                    onFinish={handelAutionComfirmation}
-                    onFinishFailed={onFinishFailed}
-                    autoComplete="off"
-                  >
-                    <Button type="primary" htmlType="submit">
-                      Accept
-                    </Button>
-                  </Form>
+                      name="basic"
+                      labelCol={{
+                        span: 8,
+                      }}
+                      wrapperCol={{
+                        span: 16,
+                      }}
+                      style={{
+                        display: "flex",
+                        gap: "16px",
+                        justifyContent: "center",
+                        maxWidth: 500,
+                      }}
+                      initialValues={{
+                        remember: true,
+                      }}
+                      onFinish={handelAutionComfirmation}
+                      onFinishFailed={onFinishFailed}
+                      autoComplete="off"
+                    >
+                      <Button type="primary" htmlType="submit">
+                        Accept
+                      </Button>
+                    </Form>
                   ) : (
                     <Form
                       name="basic"
@@ -815,7 +827,14 @@ function RequestSellHistory() {
             )}
           </Modal>
 
-          <Table columns={columns(setCurrentId)} dataSource={data} />
+          <Table columns={columns(setCurrentId)} dataSource={data}
+            pagination={{
+              total: totalRow,
+              current: pageNumber,
+              pageSize: 7,
+            }}
+            size="middle"
+            onChange={onChangePaging} />
         </>
       )}
     </>
