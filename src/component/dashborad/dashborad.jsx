@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import {
-  ProfileOutlined,
-  HeartOutlined,
-  TeamOutlined,
+
   LogoutOutlined,
   ArrowUpOutlined,
   ContainerOutlined,
+  ContactsOutlined,
+  SolutionOutlined,
 } from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
@@ -86,9 +86,9 @@ const Dashboard = () => {
 
     if (role === "ADMIN") {
       setItems([
-        getItem("Acount", "acount", <ProfileOutlined />),
-        getItem("Request", "request", <TeamOutlined />),  
-        getItem("Session", "session", <HeartOutlined />),
+        getItem("Acount", "acount", <ContactsOutlined />),
+        getItem("Request", "request", <SolutionOutlined />),
+        getItem("Session", "session", "🔨"),
         getItem("Statistical", "statistical", <ContainerOutlined />, [
           getItem("Revenue", "revenue"),
           getItem("Session Statistics", "sessionstatistics"),
@@ -99,14 +99,14 @@ const Dashboard = () => {
     }
     if (role === "MANAGER") {
       setItems([
-        getItem("Request", "request", <TeamOutlined />),
-        getItem("Session", "session", <HeartOutlined />),
+        getItem("Request", "request", <SolutionOutlined />),
+        getItem("Session", "session", "🔨"),
       ]);
     }
     if (role === "STAFF") {
       setItems([
-        getItem("Request", "request", <TeamOutlined />),
-        getItem("Session", "session", <HeartOutlined />),
+        getItem("Request", "request", <SolutionOutlined />),
+        getItem("Session", "session", "🔨"),
         getItem("Approve Withdrawal", "withdrawal", <ArrowUpOutlined />),
       ]);
     }

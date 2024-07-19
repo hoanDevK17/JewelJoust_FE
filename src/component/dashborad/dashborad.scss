@@ -1,3 +1,9 @@
 :where(.css-dev-only-do-not-override-98ntnt).ant-layout .ant-layout-sider-trigger{
     background-color:  #CDC9C9;
 }
+:where(.css-dev-only-do-not-override-98ntnt).ant-menu-light .ant-menu-item-selected, :where(.css-dev-only-do-not-override-98ntnt).ant-menu-light>.ant-menu .ant-menu-item-selected{
+    color: black;
+}
+img:hover{
+    cursor: pointer;
+}

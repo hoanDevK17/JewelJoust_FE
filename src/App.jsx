@@ -30,8 +30,33 @@ import AcountStatistics from "./page/AcountStatistics/AcountStatistics";
 import RequestStatistics from "./page/RequestStatistics/RequestStatistics";
 import SessionStatistics from "./page/SessionStatistics/SessionStatistics";
 import Revenues from "./page/Revenue/Revenue";
-
-
+import {
+  Chart as ChartJS,
+  BarElement,
+  CategoryScale,
+  Legend,
+  LinearScale,
+  Title,
+  Tooltip,
+  ArcElement,
+  PointElement,
+  LineElement,
+  RadarController,
+  // RadarElement,  
+} from "chart.js";
+ChartJS.register(
+  CategoryScale, // Đối với biểu đồ cột và biểu đồ đường
+  LinearScale, // Đối với biểu đồ cột và biểu đồ đường
+  BarElement, // Đối với biểu đồ cột
+  Title, // Tên biểu đồ
+  Tooltip, // Tooltip
+  Legend, // Chú giải
+  ArcElement, // Đối với biểu đồ tròn và biểu đồ doughnut
+  PointElement, // Đối với biểu đồ đường
+  LineElement, // Đối với biểu đồ đường
+  RadarController // Đối với biểu đồ radar
+  // RadarElement // Đối với biểu đồ radar
+);
 export default function App() {
   const router = createBrowserRouter([
     {
@@ -128,7 +153,7 @@ export default function App() {
         {
           path: "/dashboard/session",
           element: <ManageSession />,
-        },   
+        },
         {
           path: "/dashboard/revenue",
           element: <Revenues />,
@@ -144,7 +169,7 @@ export default function App() {
         {
           path: "/dashboard/acountstatistics",
           element: <AcountStatistics />,
-        },   
+        },
       ],
     },
     {
@@ -162,7 +187,7 @@ export default function App() {
 
     {
       path: "/bidding",
-      element: <RegistrationSessionHistory/>,
+      element: <RegistrationSessionHistory />,
     },
     {
       path: "/payment",

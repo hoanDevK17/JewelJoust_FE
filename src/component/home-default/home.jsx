@@ -1,4 +1,4 @@
-import { LoadingOutlined, RedoOutlined, UserOutlined } from "@ant-design/icons";
+import { DashboardOutlined, HistoryOutlined, LoadingOutlined, LogoutOutlined, ProfileOutlined, RedoOutlined, UserOutlined, WalletOutlined } from "@ant-design/icons";
 
 import "./home.scss";
 import { useNavigate } from "react-router-dom";
@@ -37,6 +37,7 @@ export default function HomePage({ children }) {
   const itemsMember = [
     {
       key: "1",
+      icon:<ProfileOutlined />,
       label: "Profile",
       onClick: () => {
         navigate("/profile");
@@ -45,6 +46,7 @@ export default function HomePage({ children }) {
 
     {
       key: "2",
+      icon:<HistoryOutlined />,
       label: "Active History",
       onClick: () => {
         navigate("/ActiveHistory/RequestSell");
@@ -57,6 +59,7 @@ export default function HomePage({ children }) {
 
     {
       key: "3",
+      icon:<WalletOutlined />,
       label: "Wallet",
       onClick: () => {
         navigate("/Wallet/History");
@@ -68,6 +71,7 @@ export default function HomePage({ children }) {
     },
     {
       key: "4",
+      icon:<LogoutOutlined />,
       label: "Log Out",
       onClick: () => {
         dispatch(logout());
@@ -78,6 +82,7 @@ export default function HomePage({ children }) {
   const itemsAdmin = [
     {
       key: "1",
+      icon:<DashboardOutlined />,
       label: "Dashborad",
       onClick: () => {
         navigate("/dashboard/acount");
@@ -89,6 +94,7 @@ export default function HomePage({ children }) {
     },
     {
       key: "2",
+      icon:<LogoutOutlined />,
       label: "Log Out",
       onClick: () => {
         dispatch(logout());
