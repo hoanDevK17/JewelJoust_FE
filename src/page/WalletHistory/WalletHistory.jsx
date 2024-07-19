@@ -11,6 +11,18 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 
 export default function WalletHistory() {
+  const [totalRow, setTotalRow] = useState(0);
+  const [pageNumber, setPageNumber] = useState(1);
+  const onChangePaging = (props) => {
+    console.log(props);
+    setPageNumber(props.current);
+  };
+  useEffect(() => {
+    console.log(pageNumber);
+    fetchData(pageNumber - 1);
+  }, [pageNumber]);
+  const sort = 'id,desc';
+  const pageSize = 7;
   const columns = [
     {
       title: "ID",
@@ -55,27 +67,27 @@ export default function WalletHistory() {
   const [data, setData] = useState([]);
   const user = useSelector(selectUser);
 
-  const fetchData = async () => {
-    setIsLoading(true); // Bắt đầu tải dữ liệu
-    APIgetTransactions()
+  const fetchData = async (page) => {
+    setIsLoading(true);
+    await APIgetTransactions(page, pageSize, sort)
       .then((response) => {
         console.log(response);
-        setData(response.data);
+        setTotalRow(response.data?.totalElements);
+        setData(response.data?.content);
       })
       .catch((error) => {
         console.log(error);
+        message.error("Something went wrong");
       })
       .finally(() => {
-        setIsLoading(false); // Kết thúc tải dữ liệu
+        setIsLoading(false);
       });
   };
-
   useEffect(() => {
     fetchData();
   }, []);
 
   const [isLoading, setIsLoading] = useState(false);
-
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const [isSubtractModalVisible, setIsSubtractModalVisible] = useState(false);
   const [amount, setAmount] = useState("");
@@ -88,7 +100,7 @@ export default function WalletHistory() {
     return truncated.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   };
 
-  const   handleAmountChange = (e) => {
+  const handleAmountChange = (e) => {
     const value = e.target.value;
     setAmount(value);
     setConvertedAmount(value ? value / 25238 : 0);
@@ -169,6 +181,7 @@ export default function WalletHistory() {
     // Chuyển thành chuỗi với hai chữ số thập phân và thêm dấu cách cho các nhóm số hàng nghìn
     return truncated.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   };
+ 
   return (
     <>
       <div>
@@ -426,6 +439,12 @@ export default function WalletHistory() {
               dataSource={data}
               columns={columns}
               size="middle"
+              pagination={{
+                total: totalRow,
+                current: pageNumber,
+                pageSize: pageSize,
+              }}
+              onChange={onChangePaging}
               style={{ height: "100%" }}
             />
           )}
