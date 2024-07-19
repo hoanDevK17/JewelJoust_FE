@@ -421,14 +421,19 @@ export default function Detail() {
                             step={1}
                           />
                         </Form.Item>{" "}
-                        <Button
-                          size="large"
-                          htmlType="submit"
-                          type="primary"
-                          style={{ marginTop: "10px" }}
+                        <div
+                          style={{ display: "flex", justifyContent: "center" }}
                         >
-                          Submit Bid
-                        </Button>
+                          <Button
+                            danger
+                            size="large"
+                            htmlType="submit"
+                            type="primary"
+                            style={{ height: "40px" }}
+                          >
+                            Submit Bid
+                          </Button>
+                        </div>
                       </Form>
                     </>
                   )}

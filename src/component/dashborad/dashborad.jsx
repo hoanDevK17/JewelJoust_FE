@@ -5,12 +5,13 @@ import {
   ContainerOutlined,
   ContactsOutlined,
   SolutionOutlined,
+  AreaChartOutlined,
 } from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectUser } from "../../redux/features/counterSlice";
-
+import "./dashborad.scss"
 const { Header, Content, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -87,7 +88,7 @@ const Dashboard = () => {
       setItems([
         getItem("Acount", "acount", <ContactsOutlined />),
         getItem("Request", "request", <SolutionOutlined />),
-        getItem("Session", "session", "🔨"),
+        getItem("Session", "session", <AreaChartOutlined />),
         getItem("Statistical", "statistical", <ContainerOutlined />, [
           getItem("Revenue", "revenue"),
           getItem("Session Statistics", "sessionstatistics"),
@@ -99,13 +100,13 @@ const Dashboard = () => {
     if (role === "MANAGER") {
       setItems([
         getItem("Request", "request", <SolutionOutlined />),
-        getItem("Session", "session", "🔨"),
+        getItem("Session", "session", <AreaChartOutlined />),
       ]);
     }
     if (role === "STAFF") {
       setItems([
         getItem("Request", "request", <SolutionOutlined />),
-        getItem("Session", "session", "🔨"),
+        getItem("Session", "session", <AreaChartOutlined />),
         getItem("Approve Withdrawal", "withdrawal", <ArrowUpOutlined />),
       ]);
     }

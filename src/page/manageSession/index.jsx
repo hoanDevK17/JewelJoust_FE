@@ -57,6 +57,8 @@ export default function ManageSession() {
   const [urlJewelry, setUrlJewelry] = useState([]);
   const [totalRow, setTotalRow] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
+  const sort = 'id,desc';
+  const pageSize = 7;
   const user = useSelector(selectUser);
   const disabledDate = (current) => {
     // Can not select days before today and today
@@ -97,11 +99,11 @@ export default function ManageSession() {
 
   const fetchData = async (page) => {
     setIsLoading(true);
-    APIgetallSession(page, 7)
+    APIgetallSession(page, pageSize, sort)
       .then((response) => {
         console.log(response);
-        setTotalRow(response.data?.totalItems);
-        setData(response.data?.items);
+        setTotalRow(response.data?.totalElements);
+        setData(response.data?.content);
       })
       .catch((error) => {
         console.log(error);
@@ -732,7 +734,7 @@ export default function ManageSession() {
            pagination={{
              total: totalRow,
              current: pageNumber,
-             pageSize: 7,
+             pageSize: pageSize,
            }}
            size="middle"
            onChange={onChangePaging}/>

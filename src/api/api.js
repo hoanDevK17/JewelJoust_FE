@@ -52,8 +52,10 @@ export const APIregis = (
     birthday: birthday,
   });
 export const APIgetallacount = () => api.get("account");
-export const APIgetallacountPaging = (page, size) =>
-  api.get(`accounts/paging?page=${page}&size=${size}`);
+export const APIgetallacountPaging = (page, size, sort) =>
+  api.get(`accounts/paging?page=${page}&size=${size}&sort=${sort}`);
+// export const APIgetallrequest = (page, size,sort) =>
+//   api.get(`auctionRequests/paging?page=${page}&size=${size}&sort=${sort}`);
 export const APIgetallacountbyRole = (role) => api.get(`account/role/${role}`);
 export const APIregishaverole = (
   userName,
@@ -76,8 +78,8 @@ export const APIregishaverole = (
     phone: phone,
     status: "ACTIVE",
   });
-export const APIgetallrequest = (page, size) =>
-  api.get(`auctionRequests/paging?page=${page}&size=${size}`);
+export const APIgetallrequest = (page, size, sort) =>
+  api.get(`auctionRequests/paging?page=${page}&size=${size}&sort=${sort}`);
 export const APIgetallrequestbyStatus = (status) =>
   api.get(`auctionRequests/${status}`);
 export const APIgetAllRequestToSession = () =>
@@ -124,12 +126,12 @@ export const APIRejectUltimate = (id, reason) =>
   api.put(`ultimateValuations/${id}/rejected`, { reason });
 // Session
 // export const APIgetallSession = () => api.get("auctionSessions");
-export const APIgetallSession = (page, size) =>
-  api.get(`auctionSessions/paging?page=${page}&size=${size}`);
+export const APIgetallSession = (page, size, sort) =>
+  api.get(`auctionSessions/paging?page=${page}&size=${size}&sort=${sort}`);
 export const APIgetallSessionByStatus = (status) =>
   api.get(`auctionSessions/${status}`);
-export const APIgetallSessionByName = (name) =>
-  api.get(`auctionSessions/name/${name}?page=0&size=1`);
+export const APIgetallSessionByName = (name, page, size, sort) =>
+  api.get(`auctionSessions/name/${name}?page=${page}&size=${size}&sort=${sort}`);
 export const APIgetSessionByID = (id_sesion, id_user) =>
   api.get(`auctionSessions/detail/${id_sesion}?userId=${id_user}`);
 export const APIcreateSession = (values, path) =>
@@ -173,7 +175,8 @@ export const APIDeposit = (walletId, amount, description) =>
     amount: amount,
     description: description,
   });
-export const APIgetTransactions = () => api.get("transactions");
+export const APIgetTransactions = (page, size, sort) =>
+  api.get(`transactions/paging?page=${page}&size=${size}&sort=${sort}`);
 export const APIgetTransactionsWithDrawal = () =>
   api.get("transactions/withdraw");
 export const APIgetTransactionsWithDrawalConfirm = (id) =>
