@@ -77,53 +77,62 @@ export default function AuctionSession() {
             />
           ) : (
             <>
-              {data?.map((session, index) => {
-                return (
-                  <Card
-                    key={index}
-                    hoverable
-                    style={{ width: "calc(33.33% - 20px)" }}
-                    cover={
-                      <img
-                        height={300}
-                        alt="example"
-                        src={session.resources[0]?.path}
-                      />
-                    }
-                  >
-                    <Meta
-                      title={session.nameSession}
-                      description={
-                        <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "space-between",
-                            height: "100%",
-                          }}
-                        >
-                          <strong style={{ fontSize: "20px", color: "black" }}>
-                            {session?.auctionRequest.ultimateValuation.price}$
-                          </strong>
-                          <p style={paragraphStyle}>
-                            {dayjs(session.start_time).format("D MMMM h:mmA")} -
-                            {dayjs(session.end_time).format("D MMMM h:mmA")}
-                            <br />
-                            {session.description}
-                          </p>
-                          <Button
-                            type="primary"
-                            danger={session.status === "BIDDING"}
-                            onClick={() => navigate(`/detail/${session.id}`)}
-                          >
-                            View Details
-                          </Button>
-                        </div>
-                      }
-                    />
-                  </Card>
-                );
-              })}
+              {data?.length > 0 ? (
+                <>
+                  {data?.map((session, index) => {
+                    return (
+                      <Card
+                        key={index}
+                        hoverable
+                        style={{ width: "calc(33.33% - 20px)" }}
+                        cover={
+                          <img
+                            height={300}
+                            alt="example"
+                            src={session.resources[0]?.path}
+                          />
+                        }
+                      >
+                        <Meta
+                          title={session.nameSession}
+                          description={
+                            <div
+                              style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "space-between",
+                                height: "100%",
+                              }}
+                            >
+                              <strong style={{ fontSize: "20px", color: "black" }}>
+                                {session?.auctionRequest.ultimateValuation.price}$
+                              </strong>
+                              <p style={paragraphStyle}>
+                                {dayjs(session.start_time).format("D MMMM h:mmA")} -
+                                {dayjs(session.end_time).format("D MMMM h:mmA")}
+                                <br />
+                                {session.description}
+                              </p>
+                              <Button
+                                type="primary"
+                                danger={session.status === "BIDDING"}
+                                onClick={() => navigate(`/detail/${session.id}`)}
+                              >
+                                View Details
+                              </Button>
+                            </div>
+                          }
+                        />
+                      </Card>
+                    );
+                  })}
+                </>
+              ) : (
+                <>
+                  <p>There is no session at the moment</p>
+                </>
+              )}
+
             </>
           )}
         </Flex>

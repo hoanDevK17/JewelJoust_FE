@@ -76,7 +76,8 @@ export const APIregishaverole = (
     phone: phone,
     status: "ACTIVE",
   });
-export const APIgetallrequest = () => api.get("auctionRequests");
+export const APIgetallrequest = (page, size) =>
+  api.get(`auctionRequests/paging?page=${page}&size=${size}`);
 export const APIgetallrequestbyStatus = (status) =>
   api.get(`auctionRequests/${status}`);
 export const APIgetAllRequestToSession = () =>
@@ -122,7 +123,9 @@ export const APIAcceptUltimate = (id) => api.put(`ultimateValuations/${id}`);
 export const APIRejectUltimate = (id, reason) =>
   api.put(`ultimateValuations/${id}/rejected`, { reason });
 // Session
-export const APIgetallSession = () => api.get("auctionSessions");
+// export const APIgetallSession = () => api.get("auctionSessions");
+export const APIgetallSession = (page, size) =>
+  api.get(`auctionSessions/paging?page=${page}&size=${size}`);
 export const APIgetallSessionByStatus = (status) =>
   api.get(`auctionSessions/${status}`);
 export const APIgetallSessionByName = (name) =>

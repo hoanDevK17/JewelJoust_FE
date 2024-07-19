@@ -197,11 +197,11 @@ export default function Acount() {
   const [isLoading, setIsLoading] = useState(false);
   const fetchData = async (page) => {
     setIsLoading(true);
-    await APIgetallacountPaging(page, 3)
+    await APIgetallacountPaging(page, 7)
       .then((response) => {
         console.log(response);
-        setTotalRow(response.data?.totalAccounts);
-        setData(response.data?.accounts);
+        setTotalRow(response.data?.totalItems);
+        setData(response.data?.items);
       })
       .catch((error) => {
         console.log(error);
@@ -212,7 +212,7 @@ export default function Acount() {
       });
   };
   const onChangePaging = (props) => {
-    console.log(props);
+    console.log(props );
     setPageNumber(props.current);
   };
   useEffect(() => {
@@ -455,7 +455,7 @@ export default function Acount() {
             pagination={{
               total: totalRow,
               current: pageNumber,
-              pageSize: 3,
+              pageSize: 7,
             }}
             size="middle"
             onChange={onChangePaging}

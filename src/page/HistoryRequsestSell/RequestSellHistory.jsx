@@ -509,7 +509,7 @@ function RequestSellHistory() {
       ) : (
         <>
           <Modal
-            width={710}
+            width={670}
             title={`Detail Information`}
             open={currentId >= 0}
             onCancel={() => {
