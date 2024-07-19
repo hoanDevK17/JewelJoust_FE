@@ -78,7 +78,7 @@ export const APIregishaverole = (
     phone: phone,
     status: "ACTIVE",
   });
-export const APIgetallrequest = (page, size,sort) =>
+export const APIgetallrequest = (page, size, sort) =>
   api.get(`auctionRequests/paging?page=${page}&size=${size}&sort=${sort}`);
 export const APIgetallrequestbyStatus = (status) =>
   api.get(`auctionRequests/${status}`);
@@ -130,7 +130,7 @@ export const APIgetallSession = (page, size) =>
   api.get(`auctionSessions/paging?page=${page}&size=${size}`);
 export const APIgetallSessionByStatus = (status) =>
   api.get(`auctionSessions/${status}`);
-export const APIgetallSessionByName = (name,page,size,sort) =>
+export const APIgetallSessionByName = (name, page, size, sort) =>
   api.get(`auctionSessions/name/${name}?page=${page}&size=${size}&sort=${sort}`);
 export const APIgetSessionByID = (id_sesion, id_user) =>
   api.get(`auctionSessions/detail/${id_sesion}?userId=${id_user}`);
@@ -175,7 +175,8 @@ export const APIDeposit = (walletId, amount, description) =>
     amount: amount,
     description: description,
   });
-export const APIgetTransactions = () => api.get("transactions");
+export const APIgetTransactions = (page, size, sort) =>
+  api.get(`transactions/paging?page=${page}&size=${size}&sort=${sort}`);
 export const APIgetTransactionsWithDrawal = () =>
   api.get("transactions/withdraw");
 export const APIgetTransactionsWithDrawalConfirm = (id) =>
