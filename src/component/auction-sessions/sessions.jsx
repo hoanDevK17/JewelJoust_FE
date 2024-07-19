@@ -16,7 +16,7 @@ export default function AuctionSession() {
   const [totalRow, setTotalRow] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-  const sort = 'id,desc';
+  const sort = 'id,asc';
   const pageSize = 3;
   let [searchParams] = useSearchParams();
 
@@ -29,11 +29,12 @@ export default function AuctionSession() {
       if (name !== null) {
         response = await APIgetallSessionByName(name, page, pageSize, sort);
         setData(response.data.content);
+        
         setTotalRow(response.data?.totalElements);
       } else {
-        response = await APIgetallSession(page,pageSize);
-        setTotalRow(response.data?.totalItems);
-        setData(response.data?.items);
+        response = await APIgetallSession(page, pageSize, sort);
+        setTotalRow(response.data?.totalElements);
+        setData(response.data?.content);
       }
       setIsLoading(false);
     } catch (error) {
@@ -60,7 +61,6 @@ export default function AuctionSession() {
     const searchUrl = `/sessions?search=${encodeURIComponent(value)}`;
     navigate(searchUrl);
   };
-
   return (
     <>
       <HomePage>
