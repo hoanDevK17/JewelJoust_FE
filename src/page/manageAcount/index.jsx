@@ -101,7 +101,8 @@ export default function Acount() {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-
+  const sort = 'id,asc';
+  const pageSize = 7;
   useEffect(() => {
     if (currentId > 0) {
       const currentUser = data.find((item) => {
@@ -197,11 +198,11 @@ export default function Acount() {
   const [isLoading, setIsLoading] = useState(false);
   const fetchData = async (page) => {
     setIsLoading(true);
-    await APIgetallacountPaging(page, 7)
+    await APIgetallacountPaging(page, pageSize,sort)
       .then((response) => {
         console.log(response);
-        setTotalRow(response.data?.totalItems);
-        setData(response.data?.items);
+        setTotalRow(response.data?.totalElements);
+        setData(response.data?.content);
       })
       .catch((error) => {
         console.log(error);
@@ -212,7 +213,7 @@ export default function Acount() {
       });
   };
   const onChangePaging = (props) => {
-    console.log(props );
+    console.log(props);
     setPageNumber(props.current);
   };
   useEffect(() => {
@@ -455,7 +456,7 @@ export default function Acount() {
             pagination={{
               total: totalRow,
               current: pageNumber,
-              pageSize: 7,
+              pageSize: pageSize,
             }}
             size="middle"
             onChange={onChangePaging}
