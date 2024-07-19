@@ -162,7 +162,7 @@ export default function Detail() {
         // Remove highlight after 10 seconds
         setTimeout(() => {
           setHighlight(false);
-        }, 3000 );
+        }, 3000);
       })
       .catch((error) => {
         console.log(error);

@@ -178,19 +178,22 @@ export const APIgetTransactionsWithDrawal = () =>
   api.get("transactions/withdraw");
 export const APIgetTransactionsWithDrawalConfirm = (id) =>
   api.put("transactions/withdraw/confirm", id);
-export const APICreateQR = (amount) =>
-  api.post("wallet/createUrl", { amount: amount });
+export const APICreateQR = (vnd, usd) =>
+  api.post("wallet/createUrl", { amount: vnd, usd: usd });
 export const APIWithDrawal = (
   bankName,
   accountNumber,
   arecipientName,
-  amount
+  VND,
+  USD
+
 ) =>
   api.post("transactions/withdraw", {
     bankName: bankName,
     accountNumber: accountNumber,
     recipientName: arecipientName,
-    amountWithDraw: amount,
+    amountWithDraw: VND,
+    usd:USD
   });
 export const APIResponseDeposit = (url) => api.put("wallet/VnpayResponse", url);
 //auction-confirmation-api

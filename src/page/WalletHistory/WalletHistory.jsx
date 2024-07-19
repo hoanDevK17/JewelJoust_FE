@@ -9,6 +9,7 @@ import { APICreateQR, APIgetTransactions, APIWithDrawal } from "../../api/api"; 
 
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
+import axios from "axios";
 
 export default function WalletHistory() {
   const columns = [
@@ -54,7 +55,7 @@ export default function WalletHistory() {
 
   const [data, setData] = useState([]);
   const user = useSelector(selectUser);
-
+  const [usdRate, setUsdRate] = useState(null);
   const fetchData = async () => {
     setIsLoading(true); // Bắt đầu tải dữ liệu
     APIgetTransactions()
@@ -69,13 +70,31 @@ export default function WalletHistory() {
         setIsLoading(false); // Kết thúc tải dữ liệu
       });
   };
-
+  const fetchUsdRate = async () => {
+    try {
+      const response = await axios.get(
+        "https://portal.vietcombank.com.vn/Usercontrols/TVPortal.TyGia/pXML.aspx"
+      );
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(response.data, "text/xml");
+      const usdNode = xml.querySelector('Exrate[CurrencyCode="USD"]');
+      if (usdNode) {
+        setUsdRate({
+          buy: usdNode.getAttribute("Buy"),
+          transfer: usdNode.getAttribute("Transfer"),
+          sell: usdNode.getAttribute("Sell"),
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching the exchange rate data:", error);
+    }
+  };
   useEffect(() => {
     fetchData();
+    fetchUsdRate();
   }, []);
 
   const [isLoading, setIsLoading] = useState(false);
-
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const [isSubtractModalVisible, setIsSubtractModalVisible] = useState(false);
   const [amount, setAmount] = useState("");
@@ -85,18 +104,25 @@ export default function WalletHistory() {
     // Làm tròn xuống đến hai chữ số thập phân
     let truncated = Math.floor(num * 100) / 100;
     // Chuyển thành chuỗi với hai chữ số thập phân và thêm dấu cách cho các nhóm số hàng nghìn
-    return truncated.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    let formatted = truncated.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    if (formatted.endsWith(".00")) {
+      formatted = formatted.slice(0, -3);
+    }
+    return formatted;
   };
-
-  const   handleAmountChange = (e) => {
+  const handleAmountChange = (e) => {
     const value = e.target.value;
     setAmount(value);
-    setConvertedAmount(value ? value / 25238 : 0);
+    setConvertedAmount(
+      value ? value / parseFloat(usdRate?.sell.replace(/,/g, "") * 1.01) : 0
+    );
   };
   const handleAmountSub = (e) => {
     const value = e.target.value;
     setAmount(value);
-    setConvertedAmount(value ? value * 25238 : 0);
+    setConvertedAmount(
+      value ? value * parseFloat(usdRate?.buy.replace(/,/g, "") * 0.99) : 0
+    );
   };
 
   const showAddModal = () => {
@@ -126,7 +152,10 @@ export default function WalletHistory() {
   const onFinishAdd = (values) => {
     console.log("oki" + convertedAmount.toFixed(2));
     // console.log(user?.wallet?.id, values.amount, "Deposit " + values.amount);
-    APICreateQR(values.amount)
+    APICreateQR(
+      values.amount,
+      parseFloat(usdRate?.sell.replace(/,/g, "") * 1.01)
+    )
       .then((response) => {
         console.log(response);
         window.open(response.data);
@@ -150,6 +179,9 @@ export default function WalletHistory() {
       values.bankName,
       values.accountNumber,
       values.recipientName,
+      Math.floor(
+        values.amount * parseFloat(usdRate?.sell.replace(/,/g, "") * 0.99) * 100
+      ) / 100,
       values.amount
     )
       .then((response) => {
@@ -169,56 +201,59 @@ export default function WalletHistory() {
     // Chuyển thành chuỗi với hai chữ số thập phân và thêm dấu cách cho các nhóm số hàng nghìn
     return truncated.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   };
+  console.log(usdRate);
   return (
     <>
       <div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "10px",
-          }}
-        >
-          <div>Username: {user?.username}</div>
-          <div>Full Name: {user?.fullname}</div>
-          <div>Email: {user?.email}</div>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <div>
-              Balance: {formattedBalance(Number(user?.wallet?.balance))}$
+        {usdRate && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "10px",
+            }}
+          >
+            <div>Username: {user?.username}</div>
+            <div>Full Name: {user?.fullname}</div>
+            <div>Email: {user?.email}</div>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <div>
+                Balance: {formattedBalance(Number(user?.wallet?.balance))}$
+              </div>
+              <PlusCircleOutlined
+                type="primary"
+                onClick={showAddModal}
+                style={{
+                  backgroundColor: "#1677ff",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "5px",
+                  padding: "6px 12px",
+                  fontSize: "16px",
+                  cursor: "pointer",
+                  height: "35px",
+                  lineHeight: "23px",
+                }}
+              />
+              <MinusCircleOutlined
+                type="primary"
+                onClick={showSubtractModal}
+                style={{
+                  backgroundColor: "#1677ff",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "5px",
+                  padding: "6px 12px",
+                  fontSize: "16px",
+                  cursor: "pointer",
+                  height: "35px",
+                  lineHeight: "23px",
+                }}
+              />
             </div>
-            <PlusCircleOutlined
-              type="primary"
-              onClick={showAddModal}
-              style={{
-                backgroundColor: "#1677ff",
-                color: "white",
-                border: "none",
-                borderRadius: "5px",
-                padding: "6px 12px",
-                fontSize: "16px",
-                cursor: "pointer",
-                height: "35px",
-                lineHeight: "23px",
-              }}
-            />
-            <MinusCircleOutlined
-              type="primary"
-              onClick={showSubtractModal}
-              style={{
-                backgroundColor: "#1677ff",
-                color: "white",
-                border: "none",
-                borderRadius: "5px",
-                padding: "6px 12px",
-                fontSize: "16px",
-                cursor: "pointer",
-                height: "35px",
-                lineHeight: "23px",
-              }}
-            />
           </div>
-        </div>
+        )}
         <Modal
           width={1200}
           title="Add Money"
@@ -261,7 +296,13 @@ export default function WalletHistory() {
                 </Form.Item>
                 <p>= {formatSetConvertedAmount(convertedAmount)} $</p>
                 <p>The Unit Of Calculation is: </p>
-                <p>1$ = 25.240 VND</p>
+                <p>
+                  1$ ={" "}
+                  {formatSetConvertedAmount(
+                    parseFloat(usdRate?.sell.replace(/,/g, "") * 1.01)
+                  )}
+                  VND
+                </p>
                 <p>
                   Conversion Amount: {formatSetConvertedAmount(convertedAmount)}{" "}
                   $
@@ -339,7 +380,13 @@ export default function WalletHistory() {
                 </Form.Item>
                 <p>= {formatSetConvertedAmount(convertedAmount)} VND</p>
                 <p>The Unit Of Calculation is: </p>
-                <p>1$ = 25.240 VND</p>
+                <p>
+                  1$ ={" "}
+                  {formatSetConvertedAmount(
+                    parseFloat(usdRate?.buy.replace(/,/g, "") * 0.99)
+                  )}{" "}
+                  VNĐ
+                </p>
                 <p>
                   Conversion Amount: {formatSetConvertedAmount(convertedAmount)}{" "}
                   VND
