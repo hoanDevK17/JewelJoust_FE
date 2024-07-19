@@ -162,7 +162,7 @@ export default function Detail() {
         // Remove highlight after 10 seconds
         setTimeout(() => {
           setHighlight(false);
-        }, 3000 );
+        }, 3000);
       })
       .catch((error) => {
         console.log(error);
@@ -421,14 +421,19 @@ export default function Detail() {
                             step={1}
                           />
                         </Form.Item>{" "}
-                        <Button
-                          size="large"
-                          htmlType="submit"
-                          type="primary"
-                          style={{ marginTop: "10px" }}
+                        <div
+                          style={{ display: "flex", justifyContent: "center" }}
                         >
-                          Submit Bid
-                        </Button>
+                          <Button
+                            danger
+                            size="large"
+                            htmlType="submit"
+                            type="primary"
+                            style={{ height: "40px" }}
+                          >
+                            Submit Bid
+                          </Button>
+                        </div>
                       </Form>
                     </>
                   )}
