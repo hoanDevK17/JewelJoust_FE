@@ -3,8 +3,7 @@ import { api } from "../config/axios";
 
 export const APIlogin = (userName, passWord) =>
   api.post("login", { username: userName, password: passWord });
-export const APIloginWithToken = () =>
-  api.post("loginWithToken");
+export const APIloginWithToken = () => api.post("loginWithToken");
 export const APIForgotpass = (email) =>
   api.post("forgot-password", { email: email });
 export const APIResetPass = (password, token) =>
@@ -127,7 +126,7 @@ export const APIgetallSession = () => api.get("auctionSessions");
 export const APIgetallSessionByStatus = (status) =>
   api.get(`auctionSessions/${status}`);
 export const APIgetallSessionByName = (name) =>
-  api.get(`auctionSessions/name/${name}`);
+  api.get(`auctionSessions/name/${name}?page=0&size=1`);
 export const APIgetSessionByID = (id_sesion, id_user) =>
   api.get(`auctionSessions/detail/${id_sesion}?userId=${id_user}`);
 export const APIcreateSession = (values, path) =>
@@ -172,8 +171,10 @@ export const APIDeposit = (walletId, amount, description) =>
     description: description,
   });
 export const APIgetTransactions = () => api.get("transactions");
-export const APIgetTransactionsWithDrawal = () => api.get("transactions/withdraw");
-export const APIgetTransactionsWithDrawalConfirm = (id) => api.put("transactions/withdraw/confirm", id);
+export const APIgetTransactionsWithDrawal = () =>
+  api.get("transactions/withdraw");
+export const APIgetTransactionsWithDrawalConfirm = (id) =>
+  api.put("transactions/withdraw/confirm", id);
 export const APICreateQR = (amount) =>
   api.post("wallet/createUrl", { amount: amount });
 export const APIWithDrawal = (
@@ -200,7 +201,8 @@ export const APIBidding = (id_session, price) =>
     id_session: id_session,
     price: price,
   });
-  export const APIgetAllBiddingBySessionId = (sessionId) => api.get(`auctionBids/session/${sessionId}`);
+export const APIgetAllBiddingBySessionId = (sessionId) =>
+  api.get(`auctionBids/session/${sessionId}`);
 export const APIgetAllBidding = () => api.get(`auctionBids`);
 export const APIStop = (id) => api.put(`auctionSessions/stop`, id);
 export const APIContinue = (id) => api.put(`auctionSessions/continue`, id);

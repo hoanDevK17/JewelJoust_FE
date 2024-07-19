@@ -529,7 +529,7 @@ export default function ManageSession() {
                     <Input type="number" />
                   </Form.Item>
 
-                  <Form.Item
+                  {/* <Form.Item
                     label="Deposit Amount"
                     name="deposit_amount"
                     rules={[
@@ -541,7 +541,7 @@ export default function ManageSession() {
                     ]}
                   >
                     <Input type="number" />
-                  </Form.Item>
+                  </Form.Item> */}
                   <Form.Item
                     label="Staff"
                     name="staff_id"

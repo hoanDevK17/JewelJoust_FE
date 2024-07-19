@@ -23,7 +23,8 @@ export default function AuctionSession() {
     name !== null
       ? APIgetallSessionByName(name)
           .then((response) => {
-            setData(response.data);
+            console.log(response);
+            setData(response.data.content);
             setIsLoading(false);
           })
           .catch((error) => {
@@ -32,7 +33,8 @@ export default function AuctionSession() {
           })
       : APIgetallSession()
           .then((response) => {
-            setData(response.data);
+            console.log(response);
+            setData(response.data.content);
             setIsLoading(false);
           })
           .catch((error) => {
@@ -46,7 +48,7 @@ export default function AuctionSession() {
   }, [searchParams]);
 
   const { Search } = Input;
-  const onSearch = (value, _e, info) => {
+  const onSearch = (value) => {
     const searchUrl = `/sessions?search=${encodeURIComponent(value)}`;
     navigate(searchUrl);
   };
