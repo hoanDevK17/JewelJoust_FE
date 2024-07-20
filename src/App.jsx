@@ -126,7 +126,7 @@ export default function App() {
           element: <BidAmoutHistory />,
         },
         {
-          path: "/Wallet/History",
+          path: "/Wallet/History/:pageNum",
           element: <WalletHistory />,
         },
       ],

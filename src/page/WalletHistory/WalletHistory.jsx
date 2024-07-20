@@ -10,13 +10,16 @@ import { APICreateQR, APIgetTransactions, APIWithDrawal } from "../../api/api"; 
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function WalletHistory() {
+  const navigate = useNavigate()
+  const {pageNum}= useParams()
   const [totalRow, setTotalRow] = useState(0);
-  const [pageNumber, setPageNumber] = useState(1);
-  const onChangePaging = (props) => {
-    console.log(props);
-    setPageNumber(props.current);
+  const [pageNumber, setPageNumber] = useState(Number(pageNum));
+  const onChangePaging = (pageNumber) => {
+    navigate(`/Wallet/History/${pageNumber.current}`)
+    setPageNumber(pageNumber.current);
   };
   useEffect(() => {
     console.log(pageNumber);
