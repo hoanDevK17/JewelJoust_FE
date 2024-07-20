@@ -72,7 +72,7 @@ export default function HomePage({ children }) {
       icon: <WalletOutlined />,
       label: "Wallet",
       onClick: () => {
-        navigate("/Wallet/History");
+        navigate("/Wallet/History/1");
         window.scrollTo({
           top: 0,
           behavior: "smooth",

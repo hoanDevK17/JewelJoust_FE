@@ -10,7 +10,7 @@ export const itemWallet = [
     key: "1",
     icon: <HistoryOutlined />,
     label: "Transaction history",
-    path: "/History",
+    path: "/History/1",
   },
   {
     key: "2",
