@@ -144,7 +144,7 @@ export default function App() {
           element: <WithDrawal />,
         },
         {
-          path: "/dashboard/acount",
+          path: "/dashboard/acount/:pageNum",
           element: <Acount />,
         },
         {
