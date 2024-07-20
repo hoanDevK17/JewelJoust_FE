@@ -93,9 +93,9 @@ export default function HomePage({ children }) {
     {
       key: "1",
       icon: <DashboardOutlined />,
-      label: "Dashborad",
+      label: "Dashboard",
       onClick: () => {
-        navigate("/dashboard/acount");
+        navigate("/dashboard/acount/1");
         window.scrollTo({
           top: 0,
           behavior: "smooth",
