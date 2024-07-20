@@ -88,7 +88,7 @@ const Dashboard = () => {
       setItems([
         getItem("Acount", "acount/1", <ContactsOutlined />),
         getItem("Request", "request/1", <SolutionOutlined />),
-        getItem("Session", "session", <AreaChartOutlined />),
+        getItem("Session", "session/1", <AreaChartOutlined />),
         getItem("Statistical", "statistical", <ContainerOutlined />, [
           getItem("Revenue", "revenue"),
           getItem("Session Statistics", "sessionstatistics"),
