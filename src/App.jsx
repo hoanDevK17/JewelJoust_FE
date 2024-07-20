@@ -152,7 +152,7 @@ export default function App() {
           element: <ManageRequest />,
         },
         {
-          path: "/dashboard/session",
+          path: "/dashboard/session/:pageNum",
           element: <ManageSession />,
         },
         {

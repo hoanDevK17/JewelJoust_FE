@@ -31,6 +31,7 @@ import dayjs from "dayjs";
 import uploadFile from "../../assets/hook/useUpload";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function ManageSession() {
   // const dateFormat = 'YYYY/MM/DD';
@@ -44,6 +45,8 @@ export default function ManageSession() {
   //     .format(weekFormat)}`;
 
   // id >= 0
+  const navigate = useNavigate()
+  const {pageNum}= useParams()
   const [currentId, setCurrentId] = useState(-1);
   const [form] = useForm();
   const [requestAuctionsAgreed, setRequestAuctionsAgreed] = useState([]);
@@ -56,7 +59,7 @@ export default function ManageSession() {
   const [messageApi, contextHolder] = message.useMessage();
   const [urlJewelry, setUrlJewelry] = useState([]);
   const [totalRow, setTotalRow] = useState(0);
-  const [pageNumber, setPageNumber] = useState(1);
+  const [pageNumber, setPageNumber] = useState(Number(pageNum));
   const sort = 'id,desc';
   const pageSize = 7;
   const user = useSelector(selectUser);
@@ -113,9 +116,9 @@ export default function ManageSession() {
         setIsLoading(false);
       });
   };
-  const onChangePaging = (props) => {
-    console.log(props);
-    setPageNumber(props.current);
+  const onChangePaging = (pageNumber) => {
+    navigate(`/dashboard/session/${pageNumber.current }`)
+    setPageNumber(pageNumber.current);
   };
   useEffect(() => {
     console.log(pageNumber);
