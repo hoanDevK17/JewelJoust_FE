@@ -215,3 +215,12 @@ export const APIgetAllBiddingBySessionId = (sessionId) =>
 export const APIgetAllBidding = () => api.get(`auctionBids`);
 export const APIStop = (id) => api.put(`auctionSessions/stop`, id);
 export const APIContinue = (id) => api.put(`auctionSessions/continue`, id);
+export const APIgetAllStatistics = () => api.get(`dashboard`);
+export const APIgetStatisticsSession = (year) => api.get(`dashboard/auctionSession/${year}`);
+export const APIgetStatisticsRequest = (year) => api.get(`dashboard/auctionRequest/${year}`);
+export const APIgetStatisticsAcount = (year) => api.get(`dashboard/account/${year}`);
+export const APIgetStatisticsRevenue = (year) => api.get(`dashboard/auctionBid/${year}`);
+export const APIgetStatisticsSessionDetail = () => api.get(`dashboard/auctionSession/detail`);
+export const APIgetStatisticsRequestDetail = () => api.get(`dashboard/auctionRequest/detail`);
+export const APIgetStatisticsAcountDetail = () => api.get(`dashboard/account/detail`);
+
