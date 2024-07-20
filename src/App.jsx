@@ -30,7 +30,7 @@ import AcountStatistics from "./page/AcountStatistics/AcountStatistics";
 import RequestStatistics from "./page/RequestStatistics/RequestStatistics";
 import SessionStatistics from "./page/SessionStatistics/SessionStatistics";
 import Revenues from "./page/Revenue/Revenue";
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 import {
   Chart as ChartJS,
   BarElement,
@@ -43,7 +43,7 @@ import {
   PointElement,
   LineElement,
   RadarController,
-  // RadarElement,  
+  // RadarElement,
 } from "chart.js";
 ChartJS.register(
   CategoryScale, // Đối với biểu đồ cột và biểu đồ đường
@@ -144,15 +144,15 @@ export default function App() {
           element: <WithDrawal />,
         },
         {
-          path: "/dashboard/acount/:pageNum",
+          path: "/dashboard/acount",
           element: <Acount />,
         },
         {
-          path: "/dashboard/request/:pageNum",
+          path: "/dashboard/request",
           element: <ManageRequest />,
         },
         {
-          path: "/dashboard/session/:pageNum",
+          path: "/dashboard/session",
           element: <ManageSession />,
         },
         {

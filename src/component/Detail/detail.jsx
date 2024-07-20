@@ -323,6 +323,7 @@ export default function Detail() {
               </span>
             </Col>
             <Col xs={6}>
+              <h6>See All</h6>
               {product.three_highestBid?.length > 0 ? (
                 <BidsList bids={product.three_highestBid} />
               ) : (
