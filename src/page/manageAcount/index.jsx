@@ -218,7 +218,6 @@ export default function Acount() {
       });
   };
   const onChangePaging = (pageNumber) => {
-    console.log(pageNumber)
     navigate(`/dashboard/acount/${pageNumber.current }`)
     setPageNumber(pageNumber.current);
 

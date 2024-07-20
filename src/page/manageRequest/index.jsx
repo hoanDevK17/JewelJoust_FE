@@ -37,11 +37,14 @@ import {
 } from "../../api/api";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function ManageRequest() {
+  const navigate = useNavigate()
+  const {pageNum} = useParams()
   const token = useSelector(selectUser)?.token;
   const [totalRow, setTotalRow] = useState(0);
-  const [pageNumber, setPageNumber] = useState(1);
+  const [pageNumber, setPageNumber] = useState(Number(pageNum));
   const sort = 'id,desc';
   const pageSize = 7;
   const formatDate = (dateString) => {
@@ -65,9 +68,10 @@ export default function ManageRequest() {
   const [isLoading, setIsLoading] = useState(false);
 
   const user = useSelector(selectUser);
-  const onChangePaging = (props) => {
-    console.log(props);
-    setPageNumber(props.current);
+
+  const onChangePaging = (pageNumber) => {
+    navigate(`/dashboard/request/${pageNumber.current}`)
+    setPageNumber(pageNumber.current);
   };
   useEffect(() => {
     console.log(pageNumber);

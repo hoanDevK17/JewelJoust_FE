@@ -148,7 +148,7 @@ export default function App() {
           element: <Acount />,
         },
         {
-          path: "/dashboard/request",
+          path: "/dashboard/request/:pageNum",
           element: <ManageRequest />,
         },
         {
