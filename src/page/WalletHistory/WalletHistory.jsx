@@ -29,9 +29,11 @@ export default function WalletHistory() {
   const pageSize = 7;
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
+      title: "No.",
+      key: "index",
+      render: (_, __, index) => {
+        return (pageNumber - 1) * pageSize + index;
+      },
     },
     {
       title: "Amount",
