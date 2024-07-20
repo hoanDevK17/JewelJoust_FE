@@ -24,6 +24,7 @@ import {
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 import { current } from "@reduxjs/toolkit";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function Acount() {
   // console.log(user)
@@ -36,13 +37,15 @@ export default function Acount() {
   //     .endOf('week')
   //     .format(weekFormat)}`;
   // id >= 0
-
+  const navigate = useNavigate()
+  const {pageNum} = useParams()
   const [currentId, setCurrentId] = useState(-1);
   const [currentIdDate, setCurrentIdDate] = useState(0);
   const [form] = useForm();
   const user = useSelector(selectUser);
   const [totalRow, setTotalRow] = useState(0);
-  const [pageNumber, setPageNumber] = useState(1);
+  const [pageNumber, setPageNumber] = useState(Number(pageNum));
+  console.log(pageNumber)
   const onFinish = async (values) => {
     values.birthday = dayjs(values.birthday).format(`YYYY-MM-DD`);
     console.log(
@@ -214,13 +217,16 @@ export default function Acount() {
         setIsLoading(false);
       });
   };
-  const onChangePaging = (props) => {
-    console.log(props);
-    setPageNumber(props.current);
+  const onChangePaging = (pageNumber) => {
+    console.log(pageNumber)
+    navigate(`/dashboard/acount/${pageNumber.current }`)
+    setPageNumber(pageNumber.current);
+
+    
   };
   useEffect(() => {
     console.log(pageNumber);
-    fetchData(pageNumber - 1);
+    fetchData(pageNumber -1);
   }, [pageNumber]);
 
   // const handleDelate = (value) => {
@@ -463,13 +469,7 @@ export default function Acount() {
             size="middle"
             onChange={onChangePaging}
           />
-          {/* <Pagination
-            // defaultCurrent={1}
-            total={totalRow}
-            pageSize={8}
-            onChange={onChangePaging}
-            current={pageNumber}
-          /> */}
+
           ;
         </div>
       )}
