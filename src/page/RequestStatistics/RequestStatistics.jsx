@@ -8,7 +8,7 @@ export default function RequestStatistics() {
     labels: ["Red", "Blue", "Yellow"],
     datasets: [
       {
-        label: "Votes",
+        label: "số lượng",
         data: [12, 19, 3],
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",

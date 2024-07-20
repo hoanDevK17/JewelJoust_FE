@@ -1,38 +1,53 @@
 import { useEffect, useState } from "react";
 import React from 'react';
 import axios from "axios";
-import { Bar, Line } from "react-chartjs-2";
-import { Button, Statistic, Input, Col, Row } from 'antd';
-import { UserOutlined, SettingOutlined, SmileOutlined, SyncOutlined, SearchOutlined } from '@ant-design/icons';
+import { Bar, Line, Pie } from "react-chartjs-2";
+import { Button, Statistic, Input, Col, Row, Select, Modal } from 'antd';
+import { UserOutlined, SettingOutlined, SmileOutlined, SyncOutlined, SearchOutlined, ConsoleSqlOutlined } from '@ant-design/icons';
+import { APIgetAllStatistics, APIgetStatisticsAcount, APIgetStatisticsRequest, APIgetStatisticsRevenue, APIgetStatisticsSession, APIgetStatisticsSessionDetail } from "../../api/api";
+const currentYear = new Date().getFullYear();
 
 export default function SessionStatistics() {
-
   const [statisticAll, setStatisticAll] = useState();
-  const [labelChart, setLabelChart] = useState();
-  const [statisticData, setStatisticData] = useState();
+  const [labelChart, setLabelChart] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [statisticData, setStatisticData] = useState([]);
+  const [year, setYear] = useState(currentYear);
+  const [searchValue, setSearchValue] = useState('');
+  const [arrayDataDetail, setArrayDataDetail]  = useState([{lable :"RED",quantity:12},
+    {lable :"BLUE",quantity:12},
+    {lable :"YELLOW",quantity:12},
+    {lable :"BLACK",quantity:12},
+    {lable :"QUANG",quantity:100},
+    {lable :"PHAT",quantity:12},
+    {lable :"HOAN",quantity:12},
+    {lable :"BI",quantity:12},
+    {lable :"TRUONG",quantity:12},
+    {lable :"SANG",quantity:12},
+    {lable :"PINK",quantity:12},
+    {lable :"GREN",quantity:12}]);
 
-  const handleAcountChart=async ()=> {
-    setStatisticData([7, 3, 11, 1, 9, 6, 2, 8, 12, 4, 10, 5])
-    setLabelChart("Number Acount")
-  }
+  const arrayData = [
+    { lable: "Session", handle: (year) => { return APIgetStatisticsSession(year) }, handlePie: () => { return APIgetStatisticsSessionDetail() } },
+    { lable: "Revenue", handle: (year) => { return APIgetStatisticsRevenue(year) } }, 
+    { lable: "Request", handle: (year) => { return APIgetStatisticsRequest(year) }, handlePie: () => { return APIgetStatisticsSessionDetail() } },   
+    { lable: "Acount", handle: (year) => { return APIgetStatisticsAcount(year) }, handlePie: () => { return APIgetStatisticsSessionDetail() } }  
+  ];
+  const years = Array.from({ length: 5 }, (v, i) => ({
+    value: currentYear - i,
+    label: `${currentYear - i}`,
+  }));
 
-  const handleSessionChart=async ()=> {
-    setStatisticData([4, 12, 6, 1, 8, 11, 3, 10, 5, 2, 9, 7])
-    setLabelChart("Number Session")
-  }
-
-  const handleRequestChart=async ()=> {
-    setStatisticData([10, 5, 8, 3, 7, 12, 2, 11, 1, 4, 9, 6])
-    setLabelChart("Number Request")
-  }
-
-  const handleRevenueChart=async ()=> {
-    setStatisticData([2, 9, 7, 11, 4, 10, 6, 1, 12, 8, 5, 3])
-    setLabelChart("Number Revenue")
-  } 
+  const fetchData = async () => {
+    // setIsLoading(true);
+    APIgetAllStatistics().then(rs => {
+      console.log(rs.data)
+      setStatisticAll(rs.data)
+    })
+  };
 
   const data = {
-    labels: ["January", "February", "March", "April", "May", "June", "July","August","September","October","November","December"],
+    labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
     datasets: [
       {
         label: labelChart,
@@ -52,9 +67,9 @@ export default function SessionStatistics() {
         tension: 0.1, // Điều chỉnh độ cong của đường
       },
     ],
-   
+
   };
-  
+
   const options = {
     responsive: true,
     plugins: {
@@ -64,7 +79,7 @@ export default function SessionStatistics() {
       tooltip: {
         callbacks: {
           label: function (tooltipItem) {
-            return labelChart+`: ${tooltipItem.raw}`;
+            return labelChart + `: ${tooltipItem.raw}`;
           },
         },
       },
@@ -80,13 +95,83 @@ export default function SessionStatistics() {
     },
   };
 
-  const [searchValue, setSearchValue] = useState('');
+  
+    const dataPie = {
+    labels: arrayDataDetail.map((item => item.lable)),
+    datasets: [
+      {
+        label: "số lượng",
+        data:arrayDataDetail.map((item => item.quantity)),
+        backgroundColor: [
+          '#FFD700', '#32CD32', '#FF4500', '#FF6347', '#4682B4',
+          '#8A2BE2', '#DAA520', '#DC143C', '#FF1493', '#3CB371',
+          '#00FA9A', '#B22222', '#8B0000', '#FF7F50', '#6495ED',
+          '#D2691E', '#00CED1', '#2E8B57'
+        ],
+        hoverBackgroundColor: [
+          '#FFD700', '#32CD32', '#FF4500', '#FF6347', '#4682B4',
+          '#8A2BE2', '#DAA520', '#DC143C', '#FF1493', '#3CB371',
+          '#00FA9A', '#B22222', '#8B0000', '#FF7F50', '#6495ED',
+          '#D2691E', '#00CED1', '#2E8B57'
+        ],
+        borderColor: [
+          '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF',
+          '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF',
+          '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF',
+          '#FFFFFF', '#FFFFFF', '#FFFFFF'
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
 
-  const fetchData = async () => {};
+  const optionsPie = {
+    responsive: true,
+    maintainAspectRatio: true, // Cho phép kích thước tùy chỉnh,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+    },
+  };
+  const handleOnclickViewChart = async (lable) => {
+    setLabelChart(lable)
+    try {
+      const itemLable = arrayData.find(item => item.lable == lable)
+      itemLable.handle(year).then((rs) => {
+        console.log(rs.data)
+        setStatisticData(rs.data)
+      })
+    } catch (error) {
+      console.log(error)
+    }
 
+  }
+  const handleOnclickViewPie = async (lable) => {
+    setLabelChart(lable)
+    try {
+      const itemLable = arrayData.find(item => item.lable == lable)
+      itemLable.handlePie(year).then((rs) => {
+        console.log(rs.data)
+        setArrayDataDetail(rs.data)
+      })
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsOpen(true)}
+    }
+
+  
   useEffect(() => {
     fetchData();
+
   }, []);
+  useEffect(() => {
+    // fetchData();
+    if (labelChart != null) {
+      handleOnclickViewChart(labelChart, year)
+    }
+  }, [year]);
 
   const handleSearch = (value) => {
     // Implement your search logic here
@@ -126,7 +211,7 @@ export default function SessionStatistics() {
             placeholder="Search by Session ID"
             enterButton={<Button icon={<SearchOutlined />} />}
             size="middle"
-            onSearch={handleSearch}    
+            onSearch={handleSearch}
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
           />
@@ -140,12 +225,15 @@ export default function SessionStatistics() {
               background: "linear-gradient(to right, #B8D9D0, #3C7363)"
             }}
           >
-            <UserOutlined style={iconStyle} />
-            <Statistic title="Total Revenue" value={statisticAll?.Revenue} valueStyle={{ fontSize: '32px' }}/>
+            <UserOutlined style={iconStyle}/>
+            <Statistic title="Total Revenue" value={statisticAll?.totalBid} valueStyle={{ fontSize: '32px' }} />
             <Button
               style={{ marginTop: 16 }}
               type="primary"
-              onClick={handleRevenueChart}
+              onClick={() => {
+                // console.log("dmm")
+                handleOnclickViewChart("Revenue")
+              }}
             >
               View Chart
             </Button>
@@ -158,12 +246,15 @@ export default function SessionStatistics() {
               background: "linear-gradient(to right, #F2E9E9, #F2A7AD)"
             }}
           >
-            <SettingOutlined style={iconStyle} />
-            <Statistic title="Total Sessions" value={statisticAll?.Sessions} valueStyle={{ fontSize: '32px' }}/>
+            <SettingOutlined style={iconStyle} onClick={()=>{handleOnclickViewPie("Sessions")}}/>
+            <Statistic title="Total Sessions" value={statisticAll?.totalSession} valueStyle={{ fontSize: '32px' }} />
             <Button
               style={{ marginTop: 16 }}
               type="primary"
-              onClick={handleSessionChart}
+              onClick={() => {
+                // console.log("dmm")
+                handleOnclickViewChart("Session")
+              }}
             >
               View Chart
             </Button>
@@ -176,12 +267,15 @@ export default function SessionStatistics() {
               background: "linear-gradient(to right, #97F2F3, #079DD9)"
             }}
           >
-            <SmileOutlined style={iconStyle} />
-            <Statistic title="Total Request" value={statisticAll?.Request} valueStyle={{ fontSize: '32px' }}/>
+            <SmileOutlined style={iconStyle} onClick={()=>{handleOnclickViewPie("Sessions")}} />
+            <Statistic title="Total Request" value={statisticAll?.totalRequest} valueStyle={{ fontSize: '32px' }} />
             <Button
               style={{ marginTop: 16 }}
               type="primary"
-              onClick={handleRequestChart}
+              onClick={() => {
+                // console.log("dmm")
+                handleOnclickViewChart("Request")
+              }}  
             >
               View Chart
             </Button>
@@ -194,22 +288,58 @@ export default function SessionStatistics() {
               background: "linear-gradient(to right, #F3DDB3, #E08963)"
             }}
           >
-            <SyncOutlined style={iconStyle} />  
-            <Statistic title="Total Acount" value={statisticAll?.Acount} valueStyle={{ fontSize: '32px' }}/>
+            <SyncOutlined style={iconStyle} onClick={()=>{handleOnclickViewPie("Sessions")}}/>
+            <Statistic title="Total Member" value={statisticAll?.totalAccount} valueStyle={{ fontSize: '32px' }} />
             <Button
               style={{ marginTop: 16 }}
               type="primary"
-              onClick={handleAcountChart}
+              onClick={() => {
+                // console.log("dmm")
+                handleOnclickViewChart("Acount")
+              }}
             >
               View Chart
             </Button>
           </div>
         </Col>
       </Row>
-      <div style={{ marginTop: "20px" }}>
-        <h2>{labelChart + ` Bar Chart with Trend Line`}</h2>
-        <Bar data={data} options={options}/>
-      </div>
+      {labelChart &&
+        <div style={{ marginTop: "20px" }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <h2>{`Bar Chart with Trend Line of ${labelChart}`}</h2>
+            <Select
+              showSearch
+              style={{
+                width: 200,
+              }}
+              defaultValue={year}
+              placeholder="Select a Year"
+              optionFilterProp="label"
+              onChange={(value) => setYear(value)}
+              filterSort={(optionA, optionB) =>
+                (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+              }
+              options={years}
+            />
+          </div>
+          <div
+          style={{
+            maxWidth: "1024px",
+            margin: "auto" 
+          }}
+          >
+            <Bar data={data} options={options} />
+          </div>
+        </div>
+      }
+    <Modal 
+     open={isOpen}
+     onOk={() =>setIsOpen(false)}
+     onCancel={() => setIsOpen(false)}
+    >
+      
+      <Pie data={dataPie} options={optionsPie}  />
+    </Modal>
     </>
   );
 }
