@@ -1,4 +1,13 @@
-import { DashboardOutlined, HistoryOutlined, LoadingOutlined, LogoutOutlined, ProfileOutlined, RedoOutlined, UserOutlined, WalletOutlined } from "@ant-design/icons";
+import {
+  DashboardOutlined,
+  HistoryOutlined,
+  LoadingOutlined,
+  LogoutOutlined,
+  ProfileOutlined,
+  RedoOutlined,
+  UserOutlined,
+  WalletOutlined,
+} from "@ant-design/icons";
 
 import "./home.scss";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +17,7 @@ import {
   refreshBalance,
   selectUser,
 } from "../../redux/features/counterSlice";
+import { motion } from "framer-motion";
 
 import { Avatar, Dropdown, Space } from "antd";
 import { useState } from "react";
@@ -37,7 +47,7 @@ export default function HomePage({ children }) {
   const itemsMember = [
     {
       key: "1",
-      icon:<ProfileOutlined />,
+      icon: <ProfileOutlined />,
       label: "Profile",
       onClick: () => {
         navigate("/profile");
@@ -46,7 +56,7 @@ export default function HomePage({ children }) {
 
     {
       key: "2",
-      icon:<HistoryOutlined />,
+      icon: <HistoryOutlined />,
       label: "Active History",
       onClick: () => {
         navigate("/ActiveHistory/RequestSell");
@@ -59,7 +69,7 @@ export default function HomePage({ children }) {
 
     {
       key: "3",
-      icon:<WalletOutlined />,
+      icon: <WalletOutlined />,
       label: "Wallet",
       onClick: () => {
         navigate("/Wallet/History");
@@ -71,7 +81,7 @@ export default function HomePage({ children }) {
     },
     {
       key: "4",
-      icon:<LogoutOutlined />,
+      icon: <LogoutOutlined />,
       label: "Log Out",
       onClick: () => {
         dispatch(logout());
@@ -82,7 +92,7 @@ export default function HomePage({ children }) {
   const itemsAdmin = [
     {
       key: "1",
-      icon:<DashboardOutlined />,
+      icon: <DashboardOutlined />,
       label: "Dashborad",
       onClick: () => {
         navigate("/dashboard/acount");
@@ -94,7 +104,7 @@ export default function HomePage({ children }) {
     },
     {
       key: "2",
-      icon:<LogoutOutlined />,
+      icon: <LogoutOutlined />,
       label: "Log Out",
       onClick: () => {
         dispatch(logout());
@@ -126,122 +136,131 @@ export default function HomePage({ children }) {
     .toFixed(2)
     .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   return (
-    <div className="home-default">
-      <div className="home-page-header">
-        <div className="home-page-logo">
-          <span className="button-link" onClick={handleClick}>
-            <img
-              src="/Logo.svg"
-              alt=""
-              style={{ maxHeight: "45px", maxWidth: "200px" }}
-            />
-          </span>
-        </div>
-        <div className="home-page-title">
-          <span className="button-link" onClick={handleClick}>
-            Home
-          </span>
-          <span
-            className="button-link"
-            onClick={() => {
-              navigate("/bidding");
-            }}
-          >
-            Bidding
-          </span>
-          <span
-            className="button-link"
-            onClick={() => {
-              navigate("/sessions");
-              window.scrollTo({
-                top: 0,
-                behavior: "smooth",
-              });
-            }}
-          >
-            AuctionSession
-          </span>
-          <span
-            className="button-link"
-            onClick={() => {
-              navigate("/auctionRequestSell");
-              window.scrollTo({
-                top: 0,
-                behavior: "smooth",
-              });
-            }}
-          >
-            AuctionRequestSell
-          </span>
-        </div>
+    <motion.div
+      initial={{ opacity: 0.5 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0.5 }}
+    >
+      <div className="home-default">
+        <div className="home-page-header">
+          <div className="home-page-logo">
+            <span className="button-link" onClick={handleClick}>
+              <img
+                src="/Logo.svg"
+                alt=""
+                style={{ maxHeight: "45px", maxWidth: "200px" }}
+              />
+            </span>
+          </div>
+          <div className="home-page-title">
+            <span className="button-link" onClick={handleClick}>
+              Home
+            </span>
+            <span
+              className="button-link"
+              onClick={() => {
+                navigate("/bidding");
+              }}
+            >
+              Bidding
+            </span>
+            <span
+              className="button-link"
+              onClick={() => {
+                navigate("/sessions");
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
+              }}
+            >
+              AuctionSession
+            </span>
+            <span
+              className="button-link"
+              onClick={() => {
+                navigate("/auctionRequestSell");
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
+              }}
+            >
+              AuctionRequestSell
+            </span>
+          </div>
 
-        <div className="home-page-login">
-          {user ? (
-            <>
-              {" "}
-              <div className="user_wallet_all">
-                <span style={{ display: "flex", justifyContent: "flex-end" }}>
-                  Hi👋{"  "} {user?.fullname}
-                </span>
-                {isMember ? (
-                  <div className="user-wallet" style={{ alignItems: "center" }}>
-                    {isRefreshBalance ? (
-                      <LoadingOutlined />
-                    ) : (
-                      <RedoOutlined onClick={handleRefreshBalance} />
-                    )}
-                    <span
-                      onClick={(e) => e.preventDefault()}
-                      style={{ fontSize: "16px" }}
+          <div className="home-page-login">
+            {user ? (
+              <>
+                {" "}
+                <div className="user_wallet_all">
+                  <span style={{ display: "flex", justifyContent: "flex-end" }}>
+                    Hi👋{"  "} {user?.fullname}
+                  </span>
+                  {isMember ? (
+                    <div
+                      className="user-wallet"
+                      style={{ alignItems: "center" }}
                     >
-                      Balance: {formattedBalance}$
-                    </span>
-                  </div>
-                ) : (
-                  <></>
-                )}
-              </div>
-              <Dropdown
-                menu={{ items: isMember ? itemsMember : itemsAdmin }}
-                trigger={["click"]}
-                placement="bottomRight"
-              >
-                <Space>
-                  <Avatar
-                    style={{
-                      backgroundColor: "#87d068",
-                    }}
-                    icon={<UserOutlined />}
-                  />
-                </Space>
-              </Dropdown>
-            </>
-          ) : (
-            <>
-              <span
-                className="button-link"
-                onClick={() => {
-                  navigate("/Login");
-                }}
-              >
-                Login
-              </span>
-              <span
-                className="button-link"
-                onClick={() => {
-                  navigate("/registration");
-                }}
-              >
-                Sign Up
-              </span>
-            </>
-          )}
+                      {isRefreshBalance ? (
+                        <LoadingOutlined />
+                      ) : (
+                        <RedoOutlined onClick={handleRefreshBalance} />
+                      )}
+                      <span
+                        onClick={(e) => e.preventDefault()}
+                        style={{ fontSize: "16px" }}
+                      >
+                        Balance: {formattedBalance}$
+                      </span>
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                </div>
+                <Dropdown
+                  menu={{ items: isMember ? itemsMember : itemsAdmin }}
+                  trigger={["click"]}
+                  placement="bottomRight"
+                >
+                  <Space>
+                    <Avatar
+                      style={{
+                        backgroundColor: "#87d068",
+                      }}
+                      icon={<UserOutlined />}
+                    />
+                  </Space>
+                </Dropdown>
+              </>
+            ) : (
+              <>
+                <span
+                  className="button-link"
+                  onClick={() => {
+                    navigate("/Login");
+                  }}
+                >
+                  Login
+                </span>
+                <span
+                  className="button-link"
+                  onClick={() => {
+                    navigate("/registration");
+                  }}
+                >
+                  Sign Up
+                </span>
+              </>
+            )}
+          </div>
         </div>
+        <div style={{ margin: "auto", maxWidth: "1200px", minWidth: "800px" }}>
+          <div className="home-page-body">{children}</div>
+        </div>
+        <Footer />
       </div>
-      <div style={{ margin: "auto", maxWidth: "1200px", minWidth: "800px" }}>
-        <div className="home-page-body">{children}</div>
-      </div>
-      <Footer />
-    </div>
+    </motion.div>
   );
 }

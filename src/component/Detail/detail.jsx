@@ -603,11 +603,11 @@ export default function Detail() {
             >
               <Col xl={24}>
                 <Content
-                  title="OTHER PRE-AUCTION"
+                  title="OTHER BIDDING-AUCTION"
                   btnContent="View all Sessions"
                   linkURL="/sessions"
                 />
-                <MyCarousel status={"INITIALIZED"} />
+                <MyCarousel status={"BIDDING"} />
               </Col>
             </Row>
           </Col>

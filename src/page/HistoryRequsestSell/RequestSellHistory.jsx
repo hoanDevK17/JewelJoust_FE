@@ -39,7 +39,7 @@ const formatDate = (dateString) => {
   const year = date.getFullYear();
   return `${hours}:${minutes} ${day}/${month}/${year}`;
 };
-
+const pageSize = 7;
 // tạo ra timeline
 // in ra step
 const renderSteps = (status) => {
@@ -432,6 +432,7 @@ function RequestSellHistory() {
   const [currentRequest, setCurrentRequest] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [isRejected, setIsRejected] = useState(false);
+  const [page, setPage] = useState(1);
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -439,9 +440,10 @@ function RequestSellHistory() {
 
   const fetchData = async () => {
     setIsLoading(true);
-    await APIgetallrequest()
+    await APIgetallrequest(page, pageSize, "id,desc")
       .then((response) => {
-        setData(response.data.sort((a, b) => b.id - a.id));
+        console.log(response);
+        setData(response.data.content);
       })
       .catch((error) => {
         console.log(error);

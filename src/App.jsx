@@ -30,6 +30,7 @@ import AcountStatistics from "./page/AcountStatistics/AcountStatistics";
 import RequestStatistics from "./page/RequestStatistics/RequestStatistics";
 import SessionStatistics from "./page/SessionStatistics/SessionStatistics";
 import Revenues from "./page/Revenue/Revenue";
+import { motion } from "framer-motion"
 import {
   Chart as ChartJS,
   BarElement,

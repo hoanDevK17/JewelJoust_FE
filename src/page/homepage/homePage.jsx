@@ -13,7 +13,6 @@ import { APIgetallSessionByStatus } from "../../api/api.js";
 import { useNavigate } from "react-router-dom";
 
 import { Flex, Input } from "antd";
-
 import CarouselAntd from "../../component/carouselAntd/carouselAntd.jsx";
 export default function Home() {
   const onSearch = (value, _e, info) => {
@@ -72,45 +71,43 @@ export default function Home() {
     console.log("params", pagination, filters, sorter, extra);
   };
   return (
-    <div>
-      <HomePage>
-        <Col xl={12}>
-          <Flex justify="space-between" style={{ marginBottom: "24px" }}>
-            <div>
-              <h2>JEWELJOUST!</h2>
-              <h6 style={{ fontSize: 14 }}>
-                Your Ultimate Destination for Exciting Auctions
-              </h6>
-            </div>
-            <Search
-              placeholder="Search Session or Jewelry"
-              onSearch={onSearch}
-              size="middle"
-              // width={200}
-              style={{
-                width: 400,
-              }}
-            />
-          </Flex>
-          <CarouselAntd />
-          <div
+    <HomePage>
+      <Col xl={12}>
+        <Flex justify="space-between" style={{ marginBottom: "24px" }}>
+          <div>
+            <h2>JEWELJOUST!</h2>
+            <h6 style={{ fontSize: 14 }}>
+              Your Ultimate Destination for Exciting Auctions
+            </h6>
+          </div>
+          <Search
+            placeholder="Search Session or Jewelry"
+            onSearch={onSearch}
+            size="middle"
+            // width={200}
             style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              marginTop: "24px",
+              width: 400,
             }}
-          ></div>
-          <Content
-            title="AUCTION BIDDING"
-            btnContent="View all sessions"
-            linkURL="/sessions"
           />
-          <MyCarousel status={"BIDDING"} />
-          <Content title="PRE-AUCTION" />
+        </Flex>
+        <CarouselAntd />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-start",
+            marginTop: "24px",
+          }}
+        ></div>
+        <Content
+          title="AUCTION BIDDING"
+          btnContent="View all sessions"
+          linkURL="/sessions"
+        />
+        <MyCarousel status={"BIDDING"} />
+        <Content title="PRE-AUCTION" />
 
-          <MyCarousel status={"INITIALIZED"} />
-        </Col>
-      </HomePage>
-    </div>
+        <MyCarousel status={"INITIALIZED"} />
+      </Col>
+    </HomePage>
   );
 }
