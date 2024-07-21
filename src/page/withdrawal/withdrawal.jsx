@@ -38,11 +38,7 @@ export default function WalletHistory() {
         return formattedAmount;
       },
     },
-    {
-      title: "TYPE",
-      dataIndex: "transaction_type",
-      key: "Method",
-    },
+
     {
       title: "Date",
       dataIndex: "date",
@@ -54,6 +50,11 @@ export default function WalletHistory() {
       dataIndex: "status",
       key: "status",
       render: (status) => (status ? status : "N/A"), // Hiển thị "N/A" nếu không có trạng thái
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
     },
     {
       title: "Confirm",
