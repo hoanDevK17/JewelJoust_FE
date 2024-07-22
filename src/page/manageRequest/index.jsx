@@ -37,19 +37,16 @@ import {
 } from "../../api/api";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export default function ManageRequest() {
   const navigate = useNavigate()
-  const {pageNum} = useParams()
+ 
   const token = useSelector(selectUser)?.token;
   const [totalRow, setTotalRow] = useState(0);
-  const [pageNumber, setPageNumber] = useState(Number(pageNum));
-  const sort = 'id,desc';
-  const pageSize = 7;
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-
     const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getMinutes()).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
@@ -58,6 +55,14 @@ export default function ManageRequest() {
     const year = date.getFullYear();
     return `${hours}:${minutes} ${day}/${month}/${year}`;
   };
+  let [searchParams ] = useSearchParams()
+  const pageNum =
+  searchParams.get("page") != null ? searchParams.get("page") : 1;
+    // searchParams.get("page") != null ? searchParams.get("page") : 1;
+  const [pageNumber, setPageNumber] = useState(Number(pageNum));
+  const sort = 'id,desc';
+  const pageSize = 7;
+
 
   const [currentId, setCurrentId] = useState(-1);
   const [data, setData] = useState([]);
@@ -70,7 +75,7 @@ export default function ManageRequest() {
   const user = useSelector(selectUser);
 
   const onChangePaging = (pageNumber) => {
-    navigate(`/dashboard/request/${pageNumber.current}`)
+    navigate(`/dashboard/request?page=${pageNumber.current}`)
     setPageNumber(pageNumber.current);
   };
   useEffect(() => {
