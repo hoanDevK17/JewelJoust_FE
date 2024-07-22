@@ -26,16 +26,13 @@ export default function AuctionSession() {
 
     try {
       let response;
-      if (name !== null) {
+      if (name) {
         response = await APIgetallSessionByName(name, page, pageSize, sort);
-        setData(response.data.content);
-        
-        setTotalRow(response.data?.totalElements);
       } else {
         response = await APIgetallSession(page, pageSize, sort);
-        setTotalRow(response.data?.totalElements);
-        setData(response.data?.content);
       }
+      setData(response.data.content);
+      setTotalRow(response.data?.totalElements);
       setIsLoading(false);
     } catch (error) {
       console.error(error);
