@@ -26,11 +26,7 @@ import RegistrationSessionHistory from "./page/HistoryRegistrationSession";
 import useRealtime from "./assets/hook/useRealTime";
 import Payment from "./page/Payment/Payment";
 import ConditionsAndServices from "./page/conditionsAndServices/conditionsAndServices";
-import AcountStatistics from "./page/AcountStatistics/AcountStatistics";
-import RequestStatistics from "./page/RequestStatistics/RequestStatistics";
 import SessionStatistics from "./page/SessionStatistics/SessionStatistics";
-import Revenues from "./page/Revenue/Revenue";
-import { motion } from "framer-motion";
 import {
   Chart as ChartJS,
   BarElement,
@@ -46,7 +42,6 @@ import {
   // RadarElement,
 } from "chart.js";
 import OverviewStatistics from "./page/OverviewStatistics/OverviewStatistics";
-import SessionStatistics from "./page/SessionStatistics/SessionStatistics";
 ChartJS.register(
   CategoryScale, // Đối với biểu đồ cột và biểu đồ đường
   LinearScale, // Đối với biểu đồ cột và biểu đồ đường
