@@ -39,7 +39,7 @@ export default function Login() {
           localStorage.setItem("token", rs.data.token);
           rs.data.role == "MEMBER"
             ? navigate("/homepage")
-            : navigate("/dashboard/acount/1");
+            : navigate("/dashboard/acount");
         }
       })
       .catch((error) => {

@@ -13,12 +13,12 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function WalletHistory() {
-  const navigate = useNavigate()
-  const {pageNum}= useParams()
+  const navigate = useNavigate();
+  const { pageNum } = useParams();
   const [totalRow, setTotalRow] = useState(0);
   const [pageNumber, setPageNumber] = useState(Number(pageNum));
   const onChangePaging = (pageNumber) => {
-    navigate(`/Wallet/History/${pageNumber.current}`)
+    navigate(`/Wallet/History/${pageNumber.current}`);
     setPageNumber(pageNumber.current);
   };
   useEffect(() => {
@@ -43,7 +43,7 @@ export default function WalletHistory() {
         const formattedAmount = Number(text)
           .toFixed(2)
           .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-        return formattedAmount;
+        return formattedAmount + "$";
       },
     },
     {
@@ -172,19 +172,21 @@ export default function WalletHistory() {
   };
 
   const onFinishAdd = (values) => {
-    console.log("oki" + convertedAmount.toFixed(2));
+    // console.log("oki" + convertedAmount.toFixed(2));
+    setIsLoading(true);
     // console.log(user?.wallet?.id, values.amount, "Deposit " + values.amount);
-    APICreateQR(
-      values.amount,
-      parseFloat(usdRate?.sell.replace(/,/g, "") * 1.01)
-    )
+    APICreateQR(values.amount, convertedAmount)
       .then((response) => {
         console.log(response);
         window.open(response.data);
+        fetchData();
       })
       .catch((error) => {
         console.log(error);
         message.error("Something went wrong");
+      })
+      .finally(() => {
+        fetchData();
       });
     handleAddOk();
   };
@@ -201,9 +203,7 @@ export default function WalletHistory() {
       values.bankName,
       values.accountNumber,
       values.recipientName,
-      Math.floor(
-        values.amount * parseFloat(usdRate?.sell.replace(/,/g, "") * 0.99) * 100
-      ) / 100,
+      convertedAmount,
       values.amount
     )
       .then((response) => {

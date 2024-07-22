@@ -25,6 +25,7 @@ const DepositSuccessPage = () => {
           console.log(response);
           if (response.data == "VNPAY response processed successfully") {
             APIrefreshBalance().then((rs) => {
+           
               if (rs.status === 200) {
                 // user.wallet.balance = JSON.stringify(rs.data);
                 dispatch(refreshBalance(rs.data));

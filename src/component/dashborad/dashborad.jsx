@@ -48,9 +48,9 @@ const Dashboard = () => {
   useEffect(() => {
     if (role === "ADMIN") {
       setItems([
-        getItem("Acount", "acount/1", <ContactsOutlined />),
-        getItem("Request", "request/1", <SolutionOutlined />),
-        getItem("Session", "session/1", <AreaChartOutlined />),
+        getItem("Acount", "acount", <ContactsOutlined />),
+        getItem("Request", "request", <SolutionOutlined />),
+        getItem("Session", "session", <AreaChartOutlined />),
         getItem("Statistical", "statistical", <ContainerOutlined />, [
           getItem("Overview Statistics", "overviewStatistics"),
           getItem("Session Statistics", "sessionStatistics"),
