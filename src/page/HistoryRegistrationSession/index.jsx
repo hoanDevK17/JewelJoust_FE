@@ -13,6 +13,7 @@ import { APIHistoryRegisSession } from "../../api/api";
 import dayjs from "dayjs";
 import { Container, Row, Col } from "react-bootstrap";
 import HomePage from "../../component/home-default/home";
+import { useNavigate } from "react-router-dom";
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -29,20 +30,18 @@ const formatDate = (dateString) => {
 
 //lấy status từ Status
 
-const columns = (setCurrentId) => [
+const columns = (setCurrentId, navigate) => [
   {
-    title: "ID",
-    dataIndex: "id",
-    key: "id",
-    sorter: {
-      compare: (a, b) => a.id - b.id,
-      multiple: 1,
+    title: "No.",
+    key: "index",
+    render: (_, __, index) => {
+      return (index + 1);
     },
   },
   {
     title: "Name",
-    dataIndex: "jewelryname",
-    key: "jewelryname",
+    dataIndex: ["auctionSession", "nameSession"],
+    key: "nameSession",
   },
   {
     title: "CreatedDate",
@@ -52,37 +51,30 @@ const columns = (setCurrentId) => [
   },
   {
     title: "Desired Price",
-    dataIndex: "jewelryinitialprice",
+    dataIndex: ["auctionSession", "auctionRequest", "jewelryinitialprice"],
     key: "jewelryinitialprice",
-    render: (price) => `${price}$`,
-    sorter: {
-      compare: (a, b) => a.jewelryinitialprice - b.jewelryinitialprice,
-      multiple: 2,
-    },
+    render: (jewelryinitialprice) =>
+      jewelryinitialprice > 0 ? `${jewelryinitialprice}$` : "N/A",
+    sorter: (a, b) =>
+      (a?.auctionSession?.auctionRequest?.jewelryinitialprice || 0) - (b?.auctionSession?.auctionRequest?.jewelryinitialprice || 0),
   },
   {
     title: "Initial Price",
-    dataIndex: "initialValuations",
-    key: "initialValuations",
-    render: (initialValuations) =>
-      initialValuations?.price > 0 ? `${initialValuations?.price}$` : "N/A",
-    sorter: {
-      compare: (a, b) =>
-        a.initialValuations?.price - b.initialValuations?.price,
-      multiple: 3,
-    },
+    dataIndex: ["auctionSession", "auctionRequest", "initialValuations", "price"],
+    key: "price",
+    render: (price) =>
+      price > 0 ? `${price}$` : "N/A",
+    sorter: (a, b) =>
+      (a?.auctionSession?.auctionRequest?.initialValuations?.price || 0) - (b?.auctionSession?.auctionRequest?.initialValuations?.price || 0),
   },
   {
     title: "Ultimate Price",
-    dataIndex: "ultimateValuation",
-    key: "ultimateValuation",
-    render: (ultimateValuation) =>
-      ultimateValuation?.price > 0 ? `${ultimateValuation?.price}$` : "N/A",
-    sorter: {
-      compare: (a, b) =>
-        a.ultimateValuation?.price - b.ultimateValuation?.price,
-      multiple: 3,
-    },
+    dataIndex: ["auctionSession", "auctionRequest", "ultimateValuation", "price"],
+    key: "price",
+    render: (price) =>
+      price > 0 ? `${price}$` : "N/A",
+    sorter: (a, b) =>
+      (a?.auctionSession?.auctionRequest?.ultimateValuation?.price || 0) - (b?.auctionSession?.auctionRequest?.ultimateValuation?.price || 0),
   },
   {
     title: "status",
@@ -188,15 +180,16 @@ const columns = (setCurrentId) => [
     },
   },
   {
-    title: "Edit",
-    render: (value, record) => (
+    title: "Detail",
+    key: "detail",
+    render: (_, record) => (
       <Button
         type="primary"
         onClick={() => {
-          setCurrentId(record.id);
+          navigate(`/detail/${record.auctionSession.id}`);
         }}
       >
-        <EditOutlined />
+        View Auction
       </Button>
     ),
   },
@@ -204,7 +197,7 @@ const columns = (setCurrentId) => [
 
 function RegistrationSessionHistory() {
   const [data, setData] = useState();
-
+  const navigate = useNavigate()
   const [currentId, setCurrentId] = useState(-1);
   const [currentRequest, setCurrentRequest] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -213,7 +206,7 @@ function RegistrationSessionHistory() {
     setIsLoading(true);
     APIHistoryRegisSession()
       .then((response) => {
-        setData(response.data.sort((a, b) => b.id - a.id));
+        setData(response.data);
         console.log(response.data);
       })
       .catch((error) => {
@@ -233,7 +226,6 @@ function RegistrationSessionHistory() {
   useEffect(() => {
     fetchData();
   }, []);
-
   return (
     <>
       <HomePage>
@@ -252,7 +244,7 @@ function RegistrationSessionHistory() {
                     }}
                   ></Modal>
 
-                  <Table columns={columns(setCurrentId)} dataSource={data} />
+                  <Table columns={columns(setCurrentId,navigate)} dataSource={data} />
                 </>
               )}
             </Col>
