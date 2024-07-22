@@ -223,4 +223,5 @@ export const APIgetStatisticsRevenue = (year) => api.get(`dashboard/auctionBid/$
 export const APIgetStatisticsSessionDetail = () => api.get(`dashboard/auctionSession/detail`);
 export const APIgetStatisticsRequestDetail = () => api.get(`dashboard/auctionRequest/detail`);
 export const APIgetStatisticsAcountDetail = () => api.get(`dashboard/account/detail`);
+export const APIgetAuctionSessionDetail = (id) => api.get(`dashboard/auctionSession/detail/${id}`);
 
