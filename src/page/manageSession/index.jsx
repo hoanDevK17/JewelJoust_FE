@@ -31,7 +31,7 @@ import dayjs from "dayjs";
 import uploadFile from "../../assets/hook/useUpload";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 export default function ManageSession() {
   // const dateFormat = 'YYYY/MM/DD';
@@ -46,7 +46,8 @@ export default function ManageSession() {
 
   // id >= 0
   const navigate = useNavigate()
-  const {pageNum}= useParams()
+  let [searchParams]= useSearchParams()
+  const pageNum = searchParams.get("page") != null ? searchParams.get("page") :1
   const [currentId, setCurrentId] = useState(-1);
   const [form] = useForm();
   const [requestAuctionsAgreed, setRequestAuctionsAgreed] = useState([]);
@@ -117,7 +118,7 @@ export default function ManageSession() {
       });
   };
   const onChangePaging = (pageNumber) => {
-    navigate(`/dashboard/session/${pageNumber.current }`)
+    navigate(`/dashboard/session?page=${pageNumber.current }`)
     setPageNumber(pageNumber.current);
   };
   useEffect(() => {
