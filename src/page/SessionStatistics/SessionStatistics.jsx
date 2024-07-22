@@ -1,58 +1,15 @@
 import { useEffect, useState } from "react";
-import { Button, Modal, Form, Input, Table, Col, Row, Tooltip, Statistic } from "antd";
-import axios from "axios";
-import { Pie } from "react-chartjs-2";
+import { Button, Input, Col, Row, Statistic } from "antd";
 import { ContainerOutlined, DollarOutlined, HourglassOutlined, SearchOutlined, SettingOutlined, TeamOutlined } from "@ant-design/icons";
 import { APIgetAuctionSessionDetail } from "../../api/api";
-import { MarginOutlined } from "@mui/icons-material";
 
 export default function SessionStatistics() {
 
   const [searchValue, setSearchValue] = useState('');
-  const [statisticAll, setStatisticAll] = useState('');
   const [arrayDataDetail, setArrayDataDetail]  = useState([{label :"RED",quantity:12},
     {label :"BLUE",quantity:12},
     {label :"YELLOW",quantity:12},
     {label :"GREN",quantity:12}]);
-
-  const data = {
-    labels: ["Red", "Blue", "Yellow"],
-    datasets: [
-      {
-        label: "số lượng",
-        data: [12, 19, 3],
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-        ],
-        borderColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false, // Cho phép kích thước tùy chỉnh,
-    plugins: {
-      legend: {
-        position: "top",
-      },
-    },
-  };
-
-  const handleOnclickViewChart = (value) => {
-    console.log(value);
-  }
-
-  const handleOnclickViewPie = (value) => {
-    console.log(value);
-  }
 
   const handleSearchDetail = async (value) =>{
     console.log(value);
@@ -176,6 +133,5 @@ export default function SessionStatistics() {
         </Col>
       </Row>
     </>
-    
   );
 }
