@@ -6,6 +6,7 @@ import {
   EditOutlined,
   LoadingOutlined,
 } from "@ant-design/icons";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   Button,
   Col,
@@ -20,7 +21,8 @@ import {
   Table,
   Tag,
 } from "antd";
-
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/features/counterSlice";
 import {
   APIAuctionConfirmation,
   APIAuctionRejected,
@@ -39,9 +41,7 @@ const formatDate = (dateString) => {
   const year = date.getFullYear();
   return `${hours}:${minutes} ${day}/${month}/${year}`;
 };
-const pageSize = 7;
-// tạo ra timeline
-// in ra step
+
 const renderSteps = (status) => {
   return (
     <Steps current={0}>
@@ -427,26 +427,42 @@ const columns = (setCurrentId) => [
 ];
 
 function RequestSellHistory() {
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
+  const [totalRow, setTotalRow] = useState(0);
+  const user = useSelector(selectUser);
+  const pageSize = 7;
+  const token = useSelector(selectUser)?.token;
   const [currentId, setCurrentId] = useState(-1);
   const [currentRequest, setCurrentRequest] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [isRejected, setIsRejected] = useState(false);
-  const [page, setPage] = useState(1);
+  let [searchParams] = useSearchParams()
+  const pageNum =
+    searchParams.get("page") != null ? searchParams.get("page") : 1;
+  // searchParams.get("page") != null ? searchParams.get("page") : 1;
+  const [pageNumber, setPageNumber] = useState(Number(pageNum));
+  const sort = 'id,desc';
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
-  const fetchData = async () => {
+  const onChangePaging = (pageNumber) => {
+    navigate(`/ActiveHistory/RequestSell?page=${pageNumber.current}`)
+    setPageNumber(pageNumber.current);
+  };
+
+  const fetchData = async (page) => {
     setIsLoading(true);
-    await APIgetallrequest(page, pageSize, "id,desc")
+    await APIgetallrequest(page, pageSize, sort)
       .then((response) => {
         console.log(response);
-        setData(response.data.content);
+        setTotalRow(response.data?.totalElements);
+        setData(response.data?.content);
       })
       .catch((error) => {
         console.log(error);
+        message.error("Something went wrong");
       })
       .finally(() => {
         setIsLoading(false);
@@ -494,8 +510,9 @@ function RequestSellHistory() {
   }, [currentId]);
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    console.log(pageNumber);
+    fetchData(pageNumber - 1);
+  }, [pageNumber]);
 
   return (
     <>
@@ -841,7 +858,14 @@ function RequestSellHistory() {
             )}
           </Modal>
 
-          <Table columns={columns(setCurrentId)} dataSource={data} />
+          <Table columns={columns(setCurrentId)} dataSource={data}
+            pagination={{
+              total: totalRow,
+              current: pageNumber,
+              pageSize: pageSize,
+            }}
+            size="middle"
+            onChange={onChangePaging} />
         </>
       )}
     </>
