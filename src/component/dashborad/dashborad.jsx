@@ -46,54 +46,14 @@ const Dashboard = () => {
   const [openKeys, setOpenKeys] = useState(dataOpen);
 
   useEffect(() => {
-    // if (role === "Manage") {
-    //   setItems([
-    //     getItem("Category", "category", <ProductOutlined />),
-    //     getItem("Quản lý Clubs", "club", <HeartOutlined />, [
-    //       getItem("Club 1", "club1"),
-    //       getItem("Club 2", "club2"),
-    //       getItem("Club 3", "club3"),
-    //       getItem("All Promotion", "all-promotion"),
-    //     ]),
-    //     getItem("Quản lý Staffs", "staffs", <UserOutlined />, [
-    //       getItem("Club 1", "staff-club-1"),
-    //       getItem("Club 2", "staff-club-2"),
-    //       getItem("Club 3", "staff-club-3"),
-    //       getItem("All Staffs", "all-staffs"),
-    //     ]),
-    //     getItem("Thống kê", "statistics", <BarChartOutlined />, [
-    //       getItem("Club 1", "stats-club-1"),
-    //       getItem("Club 2", "stats-club-2"),
-    //       getItem("Club 3", "stats-club-3"),
-    //       getItem("All Clubs", "all-clubs"),
-    //     ]),
-    //   ]);
-    // }
-    // if (role === "Staff") {
-    //   setItems([
-    //     getItem("Category", "category"),
-    //     getItem("Hồ sơ", "profile", <ProfileOutlined />),
-    // getItem("Club", "clubs", <HeartOutlined />, [
-    //   getItem("Time Slot", "time-slot"),
-    //   getItem("Promotion", "promotion"),
-    // ]),
-    //     getItem("Booking", "booking", <CheckCircleOutlined />, [
-    //       getItem("Court ID 1", "court-1"),
-    //       getItem("Court ID 2", "court-2"),
-    //     ]),
-    //   ]);
-    // }
-
     if (role === "ADMIN") {
       setItems([
         getItem("Acount", "acount", <ContactsOutlined />),
         getItem("Request", "request", <SolutionOutlined />),
         getItem("Session", "session", <AreaChartOutlined />),
         getItem("Statistical", "statistical", <ContainerOutlined />, [
-          getItem("Revenue", "revenue"),
-          getItem("Session Statistics", "sessionstatistics"),
-          getItem("Request Statistics", "requeststatistics"),
-          getItem("Acount Statistics", "acountstatistics"),
+          getItem("Overview Statistics", "overviewStatistics"),
+          getItem("Session Statistics", "sessionStatistics"),
         ]),
       ]);
     }
