@@ -427,6 +427,7 @@ const columns = (setCurrentId) => [
 ];
 
 function RequestSellHistory() {
+  const navigate = useNavigate()
   const [data, setData] = useState([]);
   const [totalRow, setTotalRow] = useState(0);
   const user = useSelector(selectUser);
@@ -505,7 +506,7 @@ function RequestSellHistory() {
 
   useEffect(() => {
     if (currentId > 0) {
-      setCurrentRequest(data.find((request) => request.id === currentId));
+        (data.find((request) => request.id === currentId));
     }
   }, [currentId]);
 
@@ -513,7 +514,6 @@ function RequestSellHistory() {
     console.log(pageNumber);
     fetchData(pageNumber - 1);
   }, [pageNumber]);
-
   return (
     <>
       {isLoading ? (
