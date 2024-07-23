@@ -20,7 +20,6 @@ import {
 } from "antd";
 import {
   APIBidding,
-  
   APIgetSessionByID,
   APIrefreshBalance,
   APIRegistrations,
@@ -258,7 +257,7 @@ export default function Detail() {
                 $
               </h4>
               <h6> </h6> <h4></h4>
-              <h6>Fee Amount Percent:</h6> <h4>{product?.feeAmount}$</h4>
+              <h6>Fee Amount Percent:</h6> <h4>{product?.feeAmount * 100}%</h4>
               <h6>Step Price:</h6> <h4>{product?.minStepPrice}$</h4>
               {product?.three_highestBid?.length > 0 && (
                 <>
@@ -554,7 +553,9 @@ export default function Detail() {
                     placed correctly and cannot retract a bid once it is placed.
                   </p>
                   <p>
-                    2.4 With a bid that is 50% higher than the previous bid, automatically set the remaining time to 5 minutes from that bid.
+                    2.4 With a bid that is 50% higher than the previous bid,
+                    automatically set the remaining time to 5 minutes from that
+                    bid.
                   </p>
 
                   <h2>3. Winning an Auction</h2>

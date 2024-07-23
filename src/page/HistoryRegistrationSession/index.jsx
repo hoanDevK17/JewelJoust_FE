@@ -36,7 +36,7 @@ const columns = (setCurrentId, navigate) => [
     title: "No.",
     key: "index",
     render: (_, __, index) => {
-      return (index + 1);
+      return index + 1;
     },
   },
   {
@@ -57,135 +57,49 @@ const columns = (setCurrentId, navigate) => [
     render: (jewelryinitialprice) =>
       jewelryinitialprice > 0 ? `${jewelryinitialprice}$` : "N/A",
     sorter: (a, b) =>
-      (a?.auctionSession?.auctionRequest?.jewelryinitialprice || 0) - (b?.auctionSession?.auctionRequest?.jewelryinitialprice || 0),
+      (a?.auctionSession?.auctionRequest?.jewelryinitialprice || 0) -
+      (b?.auctionSession?.auctionRequest?.jewelryinitialprice || 0),
   },
   {
     title: "Initial Price",
-    dataIndex: ["auctionSession", "auctionRequest", "initialValuations", "price"],
+    dataIndex: [
+      "auctionSession",
+      "auctionRequest",
+      "initialValuations",
+      "price",
+    ],
     key: "price",
-    render: (price) =>
-      price > 0 ? `${price}$` : "N/A",
+    render: (price) => (price > 0 ? `${price}$` : "N/A"),
     sorter: (a, b) =>
-      (a?.auctionSession?.auctionRequest?.initialValuations?.price || 0) - (b?.auctionSession?.auctionRequest?.initialValuations?.price || 0),
+      (a?.auctionSession?.auctionRequest?.initialValuations?.price || 0) -
+      (b?.auctionSession?.auctionRequest?.initialValuations?.price || 0),
   },
   {
     title: "Ultimate Price",
-    dataIndex: ["auctionSession", "auctionRequest", "ultimateValuation", "price"],
+    dataIndex: [
+      "auctionSession",
+      "auctionRequest",
+      "ultimateValuation",
+      "price",
+    ],
     key: "price",
-    render: (price) =>
-      price > 0 ? `${price}$` : "N/A",
+    render: (price) => (price > 0 ? `${price}$` : "N/A"),
     sorter: (a, b) =>
-      (a?.auctionSession?.auctionRequest?.ultimateValuation?.price || 0) - (b?.auctionSession?.auctionRequest?.ultimateValuation?.price || 0),
+      (a?.auctionSession?.auctionRequest?.ultimateValuation?.price || 0) -
+      (b?.auctionSession?.auctionRequest?.ultimateValuation?.price || 0),
   },
   {
     title: "Status",
     dataIndex: "status",
     key: "status",
-
-    filterMode: "tree",
-    filters: [
-      {
-        text: "PENDING",
-        value: "PENDING",
-      },
-      {
-        text: "REJECTED",
-        value: "REJECTED",
-      },
-      {
-        text: "CONFIRMED",
-        value: "CONFIRMED",
-      },
-      {
-        text: "CANCEL",
-        value: "CANCEL",
-      },
-      {
-        text: "RECEIVED",
-        value: "RECEIVED",
-      },
-      {
-        text: "MISSED",
-        value: "MISSED",
-      },
-      {
-        text: "REVIEW",
-        value: "REVIEW",
-      },
-      {
-        text: "UNACCEPTED",
-        value: "UNACCEPTED",
-      },
-      {
-        text: "UNAPPROVED",
-        value: "UNAPPROVED",
-      },
-      {
-        text: "APPROVED",
-        value: "APPROVED",
-      },
-      {
-        text: "AGREED",
-        value: "AGREED",
-      },
-      {
-        text: "DECLINED",
-        value: "DECLINED",
-      },
-    ],
-    filterSearch: true,
-    onFilter: (value, record) => record.status.includes(value),
-    render: (text) => {
-      let color = "";
-      switch (text) {
-        case "PENDING":
-          color = "lightskyblue";
-          break;
-        case "REJECTED":
-          color = "tomato";
-          break;
-        case "CONFIRMED":
-          color = "limegreen";
-          break;
-        case "CANCEL":
-          color = "gray";
-          break;
-        case "RECEIVED":
-          color = "mediumseagreen";
-          break;
-        case "MISSED":
-          color = "gold";
-          break;
-        case "REVIEW":
-          color = "orange";
-          break;
-        case "UNACCEPTED":
-          color = "orangered";
-          break;
-        case "UNAPPROVED":
-          color = "darkorange";
-          break;
-        case "APPROVED":
-          color = "forestgreen";
-          break;
-        case "AGREED":
-          color = "dodgerblue";
-          break;
-        case "DECLINED":
-          color = "red";
-          break;
-        default:
-          color = "default";
-      }
-      return <Tag color={color}>{text}</Tag>;
-    },
   },
   {
     title: "Detail",
     key: "detail",
     render: (_, record) => (
       <Button
-        type="primary" danger
+        type="primary"
+        danger
         onClick={() => {
           navigate(`/detail/${record.auctionSession.id}`);
         }}
@@ -198,7 +112,7 @@ const columns = (setCurrentId, navigate) => [
 
 function RegistrationSessionHistory() {
   const [data, setData] = useState();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [currentId, setCurrentId] = useState(-1);
   const [currentRequest, setCurrentRequest] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -245,7 +159,10 @@ function RegistrationSessionHistory() {
                     }}
                   ></Modal>
 
-                  <Table columns={columns(setCurrentId,navigate)} dataSource={data} />
+                  <Table
+                    columns={columns(setCurrentId, navigate)}
+                    dataSource={data}
+                  />
                 </>
               )}
             </Col>
