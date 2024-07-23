@@ -11,7 +11,7 @@ import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectUser } from "../../redux/features/counterSlice";
-import "./dashborad.scss"
+import "./dashborad.scss";
 const { Header, Content, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -139,36 +139,58 @@ const Dashboard = () => {
             style={{
               textAlign: "center",
               fontSize: "32px",
-              fontWeight: "bold",
+              position: "relative",
             }}
           >
-            <img
-              src="/Logo.svg"
-              alt=""
-              style={{ maxHeight: "45px", maxWidth: "200px" }}
-              onClick={handleClick}
-            />
-            <LogoutOutlined
-              type="primary"
-              onClick={() => {
-                dispatch(logout());
-                navigate("/");
-              }}
-              style={{
-                position: "absolute",
-                right: "30px",
-                top: "15px",
-                backgroundColor: "#1677ff",
-                color: "white",
-                border: "none",
-                borderRadius: "5px",
-                padding: "6px 12px",
-                fontSize: "16px",
-                cursor: "pointer",
-                height: "35px",
-                lineHeight: "23px", // Adjusted to fit the new height
-              }}
-            />
+            {" "}
+            <div>
+              <div
+                style={{
+                  position: "absolute",
+                  left: "20px",
+                  textAlign:"left",
+                  color: "black",
+                  border: "none",
+                  borderRadius: "5px",
+                  padding: "10px 12px",
+                  fontSize: "15px",
+                  lineHeight: "23px",
+              
+                }}
+              >
+                <span> Hi👋:{"  "} {user?.fullname}</span>
+                <p>Role: {user?.role}</p>
+              </div>
+              <img
+                src="/Logo.svg"
+                alt=""
+                style={{ maxHeight: "45px", maxWidth: "200px" }}
+                onClick={handleClick}
+              />
+            </div>
+            <div>
+              <LogoutOutlined
+                type="primary"
+                onClick={() => {
+                  dispatch(logout());
+                  navigate("/");
+                }}
+                style={{
+                  position: "absolute",
+                  right: "30px",
+                  top: "15px",
+                  backgroundColor: "#1677ff",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "5px",
+                  padding: "6px 12px",
+                  fontSize: "16px",
+                  cursor: "pointer",
+                  height: "35px",
+                  lineHeight: "23px",
+                }}
+              />
+            </div>
           </header>
         </Header>
         <Content
