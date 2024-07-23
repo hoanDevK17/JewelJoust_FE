@@ -412,7 +412,7 @@ const columns = (setCurrentId) => [
     },
   },
   {
-    title: "Edit",
+    title: "Detail",
     render: (value, record) => (
       <Button
         type="primary"
@@ -427,7 +427,7 @@ const columns = (setCurrentId) => [
 ];
 
 function RequestSellHistory() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [totalRow, setTotalRow] = useState(0);
   const user = useSelector(selectUser);
@@ -437,19 +437,19 @@ function RequestSellHistory() {
   const [currentRequest, setCurrentRequest] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [isRejected, setIsRejected] = useState(false);
-  let [searchParams] = useSearchParams()
+  let [searchParams] = useSearchParams();
   const pageNum =
     searchParams.get("page") != null ? searchParams.get("page") : 1;
   // searchParams.get("page") != null ? searchParams.get("page") : 1;
   const [pageNumber, setPageNumber] = useState(Number(pageNum));
-  const sort = 'id,desc';
+  const sort = "id,desc";
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
   const onChangePaging = (pageNumber) => {
-    navigate(`/ActiveHistory/RequestSell?page=${pageNumber.current}`)
+    navigate(`/ActiveHistory/RequestSell?page=${pageNumber.current}`);
     setPageNumber(pageNumber.current);
   };
 
@@ -506,7 +506,7 @@ function RequestSellHistory() {
 
   useEffect(() => {
     if (currentId > 0) {
-        (data.find((request) => request.id === currentId));
+      setCurrentRequest(data.find((request) => request.id === currentId));
     }
   }, [currentId]);
 
@@ -858,14 +858,17 @@ function RequestSellHistory() {
             )}
           </Modal>
 
-          <Table columns={columns(setCurrentId)} dataSource={data}
+          <Table
+            columns={columns(setCurrentId)}
+            dataSource={data}
             pagination={{
               total: totalRow,
               current: pageNumber,
               pageSize: pageSize,
             }}
             size="middle"
-            onChange={onChangePaging} />
+            onChange={onChangePaging}
+          />
         </>
       )}
     </>

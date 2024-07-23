@@ -256,7 +256,7 @@ export default function HomePage({ children }) {
             )}
           </div>
         </div>
-        <div style={{ margin: "auto", maxWidth: "1200px", minWidth: "800px" }}>
+        <div style={{ margin: "auto", maxWidth: "1200px", minWidth: "1024px" }}>
           <div className="home-page-body">{children}</div>
         </div>
         <Footer />

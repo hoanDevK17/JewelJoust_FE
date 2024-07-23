@@ -16,7 +16,7 @@ export default function AuctionSession() {
   const [totalRow, setTotalRow] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-  const sort = 'id,asc';
+  const sort = "id,asc";
   const pageSize = 3;
   let [searchParams] = useSearchParams();
 
@@ -82,59 +82,74 @@ export default function AuctionSession() {
             />
           ) : (
             <>
-              {data?.length > 0 ? (
-                <>
-                  {data?.map((session, index) => {
-                    return (
-                      <Card
-                        key={index}
-                        hoverable
-                        style={{ width: "calc(33.33% - 20px)" }}
-                        cover={
-                          <img
-                            height={300}
-                            alt="example"
-                            src={session.resources[0]?.path}
-                          />
-                        }
-                      >
-                        <Meta
-                          title={session.nameSession}
-                          description={
-                            <div
-                              style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                justifyContent: "space-between",
-                                height: "100%",
-                              }}
-                            >
-                              <strong style={{ fontSize: "20px", color: "black" }}>
-                                {session?.auctionRequest.ultimateValuation.price}$
-                              </strong>
-                              <p style={paragraphStyle}>
-                                {dayjs(session.start_time).format("D MMMM h:mmA")} -
-                                {dayjs(session.end_time).format("D MMMM h:mmA")}
-                                <br />
-                                {session.description}
-                              </p>
-                              <Button
-                                type="primary"
-                                danger={session.status === "BIDDING"}
-                                onClick={() => navigate(`/detail/${session.id}`)}
-                              >
-                                View Details
-                              </Button>
-                            </div>
+              <div style={{ width: "100%" }}>
+                {data?.length > 0 ? (
+                  <>
+                    {data?.map((session, index) => {
+                      return (
+                        <Card
+                          key={index}
+                          hoverable
+                          style={{ width: "calc(33.33% - 20px)" }}
+                          cover={
+                            <img
+                              height={300}
+                              alt="example"
+                              src={session.resources[0]?.path}
+                            />
                           }
-                        />
-                      </Card>
-                    );
-                  })}
-                </>
-              ) : (
-                <p>There is no session at the moment</p>
-              )}
+                        >
+                          <Meta
+                            title={session.nameSession}
+                            description={
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  justifyContent: "space-between",
+                                  height: "100%",
+                                }}
+                              >
+                                <strong
+                                  style={{ fontSize: "20px", color: "black" }}
+                                >
+                                  {
+                                    session?.auctionRequest.ultimateValuation
+                                      .price
+                                  }
+                                  $
+                                </strong>
+                                <p style={paragraphStyle}>
+                                  {dayjs(session.start_time).format(
+                                    "D MMMM h:mmA"
+                                  )}{" "}
+                                  -
+                                  {dayjs(session.end_time).format(
+                                    "D MMMM h:mmA"
+                                  )}
+                                  <br />
+                                  {session.description}
+                                </p>
+                                <Button
+                                  type="primary"
+                                  danger={session.status === "BIDDING"}
+                                  onClick={() =>
+                                    navigate(`/detail/${session.id}`)
+                                  }
+                                >
+                                  View Details
+                                </Button>
+                              </div>
+                            }
+                          />
+                        </Card>
+                      );
+                    })}
+                  </>
+                ) : (
+                  <p>There is no session at the moment</p>
+                )}
+              </div>
             </>
           )}
         </Flex>

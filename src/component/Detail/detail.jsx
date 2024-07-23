@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import HomePage from "../home-default/home";
 
 import "./detail.scss";
@@ -52,7 +52,7 @@ export default function Detail() {
   const [mainImage, setMainImage] = useState(product?.resources[0]?.path);
 
   const { Countdown } = Statistic;
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   // useEffect(() => {
   //   const timer = setInterval(() => {
@@ -137,6 +137,7 @@ export default function Detail() {
         setProduct(response.data);
       })
       .catch((error) => {
+        navigate("/");
         console.log(error);
       })
       .finally(() => {
@@ -259,7 +260,7 @@ export default function Detail() {
               <h6> </h6> <h4></h4>
               <h6>Profile Cost:</h6> <h4>{product?.feeAmount}$</h4>
               <h6>Step Price:</h6> <h4>{product?.minStepPrice}$</h4>
-              {product.three_highestBid?.length > 0 && (
+              {product?.three_highestBid?.length > 0 && (
                 <>
                   <h6>Highest Bid Price:</h6>{" "}
                   <h4>
@@ -323,23 +324,27 @@ export default function Detail() {
               </span>
             </Col>
             <Col xs={6}>
-              <h6>See All</h6>
-              {product.three_highestBid?.length > 0 ? (
-                <BidsList bids={product.three_highestBid} />
-              ) : (
-                <div
-                  style={{
-                    display: "flex",
-                    height: "100%",
-                    alignItems: "center",
-                  }}
-                >
-                  <h6>
-                    No bids have been placed on this item yet. Be the first to
-                    bid!
-                  </h6>
-                </div>
-              )}
+              <div
+                style={{
+                  display: "flex",
+                  height: "100%",
+                  alignItems: "center",
+                }}
+              >
+                {" "}
+                {product?.three_highestBid?.length > 0 ? (
+                  <>
+                    <strong>See All</strong>
+                    <BidsList bids={product?.three_highestBid} />
+                  </>
+                ) : (
+                  <strong style={{ fontSize: "24px" }}>
+                    {product?.status == "FINISH"
+                      ? "This session is finished"
+                      : " No bids have been placed on this item yet. Be the first to bid!"}
+                  </strong>
+                )}
+              </div>
             </Col>
           </Row>
 
@@ -373,7 +378,7 @@ export default function Detail() {
             >
               {product?.register ? (
                 <>
-                  {product.status == "BIDDING" && (
+                  {product?.status == "BIDDING" && (
                     <>
                       <Form onFinish={handleBidSubmit}>
                         <Form.Item
@@ -439,7 +444,7 @@ export default function Detail() {
                     </>
                   )}
 
-                  {product.status == "INITIALIZED" && (
+                  {product?.status == "INITIALIZED" && (
                     <p style={{ color: "blue", fontStyle: "italic" }}>
                       You have registered... awaiting auction.
                     </p>
@@ -469,18 +474,18 @@ export default function Detail() {
                             type: "number",
                             min:
                               product?.status == "BIDDING" &&
-                              product.three_highestBid[0]?.bid_price > 0
-                                ? product.three_highestBid[0]?.bid_price +
-                                  +product.minStepPrice
+                              product?.three_highestBid[0]?.bid_price > 0
+                                ? product?.three_highestBid[0]?.bid_price +
+                                  +product?.minStepPrice
                                 : product?.auctionRequest.ultimateValuation
                                     .price + product?.minStepPrice,
 
                             message:
                               "Please enter price higher than " +
                               (product?.status == "BIDDING" &&
-                              product.three_highestBid[0]?.bid_price > 0
-                                ? product.three_highestBid[0]?.bid_price +
-                                  product.minStepPrice
+                              product?.three_highestBid[0]?.bid_price > 0
+                                ? product?.three_highestBid[0]?.bid_price +
+                                  product?.minStepPrice
                                 : product?.auctionRequest.ultimateValuation
                                     .price + product?.minStepPrice) +
                               "$",
@@ -507,12 +512,6 @@ export default function Detail() {
                     </Form>
                   )}
                 </>
-              )}
-              {(product?.status == "FINISH" ||
-                product?.status == "PENDINGPAYMENT") && (
-                <p style={{ color: "blue", fontStyle: "italic" }}>
-                  This session is finished
-                </p>
               )}
             </Flex>
 

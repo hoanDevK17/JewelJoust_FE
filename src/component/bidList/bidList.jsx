@@ -34,7 +34,7 @@ const BidsList = ({ bids }) => {
                 : bid.auctionRegistration.accountRegistration.username}
             </h4>
             <p style={styles.bidTime}>
-              ${dayjs(bid.bid_time).format("D MMMM h:mmA")}
+              {dayjs(bid.bid_time).format("D MMMM h:mmA")}
             </p>
           </div>
           <div style={styles.bidAmount}>
