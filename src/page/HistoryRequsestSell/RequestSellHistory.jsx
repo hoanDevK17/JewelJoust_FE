@@ -776,7 +776,7 @@ function RequestSellHistory() {
                             }}
                           >
                             <strong>Reason :</strong>
-                            {currentRequest?.reasonReject}
+                              {currentRequest?.reasonReject}
                           </p>
                         </Col>
                       </Row>
