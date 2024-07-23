@@ -553,6 +553,9 @@ export default function Detail() {
                     2.3 Buyers are responsible for ensuring their bids are
                     placed correctly and cannot retract a bid once it is placed.
                   </p>
+                  <p>
+                    2.4 With a bid that is 50% higher than the previous bid, automatically set the remaining time to 5 minutes from that bid.
+                  </p>
 
                   <h2>3. Winning an Auction</h2>
                   <p>
