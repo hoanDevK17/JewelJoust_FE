@@ -1,25 +1,16 @@
 import {
-  Button,
-  ConfigProvider,
-  Form,
-  Input,
-  Modal,
   Spin,
   Table,
   message,
 } from "antd";
 
 import { useEffect, useState } from "react";
-import {
-  ArrowLeftOutlined,
-  MinusCircleOutlined,
-  PlusCircleOutlined,
-} from "@ant-design/icons";
-import { APICreateQR, APIgetAllBidding, APIWithDrawal } from "../../api/api";
+
+import { APICreateQR, APIgetAllBidding } from "../../api/api";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 import moment from "moment";
-import axios from "axios";
+
 export default function WalletHistory() {
   const columns = [
     {

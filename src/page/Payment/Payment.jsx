@@ -14,20 +14,21 @@ import dayjs from "dayjs";
 const DepositSuccessPage = () => {
   const location = useLocation();
   const [isSuccess, setIsSuccess] = useState();
-  const [vnpAmount, setVnpAmount] = useState();
+  const [vnpAmount, setVnpAmount] = useState(0);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [formattedDate, setFormattedDate] = useState('');
+  const [formattedDate, setFormattedDate] = useState("");
   useEffect(() => {
     if (location.search?.length > 0) {
       APIResponseDeposit(location?.search)
         .then((response) => {
           console.log(response);
-          if (response.data == "VNPAY response processed successfully") {
+          setVnpAmount(response.data.amount);
+          if (response.data.status == "COMPLETED") {
             APIrefreshBalance().then((rs) => {
-           
               if (rs.status === 200) {
                 // user.wallet.balance = JSON.stringify(rs.data);
+
                 dispatch(refreshBalance(rs.data));
               }
             });
@@ -43,12 +44,17 @@ const DepositSuccessPage = () => {
       navigate("/");
     }
     const params = new URLSearchParams(location.search);
-    setVnpAmount(params.get("vnp_Amount"));
+
     const vnpBankCode = params.get("vnp_BankCode");
     const vnpCardType = params.get("vnp_CardType");
     const vnpOrderInfo = params.get("vnp_OrderInfo");
     const vnpPayDate = params.get("vnp_PayDate").slice(0, 12);
-    setFormattedDate(`${vnpPayDate.slice(0, 4)}-${vnpPayDate.slice(4, 6)}-${vnpPayDate.slice(6, 8)} ${vnpPayDate.slice(8, 10)}:${vnpPayDate.slice(10, 12)}`);
+    setFormattedDate(
+      `${vnpPayDate.slice(0, 4)}-${vnpPayDate.slice(4, 6)}-${vnpPayDate.slice(
+        6,
+        8
+      )} ${vnpPayDate.slice(8, 10)}:${vnpPayDate.slice(10, 12)}`
+    );
     const vnpResponseCode = params.get("vnp_ResponseCode");
     const vnpTmnCode = params.get("vnp_TmnCode");
     const vnpTransactionNo = params.get("vnp_TransactionNo");
@@ -91,9 +97,7 @@ const DepositSuccessPage = () => {
 
                     <div className="d-flex justify-content-between align-items-center">
                       <p className="mb-0">Time:</p>
-                      <p className="mb-0">
-                        {formattedDate}
-                      </p>
+                      <p className="mb-0">{formattedDate}</p>
                     </div>
                     <a href="/" className="btn btn-primary mt-4">
                       Home Page

@@ -704,7 +704,7 @@ export default function ManageSession() {
                   </Button>
                 </Form>
               )}
-              {currentSession?.status === "STOP" && (
+              {currentSession?.status === "STOP" || currentSession?.status ==="EXPIRED"  && (
                 <Form
                   name="basic"
                   labelCol={{

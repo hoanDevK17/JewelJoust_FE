@@ -20,7 +20,7 @@ import {
 } from "antd";
 import {
   APIBidding,
-  APIgetAllBiddingBySessionId,
+  
   APIgetSessionByID,
   APIrefreshBalance,
   APIRegistrations,
@@ -258,7 +258,7 @@ export default function Detail() {
                 $
               </h4>
               <h6> </h6> <h4></h4>
-              <h6>Profile Cost:</h6> <h4>{product?.feeAmount}$</h4>
+              <h6>Fee Amount Percent:</h6> <h4>{product?.feeAmount}$</h4>
               <h6>Step Price:</h6> <h4>{product?.minStepPrice}$</h4>
               {product?.three_highestBid?.length > 0 && (
                 <>
@@ -329,13 +329,16 @@ export default function Detail() {
                   display: "flex",
                   height: "100%",
                   alignItems: "center",
+                  flexDirection: "column",
                 }}
               >
                 {" "}
                 {product?.three_highestBid?.length > 0 ? (
                   <>
-                    <strong>See All</strong>
-                    <BidsList bids={product?.three_highestBid} />
+                    <BidsList
+                      bids={product?.three_highestBid}
+                      idSession={params?.id}
+                    />
                   </>
                 ) : (
                   <strong style={{ fontSize: "24px" }}>
