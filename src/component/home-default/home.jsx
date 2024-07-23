@@ -188,6 +188,30 @@ export default function HomePage({ children }) {
             >
               AuctionRequestSell
             </span>
+            <span
+              className="button-link"
+              onClick={() => {
+                navigate("/ConditionsAndServices");
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
+              }}
+            >
+              About Us
+            </span>
+            <span
+              className="button-link"
+              onClick={() => {
+                navigate("/Blog");
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
+              }}
+            >
+              Blog
+            </span>
           </div>
 
           <div className="home-page-login">

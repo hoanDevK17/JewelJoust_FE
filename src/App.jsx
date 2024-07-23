@@ -10,6 +10,7 @@ import ResetPass from "./page/resetPass/resetPass";
 import Detail from "./component/Detail/detail";
 import ScrollToTop from "./component/Scroll-to-Top/scroll";
 import Acount from "./page/manageAcount/index";
+import Blog from "./page/Blog/App";
 
 import HomePage from "./page/homepage/homePage";
 import Wallet from "./page/Wallet/Wallet";
@@ -69,6 +70,10 @@ export default function App() {
     {
       path: "/registration",
       element: <Registration />,
+    },
+    {
+      path: "/Blog",
+      element: <Blog />,
     },
     {
       path: "/ConditionsAndServices",
