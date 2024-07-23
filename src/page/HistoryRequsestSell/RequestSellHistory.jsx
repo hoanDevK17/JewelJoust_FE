@@ -4,6 +4,7 @@ import {
   ClockCircleOutlined,
   CloseCircleOutlined,
   EditOutlined,
+  InboxOutlined,
   LoadingOutlined,
 } from "@ant-design/icons";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -269,7 +270,7 @@ const columns = (setCurrentId) => [
     key: "jewelryname",
   },
   {
-    title: "CreatedDate",
+    title: "Created Date",
     dataIndex: "requestdate",
     key: "requestdate",
     render: (requestdate) => dayjs(requestdate).format("HH:mm DD/MM/YYYY "),
@@ -309,7 +310,7 @@ const columns = (setCurrentId) => [
     },
   },
   {
-    title: "status",
+    title: "Status",
     dataIndex: "status",
     key: "status",
 
@@ -420,7 +421,7 @@ const columns = (setCurrentId) => [
           setCurrentId(record.id);
         }}
       >
-        <EditOutlined />
+        <InboxOutlined />
       </Button>
     ),
   },
@@ -504,16 +505,30 @@ function RequestSellHistory() {
       });
   };
 
+
   useEffect(() => {
     if (currentId > 0) {
       setCurrentRequest(data.find((request) => request.id === currentId));
     }
   }, [currentId]);
 
+
   useEffect(() => {
     console.log(pageNumber);
     fetchData(pageNumber - 1);
   }, [pageNumber]);
+
+  useEffect(() => {
+    console.log(currentId);
+    if (currentId > 0) {
+      const currentRequest = data.find(item => item?.id === currentId);
+      if (currentRequest) {
+        console.log(currentRequest);
+        setCurrentRequest(currentRequest);
+      }
+    }
+  }, [currentId, data]); 
+  
   return (
     <>
       {isLoading ? (
@@ -669,15 +684,17 @@ function RequestSellHistory() {
                           </p>
                         </Col>
                         <Col span={8}>
+                        {currentRequest?.initialValuations.status !== "REJECTED" &&(
                           <p
-                            style={{
-                              display: "flex",
-                              justifyContent: "center",
-                            }}
-                          >
-                            <strong>Price: </strong>
-                            {currentRequest?.initialValuations.price}
-                          </p>
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <strong>Price: </strong>
+                          {currentRequest?.initialValuations.price}
+                        </p>
+                        )}
                         </Col>
                       </Row>
                     </Col>
@@ -765,7 +782,7 @@ function RequestSellHistory() {
                               justifyContent: "center",
                             }}
                           >
-                            <strong>Reason: </strong>
+                            <strong>Reason :</strong>
                             {currentRequest?.reasonReject}
                           </p>
                         </Col>

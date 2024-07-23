@@ -4,6 +4,7 @@ import {
   ClockCircleOutlined,
   CloseCircleOutlined,
   EditOutlined,
+  FireOutlined,
   LoadingOutlined,
 } from "@ant-design/icons";
 import Footer from "../../component/footer/footer.jsx";
@@ -44,7 +45,7 @@ const columns = (setCurrentId, navigate) => [
     key: "nameSession",
   },
   {
-    title: "CreatedDate",
+    title: "Created Date",
     dataIndex: "requestdate",
     key: "requestdate",
     render: (requestdate) => dayjs(requestdate).format("HH:mm DD/MM/YYYY "),
@@ -77,7 +78,7 @@ const columns = (setCurrentId, navigate) => [
       (a?.auctionSession?.auctionRequest?.ultimateValuation?.price || 0) - (b?.auctionSession?.auctionRequest?.ultimateValuation?.price || 0),
   },
   {
-    title: "status",
+    title: "Status",
     dataIndex: "status",
     key: "status",
 
@@ -184,12 +185,12 @@ const columns = (setCurrentId, navigate) => [
     key: "detail",
     render: (_, record) => (
       <Button
-        type="primary"
+        type="primary" danger
         onClick={() => {
           navigate(`/detail/${record.auctionSession.id}`);
         }}
       >
-        View Auction
+        View Session <FireOutlined />
       </Button>
     ),
   },
