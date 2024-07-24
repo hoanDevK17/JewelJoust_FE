@@ -196,7 +196,7 @@ export const APIWithDrawal = (
     accountNumber: accountNumber,
     recipientName: arecipientName,
     amountWithDraw: VND,
-    usd:USD
+    usd: USD
   });
 export const APIResponseDeposit = (url) => api.put("wallet/VnpayResponse", url);
 //auction-confirmation-api
@@ -210,8 +210,8 @@ export const APIBidding = (id_session, price) =>
     id_session: id_session,
     price: price,
   });
-export const APIgetAllBiddingBySessionId = (sessionId) =>
-  api.get(`auctionBids/session/getAll/${sessionId}`);
+export const APIgetAllBiddingBySessionId = (sessionId, page, size, sort) =>
+  api.get(`auctionBids/session/getAll/${sessionId}?page=${page}&size=${size}&sort=${sort}`);
 export const APIgetAllBidding = () => api.get(`auctionBids`);
 export const APIStop = (id) => api.put(`auctionSessions/stop`, id);
 export const APIContinue = (id) => api.put(`auctionSessions/continue`, id);

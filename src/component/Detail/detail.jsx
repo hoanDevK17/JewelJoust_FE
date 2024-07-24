@@ -158,7 +158,6 @@ export default function Detail() {
         console.log(response);
         setProduct(response.data);
         setHighlight(true);
-
         // Remove highlight after 10 seconds
         setTimeout(() => {
           setHighlight(false);

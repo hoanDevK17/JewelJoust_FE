@@ -1,4 +1,4 @@
-import { Modal, Spin } from "antd";
+import { Modal, Pagination, Spin } from "antd";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { APIgetAllBidding, APIgetAllBiddingBySessionId } from "../../api/api";
@@ -7,15 +7,21 @@ const BidsList = ({ bids, idSession }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  console.log(bids);
+  const sort = "id,asc";
+  const pageSize = 7;
+  const [totalRow, setTotalRow] = useState(0);
+  const [pageNumber, setPageNumber] = useState(1);
   if (bids.length >= 3) {
     bids = bids.slice(0, 3);
   }
-  const fetch = async () => {
+  const fetch = async (page, pageSize, sort) => {
+    console.log(page, pageSize, sort)
     setIsLoading(true);
-    APIgetAllBiddingBySessionId(idSession)
+    APIgetAllBiddingBySessionId(idSession, page, pageSize, sort)
       .then((rs) => {
-        setData(rs.data);
+        console.log(rs)
+        setData(rs.data.content);
+        setTotalRow(rs.data.totalElements)
       })
       .catch((err) => {
         console.error(err);
@@ -24,6 +30,14 @@ const BidsList = ({ bids, idSession }) => {
         setIsLoading(false);
       });
   };
+  const onChangePaging = (page) => {
+    setPageNumber(page);
+  };
+
+  useEffect(() => {
+    fetch(pageNumber - 1, pageSize, sort);
+  }, [pageNumber]);
+
   return (
     <div style={styles.bidsContainer}>
       <div style={styles.header}>
@@ -31,7 +45,7 @@ const BidsList = ({ bids, idSession }) => {
         <button
           style={styles.seeAllButton}
           onClick={() => {
-            fetch();
+            fetch(pageNumber - 1, pageSize, sort);
             setIsOpen(true);
           }}
         >
@@ -51,9 +65,9 @@ const BidsList = ({ bids, idSession }) => {
             <h4 style={styles.bidName}>
               {bid.auctionRegistration.accountRegistration.username.length > 12
                 ? bid.auctionRegistration.accountRegistration.username.slice(
-                    0,
-                    12
-                  ) + "..."
+                  0,
+                  12
+                ) + "..."
                 : bid.auctionRegistration.accountRegistration.username}
             </h4>
             <p style={styles.bidTime}>
@@ -83,7 +97,7 @@ const BidsList = ({ bids, idSession }) => {
             <>
               {isOpen ? (
                 <div style={styles.bidsContainer}>
-                  {bids?.map((bid) => (
+                  {data?.map((bid) => (
                     <div key={bid.id} style={styles.bidItem}>
                       <img
                         src={
@@ -97,11 +111,11 @@ const BidsList = ({ bids, idSession }) => {
                           {bid.auctionRegistration.accountRegistration.username
                             .length > 12
                             ? bid.auctionRegistration.accountRegistration.username.slice(
-                                0,
-                                12
-                              ) + "..."
+                              0,
+                              12
+                            ) + "..."
                             : bid.auctionRegistration.accountRegistration
-                                .username}
+                              .username}
                         </h4>
                         <p style={styles.bidTime}>
                           {dayjs(bid.bid_time).format("D MMMM h:mmA")}
@@ -113,7 +127,15 @@ const BidsList = ({ bids, idSession }) => {
                       </div>
                     </div>
                   ))}
+                  <Pagination
+                    current={pageNumber}
+                    pageSize={pageSize}
+                    total={totalRow}
+                    onChange={onChangePaging}
+                    style={{ marginTop: "20px", textAlign: "center" }}
+                  />
                 </div>
+
               ) : (
                 <></>
               )}
