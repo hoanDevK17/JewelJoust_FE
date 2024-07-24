@@ -40,7 +40,6 @@ import {
   PointElement,
   LineElement,
   RadarController,
-  // RadarElement,
 } from "chart.js";
 import OverviewStatistics from "./page/OverviewStatistics/OverviewStatistics";
 ChartJS.register(

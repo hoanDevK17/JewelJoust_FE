@@ -1,13 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  CheckCircleOutlined,
-  ClockCircleOutlined,
-  CloseCircleOutlined,
-  EditOutlined,
-  FireOutlined,
-  LoadingOutlined,
-} from "@ant-design/icons";
-import Footer from "../../component/footer/footer.jsx";
+import {FireOutlined,} from "@ant-design/icons";
 import { Button, Modal, Spin, Steps, Table, Tag } from "antd";
 
 import { APIHistoryRegisSession } from "../../api/api";
@@ -15,21 +7,6 @@ import dayjs from "dayjs";
 import { Container, Row, Col } from "react-bootstrap";
 import HomePage from "../../component/home-default/home";
 import { useNavigate } from "react-router-dom";
-
-const formatDate = (dateString) => {
-  const date = new Date(dateString);
-  const hours = String(date.getHours()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const year = date.getFullYear();
-  return `${hours}:${minutes} ${day}/${month}/${year}`;
-};
-
-// tạo ra timeline
-// in ra step
-
-//lấy status từ Status
 
 const columns = (setCurrentId, navigate) => [
   {

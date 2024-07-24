@@ -34,17 +34,7 @@ import { selectUser } from "../../redux/features/counterSlice";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 export default function ManageSession() {
-  // const dateFormat = 'YYYY/MM/DD';
 
-  /** Manually entering any of the following formats will perform date parsing */
-  // const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
-  // const customFormat = (value) => `custom format: ${value.format(dateFormat)}`;
-  // const customWeekStartEndFormat = (value) =>
-  //   `${dayjs(value).startOf('week').format(weekFormat)} ~ ${dayjs(value)
-  //     .endOf('week')
-  //     .format(weekFormat)}`;
-
-  // id >= 0
   const navigate = useNavigate()
   let [searchParams]= useSearchParams()
   const pageNum = searchParams.get("page") != null ? searchParams.get("page") :1
@@ -593,36 +583,9 @@ export default function ManageSession() {
                         required: true,
                         message: "Please input Range Time!",
                       },
-                      // { whitespace: true },
-                      // {
-                      // pattern:
-                      //   /^202[0-9]-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1])) (([0-1][0-9])|(2[0-3])):([0-5][0-9])$/,
-                      // message: "Invalid date format! (YYYY-MM-DD HH:mm)",
-                      // },
-                      // ({ getFieldValue }) => ({
-                      //   validator(_, value) {
-                      //     if (!value || !getFieldValue("start_time")) {
-                      //       return Promise.resolve();
-                      //     }
-                      //     const start = moment(
-                      //       getFieldValue("start_time"),
-                      //       "YYYY-MM-DD HH:mm"
-                      //     );
-                      //     const end = moment(value, "YYYY-MM-DD HH:mm");
-                      //     if (end.isBefore(start)) {
-                      //       return Promise.reject(
-                      //         new Error(
-                      //           "The end date and time must be after the start date"
-                      //         )
-                      //       );
-                      //     }
-                      //     return Promise.resolve();
-                      //   },
-                      // }),
+                     
                     ]}
-                  >
-                    {/* <Input placeholder="YYYY-MM-DD HH:mm" /> */}
-
+                  >               
                     <RangePicker
                       style={{ width: "100%" }}
                       disabledDate={disabledDate}
@@ -656,13 +619,7 @@ export default function ManageSession() {
                       />
                     ))}
                   </div>
-
-                  {/* <Form.Item
-                wrapperCol={{
-                  offset: 8,
-                  span: 16,
-                }}
-              ></Form.Item> */}
+                
                 </Form>
               </Col>
             </Row>

@@ -1,7 +1,6 @@
 import AuthenTemplate from "../../component/authen-template";
 import "./index.scss";
 import { Button, Form, Input, Spin } from "antd";
-import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { api } from "../../config/axios";
@@ -15,18 +14,6 @@ export default function Login() {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  // const login = async () => {
-  //   try {
-  //     const user = await api.post("login", {
-  //       username: emailAddress,
-  //       password: passWord
-  //     });
-  //     console.log(user);
-  //   } catch (error) {
-  //     console.error("Error logging in:", error);
-  //     // Handle the error here, such as displaying an error message to the user
-  //   }
-  // };
 
   const Handlelogin = (user) => {
     // console.log(user);
