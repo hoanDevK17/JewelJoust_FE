@@ -704,10 +704,10 @@ export default function ManageSession() {
                   </Button>
                 </Form>
               )}
-              {currentSession?.status === "STOP" || currentSession?.status ==="EXPIRED"  && (
+              {(currentSession?.status === "STOP" || currentSession?.status ==="EXPIRED")  && (
                 <Form
                   name="basic"
-                  labelCol={{
+                  labelCol={{ 
                     span: 8,
                   }}
                   wrapperCol={{
