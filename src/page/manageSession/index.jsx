@@ -31,16 +31,17 @@ import dayjs from "dayjs";
 import uploadFile from "../../assets/hook/useUpload";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export default function ManageSession() {
-
   const navigate = useNavigate()
   let [searchParams]= useSearchParams()
   const pageNum = searchParams.get("page") != null ? searchParams.get("page") :1
+
   const [currentId, setCurrentId] = useState(-1);
   const [form] = useForm();
   const [requestAuctionsAgreed, setRequestAuctionsAgreed] = useState([]);
+  const [isOpen, setIsOpen] = useState(true);
   const [data, setData] = useState([]);
   const [staffs, setStaffs] = useState([]);
   const [currentRequestID, setCurrentRequestID] = useState(-1);
@@ -51,7 +52,7 @@ export default function ManageSession() {
   const [urlJewelry, setUrlJewelry] = useState([]);
   const [totalRow, setTotalRow] = useState(0);
   const [pageNumber, setPageNumber] = useState(Number(pageNum));
-  const sort = 'id,desc';
+  const sort = "id,desc";
   const pageSize = 7;
   const user = useSelector(selectUser);
   const disabledDate = (current) => {
@@ -108,7 +109,7 @@ export default function ManageSession() {
       });
   };
   const onChangePaging = (pageNumber) => {
-    navigate(`/dashboard/session?page=${pageNumber.current }`)
+    navigate(`/dashboard/session?page=${pageNumber.current}`);
     setPageNumber(pageNumber.current);
   };
   useEffect(() => {
@@ -167,13 +168,10 @@ export default function ManageSession() {
   };
 
   const onFinish = async (values) => {
-    console.log(
-      dayjs(values.range_time[0]).format("YYYY-MM-DDTHH:mm"),
-      dayjs(values.range_time[1]).format("YYYY-MM-DDTHH:mm")
-    );
     values.id_auction_request = currentRequestID;
-    console.log(values);
+    setIsOpen(false);
     if (currentId > 0) {
+      console.log(urlJewelry);
       APIupdateSession(values, urlJewelry)
         .then((response) => {
           if (response.status === 200) message.success("Update Successfully");
@@ -184,7 +182,9 @@ export default function ManageSession() {
           console.log(error);
           message.error("Something went wrong", error.response?.data);
         })
-        .finally(() => { });
+        .finally(() => {
+          setIsOpen(true);
+        });
     }
     if (currentId == 0) {
       // let path = urlJewelry?.map((file) => ({ path: file.url }));
@@ -200,7 +200,9 @@ export default function ManageSession() {
           console.log(error);
           message.error("Something went wrong", error.response?.data);
         })
-        .finally(() => { });
+        .finally(() => {
+          setIsOpen(true);
+        });
     }
   };
 
@@ -232,8 +234,11 @@ export default function ManageSession() {
 
     if (currentId > 0) {
       const current_session = data.find((item) => item?.id == currentId);
-      console.log(current_session);
-      setUrlJewelry(current_session?.resources);
+      const listImage = current_session.resources.map((item) => {
+        return { path: item.path };
+      });
+      console.log(listImage);
+      // setUrlJewelry(listImage);
       form.setFieldsValue({
         id_session: current_session.id,
         staff_id: current_session.staffSession.id,
@@ -256,7 +261,7 @@ export default function ManageSession() {
 
   const columns = [
     {
-     title: "No.",
+      title: "No.",
       key: "index",
       render: (_, __, index) => {
         return (pageNumber - 1) * pageSize + index;
@@ -390,14 +395,14 @@ export default function ManageSession() {
           )}
           <Modal
             title={`${currentId > 0 ? "Edit" : "Add"} Session`}
-            open={currentId >= 0}
+            open={currentId >= 0 && isOpen}
             onOk={() => {
-              if (user?.role !== "MANAGER") {
-                message.error(
-                  "You do not have permission to perform this action."
-                );
-                return;
-              }
+              // if (user?.role !== "MANAGER") {
+              //   message.error(
+              //     "You do not have permission to perform this action."
+              //   );
+              //   return;
+              // }
               form.submit();
             }}
             onCancel={() => {
@@ -661,7 +666,9 @@ export default function ManageSession() {
                   </Button>
                 </Form>
               )}
-              {(currentSession?.status === "STOP" || currentSession?.status ==="EXPIRED")  && (
+
+              {(currentSession?.status === "STOP" ||
+                currentSession?.status === "EXPIRED") && (
                 <Form
                   name="basic"
                   labelCol={{
@@ -693,14 +700,17 @@ export default function ManageSession() {
               )}
             </div>
           </Modal>
-          <Table dataSource={data} columns={columns} 
-           pagination={{
-             total: totalRow,
-             current: pageNumber,
-             pageSize: pageSize,
-           }}
-           size="middle"
-           onChange={onChangePaging}/>
+          <Table
+            dataSource={data}
+            columns={columns}
+            pagination={{
+              total: totalRow,
+              current: pageNumber,
+              pageSize: pageSize,
+            }}
+            size="middle"
+            onChange={onChangePaging}
+          />
         </div>
       )}
     </>

@@ -131,7 +131,9 @@ export const APIgetallSession = (page, size, sort) =>
 export const APIgetallSessionByStatus = (status) =>
   api.get(`auctionSessions/${status}`);
 export const APIgetallSessionByName = (name, page, size, sort) =>
-  api.get(`auctionSessions/name/${name}?page=${page}&size=${size}&sort=${sort}`);
+  api.get(
+    `auctionSessions/name/${name}?page=${page}&size=${size}&sort=${sort}`
+  );
 export const APIgetSessionByID = (id_sesion, id_user) =>
   api.get(`auctionSessions/detail/${id_sesion}?userId=${id_user}`);
 export const APIcreateSession = (values, path) =>
@@ -189,14 +191,13 @@ export const APIWithDrawal = (
   arecipientName,
   VND,
   USD
-
 ) =>
   api.post("transactions/withdraw", {
     bankName: bankName,
     accountNumber: accountNumber,
     recipientName: arecipientName,
     amountWithDraw: VND,
-    usd:USD
+    usd: USD,
   });
 export const APIResponseDeposit = (url) => api.put("wallet/VnpayResponse", url);
 //auction-confirmation-api
@@ -216,12 +217,19 @@ export const APIgetAllBidding = () => api.get(`auctionBids`);
 export const APIStop = (id) => api.put(`auctionSessions/stop`, id);
 export const APIContinue = (id) => api.put(`auctionSessions/continue`, id);
 export const APIgetAllStatistics = () => api.get(`dashboard`);
-export const APIgetStatisticsSession = (year) => api.get(`dashboard/auctionSession/${year}`);
-export const APIgetStatisticsRequest = (year) => api.get(`dashboard/auctionRequest/${year}`);
-export const APIgetStatisticsAcount = (year) => api.get(`dashboard/account/${year}`);
-export const APIgetStatisticsRevenue = (year) => api.get(`dashboard/auctionBid/${year}`);
-export const APIgetStatisticsSessionDetail = () => api.get(`dashboard/auctionSession/detail`);
-export const APIgetStatisticsRequestDetail = () => api.get(`dashboard/auctionRequest/detail`);
-export const APIgetStatisticsAcountDetail = () => api.get(`dashboard/account/detail`);
-export const APIgetAuctionSessionDetail = (id) => api.get(`dashboard/auctionSession/detail/${id}`);
-
+export const APIgetStatisticsSession = (year) =>
+  api.get(`dashboard/auctionSession/${year}`);
+export const APIgetStatisticsRequest = (year) =>
+  api.get(`dashboard/auctionRequest/${year}`);
+export const APIgetStatisticsAcount = (year) =>
+  api.get(`dashboard/account/${year}`);
+export const APIgetStatisticsRevenue = (year) =>
+  api.get(`dashboard/auctionBid/${year}`);
+export const APIgetStatisticsSessionDetail = () =>
+  api.get(`dashboard/auctionSession/detail`);
+export const APIgetStatisticsRequestDetail = () =>
+  api.get(`dashboard/auctionRequest/detail`);
+export const APIgetStatisticsAcountDetail = () =>
+  api.get(`dashboard/account/detail`);
+export const APIgetAuctionSessionDetail = (id) =>
+  api.get(`dashboard/auctionSession/detail/${id}`);

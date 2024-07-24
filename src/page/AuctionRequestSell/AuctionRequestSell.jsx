@@ -11,7 +11,7 @@ import {
   Upload,
   message,
 } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { DeleteOutlined, UploadOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
@@ -33,6 +33,7 @@ export default function AuctionRequestSell() {
   const [urlJewelry, setUrlJewelry] = useState([]);
   const { Text } = Typography;
   const [messageApi, contextHolder] = message.useMessage();
+
   const [form] = useForm();
   const use = async (file) => {
     try {
@@ -56,7 +57,10 @@ export default function AuctionRequestSell() {
       use(info.file.originFileObj);
     },
   };
-
+  const handleOnclickRemoveImage = (index) => {
+    console.log(index);
+    setUrlJewelry((urlJewelry) => urlJewelry.splice(1, index));
+  };
   const submit = (cbr) => {
     if (user != null) {
       if (urlJewelry?.length > 1) {
@@ -212,11 +216,22 @@ export default function AuctionRequestSell() {
                     style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}
                   >
                     {urlJewelry.map((file, index) => (
-                      <Image
-                        key={index}
-                        width={"calc(33% - 16px)"}
-                        src={file.url}
-                      />
+                      <>
+                        <div
+                          style={{
+                            width: "calc(33% - 16px)",
+                            position: "relative",
+                          }}
+                        >
+                          <Image key={index} width={"100%"} src={file.url} />
+                          <DeleteOutlined
+                            style={{ position: "absolute", top: 5, left: 5 }}
+                            onClick={() => {
+                              handleOnclickRemoveImage(index);
+                            }}
+                          />
+                        </div>
+                      </>
                     ))}
                     <span style={{ color: "red", fontWeight: "bold" }}>
                       {messageErrorImage && messageErrorImage}

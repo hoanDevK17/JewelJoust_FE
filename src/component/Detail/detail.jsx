@@ -43,12 +43,12 @@ export default function Detail() {
     }
   });
   const params = useParams();
-  const [product, setProduct] = useState();
+  const [session, setSession] = useState();
   const [highlight, setHighlight] = useState(false);
   const user = useSelector(selectUser);
   const [isLoading, setIsLoading] = useState(true);
   let location = useLocation();
-  const [mainImage, setMainImage] = useState(product?.resources[0]?.path);
+  const [mainImage, setMainImage] = useState(session?.resources[0]?.path);
 
   const { Countdown } = Statistic;
   const navigate = useNavigate();
@@ -71,11 +71,11 @@ export default function Detail() {
       label: "Jewelry Details",
       children: (
         <>
-          <h6>{product?.description} </h6>
+          <h6>{session?.description} </h6>
           <h6>
             {" "}
-            Time : {`${dayjs(product?.start_time).format("D MMMM h:mmA")}`} -
-            {`${dayjs(product?.end_time).format("D MMMM h:mmA")}`}
+            Time : {`${dayjs(session?.start_time).format("D MMMM h:mmA")}`} -
+            {`${dayjs(session?.end_time).format("D MMMM h:mmA")}`}
           </h6>
         </>
       ),
@@ -83,7 +83,7 @@ export default function Detail() {
   ];
 
   const handleTab = (index) => {
-    setMainImage(product?.resources[index]?.path);
+    setMainImage(session?.resources[index]?.path);
   };
 
   const handleRegisAuction = (values) => {
@@ -105,7 +105,7 @@ export default function Detail() {
   };
 
   const handleBidSubmit = (values) => {
-    APIBidding(product?.id, values.bidAmount)
+    APIBidding(session?.id, values.bidAmount)
       .then((response) => {
         console.log(response);
         message.success("Successfully bidding for the auction session");
@@ -133,7 +133,7 @@ export default function Detail() {
     APIgetSessionByID(params.id, id_user)
       .then((response) => {
         console.log(response);
-        setProduct(response.data);
+        setSession(response.data);
       })
       .catch((error) => {
         navigate("/");
@@ -156,7 +156,7 @@ export default function Detail() {
     APIgetSessionByID(params.id, id_user)
       .then((response) => {
         console.log(response);
-        setProduct(response.data);
+        setSession(response.data);
         setHighlight(true);
 
         // Remove highlight after 10 seconds
@@ -178,11 +178,11 @@ export default function Detail() {
 
   useEffect(() => {
     setMainImage(() => {
-      return product?.resources[0]?.path != null
-        ? product?.resources[0]?.path
+      return session?.resources[0]?.path != null
+        ? session?.resources[0]?.path
         : "";
     });
-  }, [product]);
+  }, [session]);
 
   // const formatTimeLeft = () => {
   //   const { days, hours, minutes, seconds } = timeLeft;
@@ -212,6 +212,13 @@ export default function Detail() {
         ></Spin>
       ) : (
         <HomePage>
+          <h2
+            style={{
+              color: "grey",
+            }}
+          >
+            {session?.nameSession}
+          </h2>
           <Row gutter={24} style={{ marginBottom: "10px", width: "1200px" }}>
             <Col xs={12}>
               <div
@@ -232,40 +239,32 @@ export default function Detail() {
               </div>
             </Col>
             <Col xs={6}>
-              <h6
+              {/* <h6
                 style={{
                   color: "grey",
                 }}
               >
                 {" "}
-                Item: {product?.id}
-              </h6>
-              <h6
-                style={{
-                  color: "grey",
-                }}
-              >
-                {" "}
-                Session: {product?.nameSession}
-              </h6>
-              <h4>{product?.nameJewelry}</h4>
+                Item: {session?.id}
+              </h6> */}
+              <h4>{session?.nameJewelry}</h4>
               <h6>Start Price:</h6>{" "}
               <h4>
                 {formattedBalance(
-                  Number(product?.auctionRequest.ultimateValuation.price)
+                  Number(session?.auctionRequest.ultimateValuation.price)
                 )}
                 $
               </h4>
               <h6> </h6> <h4></h4>
-              <h6>Fee Amount Percent:</h6> <h4>{product?.feeAmount * 100}%</h4>
-              <h6>Step Price:</h6> <h4>{product?.minStepPrice}$</h4>
-              {product?.three_highestBid?.length > 0 && (
+              <h6>Fee Amount Percent:</h6> <h4>{session?.feeAmount * 100}%</h4>
+              <h6>Step Price:</h6> <h4>{session?.minStepPrice}$</h4>
+              {session?.three_highestBid?.length > 0 && (
                 <>
                   <h6>Highest Bid Price:</h6>{" "}
                   <h4>
                     <strong style={{ color: highlight ? "red" : "black" }}>
                       {formattedBalance(
-                        Number(product?.three_highestBid[0]?.bid_price)
+                        Number(session?.three_highestBid[0]?.bid_price)
                       )}
                       $
                     </strong>
@@ -280,13 +279,13 @@ export default function Detail() {
                 </div>
               )}
             </div> */}
-              {product?.status === "BIDDING" && (
+              {session?.status === "BIDDING" && (
                 <>
                   <div>
                     <Countdown
                       title=" This session will finish in:"
                       style={{ fontWeight: "bold", fontSize: 32 }}
-                      value={product?.end_time}
+                      value={session?.end_time}
                       onFinish={() => {
                         fetch();
                       }}
@@ -294,13 +293,13 @@ export default function Detail() {
                   </div>
                 </>
               )}
-              {product?.status === "INITIALIZED" && (
+              {session?.status === "INITIALIZED" && (
                 <div>
                   <div style={{ marginBottom: "20px" }}>
                     <Countdown
                       title=" This session will start in:"
                       style={{ fontWeight: "bold", fontSize: 32 }}
-                      value={product?.start_time}
+                      value={session?.start_time}
                       onFinish={() => {
                         fetch();
                       }}
@@ -332,16 +331,16 @@ export default function Detail() {
                 }}
               >
                 {" "}
-                {product?.three_highestBid?.length > 0 ? (
+                {session?.three_highestBid?.length > 0 ? (
                   <>
                     <BidsList
-                      bids={product?.three_highestBid}
+                      bids={session?.three_highestBid}
                       idSession={params?.id}
                     />
                   </>
                 ) : (
                   <strong style={{ fontSize: "24px" }}>
-                    {product?.status == "FINISH"
+                    {session?.status == "FINISH"
                       ? "This session is finished"
                       : " No bids have been placed on this item yet. Be the first to bid!"}
                   </strong>
@@ -351,7 +350,7 @@ export default function Detail() {
           </Row>
 
           <Row>
-            {product?.resources.map((img, index) => {
+            {session?.resources.map((img, index) => {
               return (
                 <img
                   src={img?.path && img?.path}
@@ -378,9 +377,9 @@ export default function Detail() {
               gap={30}
               style={{ width: "100%" }}
             >
-              {product?.register ? (
+              {session?.register ? (
                 <>
-                  {product?.status == "BIDDING" && (
+                  {session?.status == "BIDDING" && (
                     <>
                       <Form onFinish={handleBidSubmit}>
                         <Form.Item
@@ -400,18 +399,18 @@ export default function Detail() {
                             },
                             {
                               type: "number",
-                              min: product?.three_highestBid[0]?.bid_price,
+                              min: session?.three_highestBid[0]?.bid_price,
                               message:
                                 "Please input your bid amount at least " +
-                                (product?.three_highestBid[0]?.bid_price +
-                                  product?.minStepPrice) +
+                                (session?.three_highestBid[0]?.bid_price +
+                                  session?.minStepPrice) +
                                 "$",
                             },
                             // {
                             //   validator: (rule, value) => {
                             //     const minBid =
-                            //       product?.three_highestBid[0].bid_price +
-                            //       product?.minStepPrice;
+                            //       session?.three_highestBid[0].bid_price +
+                            //       session?.minStepPrice;
                             //     if (value < minBid) {
                             //       return Promise.reject(
                             //         `Bid amount must be at least ${minBid}$`
@@ -446,7 +445,7 @@ export default function Detail() {
                     </>
                   )}
 
-                  {product?.status == "INITIALIZED" && (
+                  {session?.status == "INITIALIZED" && (
                     <p style={{ color: "blue", fontStyle: "italic" }}>
                       You have registered... awaiting auction.
                     </p>
@@ -454,8 +453,8 @@ export default function Detail() {
                 </>
               ) : (
                 <>
-                  {(product?.status == "INITIALIZED" ||
-                    product?.status == "BIDDING") && (
+                  {(session?.status == "INITIALIZED" ||
+                    session?.status == "BIDDING") && (
                     <Form onFinish={handleRegisAuction}>
                       <Form.Item
                         label={
@@ -475,21 +474,21 @@ export default function Detail() {
                           {
                             type: "number",
                             min:
-                              product?.status == "BIDDING" &&
-                              product?.three_highestBid[0]?.bid_price > 0
-                                ? product?.three_highestBid[0]?.bid_price +
-                                  +product?.minStepPrice
-                                : product?.auctionRequest.ultimateValuation
-                                    .price + product?.minStepPrice,
+                              session?.status == "BIDDING" &&
+                              session?.three_highestBid[0]?.bid_price > 0
+                                ? session?.three_highestBid[0]?.bid_price +
+                                  +session?.minStepPrice
+                                : session?.auctionRequest.ultimateValuation
+                                    .price + session?.minStepPrice,
 
                             message:
                               "Please enter price higher than " +
-                              (product?.status == "BIDDING" &&
-                              product?.three_highestBid[0]?.bid_price > 0
-                                ? product?.three_highestBid[0]?.bid_price +
-                                  product?.minStepPrice
-                                : product?.auctionRequest.ultimateValuation
-                                    .price + product?.minStepPrice) +
+                              (session?.status == "BIDDING" &&
+                              session?.three_highestBid[0]?.bid_price > 0
+                                ? session?.three_highestBid[0]?.bid_price +
+                                  session?.minStepPrice
+                                : session?.auctionRequest.ultimateValuation
+                                    .price + session?.minStepPrice) +
                               "$",
                           },
                         ]}
@@ -529,7 +528,7 @@ export default function Detail() {
                 <div className="container">
                   <h1>Buyer Regulations</h1>
 
-                  <h2>1. Account Registration</h2>
+                  <h3>1. Account Registration</h3>
                   <p>
                     1.1 Buyers must create an account and provide verification
                     information before participating in an auction.
