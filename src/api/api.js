@@ -211,6 +211,11 @@ export const APIBidding = (id_session, price) =>
     id_session: id_session,
     price: price,
   });
+  export const APIBiddingFast = (id_session, price) =>
+    api.post(`auctionBids/fast`, {
+      id_session: id_session,
+      price: price,
+    });
 export const APIgetAllBiddingBySessionId = (sessionId) =>
   api.get(`auctionBids/session/getAll/${sessionId}`);
 export const APIgetAllBidding = () => api.get(`auctionBids`);

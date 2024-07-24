@@ -17,9 +17,11 @@ import {
   Flex,
   Col,
   Spin,
+  Switch,
 } from "antd";
 import {
   APIBidding,
+  APIBiddingFast,
   APIgetSessionByID,
   APIrefreshBalance,
   APIRegistrations,
@@ -49,7 +51,7 @@ export default function Detail() {
   const [isLoading, setIsLoading] = useState(true);
   let location = useLocation();
   const [mainImage, setMainImage] = useState(session?.resources[0]?.path);
-
+  const [isFast, setIsFast] = useState(false);
   const { Countdown } = Statistic;
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -64,7 +66,9 @@ export default function Detail() {
   const onChange = (key) => {
     console.log(key);
   };
-
+  const onChangeSwitch = (checked) => {
+    setIsFast(checked);
+  };
   const items = [
     {
       key: "1",
@@ -105,21 +109,39 @@ export default function Detail() {
   };
 
   const handleBidSubmit = (values) => {
-    APIBidding(session?.id, values.bidAmount)
-      .then((response) => {
-        console.log(response);
-        message.success("Successfully bidding for the auction session");
-        APIrefreshBalance().then((rs) => {
-          if (rs.status === 200) {
-            // user.wallet.balance = JSON.stringify(rs.data);
-            dispatch(refreshBalance(rs.data));
-          }
+    if (isFast) {
+      APIBiddingFast(session?.id, values.bidAmount)
+        .then((response) => {
+          console.log(response);
+          message.success("Successfully bidding for the auction session");
+          APIrefreshBalance().then((rs) => {
+            if (rs.status === 200) {
+              // user.wallet.balance = JSON.stringify(rs.data);
+              dispatch(refreshBalance(rs.data));
+            }
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          message.error(error.response?.data);
         });
-      })
-      .catch((error) => {
-        console.log(error);
-        message.error(error.response?.data);
-      });
+    } else {
+      APIBidding(session?.id, values.bidAmount)
+        .then((response) => {
+          console.log(response);
+          message.success("Successfully bidding for the auction session");
+          APIrefreshBalance().then((rs) => {
+            if (rs.status === 200) {
+              // user.wallet.balance = JSON.stringify(rs.data);
+              dispatch(refreshBalance(rs.data));
+            }
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          message.error(error.response?.data);
+        });
+    }
   };
   console.log("rerender");
   const fetch = () => {
@@ -258,15 +280,12 @@ export default function Detail() {
               <h6> </h6> <h4></h4>
               <h6>Fee Amount Percent:</h6> <h4>{session?.feeAmount * 100}%</h4>
               <h6>Step Price:</h6> <h4>{session?.minStepPrice}$</h4>
-              {session?.three_highestBid?.length > 0 && (
+              {session?.highestBid?.bid_price != null && (
                 <>
                   <h6>Highest Bid Price:</h6>{" "}
                   <h4>
                     <strong style={{ color: highlight ? "red" : "black" }}>
-                      {formattedBalance(
-                        Number(session?.three_highestBid[0]?.bid_price)
-                      )}
-                      $
+                      {formattedBalance(Number(session?.highestBid.bid_price))}$
                     </strong>
                   </h4>
                 </>
@@ -340,7 +359,8 @@ export default function Detail() {
                   </>
                 ) : (
                   <strong style={{ fontSize: "24px" }}>
-                    {session?.status == "FINISH"
+                    {session?.status == "FINISH" ||
+                    session?.status == "PENDINGPAYMENT"
                       ? "This session is finished"
                       : " No bids have been placed on this item yet. Be the first to bid!"}
                   </strong>
@@ -381,6 +401,7 @@ export default function Detail() {
                 <>
                   {session?.status == "BIDDING" && (
                     <>
+                      <Switch onChange={onChangeSwitch} />
                       <Form onFinish={handleBidSubmit}>
                         <Form.Item
                           label={
@@ -438,7 +459,7 @@ export default function Detail() {
                             type="primary"
                             style={{ height: "40px" }}
                           >
-                            Submit Bid
+                            {isFast ? "Submit Fast Bid" : "Submit Bid"}
                           </Button>
                         </div>
                       </Form>
@@ -553,11 +574,12 @@ export default function Detail() {
                   </p>
                   <p>
                     2.4 With a bid that is 50% higher than the previous bid,
-                    automatically set the remaining time from 30 seconds to 1 minute 30 seconds  minutes from that
-                    bid.
-                    <h6>- For example: 
-                    the highest order is $100, if you reach $150, the time will be automatically updated as specified above
-
+                    automatically set the remaining time from 30 seconds to 1
+                    minute 30 seconds minutes from that bid.
+                    <h6>
+                      - For example: the highest order is $100, if you reach
+                      $150, the time will be automatically updated as specified
+                      above
                     </h6>
                   </p>
 
