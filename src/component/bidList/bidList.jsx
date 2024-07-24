@@ -15,7 +15,8 @@ const BidsList = ({ bids, idSession }) => {
     setIsLoading(true);
     APIgetAllBiddingBySessionId(idSession)
       .then((rs) => {
-        setData(rs.data);
+        console.log(rs);
+        setData(rs.data.content);
       })
       .catch((err) => {
         console.error(err);
@@ -83,7 +84,7 @@ const BidsList = ({ bids, idSession }) => {
             <>
               {isOpen ? (
                 <div style={styles.bidsContainer}>
-                  {bids?.map((bid) => (
+                  {data?.map((bid) => (
                     <div key={bid.id} style={styles.bidItem}>
                       <img
                         src={
