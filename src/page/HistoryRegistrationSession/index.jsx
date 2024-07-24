@@ -46,9 +46,9 @@ const columns = (setCurrentId, navigate) => [
   },
   {
     title: "Created Date",
-    dataIndex: "requestdate",
-    key: "requestdate",
-    render: (requestdate) => dayjs(requestdate).format("HH:mm DD/MM/YYYY "),
+    dataIndex: "create_at",
+    key: "create_at",
+    render: (createAt) => dayjs(createAt).format("DD/MM/YYYY "),
   },
   {
     title: "Desired Price",
