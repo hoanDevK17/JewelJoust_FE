@@ -51,8 +51,15 @@ const TermsAndConditions = () => {
       <p><strong>2.1</strong> Buyers can place bids on products through the auction interface.</p>
       <p><strong>2.2</strong> Each bid must be at least the minimum increment higher than the current bid.</p>
       <p><strong>2.3</strong> Buyers are responsible for ensuring their bids are placed correctly and cannot retract a bid once it is placed.</p>
-      <p><strong>2.4</strong> With a bid that is 50% higher than the previous bid, automatically set the remaining time to 5 minutes from that bid.</p>
-      
+      <p>
+      <strong>2.4</strong>  With a bid that is 50% higher than the previous bid,
+                    automatically set the remaining time from 30 seconds to 1 minute 30 seconds  minutes from that
+                    bid.
+                    <h6>- For example: 
+                    the highest order is $100, if you reach $150, the time will be automatically updated as specified above
+
+                    </h6>
+                  </p>
       <h3>3. Winning an Auction</h3>
       <p><strong>3.1</strong> The buyer with the highest bid at the end of the auction will be declared the winner.</p>
       
