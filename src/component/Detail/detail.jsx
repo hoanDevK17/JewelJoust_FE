@@ -359,7 +359,8 @@ export default function Detail() {
                   </>
                 ) : (
                   <strong style={{ fontSize: "24px" }}>
-                    {session?.status == "FINISH"
+                    {session?.status == "FINISH" ||
+                    session?.status == "PENDINGPAYMENT"
                       ? "This session is finished"
                       : " No bids have been placed on this item yet. Be the first to bid!"}
                   </strong>
@@ -573,11 +574,12 @@ export default function Detail() {
                   </p>
                   <p>
                     2.4 With a bid that is 50% higher than the previous bid,
-                    automatically set the remaining time from 30 seconds to 1 minute 30 seconds  minutes from that
-                    bid.
-                    <h6>- For example: 
-                    the highest order is $100, if you reach $150, the time will be automatically updated as specified above
-
+                    automatically set the remaining time from 30 seconds to 1
+                    minute 30 seconds minutes from that bid.
+                    <h6>
+                      - For example: the highest order is $100, if you reach
+                      $150, the time will be automatically updated as specified
+                      above
                     </h6>
                   </p>
 
