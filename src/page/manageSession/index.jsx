@@ -710,37 +710,38 @@ export default function ManageSession() {
                   </Button>
                 </Form>
               )}
-              {currentSession?.status === "STOP" ||
-                (currentSession?.status === "EXPIRED" && (
-                  <Form
-                    name="basic"
-                    labelCol={{
-                      span: 8,
-                    }}
-                    wrapperCol={{
-                      span: 16,
-                    }}
-                    style={{
-                      display: "flex",
-                      gap: "16px",
-                      justifyContent: "center",
-                      maxWidth: 500,
-                    }}
-                    initialValues={{
-                      remember: true,
-                    }}
-                    onFinish={handleContinue}
-                    autoComplete="off"
+
+              {(currentSession?.status === "STOP" ||
+                currentSession?.status === "EXPIRED") && (
+                <Form
+                  name="basic"
+                  labelCol={{
+                    span: 8,
+                  }}
+                  wrapperCol={{
+                    span: 16,
+                  }}
+                  style={{
+                    display: "flex",
+                    gap: "16px",
+                    justifyContent: "center",
+                    maxWidth: 500,
+                  }}
+                  initialValues={{
+                    remember: true,
+                  }}
+                  onFinish={handleContinue}
+                  autoComplete="off"
+                >
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    disabled={user?.role !== "STAFF"}
                   >
-                    <Button
-                      type="primary"
-                      htmlType="submit"
-                      disabled={user?.role !== "STAFF"}
-                    >
-                      CONTINUE
-                    </Button>
-                  </Form>
-                ))}
+                    CONTINUE
+                  </Button>
+                </Form>
+              )}
             </div>
           </Modal>
           <Table
