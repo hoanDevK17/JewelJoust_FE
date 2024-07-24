@@ -225,7 +225,7 @@ export default function OverviewStatistics() {
             <Tooltip title="Auction Profit">
               <DollarOutlined style={iconStyle} />
             </Tooltip>
-            <Statistic title="Total Revenue" value={statisticAll?.totalBid} valueStyle={{ fontSize: '32px' }} />
+            <Statistic title="Total Revenue" value={statisticAll?.totalRevenue} valueStyle={{ fontSize: '32px' }} />
             <Button
               style={{ marginTop: 16 }}
               type="primary"
