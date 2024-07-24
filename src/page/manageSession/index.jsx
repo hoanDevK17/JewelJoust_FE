@@ -707,7 +707,7 @@ export default function ManageSession() {
               {(currentSession?.status === "STOP" || currentSession?.status ==="EXPIRED")  && (
                 <Form
                   name="basic"
-                  labelCol={{
+                  labelCol={{ 
                     span: 8,
                   }}
                   wrapperCol={{

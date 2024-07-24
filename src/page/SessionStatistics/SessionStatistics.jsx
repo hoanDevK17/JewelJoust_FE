@@ -51,6 +51,23 @@ export default function SessionStatistics() {
   const totalPriceItem = arrayDataDetail.find(item => item.label === "Total Price");
   // Lấy giá trị quantity của phần tử totalPriceItem
   const totalPrice = totalPriceItem ? totalPriceItem.quantity : 0;
+  // Tìm phần tử có label là "Price Highest"
+  const totalHightOrderItem = arrayDataDetail.find(item => item.label === "Price Highest");
+  // Lấy giá trị quantity của phần tử totalHightOderItem
+  const totalHightOrder = totalHightOrderItem ? totalHightOrderItem.quantity : 0;
+  // Tìm phần tử có label là "Name Session"
+  const totalNameItem = arrayDataDetail.find(item => item.label === "Name Session");
+  // Lấy giá trị quantity của phần tử totalNameItem
+  const nameSession = totalNameItem ? totalNameItem.quantity : 0;
+  // Tìm phần tử có label là "Status Session"
+  const totalStatusItem = arrayDataDetail.find(item => item.label === "Status Session");
+  // Lấy giá trị quantity của phần tử Status Session
+  const statusSession = totalStatusItem ? totalStatusItem.quantity : 0;
+  // Tìm phần tử có label là "Description Session"
+  const totalDescriptionItem = arrayDataDetail.find(item => item.label === "Description Session");
+  // Lấy giá trị quantity của phần tử totalDescriptionItem
+  const descriptionSession = totalDescriptionItem ? totalDescriptionItem.quantity : 0;
+  
 
   return (
     <>
@@ -72,6 +89,38 @@ export default function SessionStatistics() {
             onChange={(e) => setSearchValue(e.target.value)}
             onSearch={handleSearchDetail}
           />
+        </Col>
+      </Row>
+      <Row gutter={16} align="middle">
+        <Col span={8}>
+          <p
+          style={{
+            display: "flex",
+            justifyContent: "center"
+          }}>
+            <strong>Name Session</strong>
+            : {nameSession}
+          </p>
+        </Col>
+        <Col span={4}>
+          <p
+          style={{
+            display: "flex",
+            justifyContent: "center"
+          }}>
+            <strong>Status</strong>
+            : {statusSession}
+          </p>
+        </Col>
+        <Col span={12}>
+          <p
+          style={{
+            display: "flex",
+            justifyContent: "center"
+          }}>
+            <strong>Description</strong>
+            : {descriptionSession}
+          </p>
         </Col>
       </Row>
       <Row justify="center" gutter={20}>
@@ -126,9 +175,9 @@ export default function SessionStatistics() {
             }}
           >
             <HourglassOutlined style={iconStyle} />
-            <Statistic title="Total Auction Registrations:" 
-            value={totalPrice} valueStyle={{ fontSize: '60px' }} /> 
-            <p style={{fontSize: "28px"}}>MEMBER</p>
+            <Statistic title="Highest Bid Order:" 
+            value={totalHightOrder} valueStyle={{ fontSize: '60px' }} /> 
+            <p style={{fontSize: "28px"}}>USD</p>
           </div>
         </Col>
       </Row>
