@@ -215,6 +215,7 @@ export const APIgetAllBiddingBySessionId = (sessionId) =>
   api.get(`auctionBids/session/getAll/${sessionId}`);
 export const APIgetAllBidding = () => api.get(`auctionBids`);
 export const APIStop = (id) => api.put(`auctionSessions/stop`, id);
+export const APIPay = (id) => api.put(`auctionSessions/finish`, id);
 export const APIContinue = (id) => api.put(`auctionSessions/continue`, id);
 export const APIgetAllStatistics = () => api.get(`dashboard`);
 export const APIgetStatisticsSession = (year) =>

@@ -19,6 +19,7 @@ import { useForm } from "antd/es/form/Form";
 import { EditOutlined, UploadOutlined } from "@ant-design/icons";
 import {
   APIContinue,
+  APIPay,
   APIStop,
   APIcreateSession,
   APIgetAllRequestToSession,
@@ -78,6 +79,22 @@ export default function ManageSession() {
 
   const handleContinue = async () => {
     APIContinue(currentSession.id)
+      .then((rs) => {
+        console.log(rs);
+        message.success("Successfully");
+        fetchData();
+      })
+      .catch((error) => {
+        console.log(error);
+        message.error("Something went wrong", error);
+      })
+      .finally(() => {
+        setCurrentId(-1);
+      });
+  };
+
+  const handleFinish = async () => {
+    APIPay(currentSession.id)
       .then((rs) => {
         console.log(rs);
         message.success("Successfully");
@@ -698,6 +715,38 @@ export default function ManageSession() {
                   </Button>
                 </Form>
               )}
+
+              {currentSession?.status === "PENDINGPAYMENT" && (
+                <Form
+                  name="basic"
+                  labelCol={{
+                    span: 8,
+                  }}
+                  wrapperCol={{
+                    span: 16,
+                  }}
+                  style={{
+                    display: "flex",
+                    gap: "16px",
+                    justifyContent: "center",
+                    maxWidth: 500,
+                  }}
+                  initialValues={{
+                    remember: true,
+                  }}
+                  onFinish={handleFinish}
+                  autoComplete="off"
+                >
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    disabled={user?.role !== "STAFF"}
+                  >
+                    FINISH
+                  </Button>
+                </Form>
+              )}
+
             </div>
           </Modal>
           <Table
