@@ -5,7 +5,6 @@ import {
 } from "antd";
 
 import { useEffect, useState } from "react";
-
 import { APICreateQR, APIgetAllBidding } from "../../api/api";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";

@@ -8,35 +8,22 @@ import {
   Select,
   Tag,
   message,
-  Pagination,
   Spin,
 } from "antd";
-import axios from "axios";
 import { useForm } from "antd/es/form/Form";
 import dayjs from "dayjs";
 import moment from "moment";
 import {
   APIUpdateProfile,
-  APIgetallacount,
   APIgetallacountPaging,
   APIregishaverole,
 } from "../../api/api";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
-import { current } from "@reduxjs/toolkit";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export default function Acount() {
-  // console.log(user)
-  // const dateFormat = 'YYYY/MM/DD';
-  /** Manually entering any of the following formats will perform date parsing */
-  // const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
-  // const customFormat = (value) => `custom format: ${value.format(dateFormat)}`;
-  // const customWeekStartEndFormat = (value) =>
-  //   `${dayjs(value).startOf('week').format(weekFormat)} ~ ${dayjs(value)
-  //     .endOf('week')
-  //     .format(weekFormat)}`;
-  // id >= 0
+
   const navigate = useNavigate();
   let [searchParams] = useSearchParams();
   const [currentId, setCurrentId] = useState(-1);
@@ -186,20 +173,6 @@ export default function Acount() {
         </Button>
       ),
     },
-    // {
-    //   title: "Delete",
-    //   render: (value) => (
-    //     <Button
-    //       onClick={() => {
-    //         handleDelate(value);
-    //       }}
-    //       danger
-    //       type="primary"
-    //     >
-    //       Delete
-    //     </Button>
-    //   ),
-    // },
   ];
 
   const [data, setData] = useState([]);
@@ -228,16 +201,6 @@ export default function Acount() {
     console.log(pageNumber);
     fetchData(pageNumber - 1);
   }, [pageNumber]);
-
-  // const handleDelate = (value) => {
-  //   console.log(value);
-  //   const response = axios.delete(
-  //     `http://jeweljoust.online:8080/api/account/${value.id}`
-  //   );
-  //   console.log(response.data);
-  //   // lọc ra tất cả data loại bỏ data vừa bị xoá
-  //   setData(data.filter((data) => data.id != value.id));
-  // };
 
   const getValueProps = (value) => {
     if (currentIdDate === 0) {

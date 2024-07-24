@@ -3,7 +3,6 @@ import {
   CheckCircleOutlined,
   ClockCircleOutlined,
   CloseCircleOutlined,
-  EditOutlined,
   InboxOutlined,
   LoadingOutlined,
 } from "@ant-design/icons";
@@ -28,7 +27,6 @@ import {
   APIAuctionConfirmation,
   APIAuctionRejected,
   APIgetallrequest,
-  APIgetallrequestUser,
 } from "../../api/api";
 import dayjs from "dayjs";
 import "./index.scss";
