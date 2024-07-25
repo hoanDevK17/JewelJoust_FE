@@ -26,7 +26,7 @@ export default function WalletHistory() {
   };
 
   const handleConfirm = (record) => {
-    console.log(record.id);
+ 
     APIgetTransactionsWithDrawalConfirm(record.id)
       .then((response) => {
         console.log(response);
@@ -74,35 +74,16 @@ export default function WalletHistory() {
       dataIndex: "description",
       key: "description",
     },
-    {
-      title: "Upload Image",
-      key: "upload",
-      render: (text, record) => (
-        <Upload
-          name="file"
-          action="/upload" // Change to your actual upload endpoint
-          onChange={(info) => handleUpload(info, record)}
-          showUploadList={false} // Hide default file list UI
-        >
-          <Button icon={<UploadOutlined />}>Upload</Button>
-        </Upload>
-      ),
-    },
+
     {
       title: "Confirm",
       render: (value, record) => (
         <Button
           type="primary"
           style={{
-            background:
-              record.status === "PENDING" && uploadedImages[record.id]
-                ? "green"
-                : "gray",
+            background: record.status === "PENDING" ? "green" : "gray",
           }}
           onClick={() => handleConfirm(record)}
-          disabled={
-            record.status !== "PENDING" || !uploadedImages[record.id] // Disable if not pending or no image
-          }
         >
           <CheckOutlined />
         </Button>

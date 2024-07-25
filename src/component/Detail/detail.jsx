@@ -401,7 +401,10 @@ export default function Detail() {
                 <>
                   {session?.status == "BIDDING" && (
                     <>
-                      <Switch onChange={onChangeSwitch} />
+                      <div>
+                        <h6>Bid fast</h6>
+                        <Switch onChange={onChangeSwitch} title="Bid Fast" />
+                      </div>
                       <Form onFinish={handleBidSubmit}>
                         <Form.Item
                           label={
@@ -420,12 +423,18 @@ export default function Detail() {
                             },
                             {
                               type: "number",
-                              min: session?.three_highestBid[0]?.bid_price,
-                              message:
-                                "Please input your bid amount at least " +
-                                (session?.three_highestBid[0]?.bid_price +
-                                  session?.minStepPrice) +
-                                "$",
+                              min: isFast
+                                ? session?.three_highestBid[0]?.bid_price * 1.5
+                                : session?.three_highestBid[0]?.bid_price +
+                                  session?.minStepPrice,
+                              message: `Please input your bid amount at least  ${
+                                isFast
+                                  ? session?.three_highestBid[0]?.bid_price *
+                                    1.5
+                                  : session?.three_highestBid[0]?.bid_price +
+                                    session?.minStepPrice
+                              } 
+                                    $`,
                             },
                             // {
                             //   validator: (rule, value) => {
