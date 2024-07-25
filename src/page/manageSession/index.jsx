@@ -35,9 +35,10 @@ import { selectUser } from "../../redux/features/counterSlice";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 export default function ManageSession() {
-  const navigate = useNavigate()
-  let [searchParams]= useSearchParams()
-  const pageNum = searchParams.get("page") != null ? searchParams.get("page") :1
+  const navigate = useNavigate();
+  let [searchParams] = useSearchParams();
+  const pageNum =
+    searchParams.get("page") != null ? searchParams.get("page") : 1;
 
   const [currentId, setCurrentId] = useState(-1);
   const [form] = useForm();
@@ -255,7 +256,7 @@ export default function ManageSession() {
         return { path: item.path };
       });
       console.log(listImage);
-      // setUrlJewelry(listImage);
+      setUrlJewelry(listImage);
       form.setFieldsValue({
         id_session: current_session.id,
         staff_id: current_session.staffSession.id,
@@ -605,9 +606,8 @@ export default function ManageSession() {
                         required: true,
                         message: "Please input Range Time!",
                       },
-                     
                     ]}
-                  >               
+                  >
                     <RangePicker
                       style={{ width: "100%" }}
                       disabledDate={disabledDate}
@@ -642,7 +642,6 @@ export default function ManageSession() {
                       />
                     ))}
                   </div>
-                
                 </Form>
               </Col>
             </Row>
@@ -747,7 +746,6 @@ export default function ManageSession() {
                   </Button>
                 </Form>
               )}
-
             </div>
           </Modal>
           <Table
