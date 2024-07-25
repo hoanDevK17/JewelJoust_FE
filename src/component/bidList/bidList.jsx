@@ -1,30 +1,44 @@
-import { Modal, Spin } from "antd";
+import { Modal, Pagination, Spin } from "antd";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { APIgetAllBidding, APIgetAllBiddingBySessionId } from "../../api/api";
 
 const BidsList = ({ bids, idSession }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [data, setData] = useState(false);
+  const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  console.log(bids);
+  const [totalRow, setTotalRow] = useState(0);
+  const [pageNumber, setPageNumber] = useState(1);
+  const sort = "id,asc";
+  const pageSize = 3;
+
   if (bids.length >= 3) {
     bids = bids.slice(0, 3);
   }
-  const fetch = async () => {
+  const fetch = async (page) => {
     setIsLoading(true);
-    APIgetAllBiddingBySessionId(idSession)
-      .then((rs) => {
-        console.log(rs);
-        setData(rs.data.content);
-      })
-      .catch((err) => {
-        console.error(err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    try {
+      const response = await APIgetAllBiddingBySessionId(idSession, page, pageSize, sort);
+      if (response && response.data) {
+        setData(response.data.content || []);
+        setTotalRow(response.data.totalElements || 0);
+      } else {
+        console.error("API response does not contain data:", response);
+      }
+    } catch (err) {
+      console.error("Error fetching data:", err);
+    } finally {
+      setIsLoading(false);
+    }
   };
+  const onChangePaging = (page) => {
+    setPageNumber(page);
+  };
+
+  useEffect(() => {
+    fetch(pageNumber - 1);
+  }, [pageNumber]);
+  console.log(totalRow)
   return (
     <div style={styles.bidsContainer}>
       <div style={styles.header}>
@@ -52,9 +66,9 @@ const BidsList = ({ bids, idSession }) => {
             <h4 style={styles.bidName}>
               {bid.auctionRegistration.accountRegistration.username.length > 12
                 ? bid.auctionRegistration.accountRegistration.username.slice(
-                    0,
-                    12
-                  ) + "..."
+                  0,
+                  12
+                ) + "..."
                 : bid.auctionRegistration.accountRegistration.username}
             </h4>
             <p style={styles.bidTime}>
@@ -90,7 +104,7 @@ const BidsList = ({ bids, idSession }) => {
                         src={
                           "https://letstryai.com/wp-content/uploads/2023/11/stable-diffusion-avatar-prompt-example-2.jpg"
                         }
-                        alt={bid.name}
+                        alt=""
                         style={styles.bidImage}
                       />
                       <div style={styles.bidInfo}>
@@ -98,11 +112,11 @@ const BidsList = ({ bids, idSession }) => {
                           {bid.auctionRegistration.accountRegistration.username
                             .length > 12
                             ? bid.auctionRegistration.accountRegistration.username.slice(
-                                0,
-                                12
-                              ) + "..."
+                              0,
+                              12
+                            ) + "..."
                             : bid.auctionRegistration.accountRegistration
-                                .username}
+                              .username}
                         </h4>
                         <p style={styles.bidTime}>
                           {dayjs(bid.bid_time).format("D MMMM h:mmA")}
@@ -114,6 +128,13 @@ const BidsList = ({ bids, idSession }) => {
                       </div>
                     </div>
                   ))}
+                  <Pagination
+                    current={pageNumber}
+                    pageSize={pageSize}
+                    total={totalRow}
+                    onChange={onChangePaging}
+                    style={{ marginTop: "20px", textAlign: "center" }}
+                  />
                 </div>
               ) : (
                 <></>
