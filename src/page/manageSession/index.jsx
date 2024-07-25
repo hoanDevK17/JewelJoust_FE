@@ -623,8 +623,9 @@ export default function ManageSession() {
                   </Form.Item>
                   <Form.Item
                     className="input-conten"
-                    label="Upload image of your jewelry and certificate"
+                    label="Upload image "
                     name="imgjewerly"
+                    // style={{display:"flex"}}
                   >
                     <Upload {...props} fileList={urlJewelry}>
                       <Button icon={<UploadOutlined />}>Click to Upload</Button>
