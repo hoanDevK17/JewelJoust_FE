@@ -237,6 +237,7 @@ export default function Detail() {
           <h2
             style={{
               color: "grey",
+              fontFamily:"inherit"
             }}
           >
             {session?.nameSession}
